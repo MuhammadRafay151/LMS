@@ -54,21 +54,41 @@ namespace LeaveApplication.Controllers
         public ActionResult AddDesignation(Designation ds)
         {
             ad.AddDesignation(ds);
-            return RedirectToAction("Department");
+            return RedirectToAction("Designation");
         }
         [HttpPost]
         public ActionResult DeleteDesignation(Designation ds)
         {
            
             ad.DeleteDesignation(ds);
-            return RedirectToAction("Department");
+            return RedirectToAction("Designation");
         }
         [HttpPost]
         public ActionResult UpdateDesignation(Designation ds)
         {
 
-            ad.updateDeparment(new Models.Department() { DepartmentId = Request.Form["id"].ToString(), department = Request.Form["edittxt"].ToString() });
-            return RedirectToAction("Department");
+            ad.updateDesignation(new Designation() { DesignationID =int.Parse( Request.Form["id"].ToString()), designation = Request.Form["edittxt"].ToString() });
+            return RedirectToAction("Designation");
+        }
+        public ActionResult AddLeaveType(LeaveTypes lt)
+        {
+           
+            ad.AddLeaveType(lt);
+            return RedirectToAction("LeaveType");
+        }
+        [HttpPost]
+        public ActionResult DeleteLeaveType(LeaveTypes lt)
+        {
+
+            ad.DeleteLeaveType(lt);
+            return RedirectToAction("LeaveType");
+        }
+        [HttpPost]
+        public ActionResult UpdateLeaveType(LeaveTypes lt)
+        {
+
+            ad.updateLeaveType(new LeaveTypes() { LeaveTypeID = int.Parse(Request.Form["id"].ToString()), LeaveType = Request.Form["edittxt"].ToString() });
+            return RedirectToAction("LeaveType");
         }
     }
 }

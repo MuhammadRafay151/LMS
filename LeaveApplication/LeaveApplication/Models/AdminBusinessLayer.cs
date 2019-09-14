@@ -44,25 +44,25 @@ namespace LeaveApplication.Models
 
         public void DeleteDesignation(Designation ds)
         {
-            string Querry = string.Format("delete from Designations where Designation='{0}'", ds.DesignationID);
+            string Querry = string.Format("delete from Designations where DesignationID='{0}'", ds.DesignationID);
             DataBase.ExecuteQuerry(Querry);
         }    
 
-        public void updateLeaveType(string LeaveType, string UpdateLeaveType)
+        public void updateLeaveType(LeaveTypes lt)
         {
-            string Querry = string.Format("update LeaveType set LeaveType='{0}' where LeaveType='{1}'", UpdateLeaveType, LeaveType);
+            string Querry = string.Format("update LeaveType set LeaveType='{0}' where LeaveTypeID='{1}'", lt.LeaveType, lt.LeaveTypeID);
             DataBase.ExecuteQuerry(Querry);
         }
 
-        public void AddLeaveType(string LeaveType)
+        public void AddLeaveType(LeaveTypes lt)
         {
-            string Querry = string.Format("insert into LeaveType(LeaveType) values('{0}')", LeaveType);
+            string Querry = string.Format("insert into LeaveType(LeaveType) values('{0}')", lt.LeaveType);
             DataBase.ExecuteQuerry(Querry);
         }
 
-        public void DeleteLeaveType(string LeaveType)
+        public void DeleteLeaveType(LeaveTypes lt)
         {
-            string Querry = string.Format("delete from LeaveType where LeaveType='{0}'", LeaveType);
+            string Querry = string.Format("delete from LeaveType where LeaveTypeID='{0}'",lt.LeaveTypeID);
             DataBase.ExecuteQuerry(Querry);
         }
         
