@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "Department";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model LeaveApplication.Models.Department
+
+
+<!-- Modal for edit form-->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("UpdateDepartment", "Admin", FormMethod.Post, new { id = "e1" }))
+            {
+                <div class="modal-body">
+
+                    <div class="form-group d-flex justify-content-center my-auto">
+                        <input id="id" name="id"type="text" class="form-control" value="" hidden/>
+                        <input id="edittxt" name="edittxt"  type="text" class="form-control" value="Change me....." />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary"onclick="document.getElementById('e1').submit()">Save changes</button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+@* ------------------------------------------ *@
+
+<div id="div1" class="container" style="margin-top:5%">
+    <div class="row  justify-content-center align-content-center">
+
+        <div class="col-sm-6 col-md-6 col-lg-6  mb-3 ">
+            <div class="card">
+                <div class=" card-body">
+                    <h5 class="card-title">Enter Department</h5>
+                    @using (Html.BeginForm("AddDepartment", "Admin", FormMethod.Post))
+                    {<div class="form-group d-flex  justify-content-center ">
+                            <input type="text" id="@Html.IdFor(m=>m.department)" name="@Html.NameFor(m=>m.department)" class="form-control " placeholder="Department" />
+                            <input id="Submit1" class="btn btn-primary  ml-2" type="submit" value="Add Department" />
+
+                        </div>
+
+
+
+
+                    }
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table id="t1" class="table table-hover table-striped ">
+                <thead>
+                    <tr class="text-center">
+
+
+                        @*<th scope="col">Department Id</th>*@
+                        <th scope="col">Department</th>
+                        <th scope="col" class="text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ IEnumerable<LeaveApplication.Models.Department> d1 = ViewBag.Departments;
+                        foreach (LeaveApplication.Models.Department x in d1)
+                        {
+                            <tr class="text-center ">
+                                @*<td class="text-info align-middle">@x.DepartmentId</td>*@
+                                
+                                <td class="text-info align-middle">@x.department</td>
+                                <td class="align-middle">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="btn-group">
+                                            <button class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" onclick="ModelOnclick(this.parentNode.parentNode.parentNode.parentNode,@x.DepartmentId)">Edit</button>
+                                            <button class="btn btn-primary" onclick="document.getElementById('@x.DepartmentId').submit()">Delete</button>
+
+                                        </div>
+                                        @using (Html.BeginForm("DeleteDepartment", "Admin", FormMethod.Post,new {id=x.DepartmentId }))
+                                        {
+                                            <input type="text" name="@Html.NameFor(m=>m.DepartmentId)" value="@x.DepartmentId"  hidden/>
+
+                                        }
+                                    </div>
+
+                                </td>
+                            </tr>
+                        }
+                    }
+
+
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+
+

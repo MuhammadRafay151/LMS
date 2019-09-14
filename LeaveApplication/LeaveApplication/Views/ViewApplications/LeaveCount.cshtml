@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "LeaveCount";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+}
+@model LeaveApplication.Models.LeaveCount
+
+
+
+
+
+<h1 class="text-center" style="margin-top:5%">Leave Count</h1>
+<div id="div1" class="container">
+
+    <div class="row  justify-content-center align-content-center ">
+        <div class="col">
+            <table class="table table-hover  ">
+                <thead>
+                    <tr>
+                        @{
+                            System.Data.DataSet d1 = ViewBag.LeaveCount;
+                           
+                            for (int i = 0; i < d1.Tables[0].Columns.Count; i++)
+                            {
+                                <th class="text-center text-info" scope="col">@d1.Tables[0].Columns[i].ColumnName</th>
+                            }
+                        }
+
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr>
+                        @{
+
+                            foreach (System.Data.DataRow x in d1.Tables[0].Rows)
+                            {
+                                <td class="text-center">@x[0].ToString()</td>
+                                <td class="text-center">@x[1].ToString()</td>
+                                <td class="text-center">@x[2].ToString()</td>
+                                if (d1.Tables[0].Columns.Count == 4)
+                                {
+                                    <td class="text-center">@x[3].ToString()</td>
+                                }
+                            }
+                        }
+                        @*<th scope="row" class="text-info">Count</th>*@
+                    </tr>
+                   
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+</div>
+

@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "FacultyApplications";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script>
+
+</script>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col">
+            <h1 style=" margin-top:10% ;text-align:center">Faculty Applications</h1>
+        </div>
+
+    </div>
+</div>
+
+<ul class="nav nav-tabs" style="margin-top:3%">
+    <li class="nav-item">
+        @Ajax.ActionLink("All", "FacultyAll", null, new AjaxOptions
+   {
+       HttpMethod = "GET",
+            UpdateTargetId = "div1",
+            InsertionMode = InsertionMode.Replace
+   }, new { @class = "nav-link", data_toggle = "tab" })
+
+    </li>
+    <li class="nav-item">
+        @Ajax.ActionLink("Pending", "FacultyPending", null, new AjaxOptions
+ {
+     HttpMethod = "GET",
+            UpdateTargetId = "div1",
+            InsertionMode = InsertionMode.Replace
+ }, new { @class = "nav-link active", data_toggle = "tab" })
+    </li>
+    <li class="nav-item">
+        @Ajax.ActionLink("Approved", "FacultyApproved", null, new AjaxOptions
+{
+    HttpMethod = "GET",
+            UpdateTargetId = "div1",
+            InsertionMode = InsertionMode.Replace
+}, new { @class = "nav-link", data_toggle = "tab" })
+    </li>
+    <li class="nav-item">
+        @Ajax.ActionLink("Rejected", "FacultyRejected", null, new AjaxOptions
+{
+    HttpMethod = "GET",
+            UpdateTargetId = "div1",
+            InsertionMode = InsertionMode.Replace
+}, new { @class = "nav-link", data_toggle = "tab" })
+    </li>
+
+</ul>
+
+<div id="div1">
+    @Html.Action("FacultyPending")
+</div>

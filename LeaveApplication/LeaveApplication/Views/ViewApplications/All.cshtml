@@ -1,0 +1,95 @@
+﻿
+@model IEnumerable<LeaveApplication.Models.LeaveApplication>
+<script>
+    function fun(a) {
+        console.log(a.rowIndex);
+        console.log(a.cells[0].innerHTML);
+    }
+    function View(row) {
+        var Application_Id = document.getElementById('t1').rows[row.rowIndex].cells[0].innerHTML;
+        console.log(Application_Id);
+        window.location.href = "/ViewApplications/DetiledView?Application_Id=" + Application_Id;
+
+    }
+/**/</script>
+<div class="container" id="a1">
+    <div class="row">
+        <table id="t1" class="table table-hover table-responsive-sm table-striped">
+            <thead>
+                <tr onclick="fun(this)" class="table-info">
+                    <th class="align-middle  text-center" hidden scope="col">Application ID</th>
+                    @{
+                        if (ViewBag.Manager == true)
+                        {
+                            <th class="align-middle  text-center" scope="col">Name</th>
+                        }
+                    }
+                    <th class="align-middle  text-center" scope="col">Date</th>
+                    <th class="align-middle  text-center" scope="col">Leave Type</th>
+                    <th class="align-middle  text-center" scope="col">From Date</th>
+                    <th class="align-middle  text-center" scope="col">To Date</th>
+                    <th class="align-middle  text-center" scope="col">Total Days</th>
+                    <th class="align-middle  text-center" scope="col">Reason for leave</th>
+                    <th class="align-middle  text-center" scope="col">Application Status</th>
+                    <th class="align-middle  text-center" scope="col">View Details</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @{foreach (LeaveApplication.Models.LeaveApplication x in Model)
+                    {
+                                <tr class="">
+
+                                    <td hidden class="align-middle  text-center">@x.ApplicationId</td>
+                                    @{
+                                        if (ViewBag.Manager == true)
+                                        {
+                                            <td class="align-middle  text-center">@x.EmployeeName</td>
+                                        }
+                                    }
+                                    <td class="align-middle  text-center">@x.ApplyDate</td>
+                                    <td class="align-middle  text-center">@x.LeaveType</td>
+                                    <td class="align-middle  text-center">@x.FromDate</td>
+                                    <td class="align-middle  text-center">@x.ToDate</td>
+                                    <td class="align-middle  text-center">@x.TotalDays</td>
+                                    <td class="align-middle  text-center">@x.LeaveReason</td>
+                                    @{
+                                        if (x.ApplicationStatus == "Approved")
+                                        {
+                                            <td class="align-middle text-center">
+                                                <span class="badge badge-success" style="font-size:15px">Approved</span>
+                                            </td>
+
+                                        }
+                                        else if (x.ApplicationStatus == "Rejected")
+                                        {
+                                            <td class="align-middle text-center">
+                                                <span class="badge badge-danger"style="font-size:15px">Rejected</span>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="align-middle text-center">
+                                                <span class="badge badge-warning"style="font-size:15px">Pending</span>
+                                            </td>
+                                        }
+                                    }
+
+                                    <td class="align-middle text-center">
+                                        <button type="button" class="btn btn-secondary" onclick="View(this.parentNode.parentNode)">View</button>
+                                    </td>
+
+                                </tr>
+
+                    }
+
+                }
+
+
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
