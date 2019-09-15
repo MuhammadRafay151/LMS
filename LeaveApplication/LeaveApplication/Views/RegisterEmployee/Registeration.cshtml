@@ -5,7 +5,7 @@
 }
 
 
-
+<link href="~/daterangepicker-master/daterangepicker.css" rel="stylesheet" />
 <style>
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button {
@@ -14,7 +14,7 @@
     }
 </style>
 <h2 style="margin-top:10%">Registeration</h2>
-<script src="~/Scripts/jquery-3.3.1.js"></script>
+
 <div class="container">
 
     <div class="row">
@@ -37,11 +37,11 @@
                     </div>
                     <div class="form-group">
                         @Html.TextBoxFor(Model => Model.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number", required = "required" })
-                        
+
                     </div>
                     <div class="form-group">
                         @Html.TextBoxFor(Model => Model.CNIC, new { @class = "form-control", placeholder = "CNIC", required = "required" })
-                        
+
                     </div>
                     <div class="form-group">
 

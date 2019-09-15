@@ -9,11 +9,11 @@ namespace LeaveApplication.Models
 {
     public class LeaveBusinessLayer
     {
+        db database = new db();
         SqlConnection con;
         string connection = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         SqlCommand cmd;
         SqlDataReader reader;
-        SqlDataAdapter da;
         DataSet ds;
         static LeaveApplication leave;
 
@@ -47,13 +47,11 @@ namespace LeaveApplication.Models
         }
         public LeaveTypes[] GetLeaveTypes()
         {
-            con = new SqlConnection(connection);
-            con.Open();
+           
             string Querry = "select LeaveTypeID,LeaveType from LeaveType";
-            da = new SqlDataAdapter(Querry, con);
-            ds = new DataSet();
-            da.Fill(ds);
-            con.Close();
+         
+            ds = database.Read(Querry); ;
+           
             LinkedList<LeaveTypes> list = new LinkedList<LeaveTypes>();
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
@@ -66,13 +64,11 @@ namespace LeaveApplication.Models
         }
         public List<LeaveApplication> GetAllApplications(string EmployeeID)
         {
-            con = new SqlConnection(connection);
-            string querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveType,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,Reasons.LeaveReason from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID inner join Reasons on LeaveApplication.ReasonID=Reasons.ReasonID where LeaveApplication.EmployeeID='{0}'", EmployeeID);
-            da = new SqlDataAdapter(querry, con);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            da.Dispose();
-            con.Close();
+          
+            string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveType,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,Reasons.LeaveReason from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID inner join Reasons on LeaveApplication.ReasonID=Reasons.ReasonID where LeaveApplication.EmployeeID='{0}'", EmployeeID);
+           
+            DataSet ds = database.Read(Querry);
+           
             List<Models.LeaveApplication> la = new List<Models.LeaveApplication>();
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
@@ -140,11 +136,11 @@ namespace LeaveApplication.Models
         public LeaveApplication GetApplication(string Application_Id)
         {
             //return application for edit application feature...
-            con = new SqlConnection(connection);
-            string querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveTypeID,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,LeaveApplication.ReasonID from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID  where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
-            da = new SqlDataAdapter(querry, con);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
+         
+            string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveTypeID,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,LeaveApplication.ReasonID from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID  where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
+           
+            DataSet ds = database.Read(Querry);
+         
 
             LeaveApplication v1 = new Models.LeaveApplication();
             v1.ApplicationId = ds.Tables[0].Rows[0][0].ToString();
@@ -158,9 +154,7 @@ namespace LeaveApplication.Models
             v1.LeaveRemarks = ds.Tables[0].Rows[0][7].ToString();
             v1.LeaveReason = ds.Tables[0].Rows[0][8].ToString();
             v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);
-            con.Close();
-            da.Dispose();
-            ds.Dispose();
+          
             leave = v1;
             if (v1.ApplicationStatus == "Pending")
             {
@@ -174,11 +168,11 @@ namespace LeaveApplication.Models
         public LeaveApplication GetViewApplication(string Application_Id)
         {
 
-            con = new SqlConnection(connection);
-            string querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveTypeID,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,LeaveApplication.ReasonID from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID  where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
-            da = new SqlDataAdapter(querry, con);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
+           
+            string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveTypeID,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,LeaveApplication.ReasonID from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID  where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
+           
+            DataSet ds = database.Read(Querry);
+          
             LeaveApplication v1 = new Models.LeaveApplication();
             v1.ApplicationId = ds.Tables[0].Rows[0][0].ToString();
             v1.EmployeeID = ds.Tables[0].Rows[0][1].ToString();
@@ -190,9 +184,7 @@ namespace LeaveApplication.Models
             v1.LeaveRemarks = ds.Tables[0].Rows[0][7].ToString();
             v1.LeaveReason = ds.Tables[0].Rows[0][8].ToString();
             v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);
-            con.Close();
-            da.Dispose();
-            ds.Dispose();
+           
 
             return v1;
         }
@@ -200,22 +192,17 @@ namespace LeaveApplication.Models
         {
             l1.TotalDays = CalculateTotalLeaveDays(l1);
             l1.ApplicationId = leave.ApplicationId;
-            con = new SqlConnection(connection);
-            con.Open();
+           
             string Querry = string.Format("update LeaveApplication set LeaveTypeID='{0}',FromDate='{1}',ToDate='{2}',TotalDays='{3}',Remarks='{4}',ReasonID='{5}' where LeaveApplicationID='{6}'", l1.LeaveType, l1.FromDate, l1.ToDate, l1.TotalDays, l1.LeaveRemarks, l1.LeaveReason, l1.ApplicationId);
-            cmd = new SqlCommand(Querry, con);
-            cmd.ExecuteNonQuery();
-            con.Close();
-            cmd.Dispose();
-            con.Dispose();
+            database.ExecuteQuerry(Querry);
         }
         private string GetApplicationStatus(string ApplicationId)
         {
-            con = new SqlConnection(connection);
-            string querry = string.Format("select ApplicationStatusID,Date from statushistory where LeaveApplicationID='{0}'", ApplicationId);
-            da = new SqlDataAdapter(querry, con);
-            DataSet ds1 = new DataSet();
-            da.Fill(ds1);
+
+            string Querry = string.Format("select ApplicationStatusID,Date from statushistory where LeaveApplicationID='{0}'", ApplicationId);
+
+            DataSet ds1 = database.Read(Querry); ;
+
             DateTime d1, d2;
             string st;
             if (ds1.Tables[0].Rows.Count > 0)
@@ -238,12 +225,9 @@ namespace LeaveApplication.Models
                 {
                     st = ds1.Tables[0].Rows[0][0].ToString();
                 }
+                Querry = string.Format("Select ApplicationStatus from ApplicationStatus where ApplicationStatusID ='{0}'", st);
+                ds1 = database.Read(Querry); ;
 
-                querry = string.Format("Select ApplicationStatus from ApplicationStatus where ApplicationStatusID ='{0}'", st);
-                da = new SqlDataAdapter(querry, con);
-                ds1 = new DataSet();
-                da.Fill(ds1);
-                con.Close();
                 return ds1.Tables[0].Rows[0][0].ToString();
             }
             else
@@ -256,25 +240,19 @@ namespace LeaveApplication.Models
         public List<StatusHistory> GetStatusHistory(string ApplicationId)
         {
             List<StatusHistory> SH = new List<StatusHistory>();
-            con = new SqlConnection(connection);
-            string querry = string.Format("select * from statushistory where LeaveApplicationID='{0}' order by StatusHistory.Date asc", ApplicationId);
-            da = new SqlDataAdapter(querry, con);
-            DataSet ds1 = new DataSet();
-            da.Fill(ds1);
+            string Querry = string.Format("select * from statushistory where LeaveApplicationID='{0}' order by StatusHistory.Date asc", ApplicationId);
+            DataSet ds1 = database.Read(Querry);
             for (int i = 0; i < ds1.Tables[0].Rows.Count; i++)
             {
                 StatusHistory sh = new StatusHistory();
                 sh.Date = DateTime.Parse(ds1.Tables[0].Rows[i][2].ToString()).ToString("dd-MM-yyyy");
                 string st = ds1.Tables[0].Rows[i][3].ToString();
-                querry = string.Format("Select ApplicationStatus from ApplicationStatus where ApplicationStatusID ='{0}'", st);
-                da = new SqlDataAdapter(querry, con);
-                DataSet ds2 = new DataSet();
-                da.Fill(ds2);
-
+                Querry = string.Format("Select ApplicationStatus from ApplicationStatus where ApplicationStatusID ='{0}'", st);
+                DataSet ds2 = database.Read(Querry); ;
                 sh.Status = ds2.Tables[0].Rows[0][0].ToString();
                 SH.Add(sh);
             }
-            con.Close();
+           
 
             return SH;
 
@@ -283,25 +261,17 @@ namespace LeaveApplication.Models
         {
             if (GetApplicationStatus(ApplicationId) == "Pending")
             {
-                con = new SqlConnection(connection);
-                con.Open();
-                string querry = string.Format("Delete from LeaveApplication where LeaveApplicationID='{0}'", ApplicationId);
-                cmd = new SqlCommand(querry, con);
-                cmd.ExecuteNonQuery();
-                con.Close();
+
+                string Querry = string.Format("Delete from LeaveApplication where LeaveApplicationID='{0}'", ApplicationId);
+                database.ExecuteQuerry(Querry);
             }
 
         }
         public List<LeaveApplication> GetFacultyAll()
         {
-            con = new SqlConnection(connection);
-            con.Open();
+
             string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,Employee.EmployeeName,LeaveType.LeaveType,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,Reasons.LeaveReason  from LeaveApplication INNER JOIN Employee on Employee.EmployeeID=LeaveApplication.EmployeeID inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID inner join Reasons on Reasons.ReasonID=LeaveApplication.ReasonID where Employee.Manager='{0}'", EmployeeBusinessLayer.Employee.EmployeeID);
-            da = new SqlDataAdapter(Querry, con);
-            ds = new DataSet();
-            da.Fill(ds);
-            da.Dispose();
-            con.Close();
+            ds = database.Read(Querry);
             List<Models.LeaveApplication> la = new List<Models.LeaveApplication>();
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
@@ -371,21 +341,13 @@ namespace LeaveApplication.Models
         public void AcceptApplication(string ApplicationID)
         {
             string Querry = string.Format("insert into StatusHistory(LeaveApplicationID,Date,ApplicationStatusID) select '{0}','{1}',ApplicationStatus.ApplicationStatusID from ApplicationStatus where ApplicationStatus.ApplicationStatus='Approved' ", ApplicationID, DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss"));
-            con = new SqlConnection(connection);
-            con.Open();
-            cmd = new SqlCommand(Querry, con);
-            cmd.ExecuteNonQuery();
-            con.Close();
+            database.ExecuteQuerry(Querry);
 
         }
         public void RejectApplication(string ApplicationID)
         {
             string Querry = string.Format("insert into StatusHistory(LeaveApplicationID,Date,ApplicationStatusID) select '{0}','{1}',ApplicationStatus.ApplicationStatusID from ApplicationStatus where ApplicationStatus.ApplicationStatus='Rejected' ", ApplicationID, DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss"));
-            con = new SqlConnection(connection);
-            con.Open();
-            cmd = new SqlCommand(Querry, con);
-            cmd.ExecuteNonQuery();
-            con.Close();
+            database.ExecuteQuerry(Querry);
         }
         private string GetApplicationId()
         {//sample id App1
@@ -417,58 +379,54 @@ namespace LeaveApplication.Models
         }
         public DataSet GetFaculty()
         {
-            con = new SqlConnection(connection);
             string Querry = string.Format("select EmployeeID ,EmployeeName from employee where manager='{0}'", EmployeeBusinessLayer.Employee.EmployeeID);
-            da = new SqlDataAdapter(Querry, con);
-            ds = new DataSet();
-            da.Fill(ds);
-            return ds;
+            return database.Read(Querry); ;
         }
         public DataSet GetReasons()
         {
-            con = new SqlConnection(connection);
-            con.Open();
             string Querry = string.Format("select * from Reasons");
-            da = new SqlDataAdapter(Querry, con);
-            ds = new DataSet();
-            da.Fill(ds);
-            da.Dispose();
-            con.Close();
-            return ds;
+            return database.Read(Querry);
         }
         public DataSet GetLeaveCount()
         {
-            string Querry = string.Format(@"select * from
+            string Querry = string.Format(@"declare @a NVARCHAR(MAX) = '',@b NVARCHAR(MAX) = '';
+declare @id NVARCHAR(MAX)='{0}',@st NVARCHAR(MAX)='s2';
+select @a+=QUOTENAME(LeaveType.LeaveType) + ',' from LeaveType
+
+SET @a = LEFT(@a, LEN(@a) - 1);
+print @st
+ SET @b='
+select * from
  (
- select  StatusHistory.ApplicationStatusID, LeaveType.LeaveType from Employee inner join LeaveApplication on Employee.EmployeeID = '{0}' and Employee.EmployeeID = LeaveApplication.EmployeeID inner join StatusHistory on StatusHistory.LeaveApplicationID = LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID = 's2' inner join LeaveType on LeaveType.LeaveTypeID = LeaveApplication.LeaveTypeID
+ select StatusHistory.ApplicationStatusID,LeaveType.LeaveType from Employee inner join LeaveApplication on Employee.EmployeeID=@id and Employee.EmployeeID=LeaveApplication.EmployeeID inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID=@st inner join LeaveType on LeaveType.LeaveTypeID=LeaveApplication.LeaveTypeID
  )t
  pivot(
-count(ApplicationStatusID) for LeaveType in([Annual],[Casual],[Sick])
-)as a", EmployeeBusinessLayer.Employee.EmployeeID);
-            con = new SqlConnection(connection);
-            con.Open();
-            da = new SqlDataAdapter(Querry, con);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            con.Close();
-            return ds;
+count(ApplicationStatusID) for LeaveType in('+@a+')
+)as ax';
+EXECUTE sp_executesql @b, N'@id NVARCHAR(MAX),@st NVARCHAR(MAX)', @id = @id,@st=@st;", EmployeeBusinessLayer.Employee.EmployeeID);
+
+            return database.Read(Querry);
         }
         public DataSet FacultyLeaveCount()
         {
-            string Querry = string.Format(@"select * from
+            string Querry = string.Format(@"declare @a NVARCHAR(MAX) = '',@b NVARCHAR(MAX) = '';
+declare @id NVARCHAR(MAX)='{0}',@st NVARCHAR(MAX)='s2';
+select @a+=QUOTENAME(LeaveType.LeaveType) + ',' from LeaveType
+
+SET @a = LEFT(@a, LEN(@a) - 1);
+print @st
+ SET @b='
+select * from
  (
- select Employee.EmployeeName,StatusHistory.ApplicationStatusID,LeaveType.LeaveType from Employee inner join LeaveApplication on Employee.Manager='{0}'and Employee.EmployeeID=LeaveApplication.EmployeeID inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID='s2' inner join LeaveType on LeaveType.LeaveTypeID=LeaveApplication.LeaveTypeID
+ select Employee.EmployeeName,StatusHistory.ApplicationStatusID,LeaveType.LeaveType from Employee inner join LeaveApplication on Employee.Manager=@id and Employee.EmployeeID=LeaveApplication.EmployeeID inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID=@st inner join LeaveType on LeaveType.LeaveTypeID=LeaveApplication.LeaveTypeID
+ 
  )t
  pivot(
-count(ApplicationStatusID) for LeaveType in([Annual],[Casual],[Sick])
-)as a", EmployeeBusinessLayer.Employee.EmployeeID);
-            con = new SqlConnection(connection);
-            con.Open();
-            da = new SqlDataAdapter(Querry, con);
-            DataSet ds = new DataSet();
-            da.Fill(ds);
-            con.Close();
-            return ds;
+count(ApplicationStatusID) for LeaveType in('+@a+')
+)as ax';
+EXECUTE sp_executesql @b, N'@id NVARCHAR(MAX),@st NVARCHAR(MAX)', @id = @id,@st=@st;", EmployeeBusinessLayer.Employee.EmployeeID);
+
+            return database.Read(Querry);
         }
 
 

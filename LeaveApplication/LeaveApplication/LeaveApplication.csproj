@@ -154,6 +154,18 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap1.css" />
     <Content Include="Content\bootstraplumen.css" />
+    <Content Include="daterangepicker-master\daterangepicker.css" />
+    <Content Include="daterangepicker-master\daterangepicker.js" />
+    <Content Include="daterangepicker-master\example\amd\index.html" />
+    <Content Include="daterangepicker-master\example\amd\main.js" />
+    <Content Include="daterangepicker-master\example\amd\require.js" />
+    <Content Include="daterangepicker-master\example\browserify\bundle.js" />
+    <Content Include="daterangepicker-master\example\browserify\index.html" />
+    <Content Include="daterangepicker-master\example\browserify\main.js" />
+    <Content Include="daterangepicker-master\moment.min.js" />
+    <Content Include="daterangepicker-master\website\index.html" />
+    <Content Include="daterangepicker-master\website\website.css" />
+    <Content Include="daterangepicker-master\website\website.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -289,6 +301,7 @@
     <Content Include="Login_v15\vendor\bootstrap\css\bootstrap-reboot.min.css.map" />
     <Content Include="Login_v15\vendor\bootstrap\css\bootstrap.css.map" />
     <Content Include="Login_v15\vendor\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="daterangepicker-master\example\browserify\README.md" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />

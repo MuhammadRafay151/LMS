@@ -5,124 +5,121 @@
 }
 @model LeaveApplication.Models.Employee
 
-@*<h2>Index</h2>*@
-<!DOCTYPE html>
-<html lang="en">
+<link href="~/daterangepicker-master/daterangepicker.css" rel="stylesheet" />
+<div id="div1" class="container mt-lg-5 mt-5">
+    <div class="row  justify-content-center  ">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Leave</title>
-    @*<link rel="stylesheet" href="main.css">*@
-    <link rel="stylesheet" href="~/Content/main.css" />
-    <script src="~/Scripts/Main.js">
+        <div class="col-sm-6 col-lg-4 col-8 ">
 
-    </script>
-    <script>
-        var Date1 = null;
-        var Date2 = null;
-        function DateSelect(date) {
+            @using (Html.BeginForm("Submit", "ApplyForLeave", FormMethod.Post, new { id = "form1", onsubmit = "OnSubmit()" }))
+            {
+                <label style="font-size:22px" id="date" for="">Date Of Application: @System.DateTime.Now.Date.ToString("dd-MM-yyyy")</label>
+                <br><br>
 
-            var LeaveDetails = { FromDate: "", ToDate: "" };
-
-            if (date.name == "FromDate") {
-                Date1 = date.value;
-                LeaveDetails.FromDate = Date1;
-                LeaveDetails.ToDate = Date2;
-
-            }
-            else {
-                Date2 = date.value;
-                LeaveDetails.FromDate = Date1;
-                LeaveDetails.ToDate = Date2;
-            }
-
-
-            if (Date1 != null && Date2 != null) {
-
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = fun;
-                function fun() {
-                    if (this.readyState == 4 && this.status == 200) {
-
-                        var x = JSON.parse(this.responseText);
-
-                        document.getElementById("days").value = x;
-
-                    }
-                };
-                xmlhttp.open("POST", "/ApplyForLeave/Calculateadays", true);
-                xmlhttp.setRequestHeader("Content-Type", "application/json");
-                xmlhttp.send(JSON.stringify(LeaveDetails));
-            }
-
-
-        }
-
-    </script>
-</head>
-
-<body>
-
-
-    <div id="div1" class="container">
-        <div class="row  justify-content-center align-content-center ">
-           
-            <div class="col-sm-4 ">
-
-                @using (Html.BeginForm("Submit", "ApplyForLeave", FormMethod.Post, new { id = "form1", onsubmit = "OnSubmit()" }))
-                {
-                    <label style="font-size:22px" id="date" for="">Date Of Application: @System.DateTime.Now.Date.ToString("dd-MM-yyyy")</label>
-                    <br><br>
-
-                    <div class="form-group">
-                        <select class="form-control" name="LeaveType" id="LeaveType">
-                            <option selected disabled> Select Leave Type</option>
-                            @{
-                                foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
-                                {
-                                    <option value="@x.LeaveTypeID">@x.LeaveType</option>
-                                }
+                <div class="form-group">
+                    <select class="form-control" name="LeaveType" id="LeaveType">
+                        <option selected disabled> Select Leave Type</option>
+                        @{
+                            foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
+                            {
+                                <option value="@x.LeaveTypeID">@x.LeaveType</option>
                             }
-                        </select>
-                    </div>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="datetimes">From-To</label>
 
-                    <div class="form-group">
-                        <label for="date1">From</label>
-                        <input class="form-control" type="date" name="FromDate" id="FromDate" required onchange="DateSelect(this)">
-                    </div>
-                    <div class="form-group">
-                        <label for="date2">To</label>
-                        <input class="form-control" type="date" name="ToDate" id="ToDate" required onchange="DateSelect(this)">
-                    </div>
-                    <div class=" form-group">
-                        <label for="days">Total Days</label>
-                        <input class="form-control" type="text" name="days" id="days" disabled>
+                    <input type="text" name="datetimes" class="form-control"  />
+                </div>
+                <div class="form-group">
+                 
+                    <label for="date1">From</label>
+                    <input class="form-control" type="date" name="FromDate" id="FromDate" required onchange="DateSelect(this)">
+                </div>
+                <div class="form-group">
+                    <label for="date2">To</label>
+                    <input class="form-control" type="date" name="ToDate" id="ToDate" required onchange="DateSelect(this)">
+                </div>
+                <div class=" form-group">
+                    <label for="days">Total Days</label>
+                    <input class="form-control" type="text" name="days" id="days" disabled>
 
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" name="LeaveReason" id="LeaveReason">
-                            <option selected disabled>Reason For Leave</option>
-                            @{ System.Data.DataSet i = ViewBag.Reasons;
-                                foreach(System.Data.DataRow x in i.Tables[0].Rows)
-                                {
-                                    <option value="@x[0].ToString()">@x[1].ToString()</option>
-                                }
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="LeaveReason" id="LeaveReason">
+                        <option selected disabled>Reason For Leave</option>
+                        @{ System.Data.DataSet i = ViewBag.Reasons;
+                            foreach (System.Data.DataRow x in i.Tables[0].Rows)
+                            {
+                                <option value="@x[0].ToString()">@x[1].ToString()</option>
                             }
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" style="resize:none" name="LeaveRemarks" id="LeaveRemarks" cols="30" rows="10" placeholder="Enter Description if any."></textarea>
-                    </div>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" style="resize:none" name="LeaveRemarks" id="LeaveRemarks" cols="30" rows="10" placeholder="Enter Description if any."></textarea>
+                </div>
 
-                    <input id="Submit1" class="btn btn-primary btn-block" type="submit" value="submit" />
+                <input id="Submit1" class="btn btn-primary btn-block" type="submit" value="submit" />
 
-                }
+            }
 
-            </div>
         </div>
     </div>
-</body>
+</div>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
-</html>
+
+<script>
+    var Date1 = null;
+    var Date2 = null;
+    function DateSelect(date) {
+
+        var LeaveDetails = { FromDate: "", ToDate: "" };
+
+        if (date.name == "FromDate") {
+            Date1 = date.value;
+            LeaveDetails.FromDate = Date1;
+            LeaveDetails.ToDate = Date2;
+
+        }
+        else {
+            Date2 = date.value;
+            LeaveDetails.FromDate = Date1;
+            LeaveDetails.ToDate = Date2;
+        }
+
+
+        if (Date1 != null && Date2 != null) {
+
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = fun;
+            function fun() {
+                if (this.readyState == 4 && this.status == 200) {
+
+                    var x = JSON.parse(this.responseText);
+
+                    document.getElementById("days").value = x;
+
+                }
+            };
+            xmlhttp.open("POST", "/ApplyForLeave/Calculateadays", true);
+            xmlhttp.setRequestHeader("Content-Type", "application/json");
+            xmlhttp.send(JSON.stringify(LeaveDetails));
+        }
+
+
+    }
+    $(function () {
+        $('input[name="datetimes"]').daterangepicker({
+            timePicker: true,
+            startDate: moment().startOf('hour'),
+            endDate: moment().startOf('hour').add(32, 'hour'),
+            locale: {
+                format: 'DD/MM/YYYY hh:mm A'
+            }
+        });
+    });
+</script>
+
