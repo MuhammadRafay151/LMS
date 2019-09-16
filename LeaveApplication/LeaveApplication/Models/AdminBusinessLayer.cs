@@ -8,10 +8,10 @@ using System.Web;
 
 namespace LeaveApplication.Models
 {
-   public class AdminBusinessLayer
+    public class AdminBusinessLayer
     {
         db DataBase = new db();
-       
+
         public void updateDeparment(Department dp)
         {
             string Querry = string.Format("update Departments set Department='{0}' where DepartmentID='{1}'", dp.department, dp.DepartmentId);
@@ -46,7 +46,7 @@ namespace LeaveApplication.Models
         {
             string Querry = string.Format("delete from Designations where DesignationID='{0}'", ds.DesignationID);
             DataBase.ExecuteQuerry(Querry);
-        }    
+        }
 
         public void updateLeaveType(LeaveTypes lt)
         {
@@ -62,10 +62,29 @@ namespace LeaveApplication.Models
 
         public void DeleteLeaveType(LeaveTypes lt)
         {
-            string Querry = string.Format("delete from LeaveType where LeaveTypeID='{0}'",lt.LeaveTypeID);
+            string Querry = string.Format("delete from LeaveType where LeaveTypeID='{0}'", lt.LeaveTypeID);
             DataBase.ExecuteQuerry(Querry);
         }
-        
-    } 
-   
+        public void AssignLeave(EmployeeLeaveCount EL)
+        {
+            string Querry = string.Format("insert into EmployeeLeaveCountHistory (EmployeeID,LeaveTypeID,Count,Date) values('{0}','{1}','{2}','{3}')", EL.EmployeeID, EL.LeaveTypeID, EL.Count, DateTime.Now);
+            DataBase.ExecuteQuerry(Querry);
+
+            EL.Count += GetLeaveCount(EL);
+            Querry = string.Format("update EmployeeLeaveCount set Count = '{0}' where EmployeeID = '{1}'and LeaveTypeID = '{2}'", EL.Count, EL.EmployeeID, EL.LeaveTypeID);
+
+
+        }
+        /// <summary>
+        /// It return count of employee's remaining leaves
+        /// </summary>
+        public int GetLeaveCount(EmployeeLeaveCount EL)
+        {
+            string Querry = string.Format("select EmployeeLeaveCount.Count  from EmployeeLeaveCount where EmployeeID='{0}'and LeaveTypeID='{1}'", EL.EmployeeID, EL.LeaveTypeID);
+            return Convert.ToInt32(DataBase.ExecuteScalar(Querry));
+        }
+
+
+    }
+
 }

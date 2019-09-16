@@ -90,5 +90,10 @@ namespace LeaveApplication.Controllers
             ad.updateLeaveType(new LeaveTypes() { LeaveTypeID = int.Parse(Request.Form["id"].ToString()), LeaveType = Request.Form["edittxt"].ToString() });
             return RedirectToAction("LeaveType");
         }
+     
+        public ActionResult AssignLeave()
+        {
+            return View();
+        }
     }
 }

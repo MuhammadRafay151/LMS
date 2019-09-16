@@ -16,6 +16,10 @@ namespace LeaveApplication.Models
         SqlDataReader reader;
         SqlDataAdapter da;
         DataSet ds;
+        /// <summary>
+        /// Exceute Insert,Update,Delete Queries
+        /// </summary>
+        /// <param name="Querry"></param>
         public void ExecuteQuerry(string Querry)
         {
             con = new SqlConnection(connection);
@@ -34,6 +38,15 @@ namespace LeaveApplication.Models
             con.Close();
             return ds;
 
+        }
+        public object ExecuteScalar(string Querry)
+        {
+            con = new SqlConnection(connection);
+            con.Open();
+            cmd = new SqlCommand(Querry, con);
+            object x = cmd.ExecuteScalar();
+            con.Close();
+            return x;
         }
     }
 }

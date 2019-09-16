@@ -1,0 +1,43 @@
+﻿@model LeaveApplication.Models.EmployeeLeaveCount
+
+@{
+    ViewBag.Title = "AssignLeave";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}@*<div class="d-flex vh-100">
+    <div class="d-flex justify-content-center align-self-center">
+        I'm in the middle
+    </div>
+</div>*@
+  
+<div class="container  ">
+    <div class=" row vh-100">">
+        <div class="col   justify-content-center align-self-center">
+
+            @using (Html.BeginForm("", "", FormMethod.Post))
+            {
+                <div class="form-group d-flex justify-content-center ">
+                    <select required class="form-control col-lg-6 col-md-6 col-sm-12 col-12">
+                        <option selected disabled hidden>Select Employee</option>
+                    </select>
+
+
+                </div>
+                <div class="form-group d-flex justify-content-center">
+                    <select required class="form-control col-lg-6 col-md-6 col-sm-12 col-12">
+                        <option selected disabled hidden>Select Leave Type</option>
+                    </select>
+
+
+                </div>
+                <div class="form-group d-flex justify-content-center">
+                    <input class="form-control col-lg-6 col-md-6 col-sm-12 col-12" type="text" placeholder="Enter Count" />
+                </div>
+                <div class="d-flex justify-content-center ">
+                    <input type="submit" class="  btn btn-block btn-primary col-lg-6 col-md-6 col-sm-12 col-12" />
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>

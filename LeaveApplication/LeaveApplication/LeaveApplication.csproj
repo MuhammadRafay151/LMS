@@ -134,13 +134,14 @@
     </Compile>
     <Compile Include="Models\AdminBusinessLayer.cs" />
     <Compile Include="Models\db.cs" />
+    <Compile Include="Models\EmployeeLeaveCountHistory.cs" />
     <Compile Include="Models\LeaveApplication.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Designation.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\EmployeeBusinessLayer.cs" />
     <Compile Include="Models\LeaveBusinessLayer.cs" />
-    <Compile Include="Models\LeaveCount.cs" />
+    <Compile Include="Models\EmployeeLeaveCount.cs" />
     <Compile Include="Models\LeaveTypes.cs" />
     <Compile Include="Models\StatusHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -366,6 +367,7 @@
     <Content Include="Views\Admin\LeaveType.cshtml" />
     <Content Include="Views\Admin\Designation.cshtml" />
     <Content Include="Views\Admin\Department.cshtml" />
+    <Content Include="Views\Admin\AssignLeave.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
