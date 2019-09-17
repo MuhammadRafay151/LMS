@@ -1,36 +1,69 @@
-﻿@model LeaveApplication.Models.EmployeeLeaveCount
-
+﻿@model List<System.Data.DataSet>
 @{
     ViewBag.Title = "AssignLeave";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }@*<div class="d-flex vh-100">
-    <div class="d-flex justify-content-center align-self-center">
-        I'm in the middle
-    </div>
-</div>*@
-  
+        <div class="d-flex justify-content-center align-self-center">
+            I'm in the middle
+        </div>
+    </div>*@
+
 <div class="container  ">
     <div class=" row vh-100">
         <div class="col   justify-content-center align-self-center">
+            @{ if (ViewBag.ValidationError == true)
+                {
 
-            @using (Html.BeginForm("", "", FormMethod.Post))
+                    <div id="alert" class="alert alert-danger  fade-in">
+                       
+                        <strong>Error!</strong>  Kindly fill all fields.
+                    </div>
+                }
+            }
+
+
+            @using (Html.BeginForm("Submit", "Admin", FormMethod.Post))
             {
                 <div class="form-group d-flex justify-content-center ">
-                    <select required class="form-control col-lg-6 col-md-6 col-sm-12 col-12">
-                        <option selected disabled hidden>Select Employee</option>
+                    <select id="dep" name="dep" required onchange="ShowEmployees()" class="form-control col-lg-6 col-md-6 col-sm-12 col-12">
+                        <option selected disabled hidden>Select Department</option>
+                        @{ System.Data.DataSet ds2 = Model[1];
+                            foreach (System.Data.DataRow x in ds2.Tables[0].Rows)
+                            {
+                                <option value="@x[0].ToString()">@x[1].ToString()</option>
+                            }
+                        }
                     </select>
 
 
                 </div>
+                <div id="empdiv" class="form-group d-flex justify-content-center ">
+                    <select id="emp" name="emp" required class="form-control col-lg-6 col-md-6 col-sm-12 col-12">
+                        <option selected disabled>Select Employee</option>
+
+
+
+                    </select>
+
+
+                </div>
+
+
                 <div class="form-group d-flex justify-content-center">
-                    <select required class="form-control col-lg-6 col-md-6 col-sm-12 col-12">
+                    <select id="lev" name="lev" required class="form-control col-lg-6 col-md-6 col-sm-12 col-12">
                         <option selected disabled hidden>Select Leave Type</option>
+                        @{ System.Data.DataSet ds1 = Model[0];
+                            foreach (System.Data.DataRow x in ds1.Tables[0].Rows)
+                            {
+                                <option value="@x[0].ToString()">@x[1].ToString()</option>
+                            }
+                        }
                     </select>
 
 
                 </div>
                 <div class="form-group d-flex justify-content-center">
-                    <input class="form-control col-lg-6 col-md-6 col-sm-12 col-12" type="text" placeholder="Enter Count" />
+                    <input id="count" name="count" class="form-control col-lg-6 col-md-6 col-sm-12 col-12" type="text" placeholder="Enter Count" />
                 </div>
                 <div class="d-flex justify-content-center ">
                     <input type="submit" class="  btn btn-block btn-primary col-lg-6 col-md-6 col-sm-12 col-12" />
@@ -41,3 +74,47 @@
         </div>
     </div>
 </div>
+<script>
+
+    $(document).ready(function () {
+
+        if (document.getElementById("alert")) {
+            setTimeout(Hide, 3000)
+        }
+        function Hide() {
+            $('#alert').hide('fade');
+        }
+        console.log()
+        $('#emp').hide();
+    });
+    function ShowEmployees() {
+        $('#emp').show();
+        $('#emp').empty();
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = fun;
+        Department = { DepartmentId: document.getElementById('dep').value }
+        function fun() {
+            if (this.readyState == 4 && this.status == 200) {
+                var x = null
+                x = JSON.parse(this.responseText);
+
+                if (x.length != 0) {
+
+                    for (var i = 0; i < x.length; i++) {
+                        $('#emp').append($('<option>',
+                            {
+                                value: Object.values(x[i])[0],
+                                text: Object.values(x[i])[1]
+                            }));
+
+                    }
+                } else { $('#emp').hide(); }
+
+            }
+        };
+        xmlhttp.open("POST", "/Admin/GetEmployees", true);
+        xmlhttp.setRequestHeader("Content-Type", "application/json");
+        xmlhttp.send(JSON.stringify(Department));
+    }
+
+</script>

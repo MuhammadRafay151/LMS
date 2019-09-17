@@ -71,8 +71,10 @@ namespace LeaveApplication.Models
             DataBase.ExecuteQuerry(Querry);
 
             EL.Count += GetLeaveCount(EL);
-            Querry = string.Format("update EmployeeLeaveCount set Count = '{0}' where EmployeeID = '{1}'and LeaveTypeID = '{2}'", EL.Count, EL.EmployeeID, EL.LeaveTypeID);
-
+            Querry = string.Format("update  EmployeeLeaveCount set Count = '{0}' where EmployeeID = '{1}'and LeaveTypeID ='{2}'  " +
+                "if @@ROWCOUNT = 0 " +
+                "insert into EmployeeLeaveCount(Count,EmployeeID,LeaveTypeID) values('{0}', '{1}', '{2}')", EL.Count, EL.EmployeeID, EL.LeaveTypeID);
+            DataBase.ExecuteQuerry(Querry);
 
         }
         /// <summary>

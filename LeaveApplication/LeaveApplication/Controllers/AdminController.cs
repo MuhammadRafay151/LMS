@@ -93,7 +93,44 @@ namespace LeaveApplication.Controllers
      
         public ActionResult AssignLeave()
         {
-            return View();
+            List<System.Data.DataSet> d1 = new List<System.Data.DataSet>();
+            d1.Add(lb.GetLeaveTypesDS());
+            d1.Add(eb.GetDepartmentsDS());
+            if(TempData["ValidationError"]==null)
+            {
+                ViewBag.ValidationError = false;
+            }
+            else
+            {
+                ViewBag.ValidationError = true;
+            }
+            return View(d1);
+        }
+        [HttpPost]
+        public JsonResult GetEmployees(Department d1)
+        {
+            return Json(eb.GetEmployeesList(d1.DepartmentId));
+        }
+        [HttpPost]
+        public ActionResult Submit(EmployeeLeaveCount el)
+        {
+            try
+            {
+                el.EmployeeID = Request.Form["emp"].ToString();
+                el.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
+                el.Count = int.Parse(Request.Form["count"].ToString());
+                ad.AssignLeave(el);
+                
+                return RedirectToAction("AssignLeave");
+            }
+            catch(NullReferenceException)
+            {
+                TempData["ValidationError"] = true;
+               
+                return RedirectToAction("AssignLeave");
+            }
+          
+           
         }
     }
 }

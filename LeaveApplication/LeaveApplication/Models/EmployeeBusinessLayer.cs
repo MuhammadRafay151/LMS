@@ -18,8 +18,8 @@ namespace LeaveApplication.Models
         string connection = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         SqlDataReader reader;
         SqlCommand cmd;
-        SqlDataAdapter da;
         DataSet ds;
+        db database = new db();
         public static Employee Employee;
         /// <summary>
         /// Pass An employee object to register in Db...
@@ -88,6 +88,15 @@ namespace LeaveApplication.Models
             }
             con.Close();
             return Departments;
+        }
+        public DataSet GetDepartmentsDS()
+        {
+           
+            string command = "Select * from departments";
+            ds = database.Read(command);
+
+
+            return ds;
         }
         public List<Designation> GetDesignation()
         {
@@ -166,14 +175,27 @@ namespace LeaveApplication.Models
 
         public DataSet GetEmployees()
         {
-            con = new SqlConnection(connection);
+
             string Querry = "select EmployeeID,EmployeeName from Employee";
-            da = new SqlDataAdapter(Querry, con);
-            ds = new DataSet();
-            da.Fill(ds);
-            con.Close();
-            da.Dispose();
+
+            ds = database.Read(Querry);
+
             return ds;
+        }
+        public List<Employee> GetEmployeesList(string DepartmentID)
+        {
+            List<Employee> e1 = new List<Employee>();
+
+            string Querry = string.Format("select EmployeeID,EmployeeName from Employee where Employee.DepartmentID='{0}'", DepartmentID);
+
+            ds = database.Read(Querry);
+
+            foreach (DataRow x in ds.Tables[0].Rows)
+            {
+                e1.Add(new Employee() { EmployeeID = x[0].ToString(), EmployeeName = x[1].ToString() });
+            }
+
+            return e1;
         }
         private bool IsManager()
         {

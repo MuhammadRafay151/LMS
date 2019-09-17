@@ -62,6 +62,20 @@ namespace LeaveApplication.Models
             }
             return list.ToArray();
         }
+        /// <summary>
+        /// return leave types in dataset
+        /// </summary>
+        /// <returns></returns>
+        public  DataSet GetLeaveTypesDS()
+        {
+
+            string Querry = "select LeaveTypeID,LeaveType from LeaveType";
+
+            ds = database.Read(Querry); ;
+
+          
+            return ds;
+        }
         public List<LeaveApplication> GetAllApplications(string EmployeeID)
         {
           
