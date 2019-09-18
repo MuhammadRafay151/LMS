@@ -8,7 +8,7 @@ HR System to manage employees leaves
 * Muhammad Aamir
 * Hassan
 
-# Instruction for compilaton
+# Instruction for compilation
 * first clean the solution 
 * build solution
 * run project
