@@ -78,6 +78,29 @@ namespace LeaveApplication.Models
 
         }
         /// <summary>
+        /// Assign Leave to all employees
+        /// </summary>
+        public void AssignAll(EmployeeLeaveCount EL)
+        {
+            string Querry = "select EmployeeID from Employee";
+            DataSet ds=DataBase.Read(Querry);
+            for(int i=0;i<ds.Tables[0].Rows.Count;i++)
+            {
+                AssignLeave(new EmployeeLeaveCount() { EmployeeID = ds.Tables[0].Rows[i][0].ToString(), LeaveTypeID = EL.LeaveTypeID, Count = EL.Count });
+            }
+        }/// <summary>
+         /// Assign Leaves to all department employees
+         /// </summary>
+        public void AssignAllDep(EmployeeLeaveCount EL,string DepartmentID)
+        {
+            string Querry = string.Format("select * from Employee where DepartmentID='{0}'",DepartmentID);
+            DataSet ds = DataBase.Read(Querry);
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                AssignLeave(new EmployeeLeaveCount() { EmployeeID = ds.Tables[0].Rows[i][0].ToString(), LeaveTypeID = EL.LeaveTypeID, Count = EL.Count });
+            }
+        }
+        /// <summary>
         /// It return count of employee's remaining leaves
         /// </summary>
         public int GetLeaveCount(EmployeeLeaveCount EL)
