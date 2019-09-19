@@ -133,8 +133,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminBusinessLayer.cs" />
+    <Compile Include="Models\AssignLeaves.cs" />
     <Compile Include="Models\db.cs" />
-    <Compile Include="Models\EmployeeLeaveCountHistory.cs" />
     <Compile Include="Models\LeaveApplication.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Designation.cs" />
@@ -369,6 +369,7 @@
     <Content Include="Views\Admin\Department.cshtml" />
     <Content Include="Views\Admin\AssignLeave.cshtml" />
     <Content Include="Views\Admin\Assign_Leave_History.cshtml" />
+    <Content Include="Views\Admin\AffectedUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

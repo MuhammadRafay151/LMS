@@ -11,6 +11,7 @@ namespace LeaveApplication.Models
     public class AdminBusinessLayer
     {
         db DataBase = new db();
+        public static AssignLeaves Al;
 
         public void updateDeparment(Department dp)
         {
@@ -65,47 +66,59 @@ namespace LeaveApplication.Models
             string Querry = string.Format("delete from LeaveType where LeaveTypeID='{0}'", lt.LeaveTypeID);
             DataBase.ExecuteQuerry(Querry);
         }
-        public void AssignLeave(EmployeeLeaveCount EL)
+        public void AssignLeave()
         {
-            string Querry = string.Format("insert into EmployeeLeaveCountHistory (EmployeeID,LeaveTypeID,Count,Date) values('{0}','{1}','{2}','{3}')", EL.EmployeeID, EL.LeaveTypeID, EL.Count, DateTime.Now);
+            string Querry = string.Format("insert into EmployeeLeaveCountHistory (EmployeeID,LeaveTypeID,Count,Date) values('{0}','{1}','{2}','{3}')", Al.EmployeeID, Al.LeaveTypeID, Al.Count, DateTime.Now);
             DataBase.ExecuteQuerry(Querry);
 
-            EL.Count += GetLeaveCount(EL);
+            Al.Count += GetLeaveCount(Al);
             Querry = string.Format("update  EmployeeLeaveCount set Count = '{0}' where EmployeeID = '{1}'and LeaveTypeID ='{2}'  " +
                 "if @@ROWCOUNT = 0 " +
-                "insert into EmployeeLeaveCount(Count,EmployeeID,LeaveTypeID) values('{0}', '{1}', '{2}')", EL.Count, EL.EmployeeID, EL.LeaveTypeID);
+                "insert into EmployeeLeaveCount(Count,EmployeeID,LeaveTypeID) values('{0}', '{1}', '{2}')", Al.Count, Al.EmployeeID, Al.LeaveTypeID);
+            DataBase.ExecuteQuerry(Querry);
+
+        }
+        public void AssignLeave(AssignLeaves al)
+        {//this function is used by assign all or assign_all_dep
+            string Querry = string.Format("insert into EmployeeLeaveCountHistory (EmployeeID,LeaveTypeID,Count,Date) values('{0}','{1}','{2}','{3}')", al.EmployeeID, al.LeaveTypeID, al.Count, DateTime.Now);
+            DataBase.ExecuteQuerry(Querry);
+
+            al.Count += GetLeaveCount(al);
+            Querry = string.Format("update  EmployeeLeaveCount set Count = '{0}' where EmployeeID = '{1}'and LeaveTypeID ='{2}'  " +
+                "if @@ROWCOUNT = 0 " +
+                "insert into EmployeeLeaveCount(Count,EmployeeID,LeaveTypeID) values('{0}', '{1}', '{2}')", al.Count, al.EmployeeID, al.LeaveTypeID);
             DataBase.ExecuteQuerry(Querry);
 
         }
         /// <summary>
         /// Assign Leave to all employees
         /// </summary>
-        public void AssignAll(EmployeeLeaveCount EL)
+        public void AssignAll()
         {
             string Querry = "select EmployeeID from Employee";
             DataSet ds = DataBase.Read(Querry);
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
-                AssignLeave(new EmployeeLeaveCount() { EmployeeID = ds.Tables[0].Rows[i][0].ToString(), LeaveTypeID = EL.LeaveTypeID, Count = EL.Count });
+                AssignLeave(new AssignLeaves() { EmployeeID = ds.Tables[0].Rows[i][0].ToString(), LeaveTypeID = Al.LeaveTypeID, Count = Al.Count });
             }
         }/// <summary>
          /// Assign Leaves to all department employees
          /// </summary>
-        public void AssignAllDep(EmployeeLeaveCount EL, string DepartmentID)
+        public void AssignAllDep()
         {
-            string Querry = string.Format("select * from Employee where DepartmentID='{0}'", DepartmentID);
+            string Querry = string.Format("select * from Employee where DepartmentID='{0}'", Al.DepartmentID);
             DataSet ds = DataBase.Read(Querry);
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
-                AssignLeave(new EmployeeLeaveCount() { EmployeeID = ds.Tables[0].Rows[i][0].ToString(), LeaveTypeID = EL.LeaveTypeID, Count = EL.Count });
+                AssignLeave(new AssignLeaves() { EmployeeID = ds.Tables[0].Rows[i][0].ToString(), LeaveTypeID = Al.LeaveTypeID, Count = Al.Count });
             }
         }
         /// <summary>
         /// It return count of employee's remaining leaves
         /// </summary>
-        public int GetLeaveCount(EmployeeLeaveCount EL)
+        public int GetLeaveCount(AssignLeaves al)
         {
-            string Querry = string.Format("select EmployeeLeaveCount.Count  from EmployeeLeaveCount where EmployeeID='{0}'and LeaveTypeID='{1}'", EL.EmployeeID, EL.LeaveTypeID);
+            string Querry = string.Format("select EmployeeLeaveCount.Count  from EmployeeLeaveCount where EmployeeID='{0}'and LeaveTypeID='{1}'", al.EmployeeID, al.LeaveTypeID);
             return Convert.ToInt32(DataBase.ExecuteScalar(Querry));
         }
         public DataSet ShowAssignLeaveHistory()
@@ -114,7 +127,17 @@ namespace LeaveApplication.Models
             DataSet ds = DataBase.Read(Querry);
             return ds;
         }
+        public DataSet ShowAffectedUsers(AssignLeaves al,String Querry)
+        {//this method store the data temporarily from incoming assign leave request for further processing and return data for users who are getting affected by this request
+            DataSet ds = DataBase.Read(Querry);
+            Al = al;
+            return ds;
+        }
+        public void RemoveAssignLeaveRequest()
+        {//this method remove the request data from temporary method after recording in the database or if user cancel the request
+           Al = null;
 
+        }
 
     }
 

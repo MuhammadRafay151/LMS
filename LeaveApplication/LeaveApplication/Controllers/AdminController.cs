@@ -112,33 +112,45 @@ namespace LeaveApplication.Controllers
             return Json(eb.GetEmployeesList(d1.DepartmentId));
         }
         [HttpPost]
-        public ActionResult Submit()
+        public ActionResult AffectedUsers()
         {
-            EmployeeLeaveCount el = new EmployeeLeaveCount();
+            AssignLeaves al = new AssignLeaves();
+            AdminBusinessLayer.Al = null;
+            System.Data.DataSet ds = null;
+            string Querry = string.Empty;
+            al.AssignType = Request.Form["customRadio"].ToString();
             try
             {
-                if (Request.Form["customRadio"].ToString() == "Select Employee")
+                if (al.AssignType == "Select Employee")
                 {
-                    el.EmployeeID = Request.Form["emp"].ToString();
-                    el.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
-                    el.Count = int.Parse(Request.Form["count"].ToString());
-                    ad.AssignLeave(el);
+                    al.EmployeeID = Request.Form["emp"].ToString();
+                    al.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
+                    al.Count = int.Parse(Request.Form["count"].ToString());
+                    Querry = string.Format("Select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}' where EmployeeID='{1}'",al.LeaveTypeID, al.EmployeeID);
+                    ds = ad.ShowAffectedUsers(al, Querry);
                 }
-                else if (Request.Form["customRadio"].ToString() == "All(Select Department)")
+                else if (al.AssignType == "All(Select Department)")
                 {
-                    el.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
-                    el.Count = int.Parse(Request.Form["count"].ToString());
-                    ad.AssignAllDep(el, Request.Form["dep"].ToString());
-                }
-                else if (Request.Form["customRadio"].ToString() == "All Employess")
-                {
-                    el.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
-                    el.Count = int.Parse(Request.Form["count"].ToString());
-                    ad.AssignAll(el);
-                }
+                    al.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
+                    al.Count = int.Parse(Request.Form["count"].ToString());
+                    al.DepartmentID = Request.Form["dep"].ToString();
+                  
+                    Querry = string.Format("select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}' where Departments.DepartmentID='{1}'", al.LeaveTypeID,al.DepartmentID);
+                   
+                    ds = ad.ShowAffectedUsers(al, Querry);
 
+                }
+                else if (al.AssignType == "All Employess")
+                {
+                    al.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
+                    al.Count = int.Parse(Request.Form["count"].ToString());
+                    Querry = string.Format("select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}'", al.LeaveTypeID);
+                    ds = ad.ShowAffectedUsers(al, Querry);
 
-                return RedirectToAction("AssignLeave");
+                }
+                
+                ViewBag.Count = al.Count;
+                return View(ds);
             }
             catch (NullReferenceException)
             {
@@ -149,6 +161,76 @@ namespace LeaveApplication.Controllers
 
 
         }
+        public ActionResult Submit()
+        {
+
+
+            if(AdminBusinessLayer.Al!=null)
+            {
+                if (AdminBusinessLayer.Al.AssignType == "Select Employee")
+                {
+                    ad.AssignLeave();
+                }
+                else if (AdminBusinessLayer.Al.AssignType == "All(Select Department)")
+                {
+                    ad.AssignAllDep();
+
+                }
+                else if (AdminBusinessLayer.Al.AssignType == "All Employess")
+                {
+                    ad.AssignAll();
+                }
+                ad.RemoveAssignLeaveRequest();
+
+            }
+
+            return RedirectToAction("AssignLeave");
+
+
+
+        }
+        public ActionResult CancelAssignLeave()
+        {
+            AdminBusinessLayer.Al = null;
+            return RedirectToAction("AssignLeave");
+        }
+        //public ActionResult Submit()
+        //{
+        //    EmployeeLeaveCount el = new EmployeeLeaveCount();
+        //    try
+        //    {
+        //        if (Request.Form["customRadio"].ToString() == "Select Employee")
+        //        {
+        //            el.EmployeeID = Request.Form["emp"].ToString();
+        //            el.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
+        //            el.Count = int.Parse(Request.Form["count"].ToString());
+        //            ad.AssignLeave(el);
+        //        }
+        //        else if (Request.Form["customRadio"].ToString() == "All(Select Department)")
+        //        {
+        //            el.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
+        //            el.Count = int.Parse(Request.Form["count"].ToString());
+        //            ad.AssignAllDep(el, Request.Form["dep"].ToString());
+        //        }
+        //        else if (Request.Form["customRadio"].ToString() == "All Employess")
+        //        {
+        //            el.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
+        //            el.Count = int.Parse(Request.Form["count"].ToString());
+        //            ad.AssignAll(el);
+        //        }
+
+
+        //        return RedirectToAction("AssignLeave");
+        //    }
+        //    catch (NullReferenceException)
+        //    {
+        //        TempData["ValidationError"] = true;
+
+        //        return RedirectToAction("AssignLeave");
+        //    }
+
+
+        //}
         public ActionResult Assign_Leave_History()
         {
             return View(ad.ShowAssignLeaveHistory());
