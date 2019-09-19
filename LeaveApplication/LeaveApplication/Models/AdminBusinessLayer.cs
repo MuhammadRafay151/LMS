@@ -83,17 +83,17 @@ namespace LeaveApplication.Models
         public void AssignAll(EmployeeLeaveCount EL)
         {
             string Querry = "select EmployeeID from Employee";
-            DataSet ds=DataBase.Read(Querry);
-            for(int i=0;i<ds.Tables[0].Rows.Count;i++)
+            DataSet ds = DataBase.Read(Querry);
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
                 AssignLeave(new EmployeeLeaveCount() { EmployeeID = ds.Tables[0].Rows[i][0].ToString(), LeaveTypeID = EL.LeaveTypeID, Count = EL.Count });
             }
         }/// <summary>
          /// Assign Leaves to all department employees
          /// </summary>
-        public void AssignAllDep(EmployeeLeaveCount EL,string DepartmentID)
+        public void AssignAllDep(EmployeeLeaveCount EL, string DepartmentID)
         {
-            string Querry = string.Format("select * from Employee where DepartmentID='{0}'",DepartmentID);
+            string Querry = string.Format("select * from Employee where DepartmentID='{0}'", DepartmentID);
             DataSet ds = DataBase.Read(Querry);
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
@@ -107,6 +107,12 @@ namespace LeaveApplication.Models
         {
             string Querry = string.Format("select EmployeeLeaveCount.Count  from EmployeeLeaveCount where EmployeeID='{0}'and LeaveTypeID='{1}'", EL.EmployeeID, EL.LeaveTypeID);
             return Convert.ToInt32(DataBase.ExecuteScalar(Querry));
+        }
+        public DataSet ShowAssignLeaveHistory()
+        {
+            string Querry = "select EmployeeLeaveCountHistory.Date,Employee.EmployeeName,LeaveType.LeaveType,EmployeeLeaveCountHistory.Count from EmployeeLeaveCountHistory inner join Employee on Employee.EmployeeID=EmployeeLeaveCountHistory.EmployeeID inner join LeaveType on LeaveType.LeaveTypeID=EmployeeLeaveCountHistory.LeaveTypeID order by EmployeeLeaveCountHistory.Date desc";
+            DataSet ds = DataBase.Read(Querry);
+            return ds;
         }
 
 

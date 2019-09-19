@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Assign_Leave_History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model System.Data.DataSet
+
+<div class="row mt-lg-5">
+    <div class="col ">
+        <div class="card">
+            <div class="card-header  "style="background-color:#FEFCFB">
+                <h4 class="card-title text-center">Assigned Leaves</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover table-striped ">
+                    <thead class="">
+                        <tr class="table-dark">
+                            <th scope="col">Date</th>
+                            <th scope="col">Employee Name</th>
+                            <th scope="col">Leave Type</th>
+                            <th scope="col">Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ System.Data.DataSet x = Model;
+                            foreach (System.Data.DataRow i in x.Tables[0].Rows)
+                            {
+                                <tr>
+
+                                    <td>@i[0].ToString()</td>
+                                    <td>@i[1].ToString()</td>
+                                    <td>@i[2].ToString()</td>
+                                    <td>@i[3].ToString()</td>
+                                </tr>
+                            }
+                        }
+
+
+
+                    </tbody>
+                </table>
+            </div>
+           
+        </div>
+        
+    </div>
+</div>

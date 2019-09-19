@@ -149,5 +149,10 @@ namespace LeaveApplication.Controllers
 
 
         }
+        public ActionResult Assign_Leave_History()
+        {
+            return View(ad.ShowAssignLeaveHistory());
+        }
+
     }
 }
