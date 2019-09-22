@@ -13,113 +13,150 @@
         margin: 0;
     }
 </style>
-<h2 style="margin-top:10%">Registeration</h2>
 
-<div class="container">
 
-    <div class="row">
+<div class="container mt-5">
+
+    <div class="row justify-content-center align-content-center">
         <div class="col">
-            @using (Html.BeginForm("Register", "RegisterEmployee", FormMethod.Post, new { autocomplete = "off", enctype = "multipart/form-data" }))
-            {<fieldset>
+            <div class="card ">
+                <div class="card-header card-header-info">
+                    <h2 class="card-title">Registeration</h2>
+                </div>
+                <div class="container">
+                    @using (Html.BeginForm("Register", "RegisterEmployee", FormMethod.Post, new { autocomplete = "off", enctype = "multipart/form-data" }))
+                    {
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-flex justify-content-center">
+                                    <fieldset>
 
-                    <div class="form-group">
-                        @Html.TextBoxFor(Model => Model.EmployeeID, new { @class = "form-control", placeholder = "Employee Id", required = "required" })
-                        @Html.ValidationMessageFor(m => m.EmployeeID, "", new { @class = "text-danger" })
-                    </div>
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(Model => Model.EmployeeID, new { @class = "form-control", placeholder = "Employee Id", required = "required" })
+                                            @Html.ValidationMessageFor(m => m.EmployeeID, "", new { @class = "text-danger" })
+                                        </div>
 
-                    <div class="form-group">
-                        @Html.TextBoxFor(Model => Model.EmployeeName, new { @class = "form-control", placeholder = "Employee Name", required = "required" })
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(Model => Model.EmployeeName, new { @class = "form-control", placeholder = "Employee Name", required = "required" })
 
-                    </div>
-                    <div class="form-group">
-                        @Html.TextBoxFor(Model => Model.Address, new { @class = "form-control", placeholder = "Address", required = "required" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(Model => Model.Address, new { @class = "form-control", placeholder = "Address", required = "required" })
 
-                    </div>
-                    <div class="form-group">
-                        @Html.TextBoxFor(Model => Model.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number", required = "required" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(Model => Model.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number", required = "required" })
 
-                    </div>
-                    <div class="form-group">
-                        @Html.TextBoxFor(Model => Model.CNIC, new { @class = "form-control", placeholder = "CNIC", required = "required" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(Model => Model.CNIC, new { @class = "form-control", placeholder = "CNIC", required = "required" })
 
-                    </div>
-                    <div class="form-group">
+                                        </div>
+                                       
+                                        <div class="form-group">
 
-                        <input class="form-control-file " id="@Html.IdFor(m=>m.Image)" name="@Html.NameFor(Model=>Model.Image)" type="file" placeholder="Upload Image" onchange="openFile(event)" />
-                        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-
-                        <select class="custom-select" id="@Html.IdFor(m=>m.DepartmentID)" name=@Html.NameFor(m=>m.DepartmentID) required>
-                            <option value="" disabled selected>Select Department</option>
-                            @{
-                                foreach (LeaveApplication.Models.Department x in ViewBag.List2)
-                                {
-                                    <option value="@x.DepartmentId">
-                                        @x.department
-                                    </option>
-                                }
-                            }
-
-
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-
-                        <select class="custom-select" id=@Html.IdFor(m=>m.DesignationID) name=@Html.NameFor(m=>m.DesignationID) required>
-                            <option value="" disabled selected>Select Designation</option>
-                            @{
-                                foreach (LeaveApplication.Models.Designation x in ViewBag.List)
-                                {
-                                    <option value="@x.DesignationID">
-                                        @x.designation
-                                    </option>
-                                }
-                            }
+                                            <select class="custom-select" id="@Html.IdFor(m=>m.DepartmentID)" name=@Html.NameFor(m=>m.DepartmentID) required>
+                                                <option value="" disabled selected>Select Department</option>
+                                                @{
+                                                    foreach (LeaveApplication.Models.Department x in ViewBag.List2)
+                                                    {
+                                                        <option value="@x.DepartmentId">
+                                                            @x.department
+                                                        </option>
+                                                    }
+                                                }
 
 
-                        </select>
-                    </div>
-                    <div class="form-group">
+                                            </select>
+                                        </div>
 
-                        <select class="custom-select" id=@Html.IdFor(m=>m.Manager) name=@Html.NameFor(m=>m.Manager) required>
-                            <option value="" disabled selected>Select Manager</option>
-                            @{System.Data.DataSet emp = ViewBag.Employees;
-                                foreach (System.Data.DataRow i in emp.Tables[0].Rows)
-                                {
-                                    <option value="@i[0].ToString()">
-                                        @i[1].ToString()
-                                    </option>
-                                }
-                            }
+                                        <div class="form-group">
+
+                                            <select class="custom-select" id=@Html.IdFor(m=>m.DesignationID) name=@Html.NameFor(m=>m.DesignationID) required>
+                                                <option value="" disabled selected>Select Designation</option>
+                                                @{
+                                                    foreach (LeaveApplication.Models.Designation x in ViewBag.List)
+                                                    {
+                                                        <option value="@x.DesignationID">
+                                                            @x.designation
+                                                        </option>
+                                                    }
+                                                }
 
 
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" id="password" name="password" type="password" placeholder="Password" required />
-                        <div class="checkbox" style="padding-top:10px">
-                            <label>
-                                <input id="chk1" type="checkbox" onclick="ShowPass()"> Show Password
-                            </label>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+
+                                            <select class="custom-select" id=@Html.IdFor(m=>m.Manager) name=@Html.NameFor(m=>m.Manager) required>
+                                                <option value="" disabled selected>Select Manager</option>
+                                                @{System.Data.DataSet emp = ViewBag.Employees;
+                                                    foreach (System.Data.DataRow i in emp.Tables[0].Rows)
+                                                    {
+                                                        <option value="@i[0].ToString()">
+                                                            @i[1].ToString()
+                                                        </option>
+                                                    }
+                                                }
+
+
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" id="password" name="password" type="password" placeholder="Password" required />
+                                            <div class="checkbox" style="padding-top:10px">
+                                                <label>
+                                                    <input id="chk1" type="checkbox" onclick="ShowPass()"> Show Password
+                                                </label>
+                                            </div>
+                                        </div>
+
+
+                                    </fieldset>
+
+
+
+                                </div>
+                            </div>
+                            <div class="col my-auto">
+                                <div class="card ">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Profile Picture</h3>
+                                    </div>
+                                    <div class="d-flex card-body justify-content-center">
+                                        <img id="img1" src="~/Images/mark.jpg" alt="" style="height:350px; width:350px;border:3px solid black;" />
+
+                                    </div>
+
+                                    <div class="card-footer justify-content-center">
+
+                                        <input class="form-control-file " id="@Html.IdFor(m=>m.Image)" name="@Html.NameFor(Model=>Model.Image)" type="file" placeholder="Upload Image" onchange="openFile(event)" />
+
+                                        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <div class="row ">
+                            <div class="d-flex col justify-content-center">
 
-                    <input id="Submit1" class="btn btn-primary btn-block" type="submit" value="submit" onclick="IsImgUploaded() " />
+                                <input id="Submit1" class="btn btn-info-grd btn-round col-6"  type="submit" value="submit" onclick="IsImgUploaded() " />
 
-                </fieldset>
+                            </div>
+                        </div>
+                    }
+                </div>
 
-
-            }
+            </div>
 
         </div>
-        <div class="col-4">
-            <img id="img1" src="~/Images/mark.jpg" alt="" style="height:350px; width:350px;border:3px solid black;" />
-            <p style="text-align:center;font-size:22px">Employee Picture</p>
-        </div>
+
+
     </div>
+
+
 </div>
+
 
 
 <script>

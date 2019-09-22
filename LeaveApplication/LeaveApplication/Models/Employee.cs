@@ -9,7 +9,7 @@ namespace LeaveApplication.Models
     public class Employee
     {
      
-        [Required(ErrorMessage = "please bhai dalo value")]
+        //[Required(ErrorMessage = "please bhai dalo value")]
         public String EmployeeID { get; set; }
         public string EmployeeName { get; set; }
         public string Address { get; set; }

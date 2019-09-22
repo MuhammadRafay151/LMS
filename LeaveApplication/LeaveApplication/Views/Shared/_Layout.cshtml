@@ -16,54 +16,65 @@
     </style>
 
 </head>
-<body>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand font" href="#">Leave Applcation Management</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<body style="background-image:url(../../Images/theme-photos-nJCW43biz9U-unsplashnew.jpg); background-size: cover; background-position: top center;">
 
-        <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link font" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    @Html.ActionLink("Register Employee", "Registeration", "RegisterEmployee", null, new { @class = "nav-link font" })
-                </li>
-                <li class="nav-item">
-                    @Html.ActionLink("Manage Leave Types", "LeaveType", "Admin", null, new { @class = "nav-link font" })
-                </li>
-                <li class="nav-item">
-                    @Html.ActionLink("Manage Designation", "Designation", "Admin", null, new { @class = "nav-link font" })
-                </li>
-                <li class="nav-item">
-                    @Html.ActionLink("Manage Department", "Department", "Admin", null, new { @class = "nav-link font" })
-                </li>
+    
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-white">
+            <div class="container">
+                <div class="navbar-translate">
+                    <a class="navbar-brand" href="#">Reckon Force</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="navbar-toggler-icon"></span>
+                        <span class="navbar-toggler-icon"></span>
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+               
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link font" href="/Home/Index">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Register Employee", "Registeration", "RegisterEmployee", null, new { @class = "nav-link font" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Manage Leave Types", "LeaveType", "Admin", null, new { @class = "nav-link font" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Manage Designation", "Designation", "Admin", null, new { @class = "nav-link font" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Manage Department", "Department", "Admin", null, new { @class = "nav-link font" })
+                        </li>
 
-                <li class="nav-item">
-                    @Html.ActionLink("Assign Leaves", "AssignLeave", "Admin", null, new { @class = "nav-link font" })
-                </li>
-                <li class="nav-item">
-                    @Html.ActionLink("Assign Leave History", "Assign_Leave_History", "Admin", null, new { @class = "nav-link font" })
-                </li>
-                <li class="nav-item">
-                    @Html.ActionLink("Log In", "Index", "Login", null, new { @class = "nav-link font" })
-                </li>
-            </ul>
+                        <li class="nav-item">
+                            @Html.ActionLink("Assign Leaves", "AssignLeave", "Admin", null, new { @class = "nav-link font" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Assign Leave History", "Assign_Leave_History", "Admin", null, new { @class = "nav-link font" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Log In", "Index", "Login", null, new { @class = "nav-link font" })
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+      
             @*<form class="form-inline my-2 my-lg-0">
 
-                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                </form>*@
-        </div>
-    </nav>
+                <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            </form>*@
+     
     <div class="container body-content h-100">
         @RenderBody()
-        <hr />
-        <footer>
+        @*<hr />*@
+        @*<footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+        </footer>*@
     </div>
 
     @Scripts.Render("~/bundles/jquery")

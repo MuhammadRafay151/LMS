@@ -4,124 +4,185 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model LeaveApplication.Models.Employee
+<!--
+ =========================================================
+ * Material Kit - v2.0.6
+ =========================================================
+
+ * Product Page: https://www.creative-tim.com/product/material-kit
+ * Copyright 2019 Creative Tim (http://www.creative-tim.com)
+   Licensed under MIT (https://github.com/creativetimofficial/material-kit/blob/master/LICENSE.md)
+
+
+ =========================================================
+
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>Login V15</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="~/Login_v15/images/icons/favicon.ico" />
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Content/bootstraplumen.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Login_v15/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Login_v15/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Login_v15/vendor/animate/animate.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Login_v15/vendor/css-hamburgers/hamburgers.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Login_v15/vendor/animsition/css/animsition.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Login_v15/vendor/select2/select2.min.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Login_v15/vendor/daterangepicker/daterangepicker.css">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="~/Login_v15/css/util.css">
-
-    <link rel="stylesheet" type="text/css" href="~/Login_v15/css/main.css">
-    <!--===============================================================================================-->
-    <script>
-            //function Login() {
-            //    var ajax =new XMLHttpRequest();
-            //    ajax.onreadystatechange = Authenticate;
-            //    function Authenticate() {
-            //        if (this.readyState == 4 && this.status == 200) {
-            //            console.log(this.responseText);
-            //        }
-            //    }
-            //    ajax.open("POST", "/LogIn/Login", true);
-            //    ajax.send();
-            //}
-    </script>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="~/material-kit-master/assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="~/material-kit-master/assets/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Material Kit by Creative Tim
+    </title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  
+   
 </head>
-<body>
 
-    <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-login100">
-                <div class="login100-form-title" style="background-image: url(/Login_v15/images/bg-01.jpg);">
-                    <span class="login100-form-title-1">
-                        Sign In
-                    </span>
-
-                </div>
-                @using (Html.BeginForm("Login", "LogIn", FormMethod.Post, new { @class = "login100-form validate-form" }))
-                {
-                    <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
-                        <span class="label-input100">Username</span>
-                        @Html.TextBoxFor(m => m.EmployeeID, new { @class = "input100", placeholder = "Enter username" })
-                        @*@Html.ValidationMessageFor(model => model.EmployeeID, "", new { @class = "text-danger" })*@
-
-                        @*<input class="input100" type="text" name="username" placeholder="Enter username">*@
-                        <span class="focus-input100"></span>
-
-
-                    </div>
-
-                    <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
-                        <span class="label-input100">Password</span>
-                        @Html.PasswordFor(m => m.Password, new { @class = "input100", placeholder = "Enter password" })
-                        @*<input class="input100" type="password" name="pass" placeholder="Enter password">*@
-                        <span class="focus-input100"></span>
-                    </div>
-                    @Html.ValidationMessageFor(m => m.EmployeeID, "", new { @class = "text-danger" })
-                    <div class="flex-sb-m w-full p-b-30">
-                        <div class="contact100-form-checkbox">
-                            <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-                            <label class="label-checkbox100" for="ckb1">
-                                Remember me
-                            </label>
-                        </div>
-
-                        <div>
-                            <a href="#" class="txt1">
-                                Forgot Password?
+<body class="login-page sidebar-collapse header-filter" style="background-image:url();background-color:aliceblue; background-size: cover; background-position: top center;" >
+    <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+        <div class="container">
+            <div class="navbar-translate">
+                <a class="navbar-brand" href="https://demos.creative-tim.com/material-kit/index.html">
+                    Material Kit
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ml-auto">
+                    <li class="dropdown nav-item">
+                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                            <i class="material-icons">apps</i> Components
+                        </a>
+                        <div class="dropdown-menu dropdown-with-icons">
+                            <a href="../index.html" class="dropdown-item">
+                                <i class="material-icons">layers</i> All Components
+                            </a>
+                            <a href="https://demos.creative-tim.com/material-kit/docs/2.1/getting-started/introduction.html" class="dropdown-item">
+                                <i class="material-icons">content_paste</i> Documentation
                             </a>
                         </div>
-                    </div>
-
-                    <div class="container-login100-form-btn">
-                        <button class="login100-form-btn">
-                            Login
-                        </button>
-                    </div>
-                }
-
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" onclick="scrollToDownload()">
+                            <i class="material-icons">cloud_download</i> Download
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://twitter.com/CreativeTim" target="_blank" data-original-title="Follow us on Twitter">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://www.facebook.com/CreativeTim" target="_blank" data-original-title="Like us on Facebook">
+                            <i class="fa fa-facebook-square"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://www.instagram.com/CreativeTimOfficial" target="_blank" data-original-title="Follow us on Instagram">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
+    </nav>
+    <div class="page-header " >
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 ml-auto mr-auto">
+       
+                    <div class="card card-login">
+                        <form class="form" method="post" action="/LogIn/Login">
+                            <div class="card-header card-header-info text-center">
+                                <h4 class="card-title">Login</h4>
+                                <div class="social-line">
+                                    <a href="#pablo" class="btn btn-just-icon btn-link">
+                                        <i class="fa fa-facebook-square"></i>
+                                    </a>
+                                    <a href="#pablo" class="btn btn-just-icon btn-link">
+                                        <i class="fa fa-twitter"></i>
+                                    </a>
+                                    <a href="#pablo" class="btn btn-just-icon btn-link">
+                                        <i class="fa fa-google-plus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="description text-center">Or Be Classical</p>
+                            <div class="card-body">
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="material-icons">account_circle</i>
+                                        </span>
+                                    </div>
+                                    @Html.TextBoxFor(m => m.EmployeeID, new { @class = "form-control", placeholder = "Enter username" })
+
+                                </div>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="material-icons">lock_outline</i>
+                                        </span>
+                                    </div>
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter password" })
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    @Html.ValidationMessageFor(m => m.EmployeeID, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="footer text-center">
+
+                                <input type="submit" class="btn btn-info btn-link btn-wd btn-lg" value="Login" />
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="container">
+                <nav class="float-left">
+                    <ul>
+                        <li>
+                            <a href="https://www.creative-tim.com">
+                                Creative Tim
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://creative-tim.com/presentation">
+                                About Us
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://blog.creative-tim.com">
+                                Blog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.creative-tim.com/license">
+                                Licenses
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="copyright float-right">
+                    &copy;
+                    <script>document.write(new Date().getFullYear())</script> Reckon Force <i class="material-icons">favorite</i> Provides better HR Solutions
+                    
+                </div>
+            </div>
+        </footer>
     </div>
-
-    <!--===============================================================================================-->
-    <script src="~/Login_v15/vendor/jquery/jquery-3.2.1.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="~/Login_v15/vendor/animsition/js/animsition.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="~/Login_v15/vendor/bootstrap/js/popper.js"></script>
-    <script src="~/Login_v15/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="~/Login_v15/vendor/select2/select2.min.js"></script>
-    <!--===============================================================================================-->
-    <script src="~/Login_v15/vendor/daterangepicker/moment.min.js"></script>
-    <script src="~/Login_v15/vendor/daterangepicker/daterangepicker.js"></script>
-    <!--===============================================================================================-->
-    <script src="~/Login_v15/vendor/countdowntime/countdowntime.js"></script>
-    <!--===============================================================================================-->
-    <script src="~/Login_v15/js/main.js"></script>
-
+    <!--   Core JS Files   -->
+   
 </body>
-</html>
 
+</html>

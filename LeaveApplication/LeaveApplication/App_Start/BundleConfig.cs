@@ -23,10 +23,14 @@ namespace LeaveApplication
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                       "~/material-kit-master/assets/js/core/popper.min.js",
+                       "~/material-kit-master/assets/js/core/bootstrap-material-design.min.js",
+                       "~/material-kit-master/assets/js/plugins/moment.min.js",
+                       "~/material-kit-master/assets/js/plugins/nouislider.min.js",
+                       "~/material-kit-master/assets/js/material-kit.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstraplumen.css",
+                      "~/material-kit-master/assets/css/material-kit.css",
                       "~/Content/site.css"));
         }
     }

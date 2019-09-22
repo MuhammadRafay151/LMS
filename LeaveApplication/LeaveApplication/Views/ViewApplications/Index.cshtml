@@ -9,15 +9,63 @@
 
 </script>
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row vh-100">
         <div class="col">
-            <h1 style=" margin-top:10% ;text-align:center">Leave Applications</h1>
+            <h1 class=" text-white" style=" margin-top:10% ;margin-bottom:5%;text-align:center">Leave Applications</h1>
+            @*material theme*@
+            <div class="card card-nav-tabs card-plain">
+                <div class="card-header card-header-info">
+                    <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
+                    <div class="nav-tabs-navigation">
+                        <div class="nav-tabs-wrapper">
+                            <ul class="nav nav-tabs" data-tabs="tabs">
+                                <li class="nav-item">
+                                    @Ajax.ActionLink("All", "ALL", null, new AjaxOptions
+              {
+                  HttpMethod = "GET",
+                       UpdateTargetId = "div1",
+                       InsertionMode = InsertionMode.Replace
+              }, new { @class = "nav-link", data_toggle = "tab" })
+                                </li>
+                                <li class="nav-item">
+                                    @Ajax.ActionLink("Pending", "Pending", null, new AjaxOptions
+            {
+                HttpMethod = "GET",
+                       UpdateTargetId = "div1",
+                       InsertionMode = InsertionMode.Replace
+            }, new { @class = "nav-link active", data_toggle = "tab" })
+                                </li>
+                                <li class="nav-item">
+                                    @Ajax.ActionLink("Approved", "Approved", null, new AjaxOptions
+            {
+             HttpMethod = "GET",
+                     UpdateTargetId = "div1",
+                     InsertionMode = InsertionMode.Replace
+            }, new { @class = "nav-link", data_toggle = "tab" })
+                                </li>
+                                <li class="nav-item">
+                                    @Ajax.ActionLink("Rejected", "Rejected", null, new AjaxOptions
+            {
+                HttpMethod = "GET",
+                        UpdateTargetId = "div1",
+                        InsertionMode = InsertionMode.Replace
+            }, new { @class = "nav-link", data_toggle = "tab" })
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="div1">
+                @Html.Action("Pending")
+            </div>
         </div>
 
     </div>
 </div>
-
-<ul class="nav nav-tabs" style="margin-top:3%">
+@*lumen theme code*@
+@*<ul class="nav nav-pills nav-pills-primary" style="margin-top:3%">
     <li class="nav-item">
         @Ajax.ActionLink("All", "ALL", null, new AjaxOptions
    {
@@ -52,8 +100,5 @@
 }, new { @class = "nav-link",data_toggle="tab" })
     </li>
 
-</ul>
+</ul>*@
 
-<div id="div1">
-   @Html.Action("Pending")
-</div>
