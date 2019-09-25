@@ -12,11 +12,11 @@
 
     }
 /**/</script>
-<div class="container" id="a1">
+<div class="container-fluid" id="a1">
     <div class="row ">
         <div class="col ">
             <div class="card">
-                <div class="card-body " >
+                <div class="card-body ">
                     <div class="table-responsive">
                         <table id="t1" class="table table-hover  table-light">
                             <thead>
@@ -40,8 +40,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @{foreach (LeaveApplication.Models.LeaveApplication x in Model)
+                                @{ bool check = false;
+                                    foreach (LeaveApplication.Models.LeaveApplication x in Model)
                                     {
+                                        
                                         <tr class="">
 
                                             <td hidden class="align-middle  text-center">@x.ApplicationId</td>
@@ -84,7 +86,7 @@
                                             </td>
 
                                         </tr>
-
+                                        check = true;
                                     }
 
                                 }
@@ -95,8 +97,15 @@
                             </tbody>
                         </table>
                     </div>
-                   
+
                 </div>
+                @{
+                    if (check == false)
+                    {
+                        <h1 class="text-center align-middle">Records Not Found</h1>
+                    }
+                }
+
             </div>
         </div>
         

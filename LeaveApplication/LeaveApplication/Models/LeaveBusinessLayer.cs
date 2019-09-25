@@ -26,7 +26,15 @@ namespace LeaveApplication.Models
         }
         public void SaveApplication(LeaveApplication a1)
         {
-            a1.TotalDays = CalculateTotalLeaveDays(a1);
+            if (a1.ApplicationType == 0)
+            {
+                a1.TotalDays = CalculateTotalLeaveDays(a1);
+            }
+            else if (a1.ApplicationType == 1)
+            {
+                a1.TotalDays = 0.5;
+            }
+            
             a1.ApplyDate = DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss");
             con = new SqlConnection(connection);
             con.Open();
@@ -93,7 +101,7 @@ namespace LeaveApplication.Models
                 v1.ApplyDate = DateTime.Parse(ds.Tables[0].Rows[i][3].ToString()).ToString();
                 v1.FromDate = DateTime.Parse(ds.Tables[0].Rows[i][4].ToString()).ToString("dd-MM-yyyy");
                 v1.ToDate = DateTime.Parse(ds.Tables[0].Rows[i][5].ToString()).ToString("dd-MM-yyyy");
-                v1.TotalDays = int.Parse(ds.Tables[0].Rows[i][6].ToString());
+                v1.TotalDays = double.Parse(ds.Tables[0].Rows[i][6].ToString());
                 v1.LeaveRemarks = ds.Tables[0].Rows[i][7].ToString();
                 v1.LeaveReason = ds.Tables[0].Rows[i][8].ToString();
                 v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);
@@ -164,7 +172,7 @@ namespace LeaveApplication.Models
             v1.ApplyDate = DateTime.Parse(ds.Tables[0].Rows[0][3].ToString()).ToString("yyyy-MM-dd");
             v1.FromDate = DateTime.Parse(ds.Tables[0].Rows[0][4].ToString()).ToString("yyyy-MM-dd");
             v1.ToDate = DateTime.Parse(ds.Tables[0].Rows[0][5].ToString()).ToString("yyyy-MM-dd");
-            v1.TotalDays = int.Parse(ds.Tables[0].Rows[0][6].ToString());
+            v1.TotalDays = double.Parse(ds.Tables[0].Rows[0][6].ToString());
             v1.LeaveRemarks = ds.Tables[0].Rows[0][7].ToString();
             v1.LeaveReason = ds.Tables[0].Rows[0][8].ToString();
             v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);
@@ -183,7 +191,7 @@ namespace LeaveApplication.Models
         {
 
            
-            string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveTypeID,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,LeaveApplication.ReasonID from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID  where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
+            string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveTypeID,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,Reasons.LeaveReason from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID inner join Reasons on LeaveApplication.ReasonID=Reasons.ReasonID  where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
            
             DataSet ds = database.Read(Querry);
           
@@ -191,10 +199,10 @@ namespace LeaveApplication.Models
             v1.ApplicationId = ds.Tables[0].Rows[0][0].ToString();
             v1.EmployeeID = ds.Tables[0].Rows[0][1].ToString();
             v1.LeaveType = ds.Tables[0].Rows[0][2].ToString();
-            v1.ApplyDate = DateTime.Parse(ds.Tables[0].Rows[0][3].ToString()).ToString("dd-MM-yyyy");
-            v1.FromDate = DateTime.Parse(ds.Tables[0].Rows[0][4].ToString()).ToString("dd-MM-yyyy");
-            v1.ToDate = DateTime.Parse(ds.Tables[0].Rows[0][5].ToString()).ToString("dd-MM-yyyy");
-            v1.TotalDays = int.Parse(ds.Tables[0].Rows[0][6].ToString());
+            v1.ApplyDate = DateTime.Parse(ds.Tables[0].Rows[0][3].ToString()).ToString();
+            v1.FromDate = DateTime.Parse(ds.Tables[0].Rows[0][4].ToString()).ToString();
+            v1.ToDate = DateTime.Parse(ds.Tables[0].Rows[0][5].ToString()).ToString();
+            v1.TotalDays = double.Parse(ds.Tables[0].Rows[0][6].ToString());
             v1.LeaveRemarks = ds.Tables[0].Rows[0][7].ToString();
             v1.LeaveReason = ds.Tables[0].Rows[0][8].ToString();
             v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);
@@ -297,7 +305,7 @@ namespace LeaveApplication.Models
                 v1.ApplyDate = DateTime.Parse(ds.Tables[0].Rows[i][4].ToString()).ToString("dd-MM-yyyy");
                 v1.FromDate = DateTime.Parse(ds.Tables[0].Rows[i][5].ToString()).ToString("dd-MM-yyyy");
                 v1.ToDate = DateTime.Parse(ds.Tables[0].Rows[i][6].ToString()).ToString("dd-MM-yyyy");
-                v1.TotalDays = int.Parse(ds.Tables[0].Rows[i][7].ToString());
+                v1.TotalDays = double.Parse(ds.Tables[0].Rows[i][7].ToString());
                 v1.LeaveRemarks = ds.Tables[0].Rows[i][8].ToString();
                 v1.LeaveReason = ds.Tables[0].Rows[i][9].ToString();
                 v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);

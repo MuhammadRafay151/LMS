@@ -13,7 +13,7 @@ namespace LeaveApplication
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                        "~/Scripts/jquery.mask.js", "~/Scripts/jquery-3.4.1.min.js"));
             bundles.Add(new ScriptBundle("~/bundles/datetime").Include(
-                      "~/daterangepicker-master/moment.min.js", "~/daterangepicker-master/daterangepicker.js"));
+                      "~/material-kit-master/assets/js/plugins/moment.min.js", "~/material-kit-master/assets/js/plugins/bootstrap-datetimepicker.js"));
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 

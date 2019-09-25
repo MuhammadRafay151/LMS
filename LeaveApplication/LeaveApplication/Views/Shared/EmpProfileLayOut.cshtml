@@ -6,14 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/datetime")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body class="header-filter" style="background-image:url(../../Images/theme-photos-nJCW43biz9U-unsplashnew.jpg); background-size: cover; background-position: top center;">
+<body style="background-image:url(../../Images/theme-photos-nJCW43biz9U-unsplashnew.jpg); background-size: cover; background-position: top center;">
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-white">
         <div class="container">
             <div class="navbar-translate">
-                <a class="navbar-brand" href="#">Leave Applcation Management</a>
+                <a class="navbar-brand" href="#">Reckon Force</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="navbar-toggler-icon"></span>
@@ -30,7 +33,7 @@
 
                         <a class="nav-link" href="#">DashBoard <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown ">
                         <div class="dropdown">
                             <a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage Leaves</a>
                             <div class="dropdown-menu mt-3">
@@ -54,6 +57,25 @@
                                 </div>
                             </li>
 
+                        }
+                        if (LeaveApplication.Models.EmployeeBusinessLayer.Employee.isAdmin == true)
+                        {
+                            <li class="nav-item dropdown ">
+                                <div class="dropdown  ">
+                                    <a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage Hr</a>
+                                    <div class="dropdown-menu mt-3 ">
+                                        @Html.ActionLink("Register Employees", "Registeration", "RegisterEmployee", null, new { @class = "dropdown-item " })
+                                        @Html.ActionLink("Manage Leave Types", "LeaveType", "Admin", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("Manage Designation", "Designation", "Admin", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("Manage Department", "Department", "Admin", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("Assign Leaves", "AssignLeave", "Admin", null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("Assign Leave History", "Assign_Leave_History", "Admin", null, new { @class = "dropdown-item" })
+                                        
+                                    </div>
+                                </div>
+                            </li>
+
+                           
                         }
                     }
 
@@ -85,28 +107,28 @@
                         </div>
                     </div>
                     @*<p class="dropdown-item">@LeaveApplication.Models.EmployeeBusinessLayer.Employee.EmployeeName</p>
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>*@
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Separated link</a>*@
                 </div>
             </li>
 
         </ul>
 
     </nav>
-    <div class="container body-content">
+    <div class="container-fluid body-content">
         @RenderBody()
         <hr />
-        <footer class="d-flex justify-content-end text-white" >
+        <footer class="d-flex justify-content-end text-white">
             <p>&copy; @DateTime.Now.Year Reckon Force</p>
         </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/datetime")
+   
     @RenderSection("scripts", required: false)
 </body>
 </html>

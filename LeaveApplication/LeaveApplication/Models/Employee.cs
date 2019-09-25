@@ -27,6 +27,7 @@ namespace LeaveApplication.Models
         public String DepartmentID { get; set; }
         public String Department { get; set; }
         public string Password { get; set; }
+        public bool isAdmin { get; set; }
 
         //public bool IsEmployeeEmpty()
         //{

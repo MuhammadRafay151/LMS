@@ -91,7 +91,7 @@ namespace LeaveApplication.Models
         }
         public DataSet GetDepartmentsDS()
         {
-           
+
             string command = "Select * from departments";
             ds = database.Read(command);
 
@@ -152,7 +152,7 @@ namespace LeaveApplication.Models
         {
             con = new SqlConnection(connection);
             con.Open();
-            string Querry = string.Format("select Employee.EmployeeID,Employee.EmployeeName,Employee.Address,Employee.PhoneNumber,Employee.CNIC,Employee.JoiningDate,Designations.Designation,Departments.Department,Picture.Picture  from Employee inner join Picture on Employee.EmployeeID=Picture.EmployeeID inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join Designations on Employee.DesignationID=Designations.DesignationID where Employee.EmployeeID='{0}'", EmployeeID);
+            string Querry = string.Format("select Employee.EmployeeID,Employee.EmployeeName,Employee.Address,Employee.PhoneNumber,Employee.CNIC,Employee.JoiningDate,Designations.Designation,Departments.Department,Picture.Picture,Employee.IsAdmin  from Employee inner join Picture on Employee.EmployeeID=Picture.EmployeeID inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join Designations on Employee.DesignationID=Designations.DesignationID where Employee.EmployeeID='{0}'", EmployeeID);
             SqlDataAdapter da = new SqlDataAdapter(Querry, con);
             DataSet d1 = new DataSet();
             da.Fill(d1);
@@ -162,6 +162,7 @@ namespace LeaveApplication.Models
             e1.Department = d1.Tables[0].Rows[0][7].ToString();
             e1.Designation = d1.Tables[0].Rows[0][6].ToString();
             e1.ImageBase64 = GetBase64Image((Byte[])d1.Tables[0].Rows[0][8]);
+            e1.isAdmin = bool.Parse(d1.Tables[0].Rows[0][9].ToString());
             con.Close();
             Employee = e1;
             Employee.IsManager = IsManager();

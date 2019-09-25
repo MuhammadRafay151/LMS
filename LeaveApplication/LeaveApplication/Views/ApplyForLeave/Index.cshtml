@@ -5,23 +5,41 @@
 }
 @model LeaveApplication.Models.Employee
 
-<link href="~/daterangepicker-master/daterangepicker.css" rel="stylesheet" />
+
 <div id="div1" class="container mt-lg-5 mt-5">
     <div class="row  justify-content-center  ">
 
         <div class="col-sm-6 col-lg-6 col-8 ">
 
 
-            @using (Html.BeginForm("Submit", "ApplyForLeave", FormMethod.Post, new { id = "form1", onsubmit = "OnSubmit()" }))
+            @using (Html.BeginForm("Submit", "ApplyForLeave", FormMethod.Post, new { id = "form1", onsubmit = "return OnSubmit()" }))
             {
                 <div class="card ">
+                    <div class="card-header card-header-info">
+                        <div class="row">
+                            <div class="col">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="customRadio1" name="ApplicationType" class="custom-control-input" value="0" checked>
+                                    <label class="custom-control-label text-white" for="customRadio1">Full day</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="customRadio2" name="ApplicationType" class="custom-control-input" value="1">
+                                    <label class="custom-control-label text-white" for="customRadio2">Half Day</label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
                     <div class=" card-body ">
 
                         <label style="font-size:22px" id="date" for="">Date Of Application: @System.DateTime.Now.Date.ToString("dd-MM-yyyy")</label>
                         <br><br>
 
                         <div class="form-group d-flex justify-content-center ">
-                            <select class="form-control" name="LeaveType" id="LeaveType">
+                            <select class="form-control" name="LeaveType" id="LeaveType" required>
                                 <option selected disabled> Select Leave Type</option>
                                 @{
                                     foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
@@ -31,23 +49,23 @@
                                 }
                             </select>
                         </div>
-                        <div class="form-group d-flex justify-content-center ">
-                            <label for="datetimes">From-To</label>
-
-                            <input type="text" name="datetimes" class="form-control" />
+                        <div class="form-group d-flex justify-content-center" id="d1">
+                            <label class="label-control" id="l1">Date & time</label>
+                            <input type="text" class="form-control datetimepicker1" id="halfday" name="halfday" required />
                         </div>
+
                         <div class="form-group d-flex justify-content-center">
 
-                            <label for="date1">From</label>
-                            <input class="form-control" type="date" name="FromDate" id="FromDate" required onchange="DateSelect(this)">
+                            <label for="date1" id="l2">From</label>
+                            <input class="form-control datetimepicker" type="text" name="FromDate" id="FromDate" required onfocusout="DateSelect(this)">
                         </div>
                         <div class="form-group d-flex justify-content-center">
-                            <label for="date2">To</label>
-                            <input class="form-control" type="date" name="ToDate" id="ToDate" required onchange="DateSelect(this)">
+                            <label for="date2" id="l3">To</label>
+                            <input class="form-control datetimepicker" type="text" name="ToDate" id="ToDate" required onfocusout="DateSelect(this)">
                         </div>
                         <div class=" form-group d-flex justify-content-center">
                             <label for="days">Total Days</label>
-                            <input class="form-control" type="text" name="days" id="days" disabled>
+                            <input class="form-control" type="text" name="days" id="days" readonly>
 
                         </div>
                         <div class="form-group d-flex justify-content-center">
@@ -62,7 +80,7 @@
                             </select>
                         </div>
                         <div class="form-group d-flex justify-content-center">
-                            <textarea class="form-control" style="resize:none" name="LeaveRemarks" id="LeaveRemarks" cols="30" rows="10" placeholder="Enter Description if any."></textarea>
+                            <textarea class="form-control" style="resize:none" name="LeaveRemarks" id="LeaveRemarks" cols="30" rows="5" placeholder="Enter Description if any."></textarea>
                         </div>
 
                     </div>
@@ -88,6 +106,38 @@
 
 
 <script>
+
+    $(document).ready(function () {
+        $('#halfday').prop("disabled", true)
+        $('#l1').prop("disabled", true)
+        $('#halfday').focusout(function () {
+            $('#days').val(0.5);
+
+        });
+    });
+    $('#customRadio1').click(function () {
+        $('#FromDate').prop("disabled", false);
+        $('#FromDate').val("");
+        $('#ToDate').prop("disabled", false);
+        $('#ToDate').val("");
+        $('#halfday').prop("disabled", true);
+        $('#halfday').val("");
+        $('#days').val("");
+
+
+
+    });
+    $('#customRadio2').click(function () {
+
+        $('#FromDate').prop("disabled", true);
+        $('#FromDate').val("");
+        $('#ToDate').prop("disabled", true);
+        $('#ToDate').val("");
+        $('#halfday').prop("disabled", false);
+        $('#halfday').val("");
+        $('#days').val("");
+
+    });
     var Date1 = null;
     var Date2 = null;
     function DateSelect(date) {
@@ -107,7 +157,7 @@
         }
 
 
-        if (Date1 != null && Date2 != null) {
+        if ((Date1 != null && Date1 != "") && (Date2 != null && Date2 != "")) {
 
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = fun;
@@ -127,15 +177,44 @@
 
 
     }
-    $(function () {
-        $('input[name="datetimes"]').daterangepicker({
-            timePicker: true,
-            startDate: moment().startOf('hour'),
-            endDate: moment().startOf('hour').add(32, 'hour'),
-            locale: {
-                format: 'DD/MM/YYYY hh:mm A'
-            }
-        });
+    $('.datetimepicker').datetimepicker({
+        format: 'L',
+
+        icons: {
+            time: "fa fa-clock-o",
+            date: "fa fa-calendar",
+            up: "fa fa-chevron-up",
+            down: "fa fa-chevron-down",
+            previous: 'fa fa-chevron-left',
+            next: 'fa fa-chevron-right',
+            today: 'fa fa-screenshot',
+            clear: 'fa fa-trash',
+            close: 'fa fa-remove',
+
+        }
+
     });
+    $('.datetimepicker1').datetimepicker({
+        format: 'L LT',
+        icons: {
+            time: "fa fa-clock-o",
+            date: "fa fa-calendar",
+            up: "fa fa-chevron-up",
+            down: "fa fa-chevron-down",
+            previous: 'fa fa-chevron-left',
+            next: 'fa fa-chevron-right',
+            today: 'fa fa-screenshot',
+            clear: 'fa fa-trash',
+            close: 'fa fa-remove',
+
+        }
+
+    });
+    function OnSubmit() {
+        if ($('#LeaveType').val() == null || $('#halfday').val() == null || $('#FromDate').val() == null || $('#ToDate').val() == null|| $('#LeaveReason').val() == null) {
+            alert("Kindly Fill all the fields");
+            return false;
+        }
+    }
 </script>
 

@@ -5,79 +5,88 @@
         console.log(a.rowIndex);
         console.log(a.cells[0].innerHTML);
     }
-     function View(row) {
-         var Application_Id = document.getElementById('t1').rows[row.rowIndex].cells[0].innerHTML;
-         console.log(Application_Id);
+    function View(row) {
+        var Application_Id = document.getElementById('t1').rows[row.rowIndex].cells[0].innerHTML;
+        console.log(Application_Id);
         window.location.href = "/ViewApplications/DetiledView?Application_Id=" + Application_Id;
-      
+
     }
 /**/</script>
-<div class="container" id="a1">
+<div class="container-fluid" id="a1">
     <div class="row">
-       <div class="col">
-           <div class="card">
-               <div class="card-body ">
-                   <div class="table-responsive">
-                       <table id="t1" class="table table-hover table-responsive-sm table-light">
-                           <thead>
-                               <tr onclick="fun(this)">
-                                   <th class="align-middle  text-center" hidden scope="col">Application ID</th>
-                                   @{
-                                       if (ViewBag.Manager == true)
-                                       {
-                                           <th class="align-middle  text-center" scope="col">Name</th>
-                                       }
-                                   }
-                                   <th class="align-middle  text-center" scope="col">Date</th>
-                                   <th class="align-middle  text-center" scope="col">Leave Type</th>
-                                   <th class="align-middle  text-center" scope="col">From Date</th>
-                                   <th class="align-middle  text-center" scope="col">To Date</th>
-                                   <th class="align-middle  text-center" scope="col">Total Days</th>
-                                   <th class="align-middle  text-center" scope="col">Reason for leave</th>
-                                   <th class="align-middle  text-center" scope="col">Application Status</th>
-                                   <th class="align-middle  text-center" scope="col">View Details</th>
-                               </tr>
-                           </thead>
-                           <tbody>
-                               @{foreach (LeaveApplication.Models.LeaveApplication x in Model)
-                                   {
-                                       <tr>
+        <div class="col">
+            <div class="card">
+                <div class="card-body ">
+                    <div class="table-responsive">
+                        <table id="t1" class="table table-hover table-responsive-sm table-light">
+                            <thead>
+                                <tr onclick="fun(this)">
+                                    <th class="align-middle  text-center" hidden scope="col">Application ID</th>
+                                    @{
+                                        if (ViewBag.Manager == true)
+                                        {
+                                            <th class="align-middle  text-center" scope="col">Name</th>
+                                        }
+                                    }
+                                    <th class="align-middle  text-center" scope="col">Date</th>
+                                    <th class="align-middle  text-center" scope="col">Leave Type</th>
+                                    <th class="align-middle  text-center" scope="col">From Date</th>
+                                    <th class="align-middle  text-center" scope="col">To Date</th>
+                                    <th class="align-middle  text-center" scope="col">Total Days</th>
+                                    <th class="align-middle  text-center" scope="col">Reason for leave</th>
+                                    <th class="align-middle  text-center" scope="col">Application Status</th>
+                                    <th class="align-middle  text-center" scope="col">View Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    bool check = false;
+                                    foreach (LeaveApplication.Models.LeaveApplication x in Model)
+                                    {
+                                        
+                                        <tr>
 
-                                           <td class="align-middle  text-center" hidden>@x.ApplicationId</td>
-                                           @{
-                                               if (ViewBag.Manager == true)
-                                               {
-                                                   <td class="align-middle  text-center">@x.EmployeeName</td>
-                                               }
-                                           }
-                                           <td class="align-middle  text-center">@x.ApplyDate</td>
-                                           <td class="align-middle  text-center">@x.LeaveType</td>
-                                           <td class="align-middle  text-center">@x.FromDate</td>
-                                           <td class="align-middle  text-center">@x.ToDate</td>
-                                           <td class="align-middle  text-center">@x.TotalDays</td>
-                                           <td class="align-middle  text-center">@x.LeaveReason</td>
-                                           <td class="align-middle text-center">
-                                               <span class="badge badge-danger" style="font-size:15px">Rejected</span>
-                                           </td>
-                                           <td class="align-middle text-center">
-                                               <button type="button" class="btn btn-info-grd" onclick="View(this.parentNode.parentNode)">View Details</button>
-                                           </td>
+                                            <td class="align-middle  text-center" hidden>@x.ApplicationId</td>
+                                            @{
+                                                if (ViewBag.Manager == true)
+                                                {
+                                                    <td class="align-middle  text-center">@x.EmployeeName</td>
+                                                }
+                                            }
+                                            <td class="align-middle  text-center">@x.ApplyDate</td>
+                                            <td class="align-middle  text-center">@x.LeaveType</td>
+                                            <td class="align-middle  text-center">@x.FromDate</td>
+                                            <td class="align-middle  text-center">@x.ToDate</td>
+                                            <td class="align-middle  text-center">@x.TotalDays</td>
+                                            <td class="align-middle  text-center">@x.LeaveReason</td>
+                                            <td class="align-middle text-center">
+                                                <span class="badge badge-danger" style="font-size:15px">Rejected</span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <button type="button" class="btn btn-info-grd" onclick="View(this.parentNode.parentNode)">View Details</button>
+                                            </td>
 
-                                       </tr>
+                                        </tr>
+                                        check = true;
+                                    }
 
-                                   }
-
-                               }
-
-
+                                }
 
 
-                           </tbody>
-                       </table>
-                   </div>
-                   
-               </div>
-           </div>
-       </div>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                @{
+                    if (check == false)
+                    {
+                        <h1 class="text-center align-middle">Records Not Found</h1>
+                    }
+                }
+            </div>
+        </div>
     </div>
 </div>

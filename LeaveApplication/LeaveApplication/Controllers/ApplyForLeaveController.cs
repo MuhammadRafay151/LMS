@@ -34,8 +34,18 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult Submit(LeaveApplication.Models.LeaveApplication l1)
         {
-            l1.EmployeeID = Session["EmpID"].ToString();
-            lb.SaveApplication(l1);
+
+            if (l1.ApplicationType == 0 || l1.ApplicationType == 1)
+            {
+                if (l1.ApplicationType == 1)
+                {
+                    l1.FromDate = Request.Form["halfday"].ToString();
+                    l1.ToDate = Request.Form["halfday"].ToString();
+                }
+                l1.EmployeeID = Session["EmpID"].ToString();
+                lb.SaveApplication(l1);
+            }
+
             return RedirectToAction("Index", "ApplyForLeave");
         }
         [HttpPost]
