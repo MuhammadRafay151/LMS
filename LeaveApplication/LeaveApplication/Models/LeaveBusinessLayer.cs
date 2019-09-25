@@ -445,6 +445,7 @@ EXECUTE sp_executesql @b, N'@id NVARCHAR(MAX),@st NVARCHAR(MAX)', @id = @id,@st=
 
 
         //My code leave count filter
+        //select sum(Count) LeaveCount from EmployeeLeaveCountHistory where EmployeeID='Emp1' AND Date BETWEEN convert(varchar, '2019-09-18 00:00:00.000', 112) AND convert(varchar,'2019-09-20 00:00:00.000', 112)
         public int FilterLeaveCount(string EmployeeID, string ToDate, string Fromdate)
         {
             int count = 0;
