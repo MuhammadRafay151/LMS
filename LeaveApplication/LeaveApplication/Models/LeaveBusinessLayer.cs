@@ -47,11 +47,11 @@ namespace LeaveApplication.Models
         }
         public LeaveTypes[] GetLeaveTypes()
         {
-           
+
             string Querry = "select LeaveTypeID,LeaveType from LeaveType";
-         
+
             ds = database.Read(Querry); ;
-           
+
             LinkedList<LeaveTypes> list = new LinkedList<LeaveTypes>();
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
@@ -66,23 +66,23 @@ namespace LeaveApplication.Models
         /// return leave types in dataset
         /// </summary>
         /// <returns></returns>
-        public  DataSet GetLeaveTypesDS()
+        public DataSet GetLeaveTypesDS()
         {
 
             string Querry = "select LeaveTypeID,LeaveType from LeaveType";
 
             ds = database.Read(Querry); ;
 
-          
+
             return ds;
         }
         public List<LeaveApplication> GetAllApplications(string EmployeeID)
         {
-          
+
             string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveType,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,Reasons.LeaveReason from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID inner join Reasons on LeaveApplication.ReasonID=Reasons.ReasonID where LeaveApplication.EmployeeID='{0}'", EmployeeID);
-           
+
             DataSet ds = database.Read(Querry);
-           
+
             List<Models.LeaveApplication> la = new List<Models.LeaveApplication>();
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
@@ -150,11 +150,11 @@ namespace LeaveApplication.Models
         public LeaveApplication GetApplication(string Application_Id)
         {
             //return application for edit application feature...
-         
+
             string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveTypeID,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,LeaveApplication.ReasonID from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID  where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
-           
+
             DataSet ds = database.Read(Querry);
-         
+
 
             LeaveApplication v1 = new Models.LeaveApplication();
             v1.ApplicationId = ds.Tables[0].Rows[0][0].ToString();
@@ -168,7 +168,7 @@ namespace LeaveApplication.Models
             v1.LeaveRemarks = ds.Tables[0].Rows[0][7].ToString();
             v1.LeaveReason = ds.Tables[0].Rows[0][8].ToString();
             v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);
-          
+
             leave = v1;
             if (v1.ApplicationStatus == "Pending")
             {
@@ -182,11 +182,11 @@ namespace LeaveApplication.Models
         public LeaveApplication GetViewApplication(string Application_Id)
         {
 
-           
+
             string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveTypeID,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,LeaveApplication.ReasonID from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID  where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
-           
+
             DataSet ds = database.Read(Querry);
-          
+
             LeaveApplication v1 = new Models.LeaveApplication();
             v1.ApplicationId = ds.Tables[0].Rows[0][0].ToString();
             v1.EmployeeID = ds.Tables[0].Rows[0][1].ToString();
@@ -198,7 +198,7 @@ namespace LeaveApplication.Models
             v1.LeaveRemarks = ds.Tables[0].Rows[0][7].ToString();
             v1.LeaveReason = ds.Tables[0].Rows[0][8].ToString();
             v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);
-           
+
 
             return v1;
         }
@@ -206,7 +206,7 @@ namespace LeaveApplication.Models
         {
             l1.TotalDays = CalculateTotalLeaveDays(l1);
             l1.ApplicationId = leave.ApplicationId;
-           
+
             string Querry = string.Format("update LeaveApplication set LeaveTypeID='{0}',FromDate='{1}',ToDate='{2}',TotalDays='{3}',Remarks='{4}',ReasonID='{5}' where LeaveApplicationID='{6}'", l1.LeaveType, l1.FromDate, l1.ToDate, l1.TotalDays, l1.LeaveRemarks, l1.LeaveReason, l1.ApplicationId);
             database.ExecuteQuerry(Querry);
         }
@@ -266,7 +266,7 @@ namespace LeaveApplication.Models
                 sh.Status = ds2.Tables[0].Rows[0][0].ToString();
                 SH.Add(sh);
             }
-           
+
 
             return SH;
 
@@ -443,6 +443,21 @@ EXECUTE sp_executesql @b, N'@id NVARCHAR(MAX),@st NVARCHAR(MAX)', @id = @id,@st=
             return database.Read(Querry);
         }
 
+
+        //My code leave count filter
+        public int FilterLeaveCount(string EmployeeID, string ToDate, string Fromdate)
+        {
+            int count = 0;
+            con = new SqlConnection(connection);
+            string Querry = string.Format("select sum(Count) LeaveCount from EmployeeLeaveCountHistory where EmployeeID = '{0}' AND Date BETWEEN convert(varchar, '{1}', 112) AND convert(varchar, '{2}', 112)", EmployeeID,ToDate,Fromdate);
+            con.Open();
+            cmd = new SqlCommand(Querry, con);
+            count = cmd.ExecuteScalar();
+
+            con.Close();
+            return count;
+
+        }
 
     }
 }
