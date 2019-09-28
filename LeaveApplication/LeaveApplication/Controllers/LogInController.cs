@@ -43,6 +43,7 @@ namespace LeaveApplication.Controllers
         public ActionResult LogOff()
         {
             Session["EmpID"] = null;
+            EmployeeBusinessLayer.Employee = null;
             return RedirectToAction("Index");
         }
     

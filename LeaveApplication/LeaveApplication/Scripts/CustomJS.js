@@ -9,3 +9,13 @@ function ModelOnclick(row, id) {
     document.getElementById('id').value = id;
     console.log(id);
 }
+function set_active(btn) {
+    //this function is used to set active current page number in pagination bar
+    var x = $(btn).parent().children();
+
+    for (var i = 0; i < x.length; i++) {
+        $(x[i]).removeClass('active');
+    }
+    x = $(btn).addClass('active');
+
+}

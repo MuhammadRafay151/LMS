@@ -126,7 +126,7 @@ namespace LeaveApplication.Controllers
                     al.EmployeeID = Request.Form["emp"].ToString();
                     al.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
                     al.Count = int.Parse(Request.Form["count"].ToString());
-                    Querry = string.Format("Select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}' where EmployeeID='{1}'",al.LeaveTypeID, al.EmployeeID);
+                    Querry = string.Format("Select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}' where EmployeeID='{1}'", al.LeaveTypeID, al.EmployeeID);
                     ds = ad.ShowAffectedUsers(al, Querry);
                 }
                 else if (al.AssignType == "All(Select Department)")
@@ -134,9 +134,9 @@ namespace LeaveApplication.Controllers
                     al.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
                     al.Count = int.Parse(Request.Form["count"].ToString());
                     al.DepartmentID = Request.Form["dep"].ToString();
-                  
-                    Querry = string.Format("select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}' where Departments.DepartmentID='{1}'", al.LeaveTypeID,al.DepartmentID);
-                   
+
+                    Querry = string.Format("select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}' where Departments.DepartmentID='{1}'", al.LeaveTypeID, al.DepartmentID);
+
                     ds = ad.ShowAffectedUsers(al, Querry);
 
                 }
@@ -148,7 +148,7 @@ namespace LeaveApplication.Controllers
                     ds = ad.ShowAffectedUsers(al, Querry);
 
                 }
-                
+
                 ViewBag.Count = al.Count;
                 return View(ds);
             }
@@ -165,7 +165,7 @@ namespace LeaveApplication.Controllers
         {
 
 
-            if(AdminBusinessLayer.Al!=null)
+            if (AdminBusinessLayer.Al != null)
             {
                 if (AdminBusinessLayer.Al.AssignType == "Select Employee")
                 {
@@ -231,10 +231,40 @@ namespace LeaveApplication.Controllers
 
 
         //}
-        public ActionResult Assign_Leave_History()
+        public ActionResult Assign_Leave_History(int? PageNo)
         {
-            return View(ad.ShowAssignLeaveHistory());
+          
+            System.Data.DataSet ds = ad.ShowAssignLeaveHistory();
+         
+            if (PageNo.HasValue&&PageNo.Value>0)
+            {
+                int PerPage = 12;
+                int limit = PageNo.Value * PerPage;
+                int Start = (limit - PerPage);
+                ViewBag.PageNo = PageNo.Value;
+                ViewBag.TotalPages =Math.Ceiling((double) ds.Tables[0].Rows.Count / PerPage);
+               System.Data.DataSet ds1 = new System.Data.DataSet();
+                ds1 = ds.Clone();
+              
+               
+                for (int i = Start; i <= limit; i++)
+                {
+                    try
+                    {
+                        ds1.Tables[0].ImportRow(ds.Tables[0].Rows[i]);
+                    }
+                    catch (IndexOutOfRangeException) { }
+                    
+                }
+                return View(ds1);
+            }
+            else
+            {//must send page 1 if wrong number is pass
+                return View(ds);
+            }
+
         }
+       
 
     }
 }

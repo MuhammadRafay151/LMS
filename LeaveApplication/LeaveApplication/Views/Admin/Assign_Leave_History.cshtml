@@ -1,17 +1,19 @@
 ﻿
 @{
     ViewBag.Title = "Assign_Leave_History";
-       Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
 @model System.Data.DataSet
 
 <div class="row mt-lg-5">
     <div class="col ">
+
+
         <div class="card ">
-            <div class="card-header card-header-info "style="background-color:#FEFCFB">
+            <div class="card-header card-header-info " style="background-color:#FEFCFB">
                 <h4 class="card-title text-center">Assigned Leaves</h4>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="div1">
                 <table class="table table-hover table-striped ">
                     <thead class="">
                         <tr class="">
@@ -23,6 +25,7 @@
                     </thead>
                     <tbody>
                         @{ System.Data.DataSet x = Model;
+                            bool check = false;
                             foreach (System.Data.DataRow i in x.Tables[0].Rows)
                             {
                                 <tr>
@@ -32,6 +35,7 @@
                                     <td>@i[2].ToString()</td>
                                     <td>@i[3].ToString()</td>
                                 </tr>
+                                check = true;
                             }
                         }
 
@@ -40,8 +44,83 @@
                     </tbody>
                 </table>
             </div>
-           
+            @{
+                if (check == false)
+                {
+                    <h1 class="text-center align-middle">Records Not Found</h1>
+                }
+                else
+                {
+                    <div class="card-footer justify-content-end">
+
+                        <ul class="pagination pagination-info ">
+                            @{
+                                if (ViewBag.TotalPages > 3)
+                                {
+
+                                    <li class="page-item "><a id="pre" class="page-link"  onclick="set_active(this.parentNode)">Previous</a></li>
+                                 
+                                    int ax = ViewBag.PageNo;
+                                   
+                                    int count = 0;
+                                    for (int i = ax; i <= ViewBag.TotalPages; i++)
+                                    {
+                                        if (i == ViewBag.PageNo)
+                                        {
+                                            <li class="page-item active"><a class="page-link" href="/Admin/Assign_Leave_History?pageno=@i" onclick="set_active(this.parentNode)">@i</a></li>
+
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item "><a class="page-link" href="/Admin/Assign_Leave_History?pageno=@i" onclick="set_active(this.parentNode)">@i</a></li>
+
+                                        }
+                                        ++count;
+                                        if(count==3)
+                                        {
+                                            break;
+                                        }
+
+                                    }
+                                    <li class="page-item"><a id="next" class="page-link"  onclick="set_active(this.parentNode)">Next</a></li>
+                                }
+                                else if (ViewBag.TotalPages == 3)
+                                {
+                                    <li class="page-item active"><a class="page-link" href="/Admin/Assign_Leave_History?pageno=1" onclick="set_active(this.parentNode)">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="/Admin/Assign_Leave_History?pageno=2" onclick="set_active(this.parentNode)">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="/Admin/Assign_Leave_History?pageno=3" onclick="set_active(this.parentNode)">3</a></li>
+                                }
+                                else if (ViewBag.TotalPages == 2)
+                                {
+                                    <li class="page-item active"><a class="page-link" href="/Admin/Assign_Leave_History?pageno=1" onclick="set_active(this.parentNode)">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="/Admin/Assign_Leave_History?pageno=2" onclick="set_active(this.parentNode)">2</a></li>
+                                }
+                            }
+
+                        </ul>
+                    </div>
+
+                }
+            }
         </div>
-        
+
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $('#pre').click(function () {
+            var x = window.location.href.split('?');
+            x = x[1].split('=')
+            x = parseInt(x[1]) - 1;
+            console.log(x);
+            location.href = "/Admin/Assign_Leave_History?pageno=" + x;
+        })
+        $('#next').click(function () {
+            var x = window.location.href.split('?');
+            x = x[1].split('=')
+            x = parseInt(x[1]) + 1;
+            console.log(x);
+            location.href = "/Admin/Assign_Leave_History?pageno=" + x;
+        })
+    });
+</script>

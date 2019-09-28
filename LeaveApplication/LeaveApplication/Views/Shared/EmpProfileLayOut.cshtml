@@ -6,8 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    @*<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">*@
+    @{
+        if (@ViewContext.RouteData.Values["controller"].ToString() == "ViewApplications" || @ViewContext.RouteData.Values["controller"].ToString() == "Admin")
+        {
+            <script src="~/Scripts/CustomJS.js"></script>
+
+        }
+        if (@ViewContext.RouteData.Values["action"].ToString() == "Assign_Leave_History")
+        {
+            <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+        }
+
+    }
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/datetime")
     @Scripts.Render("~/bundles/modernizr")
@@ -31,7 +44,7 @@
 
                     <li class="nav-item active">
 
-                        <a class="nav-link" href="#">DashBoard <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="#">DashBoard<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item dropdown ">
                         <div class="dropdown">
@@ -69,13 +82,13 @@
                                         @Html.ActionLink("Manage Designation", "Designation", "Admin", null, new { @class = "dropdown-item" })
                                         @Html.ActionLink("Manage Department", "Department", "Admin", null, new { @class = "dropdown-item" })
                                         @Html.ActionLink("Assign Leaves", "AssignLeave", "Admin", null, new { @class = "dropdown-item" })
-                                        @Html.ActionLink("Assign Leave History", "Assign_Leave_History", "Admin", null, new { @class = "dropdown-item" })
-                                        
+                                        @Html.ActionLink("Assign Leave History", "Assign_Leave_History", "Admin", new {PageNo=1 }, new { @class = "dropdown-item" })
+
                                     </div>
                                 </div>
                             </li>
 
-                           
+
                         }
                     }
 
@@ -128,7 +141,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-   
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
