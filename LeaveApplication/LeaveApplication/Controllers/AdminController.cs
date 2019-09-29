@@ -19,180 +19,306 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult LeaveType()
         {
-            ViewBag.leaves_t = lb.GetLeaveTypes();
-            return View();
+
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                ViewBag.leaves_t = lb.GetLeaveTypes();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
         }
         public ActionResult Designation()
         {
-            return View(eb.GetDesignation());
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            { return View(eb.GetDesignation()); }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
         }
         public ActionResult Department()
         {
-            ViewBag.Departments = eb.GetDepartments();
-            return View();
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                ViewBag.Departments = eb.GetDepartments();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
         }
         [HttpPost]
         public ActionResult AddDepartment(Department dp)
         {
-            ad.AddDeparment(dp.department);
-            return RedirectToAction("Department");
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                ad.AddDeparment(dp.department);
+                return RedirectToAction("Department");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
         }
         [HttpPost]
         public ActionResult DeleteDepartment(Department dp)
         {
-            ad.DeleteDeparment(dp.DepartmentId);
-            return RedirectToAction("Department");
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                ad.DeleteDeparment(dp.DepartmentId);
+                return RedirectToAction("Department");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
         }
         [HttpPost]
         public ActionResult UpdateDepartment()
         {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                ad.updateDeparment(new Models.Department() { DepartmentId = Request.Form["id"].ToString(), department = Request.Form["edittxt"].ToString() });
+                return RedirectToAction("Department");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
 
-            ad.updateDeparment(new Models.Department() { DepartmentId = Request.Form["id"].ToString(), department = Request.Form["edittxt"].ToString() });
-            return RedirectToAction("Department");
+
         }
         [HttpPost]
         public ActionResult AddDesignation(Designation ds)
         {
-            ad.AddDesignation(ds);
-            return RedirectToAction("Designation");
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                ad.AddDesignation(ds);
+                return RedirectToAction("Designation");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
         }
         [HttpPost]
         public ActionResult DeleteDesignation(Designation ds)
         {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
 
-            ad.DeleteDesignation(ds);
-            return RedirectToAction("Designation");
+                ad.DeleteDesignation(ds);
+                return RedirectToAction("Designation");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
         }
         [HttpPost]
         public ActionResult UpdateDesignation(Designation ds)
         {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                ad.updateDesignation(new Designation() { DesignationID = int.Parse(Request.Form["id"].ToString()), designation = Request.Form["edittxt"].ToString() });
+                return RedirectToAction("Designation");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
 
-            ad.updateDesignation(new Designation() { DesignationID = int.Parse(Request.Form["id"].ToString()), designation = Request.Form["edittxt"].ToString() });
-            return RedirectToAction("Designation");
         }
         public ActionResult AddLeaveType(LeaveTypes lt)
         {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                ad.AddLeaveType(lt);
+                return RedirectToAction("LeaveType");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
 
-            ad.AddLeaveType(lt);
-            return RedirectToAction("LeaveType");
         }
         [HttpPost]
         public ActionResult DeleteLeaveType(LeaveTypes lt)
         {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                ad.DeleteLeaveType(lt);
+                return RedirectToAction("LeaveType");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
 
-            ad.DeleteLeaveType(lt);
-            return RedirectToAction("LeaveType");
         }
         [HttpPost]
         public ActionResult UpdateLeaveType(LeaveTypes lt)
         {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                ad.updateLeaveType(new LeaveTypes() { LeaveTypeID = int.Parse(Request.Form["id"].ToString()), LeaveType = Request.Form["edittxt"].ToString() });
+                return RedirectToAction("LeaveType");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
 
-            ad.updateLeaveType(new LeaveTypes() { LeaveTypeID = int.Parse(Request.Form["id"].ToString()), LeaveType = Request.Form["edittxt"].ToString() });
-            return RedirectToAction("LeaveType");
         }
 
         public ActionResult AssignLeave()
         {
-            List<System.Data.DataSet> d1 = new List<System.Data.DataSet>();
-            d1.Add(lb.GetLeaveTypesDS());
-            d1.Add(eb.GetDepartmentsDS());
-            if (TempData["ValidationError"] == null)
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
             {
-                ViewBag.ValidationError = false;
+                List<System.Data.DataSet> d1 = new List<System.Data.DataSet>();
+                d1.Add(lb.GetLeaveTypesDS());
+                d1.Add(eb.GetDepartmentsDS());
+                if (TempData["ValidationError"] == null)
+                {
+                    ViewBag.ValidationError = false;
+                }
+                else
+                {
+                    ViewBag.ValidationError = true;
+                }
+                return View(d1);
             }
             else
             {
-                ViewBag.ValidationError = true;
+                return RedirectToAction("Index", "LogIn");
             }
-            return View(d1);
+
         }
         [HttpPost]
         public JsonResult GetEmployees(Department d1)
         {
-            return Json(eb.GetEmployeesList(d1.DepartmentId));
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            { return Json(eb.GetEmployeesList(d1.DepartmentId)); }
+            else
+            {
+                return Json(null);
+            }
+
         }
         [HttpPost]
         public ActionResult AffectedUsers()
         {
-            AssignLeaves al = new AssignLeaves();
-            AdminBusinessLayer.Al = null;
-            System.Data.DataSet ds = null;
-            string Querry = string.Empty;
-            al.AssignType = Request.Form["customRadio"].ToString();
-            try
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
             {
-                if (al.AssignType == "Select Employee")
+                AssignLeaves al = new AssignLeaves();
+                AdminBusinessLayer.Al = null;
+                System.Data.DataSet ds = null;
+                string Querry = string.Empty;
+                al.AssignType = Request.Form["customRadio"].ToString();
+                try
                 {
-                    al.EmployeeID = Request.Form["emp"].ToString();
-                    al.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
-                    al.Count = int.Parse(Request.Form["count"].ToString());
-                    Querry = string.Format("Select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}' where EmployeeID='{1}'", al.LeaveTypeID, al.EmployeeID);
-                    ds = ad.ShowAffectedUsers(al, Querry);
+                    if (al.AssignType == "Select Employee")
+                    {
+                        al.EmployeeID = Request.Form["emp"].ToString();
+                        al.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
+                        al.Count = int.Parse(Request.Form["count"].ToString());
+                        Querry = string.Format("Select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}' where EmployeeID='{1}'", al.LeaveTypeID, al.EmployeeID);
+                        ds = ad.ShowAffectedUsers(al, Querry);
+                    }
+                    else if (al.AssignType == "All(Select Department)")
+                    {
+                        al.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
+                        al.Count = int.Parse(Request.Form["count"].ToString());
+                        al.DepartmentID = Request.Form["dep"].ToString();
+
+                        Querry = string.Format("select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}' where Departments.DepartmentID='{1}'", al.LeaveTypeID, al.DepartmentID);
+
+                        ds = ad.ShowAffectedUsers(al, Querry);
+
+                    }
+                    else if (al.AssignType == "All Employess")
+                    {
+                        al.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
+                        al.Count = int.Parse(Request.Form["count"].ToString());
+                        Querry = string.Format("select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}'", al.LeaveTypeID);
+                        ds = ad.ShowAffectedUsers(al, Querry);
+
+                    }
+
+                    ViewBag.Count = al.Count;
+                    return View(ds);
                 }
-                else if (al.AssignType == "All(Select Department)")
+                catch (NullReferenceException)
                 {
-                    al.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
-                    al.Count = int.Parse(Request.Form["count"].ToString());
-                    al.DepartmentID = Request.Form["dep"].ToString();
+                    TempData["ValidationError"] = true;
 
-                    Querry = string.Format("select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}' where Departments.DepartmentID='{1}'", al.LeaveTypeID, al.DepartmentID);
-
-                    ds = ad.ShowAffectedUsers(al, Querry);
-
+                    return RedirectToAction("AssignLeave");
                 }
-                else if (al.AssignType == "All Employess")
-                {
-                    al.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
-                    al.Count = int.Parse(Request.Form["count"].ToString());
-                    Querry = string.Format("select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}'", al.LeaveTypeID);
-                    ds = ad.ShowAffectedUsers(al, Querry);
-
-                }
-
-                ViewBag.Count = al.Count;
-                return View(ds);
             }
-            catch (NullReferenceException)
+            else
             {
-                TempData["ValidationError"] = true;
-
-                return RedirectToAction("AssignLeave");
+                return RedirectToAction("Index", "LogIn");
             }
 
 
         }
         public ActionResult Submit()
         {
-
-
-            if (AdminBusinessLayer.Al != null)
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
             {
-                if (AdminBusinessLayer.Al.AssignType == "Select Employee")
+                if (AdminBusinessLayer.Al != null)
                 {
-                    ad.AssignLeave();
-                }
-                else if (AdminBusinessLayer.Al.AssignType == "All(Select Department)")
-                {
-                    ad.AssignAllDep();
+                    if (AdminBusinessLayer.Al.AssignType == "Select Employee")
+                    {
+                        ad.AssignLeave();
+                    }
+                    else if (AdminBusinessLayer.Al.AssignType == "All(Select Department)")
+                    {
+                        ad.AssignAllDep();
+
+                    }
+                    else if (AdminBusinessLayer.Al.AssignType == "All Employess")
+                    {
+                        ad.AssignAll();
+                    }
+                    ad.RemoveAssignLeaveRequest();
 
                 }
-                else if (AdminBusinessLayer.Al.AssignType == "All Employess")
-                {
-                    ad.AssignAll();
-                }
-                ad.RemoveAssignLeaveRequest();
 
+                return RedirectToAction("AssignLeave");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
             }
 
-            return RedirectToAction("AssignLeave");
+
 
 
 
         }
         public ActionResult CancelAssignLeave()
         {
-            AdminBusinessLayer.Al = null;
-            return RedirectToAction("AssignLeave");
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                AdminBusinessLayer.Al = null;
+                return RedirectToAction("AssignLeave");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
         }
         //public ActionResult Submit()
         //{
@@ -233,38 +359,33 @@ namespace LeaveApplication.Controllers
         //}
         public ActionResult Assign_Leave_History(int? PageNo)
         {
-          
-            System.Data.DataSet ds = ad.ShowAssignLeaveHistory();
-         
-            if (PageNo.HasValue&&PageNo.Value>0)
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
             {
-                int PerPage = 12;
-                int limit = PageNo.Value * PerPage;
-                int Start = (limit - PerPage);
-                ViewBag.PageNo = PageNo.Value;
-                ViewBag.TotalPages =Math.Ceiling((double) ds.Tables[0].Rows.Count / PerPage);
-               System.Data.DataSet ds1 = new System.Data.DataSet();
-                ds1 = ds.Clone();
-              
-               
-                for (int i = Start; i <= limit; i++)
+                System.Data.DataSet ds = ad.ShowAssignLeaveHistory();
+                PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
+                
+                if (PageNo.HasValue && PageNo.Value > 0)
                 {
-                    try
-                    {
-                        ds1.Tables[0].ImportRow(ds.Tables[0].Rows[i]);
-                    }
-                    catch (IndexOutOfRangeException) { }
                     
+                    ViewBag.PageNo = PageNo.Value;
+                   
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 12, PageNo);
+                    ViewBag.TotalPages = p1.GetTotalPages();
+                    return View(ds1);
                 }
-                return View(ds1);
+                else
+                {//must send page 1 if wrong number is pass
+                    return View(ds);
+                }
             }
             else
-            {//must send page 1 if wrong number is pass
-                return View(ds);
+            {
+                return RedirectToAction("Index", "LogIn");
             }
 
+
         }
-       
+
 
     }
 }
