@@ -1,0 +1,91 @@
+﻿
+@model System.Data.DataSet
+@{
+    ViewBag.Title = "Employees";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+}
+
+<div id="div1" class="container-fluid" style="margin-top:5%">
+    <div class="row  justify-content-center align-content-center vh-100">
+
+        <div class="col-12  mb-3 ">
+            <div class="card">
+                <div class="card-header card-header-info">
+                    <h5 class="card-title">Enter Department</h5>
+                </div>
+                <div class="card-body" >
+                    
+
+                    <div class="table-responsive table-responsive-md table-responsive-sm">
+                        <table id="t1" class="table table-hover table-light">
+                            <thead>
+                                <tr class="text-center">
+
+                                    <th scope="col">Employee Name</th>
+                                    <th scope="col">Department</th>
+                                    
+                                    <th scope="col">Designation</th>
+                                    <th scope="col" class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ System.Data.DataSet x = Model;
+                                        foreach (System.Data.DataRow i in x.Tables[0].Rows)
+                                        {
+                                        <tr class="text-center ">
+                                            @*<td class="text-info align-middle">@x.DepartmentId</td>*@
+
+                                            <td class="text-dark align-middle"></td>
+                                            <td class="align-middle">
+                                                <div class="d-flex justify-content-end">
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-info-grd"  onclick="">Edit</button>
+                                                        <button class="btn btn-info-grd" onclick="document.getElementById('').submit()">Delete</button>
+
+                                                    </div>
+                                                    @using (Html.BeginForm("DeactiveEmployee", "Admin", FormMethod.Post, new { id = 1 }))
+                                                    {
+                                                        <input type="text" name="" value="" hidden />
+
+                                                    }
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+
+
+                </div>
+                <div class="card-footer justify-content-end">
+                    <ul class="pagination pagination-info ">
+                        <li class="page-item "><a class="page-link" href="#" onclick="set_active(this.parentNode)">Previous</a></li>
+                        <li class="page-item active"><a class="page-link" href="#" onclick="set_active(this.parentNode)">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#" onclick="set_active(this.parentNode)">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#" onclick="set_active(this.parentNode)">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#" onclick="set_active(this.parentNode)">Next</a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+

@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<LeaveApplication.Models.LeaveApplication>
+@model System.Data.DataSet
 <script>
     function fun(a) {
         console.log(a.rowIndex);
@@ -40,25 +40,26 @@
                             </thead>
                             <tbody>
                                 @{
-                                    bool check = false;
-                                    foreach (LeaveApplication.Models.LeaveApplication x in Model)
-                                    {
+                                                bool check = false;
+                                                System.Data.DataSet temp = Model;
+                                                foreach (System.Data.DataRow x in temp.Tables[0].Rows)
+                                                {
 
                                         <tr>
 
-                                            <td class="align-middle  text-center" hidden>@x.ApplicationId</td>
+                                            <td hidden class="align-middle  text-center">@x[0].ToString()</td>
                                             @{
                                                 if (ViewBag.Manager == true)
                                                 {
-                                                    <td class="align-middle  text-center">@x.EmployeeName</td>
+                                                    <td class="align-middle  text-center">@x[8].ToString()</td>
                                                 }
-                                            }
-                                            <td class="align-middle  text-center">@x.ApplyDate</td>
-                                            <td class="align-middle  text-center">@x.LeaveType</td>
-                                            <td class="align-middle  text-center">@x.FromDate</td>
-                                            <td class="align-middle  text-center">@x.ToDate</td>
-                                            <td class="align-middle  text-center">@x.TotalDays</td>
-                                            <td class="align-middle  text-center">@x.LeaveReason</td>
+                                    }
+                                            <td class="align-middle  text-center">@x[2].ToString()</td>
+                                            <td class="align-middle  text-center">@x[1].ToString()</td>
+                                            <td class="align-middle  text-center">@x[3].ToString()</td>
+                                            <td class="align-middle  text-center">@x[4].ToString()</td>
+                                            <td class="align-middle  text-center">@x[5].ToString()</td>
+                                            <td class="align-middle  text-center">@x[6].ToString()</td>
                                             <td class="align-middle text-center">
                                                 <span class="badge badge-danger" style="font-size:15px">Rejected</span>
                                             </td>
@@ -87,14 +88,96 @@
                     }
                     else
                     {<div class="card-footer justify-content-end">
-                            <ul class="pagination pagination-info ">
-                                <li class="page-item "><a class="page-link" href="#" onclick="set_active(this.parentNode)">Previous</a></li>
-                                <li class="page-item active"><a class="page-link" href="#" onclick="set_active(this.parentNode)">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#" onclick="set_active(this.parentNode)">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#" onclick="set_active(this.parentNode)">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#" onclick="set_active(this.parentNode)">Next</a></li>
-                            </ul>
-                        </div>
+
+    <ul id="paged" class="pagination pagination-info ">
+        @{
+
+            <li class="page-item ">
+                @Ajax.ActionLink("First", "Rejected", new { PageNo = 1 }, new AjaxOptions
+{
+HttpMethod = "GET",
+UpdateTargetId = "div1",
+InsertionMode = InsertionMode.Replace
+}, new { @class = "page-link" })
+            </li>
+            <li class="page-item ">
+                @Ajax.ActionLink("Previous", "Rejected", null, new AjaxOptions
+{
+HttpMethod = "GET",
+UpdateTargetId = "div1",
+InsertionMode = InsertionMode.Replace
+}, new { @class = "page-link", id = "pre", onclick = "Pre('/ViewApplications/Rejected?PageNo=')" })
+            </li>
+
+            int ax = ViewBag.PageNo;
+            if (ViewBag.TotalPages <= 3)
+            {
+                ax = 1;
+            }
+            else if (ViewBag.TotalPages - ViewBag.PageNo == 1)
+            {
+                ax -= 1;
+            }
+            else if (ViewBag.TotalPages - ViewBag.PageNo == 0)
+            {
+                ax -= 2;
+            }
+            int count = 0;
+            for (int i = ax; i <= ViewBag.TotalPages; i++)
+            {
+                if (i == ViewBag.PageNo)
+                {
+                    <li class="page-item active">
+                        @Ajax.ActionLink(i.ToString(), "Rejected", new { PageNo = i }, new AjaxOptions
+                   {
+                       HttpMethod = "GET",
+                       UpdateTargetId = "div1",
+                       InsertionMode = InsertionMode.Replace
+                   }, new { @class = "page-link" })
+                    </li>
+
+                }
+                else
+                {
+                    <li class="page-item ">
+                        @Ajax.ActionLink(i.ToString(), "Rejected", new { PageNo = i }, new AjaxOptions
+{
+ HttpMethod = "GET",
+ UpdateTargetId = "div1",
+ InsertionMode = InsertionMode.Replace
+}, new { @class = "page-link" })
+                    </li>
+
+                }
+                ++count;
+                if (count == 3)
+                {
+                    break;
+                }
+
+            }
+            <li class="page-item">
+                @Ajax.ActionLink("Next", "Rejected", null, new AjaxOptions
+{
+HttpMethod = "GET",
+UpdateTargetId = "div1",
+InsertionMode = InsertionMode.Replace
+}, new { @class = "page-link", id = "next", onclick = "Next('/ViewApplications/Rejected?PageNo=')" })
+            </li>
+            <li class="page-item ">
+                @Ajax.ActionLink("Last", "Rejected", new { PageNo = @ViewBag.TotalPages }, new AjaxOptions
+{
+HttpMethod = "GET",
+UpdateTargetId = "div1",
+InsertionMode = InsertionMode.Replace
+}, new { @class = "page-link" })
+            </li>
+
+
+        }
+
+    </ul>
+</div>
 
                     }
                 }

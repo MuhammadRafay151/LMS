@@ -34,7 +34,10 @@ namespace LeaveApplication.Controllers
         public ActionResult Designation()
         {
             if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
-            { return View(eb.GetDesignation()); }
+            {
+
+                return View(eb.GetDesignation());
+            }
             else
             {
                 return RedirectToAction("Index", "LogIn");
@@ -47,6 +50,21 @@ namespace LeaveApplication.Controllers
             {
                 ViewBag.Departments = eb.GetDepartments();
                 return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
+        }
+        public ActionResult Employees()
+        {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {//empty dataset...
+                System.Data.DataSet x = new System.Data.DataSet();
+                x.Tables.Add(new System.Data.DataTable());
+                //here you pass your filled dataset in place of x
+                return View(x);
             }
             else
             {
@@ -363,19 +381,23 @@ namespace LeaveApplication.Controllers
             {
                 System.Data.DataSet ds = ad.ShowAssignLeaveHistory();
                 PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
-                
+
                 if (PageNo.HasValue && PageNo.Value > 0)
                 {
-                    
+
                     ViewBag.PageNo = PageNo.Value;
-                   
+
                     System.Data.DataSet ds1 = p1.GetPage(ds, 12, PageNo);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return View(ds1);
                 }
                 else
-                {//must send page 1 if wrong number is pass
-                    return View(ds);
+                {
+                    ViewBag.PageNo = 1;
+
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 12, 1);
+                    ViewBag.TotalPages = p1.GetTotalPages();
+                    return View(ds1);
                 }
             }
             else

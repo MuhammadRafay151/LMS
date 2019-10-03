@@ -29,23 +29,102 @@ namespace LeaveApplication.Controllers
                 return RedirectToAction("Index", "LogIn");
             }
         }
-        public ActionResult ALL()
+        public ActionResult ALL(int? PageNo)
         {
+            System.Data.DataSet ds = lb.GetAllApplications(GetEmpID());
+            PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
 
-            return PartialView("ALL", lb.GetAllApplications(GetEmpID()));
-        }
-        public PartialViewResult Pending()
-        {
+            if (PageNo.HasValue && PageNo.Value > 0)
+            {
 
-            return PartialView("Pending", lb.GetPendingApplications(GetEmpID()));
+                ViewBag.PageNo = PageNo.Value;
+               
+                System.Data.DataSet ds1 = p1.GetPage(ds, 2, PageNo);
+                ViewBag.TotalPages = p1.GetTotalPages();
+                return PartialView("ALL", ds1);
+            }
+            else
+            {
+                ViewBag.PageNo = 1;
+
+                System.Data.DataSet ds1 = p1.GetPage(ds, 2, 1);
+                ViewBag.TotalPages = p1.GetTotalPages();
+                return PartialView("ALL", ds1);
+            }
+
         }
-        public ActionResult Approved()
+        public PartialViewResult Pending(int? PageNo)
         {
-            return PartialView("Approved", lb.GetApprovedApplications(GetEmpID()));
+            System.Data.DataSet ds = lb.GetPendingApplications(GetEmpID());
+            PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
+
+            if (PageNo.HasValue && PageNo.Value > 0)
+            {
+
+                ViewBag.PageNo = PageNo.Value;
+
+                System.Data.DataSet ds1 = p1.GetPage(ds, 2, PageNo);
+                ViewBag.TotalPages = p1.GetTotalPages();
+                return PartialView("Pending", ds1);
+            }
+            else
+            {
+                ViewBag.PageNo = 1;
+
+                System.Data.DataSet ds1 = p1.GetPage(ds, 2, 1);
+                ViewBag.TotalPages = p1.GetTotalPages();
+                return PartialView("Pending", ds1);
+            }
+           
         }
-        public PartialViewResult Rejected()
+        public PartialViewResult Approved(int? PageNo)
         {
-            return PartialView("Rejected", lb.GetRejectedApplications(GetEmpID()));
+            System.Data.DataSet ds = lb.GetApprovedApplications(GetEmpID());
+            PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
+
+            if (PageNo.HasValue && PageNo.Value > 0)
+            {
+
+                ViewBag.PageNo = PageNo.Value;
+
+                System.Data.DataSet ds1 = p1.GetPage(ds, 2, PageNo);
+                ViewBag.TotalPages = p1.GetTotalPages();
+                return PartialView("Approved", ds1);
+            }
+            else
+            {
+                ViewBag.PageNo = 1;
+
+                System.Data.DataSet ds1 = p1.GetPage(ds, 2, 1);
+                ViewBag.TotalPages = p1.GetTotalPages();
+                return PartialView("Approved", ds1);
+            }
+
+            
+        }
+        public PartialViewResult Rejected(int? PageNo)
+        {
+            System.Data.DataSet ds = lb.GetRejectedApplications(GetEmpID());
+            PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
+
+            if (PageNo.HasValue && PageNo.Value > 0)
+            {
+
+                ViewBag.PageNo = PageNo.Value;
+
+                System.Data.DataSet ds1 = p1.GetPage(ds, 2, PageNo);
+                ViewBag.TotalPages = p1.GetTotalPages();
+                return PartialView("Rejected", ds1);
+            }
+            else
+            {
+                ViewBag.PageNo = 1;
+
+                System.Data.DataSet ds1 = p1.GetPage(ds, 2, 1);
+                ViewBag.TotalPages = p1.GetTotalPages();
+                return PartialView("Rejected", ds1);
+            }
+            
         }
         public ActionResult EditDetails(string Application_Id)
         {
@@ -78,7 +157,7 @@ namespace LeaveApplication.Controllers
 
                 ViewBag.SH = lb.GetStatusHistory(Application_Id);
 
-                return View("ViewFullApplication",x);
+                return View("ViewFullApplication", x);
             }
             else
             {
