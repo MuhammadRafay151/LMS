@@ -10,7 +10,7 @@ namespace LeaveApplication.Controllers
     {
 
         //partial class for hod level features
-      
+
         public ActionResult FacultyApplications()
         {
             if (Session["EmpID"] != null && Session["Manager"] == null)
@@ -25,12 +25,30 @@ namespace LeaveApplication.Controllers
 
 
         }
-        public ActionResult FacultyAll()
+        public ActionResult FacultyAll(int? PageNo)
         {
             if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager)
             {
+                System.Data.DataSet ds = lb.GetFacultyAll();
+                PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
                 ViewBag.Manager = true;
-                return PartialView("All", lb.GetFacultyAll());
+                if (PageNo.HasValue && PageNo.Value > 0)
+                {
+
+                    ViewBag.PageNo = PageNo.Value;
+
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, PageNo);
+                    ViewBag.TotalPages = p1.GetTotalPages();
+                    return PartialView("All", ds1);
+                }
+                else
+                {
+                    ViewBag.PageNo = 1;
+
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, 1);
+                    ViewBag.TotalPages = p1.GetTotalPages();
+                    return PartialView("All", ds1);
+                }
             }
             else
             {
@@ -38,14 +56,34 @@ namespace LeaveApplication.Controllers
             }
 
         }
-        public ActionResult FacultyPending()
+        public ActionResult FacultyPending(int? PageNo)
         {
 
 
             if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager)
             {
+                System.Data.DataSet ds = lb.GetFacultyPending();
+               
+                PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
                 ViewBag.Manager = true;
-                return PartialView("Pending", lb.GetFacultyPending());
+                if (PageNo.HasValue && PageNo.Value > 0)
+                {
+
+                    ViewBag.PageNo = PageNo.Value;
+
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, PageNo);
+                    ViewBag.TotalPages = p1.GetTotalPages();
+                    return PartialView("Pending", ds1);
+                }
+                else
+                {
+                    ViewBag.PageNo = 1;
+
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, 1);
+                    ViewBag.TotalPages = p1.GetTotalPages();
+                    return PartialView("Pending", ds1);
+                }
+
 
 
             }
@@ -55,12 +93,32 @@ namespace LeaveApplication.Controllers
             }
 
         }
-        public ActionResult FacultyApproved()
+        public ActionResult FacultyApproved(int? PageNo)
         {
             if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager)
             {
+                System.Data.DataSet ds = lb.GetFacultyApproved();
+                PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
                 ViewBag.Manager = true;
-                return PartialView("Approved", lb.GetFacultyApproved());
+                if (PageNo.HasValue && PageNo.Value > 0)
+                {
+
+                    ViewBag.PageNo = PageNo.Value;
+
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, PageNo);
+                    ViewBag.TotalPages = p1.GetTotalPages();
+                    return PartialView("Approved", ds1);
+                }
+                else
+                {
+                    ViewBag.PageNo = 1;
+
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, 1);
+                    ViewBag.TotalPages = p1.GetTotalPages();
+                    return PartialView("Approved", ds1);
+                }
+
+
             }
             else
             {
@@ -68,12 +126,31 @@ namespace LeaveApplication.Controllers
             }
 
         }
-        public ActionResult FacultyRejected()
+        public ActionResult FacultyRejected(int? PageNo)
         {
             if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager)
             {
+                System.Data.DataSet ds = lb.GetFacultyReject();
+                PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
                 ViewBag.Manager = true;
-                return PartialView("Rejected", lb.GetFacultyReject());
+                if (PageNo.HasValue && PageNo.Value > 0)
+                {
+
+                    ViewBag.PageNo = PageNo.Value;
+
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, PageNo);
+                    ViewBag.TotalPages = p1.GetTotalPages();
+                    return PartialView("Rejected", ds1);
+                }
+                else
+                {
+                    ViewBag.PageNo = 1;
+
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, 1);
+                    ViewBag.TotalPages = p1.GetTotalPages();
+                    return PartialView("Rejected", ds1);
+                }
+
             }
             else
             {
@@ -94,7 +171,7 @@ namespace LeaveApplication.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "LogIn");
+                return Content("Access Denied");
             }
         }
         public ActionResult AcceptApplication(String Application_Id)
@@ -104,19 +181,25 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult RejectApplication(String Application_Id)
         {
-
-            lb.RejectApplication(Application_Id);
-            return RedirectToAction("FacultyApplications");
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager == true)
+            {
+                lb.RejectApplication(Application_Id);
+                return RedirectToAction("FacultyApplications");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
         }
-      
+
         public ActionResult FacultyLeaveCount()
         {
 
-            if (Session["EmpID"] != null)
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager == true)
             {
 
                 ViewBag.LeaveCount = lb.FacultyLeaveCount();
-                
+
                 return View("LeaveCount");
             }
             else
@@ -126,19 +209,6 @@ namespace LeaveApplication.Controllers
 
 
         }
-        //private ActionResult Faculty()
-        //{
-        //    if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager)
-        //    {
 
-        //        ViewBag.FacultyList = lb.GetFaculty();
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Index", "LogIn");
-        //    }
-
-        //}
     }
 }

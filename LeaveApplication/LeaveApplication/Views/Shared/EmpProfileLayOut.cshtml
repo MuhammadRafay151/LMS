@@ -6,18 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-    @*<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">*@
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     @{
         if (@ViewContext.RouteData.Values["controller"].ToString() == "ViewApplications" || @ViewContext.RouteData.Values["controller"].ToString() == "Admin")
         {
             <script src="~/Scripts/CustomJS.js"></script>
 
         }
-        if (@ViewContext.RouteData.Values["action"].ToString() == "Assign_Leave_History")
-        {
-            <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-        }
+      
 
     }
 
@@ -78,11 +75,12 @@
                                     <a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage Hr</a>
                                     <div class="dropdown-menu mt-3 ">
                                         @Html.ActionLink("Register Employees", "Registeration", "RegisterEmployee", null, new { @class = "dropdown-item " })
+                                        @Html.ActionLink("Manage Employees", "Employees", "Admin", null, new { @class = "dropdown-item " })
                                         @Html.ActionLink("Manage Leave Types", "LeaveType", "Admin", null, new { @class = "dropdown-item" })
                                         @Html.ActionLink("Manage Designation", "Designation", "Admin", null, new { @class = "dropdown-item" })
                                         @Html.ActionLink("Manage Department", "Department", "Admin", null, new { @class = "dropdown-item" })
                                         @Html.ActionLink("Assign Leaves", "AssignLeave", "Admin", null, new { @class = "dropdown-item" })
-                                        @Html.ActionLink("Assign Leave History", "Assign_Leave_History", "Admin", new {PageNo=1 }, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("Assign Leave History", "Assign_Leave_History", "Admin", new { PageNo = 1 }, new { @class = "dropdown-item" })
 
                                     </div>
                                 </div>
