@@ -233,5 +233,14 @@ namespace LeaveApplication.Models
             }
         }
 
+        //My changes
+
+        public DataSet EmployeeDS()
+        {
+            string Querry = "select Employee.EmployeeID,Employee.EmployeeName,Departments.Department,Designations.Designation from Employee inner join Designations on Designations.DesignationID=Employee.DesignationID inner join Departments on Employee.DepartmentID=Departments.DepartmentID order by EmployeeName Asc";
+            DataSet ds = database.Read(Querry);
+            return ds;
+        }
+
     }
 }

@@ -60,10 +60,10 @@ namespace LeaveApplication.Controllers
         public ActionResult Employees()
         {
             if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
-            {//empty dataset...
-                System.Data.DataSet x = new System.Data.DataSet();
-                x.Tables.Add(new System.Data.DataTable());
-                //here you pass your filled dataset in place of x
+            {
+
+                System.Data.DataSet x = eb.EmployeeDS();
+               
                 return View(x);
             }
             else
@@ -71,6 +71,20 @@ namespace LeaveApplication.Controllers
                 return RedirectToAction("Index", "LogIn");
             }
 
+        }
+        [HttpPost]
+        public ActionResult DeleteEmployee(Employee emp)
+        {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+
+                ad.DeleteEmployee(emp);
+                return RedirectToAction("Employees");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
         }
         [HttpPost]
         public ActionResult AddDepartment(Department dp)

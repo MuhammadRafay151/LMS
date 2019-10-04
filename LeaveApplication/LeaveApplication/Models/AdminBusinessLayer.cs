@@ -138,7 +138,13 @@ namespace LeaveApplication.Models
            Al = null;
 
         }
+        //My changes
 
+        public void DeleteEmployee(Employee emp)
+        {
+            string Querry = string.Format("delete from Employee where EmployeeID='{0}'", emp.EmployeeID);
+            DataBase.ExecuteQuerry(Querry);
+        }
     }
 
 }

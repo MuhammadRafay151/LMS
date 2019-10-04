@@ -11,10 +11,10 @@
         <div class="col-12  mb-3 ">
             <div class="card">
                 <div class="card-header card-header-info">
-                    <h5 class="card-title">Enter Department</h5>
+                    <h5 class="card-title">Manage Employee</h5>
                 </div>
-                <div class="card-body" >
-                    
+                <div class="card-body">
+
 
                     <div class="table-responsive table-responsive-md table-responsive-sm">
                         <table id="t1" class="table table-hover table-light">
@@ -23,29 +23,31 @@
 
                                     <th scope="col">Employee Name</th>
                                     <th scope="col">Department</th>
-                                    
+
                                     <th scope="col">Designation</th>
                                     <th scope="col" class="text-right">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @{ System.Data.DataSet x = Model;
-                                        foreach (System.Data.DataRow i in x.Tables[0].Rows)
-                                        {
+                                    foreach (System.Data.DataRow i in x.Tables[0].Rows)
+                                    {
                                         <tr class="text-center ">
-                                            @*<td class="text-info align-middle">@x.DepartmentId</td>*@
+                                            <td class="text-info align-middle">@i[1].ToString()</td>
+                                            <td class="text-info align-middle">@i[2].ToString()</td>
+                                            <td class="text-info align-middle">@i[3].ToString()</td>
 
                                             <td class="text-dark align-middle"></td>
                                             <td class="align-middle">
                                                 <div class="d-flex justify-content-end">
                                                     <div class="btn-group">
-                                                        <button class="btn btn-info-grd"  onclick="">Edit</button>
-                                                        <button class="btn btn-info-grd" onclick="document.getElementById('').submit()">Delete</button>
+                                                        <button class="btn btn-info-grd" onclick="">Edit</button>
+                                                        <button class="btn btn-info-grd" onclick="document.getElementById('@i[0].ToString()').submit()">Delete</button>
 
                                                     </div>
-                                                    @using (Html.BeginForm("DeactiveEmployee", "Admin", FormMethod.Post, new { id = 1 }))
+                                                    @using (Html.BeginForm("DeleteEmployee", "Admin", FormMethod.Post, new { id = i[0].ToString() }))
                                                     {
-                                                        <input type="text" name="" value="" hidden />
+                                                        <input type="text" name="EmployeeID" value="@i[0].ToString()" hidden />
 
                                                     }
                                                 </div>
