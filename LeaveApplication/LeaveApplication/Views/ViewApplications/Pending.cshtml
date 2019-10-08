@@ -14,11 +14,15 @@
     }
     function CancelApplication(row) {
         var Application_Id = document.getElementById('t1').rows[row.rowIndex].cells[0].innerHTML;
-        window.location.href = "/ViewApplications/CancelApplication?Application_Id=" + Application_Id;
+     
+        $('#f1').click(function () {
+            window.location.href = "/ViewApplications/CancelApplication?Application_Id=" + Application_Id;
+        });
 
     }
     function Accept(row) {
         var Application_Id = document.getElementById('t1').rows[row.rowIndex].cells[0].innerHTML;
+
         window.location.href = "/ViewApplications/AcceptApplication?Application_Id=" + Application_Id;
 
     }
@@ -28,7 +32,35 @@
 
     }
 </script>
+@* Model *@
+<div class="modal fade " id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
+    <div class="modal-dialog "  role="document" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Cancel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick=" $('#f1').prop('onclick', null)">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+               
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to cancel application ?</p>
 
+            </div>
+            <div class="modal-footer">
+              
+
+                    <button  type="button" class="btn btn-secondary" data-dismiss="modal" onclick=" $('#f1').prop('onclick', null)">No</button>
+                    <button id="f1" type="submit" class="btn btn-info-grd" >Yes</button>
+              
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+@* -------------------------------- *@
 <div class="container-fluid " id="a1">
 
     <div class="row ">
@@ -47,6 +79,7 @@
                                         }
                                     }
                                     <th class="align-middle  text-center" scope="col">Date</th>
+                                    <th class="align-middle  text-center" scope="col">Application Type</th>
                                     <th class="align-middle  text-center" scope="col">Leave Type</th>
                                     <th class="align-middle  text-center" scope="col">From Date</th>
                                     <th class="align-middle  text-center" scope="col">To Date</th>
@@ -79,13 +112,29 @@
                                             @{
                                                 if (ViewBag.Manager == true)
                                                 {
-                                                    <td class="align-middle  text-center">@x[8].ToString()</td>
+                                                    <td class="align-middle  text-center">@x[9].ToString()</td>
                                                 }
                                             }
-                                            <td class="align-middle  text-center">@x[2].ToString()</td>
+                                            <td class="align-middle  text-center">@DateTime.Parse(x[2].ToString()).ToString("dd-MM-yyyy")</td>
+                                            @if (bool.Parse(x[8].ToString()) == false)
+                                            {
+                                                <td class="align-middle  text-center">Application</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="align-middle  text-center">Request</td>
+                                            }
                                             <td class="align-middle  text-center">@x[1].ToString()</td>
-                                            <td class="align-middle  text-center">@x[3].ToString()</td>
-                                            <td class="align-middle  text-center">@x[4].ToString()</td>
+                                            @if (double.Parse(x[5].ToString()) == 0.5)
+                                            {//render date and time when half day else render date only
+                                                <td class="align-middle  text-center">@x[3].ToString()</td>
+                                                <td class="align-middle  text-center">@x[4].ToString()</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="align-middle  text-center">@DateTime.Parse(x[3].ToString()).ToString("dd-MM-yyyy")</td>
+                                                <td class="align-middle  text-center">@DateTime.Parse(x[4].ToString()).ToString("dd-MM-yyyy")</td>
+                                            }
                                             <td class="align-middle  text-center">@x[5].ToString()</td>
                                             <td class="align-middle  text-center">@x[6].ToString()</td>
                                             <td class="align-middle text-center">
@@ -111,8 +160,9 @@
                                                         <button type="button" class="btn btn-info-grd" onclick="fun(this.parentNode.parentNode)">Edit</button>
                                                     </td>
                                                     <td class="align-middle  text-center">
-                                                        <button type="button" class="btn btn-info-grd" onclick="CancelApplication(this.parentNode.parentNode)">Cancel</button>
+                                                        <button type="button" class="btn btn-info-grd" data-toggle="modal" data-target="#exampleModalCenter" onclick="CancelApplication(this.parentNode.parentNode);">Cancel</button>
                                                     </td>
+
 
                                                 }
                                             }

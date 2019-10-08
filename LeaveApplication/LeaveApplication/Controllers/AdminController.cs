@@ -4,11 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LeaveApplication.Models;
+using System.IO;
 namespace LeaveApplication.Controllers
 {
     public class AdminController : Controller
     {
         // GET: Admin
+       
         LeaveBusinessLayer lb = new LeaveBusinessLayer();
         EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
         AdminBusinessLayer ad = new AdminBusinessLayer();
@@ -22,8 +24,8 @@ namespace LeaveApplication.Controllers
 
             if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
             {
-                ViewBag.leaves_t = lb.GetLeaveTypes();
-                return View();
+              
+                return View(lb.GetLeaveTypesDS());
             }
             else
             {
@@ -406,6 +408,10 @@ namespace LeaveApplication.Controllers
             }
 
 
+        }
+        public void RequestableStateChange(string LeaveTypeID, bool IsRequestable)
+        {
+            ad.RequestableStateChange(LeaveTypeID, IsRequestable);
         }
 
 

@@ -3,7 +3,7 @@
     ViewBag.Title = "LeaveType";
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
-
+@model System.Data.DataSet
 
 <!-- Modal for edit form-->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -35,19 +35,19 @@
 @* ------------------------------------------ *@
 
 <div id="div1" class="container" style="margin-top:5%">
-    <div class="row  justify-content-center align-content-center ">
+    <div class="row  justify-content-center  vh-100">
 
         <div class="col-sm-6 col-md-6 col-lg-12  mb-3 ">
             <div class="card">
                 <div class="card-header card-header-info">
                     <h5 class="card-title">Enter Leave Types</h5>
-                   
+
                 </div>
                 <div class=" card-body">
                     <div class="card">
                         @using (Html.BeginForm("AddLeaveType", "Admin", FormMethod.Post))
                         {<div class="form-group d-flex  justify-content-center ">
-                                <input type="text" name="LeaveType" class="form-control " placeholder="Leave Type"required />
+                                <input type="text" name="LeaveType" class="form-control " placeholder="Leave Type" required />
                                 <input id="Submit1" class="btn btn-info-grd  ml-2" type="submit" value="Add Leave Type" />
 
                             </div>
@@ -57,42 +57,69 @@
 
                         }
                     </div>
-                    
-                    <table id="t1" class="table table-hover table-light  ">
-                        <thead>
-                            <tr class="text-center">
-                                <th scope="col">Leave Type</th>
-                                <th class="text-right" scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{ IEnumerable<LeaveApplication.Models.LeaveTypes> d1 = ViewBag.leaves_t;
-                                foreach (LeaveApplication.Models.LeaveTypes x in d1)
-                                {
-                                    <tr class="text-center ">
-                                        <td class="text-dark align-middle">@x.LeaveType</td>
-                                        <td class="align-middle">
-                                            <div class="d-flex justify-content-end">
-                                                <div class="btn-group">
-                                                    <button class="btn btn-info-grd" data-toggle="modal" data-target="#exampleModalCenter" onclick="ModelOnclick(this.parentNode.parentNode.parentNode.parentNode,@x.LeaveTypeID)">Edit</button>
-                                                    <button class="btn btn-info-grd" onclick="document.getElementById('@x.LeaveTypeID').submit()">Delete</button>
+                    <div class="table-responsive">
+                        <table id="t1" class="table table-hover table-light  ">
+                            <thead>
+                                <tr class="text-center">
+                                    <th scope="col">Leave Type</th>
+                                    <th class="text-right" scope="col">Action</th>
+                                    <th scope="col">Requestable</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    //IEnumerable<LeaveApplication.Models.LeaveTypes> d1 = ViewBag.leaves_t;
+                                    foreach (System.Data.DataRow i in Model.Tables[0].Rows)
+                                    {
+                                        <tr class="text-center ">
+                                            <td class="text-dark align-middle">@i[1].ToString()</td>
+
+                                            <td class="align-middle">
+                                                <div class="d-flex justify-content-end">
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-info-grd" data-toggle="modal" data-target="#exampleModalCenter" onclick="ModelOnclick(this.parentNode.parentNode.parentNode.parentNode,@i[0].ToString())">Edit</button>
+                                                        <button class="btn btn-info-grd" onclick="document.getElementById('@i[0].ToString()').submit()">Delete</button>
+                                                    </div>
+                                                    @using (Html.BeginForm("DeleteLeaveType", "Admin", FormMethod.Post, new { id = i[0].ToString() }))
+                                                    {
+                                                        <input type="text" name="LeaveTypeID" value="@i[0].ToString()" hidden />
+
+                                                    }
                                                 </div>
-                                                @using (Html.BeginForm("DeleteLeaveType", "Admin", FormMethod.Post, new { id = x.LeaveTypeID }))
-                                                {
-                                                    <input type="text" name="LeaveTypeID" value="@x.LeaveTypeID" hidden />
 
-                                                }
-                                            </div>
+                                            </td>
+                                            <td class="align-middle " style="width:20px">
+                                                <div class="togglebutton">
+                                                    <form name="a">
+                                                        <label>
+                                                            @{
+                                                                if (bool.Parse(i[2].ToString()) == true)
+                                                                {
+                                                                    <input type="checkbox" checked onclick="StateChange(this,@i[0].ToString())">
+                                                                    <span class="toggle"></span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="checkbox"  onclick="StateChange(this,@i[0].ToString())">
+                                                                    <span class="toggle"></span>
+                                                                }
+                                                            }
 
-                                        </td>
-                                    </tr>
+                                                        </label>
+                                                    </form>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
                                 }
-                            }
 
 
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
 
             </div>

@@ -3,15 +3,14 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
-
-
+@model System.Data.DataSet
 <div id="div1" class="container mt-lg-5 mt-5">
     <div class="row  justify-content-center  ">
 
         <div class="col-sm-6 col-lg-6 col-8 ">
 
 
-            @using (Html.BeginForm("Submit", "ApplyForLeave", FormMethod.Post, new { id = "form1", onsubmit = "return OnSubmit()" }))
+            @using (Html.BeginForm("Submit", "RequestLeave", FormMethod.Post, new { id = "form1", onsubmit = "return OnSubmit()" }))
             {
                 <div class="card ">
                     <div class="card-header card-header-info">
@@ -36,15 +35,14 @@
 
                         <label style="font-size:22px" id="date" for="">Date Of Application: @System.DateTime.Now.Date.ToString("dd-MM-yyyy")</label>
                         <br><br>
-                        <label class="label-control text-left"> Select Leave</label>
-                        <div class="form-group d-flex justify-content-center ">
 
+                        <div class="form-group d-flex justify-content-center ">
                             <select class="form-control" name="LeaveType" id="LeaveType" required>
                                 <option selected disabled> Select Leave Type</option>
                                 @{
-                                    foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
+                                    foreach (System.Data.DataRow x in Model.Tables[0].Rows)
                                     {
-                                        <option value="@x.LeaveTypeID">@x.LeaveType</option>
+                                        <option value="@x[0].ToString()">@x[1].ToString()</option>
                                     }
                                 }
                             </select>
@@ -68,7 +66,6 @@
                             <input class="form-control" type="text" name="days" id="days" readonly>
 
                         </div>
-                        <label class="label-control text-left"> Select Reason</label>
                         <div class="form-group d-flex justify-content-center">
                             <select class="form-control" name="LeaveReason" id="LeaveReason">
                                 <option selected disabled>Reason For Leave</option>
@@ -80,7 +77,6 @@
                                 }
                             </select>
                         </div>
-                        <label class="label-control text-left"> Select Reason</label>
                         <div class="form-group d-flex justify-content-center">
                             <textarea class="form-control" style="resize:none" name="LeaveRemarks" id="LeaveRemarks" cols="30" rows="5" placeholder="Enter Description if any."></textarea>
                         </div>
@@ -116,69 +112,69 @@
             $('#days').val(0.5);
 
         });
-        $('#customRadio1').click(function () {
-            $('#FromDate').prop("disabled", false);
-            $('#FromDate').val("");
-            $('#ToDate').prop("disabled", false);
-            $('#ToDate').val("");
-            $('#halfday').prop("disabled", true);
-            $('#halfday').val("");
-            $('#days').val("");
+          $('#customRadio1').click(function () {
+        $('#FromDate').prop("disabled", false);
+        $('#FromDate').val("");
+        $('#ToDate').prop("disabled", false);
+        $('#ToDate').val("");
+        $('#halfday').prop("disabled", true);
+        $('#halfday').val("");
+        $('#days').val("");
 
 
 
-        });
-        $('#customRadio2').click(function () {
+    });
+    $('#customRadio2').click(function () {
 
-            $('#FromDate').prop("disabled", true);
-            $('#FromDate').val("");
-            $('#ToDate').prop("disabled", true);
-            $('#ToDate').val("");
-            $('#halfday').prop("disabled", false);
-            $('#halfday').val("");
-            $('#days').val("");
+        $('#FromDate').prop("disabled", true);
+        $('#FromDate').val("");
+        $('#ToDate').prop("disabled", true);
+        $('#ToDate').val("");
+        $('#halfday').prop("disabled", false);
+        $('#halfday').val("");
+        $('#days').val("");
 
-        });
+    });
 
-        $('.datetimepicker').datetimepicker({
-            format: 'L',
+    $('.datetimepicker').datetimepicker({
+        format: 'L',
 
-            icons: {
-                time: "fa fa-clock-o",
-                date: "fa fa-calendar",
-                up: "fa fa-chevron-up",
-                down: "fa fa-chevron-down",
-                previous: 'fa fa-chevron-left',
-                next: 'fa fa-chevron-right',
-                today: 'fa fa-screenshot',
-                clear: 'fa fa-trash',
-                close: 'fa fa-remove',
+        icons: {
+            time: "fa fa-clock-o",
+            date: "fa fa-calendar",
+            up: "fa fa-chevron-up",
+            down: "fa fa-chevron-down",
+            previous: 'fa fa-chevron-left',
+            next: 'fa fa-chevron-right',
+            today: 'fa fa-screenshot',
+            clear: 'fa fa-trash',
+            close: 'fa fa-remove',
 
-            }
-
-        });
-        $('.datetimepicker1').datetimepicker({
-            format: 'L LT',
-            icons: {
-                time: "fa fa-clock-o",
-                date: "fa fa-calendar",
-                up: "fa fa-chevron-up",
-                down: "fa fa-chevron-down",
-                previous: 'fa fa-chevron-left',
-                next: 'fa fa-chevron-right',
-                today: 'fa fa-screenshot',
-                clear: 'fa fa-trash',
-                close: 'fa fa-remove',
-
-            }
-
-        });
-        function OnSubmit() {
-            if ($('#LeaveType').val() == null || $('#halfday').val() == null || $('#FromDate').val() == null || $('#ToDate').val() == null || $('#LeaveReason').val() == null) {
-                alert("Kindly Fill all the fields");
-                return false;
-            }
         }
+
+    });
+    $('.datetimepicker1').datetimepicker({
+        format: 'L LT',
+        icons: {
+            time: "fa fa-clock-o",
+            date: "fa fa-calendar",
+            up: "fa fa-chevron-up",
+            down: "fa fa-chevron-down",
+            previous: 'fa fa-chevron-left',
+            next: 'fa fa-chevron-right',
+            today: 'fa fa-screenshot',
+            clear: 'fa fa-trash',
+            close: 'fa fa-remove',
+
+        }
+
+    });
+    function OnSubmit() {
+        if ($('#LeaveType').val() == null || $('#halfday').val() == null || $('#FromDate').val() == null || $('#ToDate').val() == null|| $('#LeaveReason').val() == null) {
+            alert("Kindly Fill all the fields");
+            return false;
+        }
+    }
     });
     var Date1 = null;
     var Date2 = null;
@@ -221,4 +217,3 @@
     }
 
 </script>
-

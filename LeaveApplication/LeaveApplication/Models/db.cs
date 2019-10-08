@@ -28,6 +28,15 @@ namespace LeaveApplication.Models
             cmd.ExecuteNonQuery();
             con.Close();
         }
+        public void ExecuteQuerry(string Querry,SqlParameter sqlParameter)
+        {
+            con = new SqlConnection(connection);
+            con.Open();
+            cmd = new SqlCommand(Querry, con);
+            cmd.Parameters.Add(sqlParameter);
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
         public DataSet Read(string Querry)
         {
             con = new SqlConnection(connection);

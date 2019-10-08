@@ -21,8 +21,9 @@ namespace LeaveApplication.Models
         public string LeaveRemarks { get; set; }
         public String LeaveReason { get; set; }
         public string ApplicationStatus { get; set; }
+        public int IsHalfDay { get; set; }//full day leave or half day leave
 
-        public int ApplicationType { get; set; }   //full day leave or half day leave
+        public bool ApplicationType { get; set; }   
 
     }
     public enum Status

@@ -23,12 +23,13 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult Login(Employee e1)
         {
-           
+
           
             if (this.e1.Authenticate(e1))
             {
-                Session["EmpID"] = e1.EmployeeID;
-                this.e1.ReadEmployee(e1.EmployeeID);
+                
+                this.e1.ReadEmployee(e1.UserName);
+                Session["EmpID"] = EmployeeBusinessLayer.Employee.EmployeeID;
                 return RedirectToAction("Index", "ApplyForLeave");
                
             }

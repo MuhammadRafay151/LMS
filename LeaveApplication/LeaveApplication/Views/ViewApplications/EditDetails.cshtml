@@ -16,12 +16,146 @@
     <title>Leave</title>
     @*<link rel="stylesheet" href="main.css">*@
     <link rel="stylesheet" href="~/Content/main.css" />
- 
+
     <script>
 
-        var FromDate = null;
-        var ToDate = null;
-        function DateSelect(date) {
+/**/</script>
+</head>
+
+<body>
+
+
+    <div id="div1" class="container mt-lg-5 mt-5">
+        <div class="row  justify-content-center ">
+
+            <div class="col-sm-6 col-lg-6 col-8 ">
+                <div class="card ">
+                    <div class="card-header card-header-info">
+                        <a href='/ViewApplications/'><img src="~/Images/go back.png" style="width:35px" /></a>
+                    </div>
+                    <div class="card-body d-flex justify-content-center">
+                        @using (Html.BeginForm("SaveChanges", "ViewApplications", FormMethod.Post, new { id = "form1" }))
+                        {
+                            <label style="font-size:22px" id="date" for="">Date Of Application: @Model.ApplyDate</label>
+                            <br><br>
+
+                                <div class="form-group">
+                                    <label class="label-control" >Select Leaves</label>
+                                    <select class="form-control" name="@Html.NameFor(m=>m.LeaveType)" id="@Html.IdFor(m=>m.LeaveType)">
+                                        <option selected disabled> Select Leave Type</option>
+                                        @{
+                                            foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
+                                            {
+                                                <option value="@x.LeaveTypeID">@x.LeaveType</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            if (Model.TotalDays == 0.5)
+                            {
+                                <div class="form-group " id="d1">
+                                    <label class="label-control" id="l1">Date & time</label>
+                                    <input type="text" class="form-control datetimepicker1" id="halfday" name="halfday" value="@Model.FromDate" required />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <label for="date1">From</label>
+                                    <input class="form-control datetimepicker" type="text" name="@Html.NameFor(m=>m.FromDate)" id="@Html.IdFor(m=>m.FromDate)" value="@Model.FromDate" required onfocusout="DateSelect(this)">
+                                </div>
+                                <div class="form-group">
+                                    <label for="date2">To</label>
+
+                                    <input type="text" class="form-control datetimepicker" value="@Model.ToDate" name="@Html.NameFor(m=>m.ToDate)" id="@Html.IdFor(m=>m.ToDate)" required onfocusout="DateSelect(this)">
+                                </div>
+                            }
+
+
+                            <div class=" form-group">
+                                <label for="days">Total Days</label>
+                                <input class="form-control" type="text" name="days" value="@Model.TotalDays" id="days" disabled>
+
+                            </div>
+                            <div class="form-group">
+                                <label class="label-control" >Select Reasons</label>
+                                <select class="form-control" name="@Html.NameFor(m=>m.LeaveReason)" id="@Html.IdFor(m=>m.LeaveReason)">
+                                    <option selected disabled>Reason For Leave</option>
+                                    @{ System.Data.DataSet i = ViewBag.Reasons;
+                                        foreach (System.Data.DataRow x in i.Tables[0].Rows)
+                                        {
+                                            <option value="@x[0].ToString()">@x[1].ToString()</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="label-control" >Description</label>
+                                <textarea class="form-control" style="resize:none" name="@Html.NameFor(m=>m.LeaveRemarks)" id="@Html.IdFor(m=>m.LeaveRemarks)" cols="30" rows="10" placeholder="Enter Description if any.">@Model.LeaveRemarks</textarea>
+                            </div>
+
+                            <div class="card-footer ">
+                                <input id="Submit1" class="btn btn-round btn-info-grd col-lg-12" type="submit" value="Save Changes" />
+
+                            </div>
+                        }
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+
+        $(document).ready(function () {
+            $('.datetimepicker1').datetimepicker({
+                format: 'L LT',
+                icons: {
+                    time: "fa fa-clock-o",
+                    date: "fa fa-calendar",
+                    up: "fa fa-chevron-up",
+                    down: "fa fa-chevron-down",
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
+                    today: 'fa fa-screenshot',
+                    clear: 'fa fa-trash',
+                    close: 'fa fa-remove',
+
+                }
+
+            });
+            $('.datetimepicker').datetimepicker({
+                format: 'L',
+                icons: {
+                    time: "fa fa-clock-o",
+                    date: "fa fa-calendar",
+                    up: "fa fa-chevron-up",
+                    down: "fa fa-chevron-down",
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
+                    today: 'fa fa-screenshot',
+                    clear: 'fa fa-trash',
+                    close: 'fa fa-remove',
+
+                }
+
+            });
+        });
+
+
+    </script>
+    <script>
+          var FromDate = null;
+    var ToDate = null;
+     FromDate = document.getElementById("FromDate").value;
+    ToDate = document.getElementById("ToDate").value;
+    document.getElementById("LeaveType").value = "@Model.LeaveTypeID";
+    document.getElementById("LeaveReason").value = "@Model.LeaveReason";
+   
+    function DateSelect(date) {
 
             var LeaveDetails = { FromDate: "", ToDate: "" };
 
@@ -58,86 +192,6 @@
 
 
         }
-
-/**/</script>
-</head>
-
-<body>
-
-
-    <div id="div1" class="container">
-        <div class="row  justify-content-center ">
-
-            <div class="col-sm-4  offset-2">
-
-                @using (Html.BeginForm("SaveChanges", "ViewApplications", FormMethod.Post, new { id = "form1" }))
-                {
-                    <label style="font-size:22px" id="date" for="">Date Of Application: @Model.ApplyDate</label>
-                    <br><br>
-
-                    <div class="form-group">
-                        <select class="form-control" name="@Html.NameFor(m=>m.LeaveType)" id="@Html.IdFor(m=>m.LeaveType)">
-                            <option selected disabled> Select Leave Type</option>
-                            @{
-                                foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
-                                {
-                                    <option value="@x.LeaveTypeID">@x.LeaveType</option>
-                                }
-                            }
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="date1">From</label>
-                        <input class="form-control" type="date" name="@Html.NameFor(m=>m.FromDate)" id="@Html.IdFor(m=>m.FromDate)" value="@Model.FromDate" required onchange="DateSelect(this)">
-                    </div>
-                    <div class="form-group">
-                        <label for="date2">To</label>
-                        <input class="form-control" type="date" name="@Html.NameFor(m=>m.ToDate)" id="@Html.IdFor(m=>m.ToDate)" value="@Model.ToDate" required onchange="DateSelect(this)">
-                    </div>
-                    <div class=" form-group">
-                        <label for="days">Total Days</label>
-                        <input class="form-control" type="text" name="days" value="@Model.TotalDays" id="days" disabled>
-
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" name="@Html.NameFor(m=>m.LeaveReason)" id="@Html.IdFor(m=>m.LeaveReason)">
-                            <option selected disabled>Reason For Leave</option>
-                            @{ System.Data.DataSet i = ViewBag.Reasons;
-                                foreach (System.Data.DataRow x in i.Tables[0].Rows)
-                                {
-                                    <option value="@x[0].ToString()">@x[1].ToString()</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" style="resize:none" name="@Html.NameFor(m=>m.LeaveRemarks)" id="@Html.IdFor(m=>m.LeaveRemarks)" cols="30" rows="10" placeholder="Enter Description if any.">@Model.LeaveRemarks</textarea>
-                    </div>
-
-                    <input id="Submit1" class="btn btn-primary btn-block" type="submit" value="Save Changes" />
-
-                }
-
-            </div>
-        </div>
- 
-    </div>
-    <div class="clearfix">
-        <div class=" float-right">
-
-            <button class="btn btn-outline-primary " onclick="window.location.href='/ViewApplications/'">Go back</button>
-
-        </div>
-    </div>
-    
-    <script>
-    FromDate = document.getElementById("FromDate").value;
-    ToDate = document.getElementById("ToDate").value;
-
-            document.getElementById("LeaveType").value = "@Model.LeaveTypeID";
-     document.getElementById("LeaveReason").value = "@Model.LeaveReason";
-
     </script>
 </body>
 

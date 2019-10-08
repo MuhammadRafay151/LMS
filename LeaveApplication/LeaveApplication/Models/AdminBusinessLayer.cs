@@ -138,6 +138,13 @@ namespace LeaveApplication.Models
            Al = null;
 
         }
+        public void RequestableStateChange(string LeaveTypeID,bool IsRequestable)
+        {
+            //change enable/disable isrequestable for leave type based on user input
+            string Querry= string.Format("update LeaveType set IsRequestable='{0}' where LeaveTypeID='{1}'", IsRequestable, LeaveTypeID);
+            DataBase.ExecuteQuerry(Querry);
+
+        }
 
     }
 

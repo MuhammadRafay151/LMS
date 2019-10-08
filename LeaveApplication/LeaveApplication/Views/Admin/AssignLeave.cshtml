@@ -155,7 +155,8 @@
         $('#emp').empty();
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = fun;
-        Department = { DepartmentId: document.getElementById('dep').value }
+            Department = { DepartmentId: document.getElementById('dep').value }
+           
         function fun() {
             if (this.readyState == 4 && this.status == 200) {
                 var x = null
@@ -164,12 +165,8 @@
                 if (x.length != 0) {
 
                     for (var i = 0; i < x.length; i++) {
-                        $('#emp').append($('<option>',
-                            {
-                                value: Object.values(x[i])[0],
-                                text: Object.values(x[i])[1]
-                            }));
-
+                        $('#emp').append(`<option value="${x[i].EmployeeID}">${x[i].EmployeeName}</option>`)
+                       
                     }
                 } else { $('#emp').hide(); }
 

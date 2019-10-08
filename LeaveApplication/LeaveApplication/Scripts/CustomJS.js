@@ -43,3 +43,14 @@ function Pre(href) {
     }
 
 }
+function StateChange(ToggleBtn,id) {
+    var form = $(ToggleBtn).parent().parent();
+    $.ajax({
+        type: "post",
+        url: "/Admin/RequestableStateChange",
+        data: { LeaveTypeID: id, IsRequestable:ToggleBtn.checked }
+      
+    })
+    //window.location.href = "/Admin/RequestableStateChange?LeaveTypeID=" + id + "&IsRequestable="+ToggleBtn.checked;
+   
+}

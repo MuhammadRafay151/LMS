@@ -20,10 +20,10 @@ namespace LeaveApplication.Controllers
         {
             if (Session["EmpID"] != null)
             {
-                Employee e1 = EmployeeBusinessLayer.Employee;
+               
                 ViewBag.Reasons = lb.GetReasons();
                 ViewBag.Leavetypes = lb.GetLeaveTypes();
-                return View(e1);
+                return View();
             }
             else
             {
@@ -35,14 +35,15 @@ namespace LeaveApplication.Controllers
         public ActionResult Submit(LeaveApplication.Models.LeaveApplication l1)
         {
 
-            if (l1.ApplicationType == 0 || l1.ApplicationType == 1)
+            if (l1.IsHalfDay == 0 || l1.IsHalfDay == 1)
             {
-                if (l1.ApplicationType == 1)
+                if (l1.IsHalfDay == 1)
                 {
                     l1.FromDate = Request.Form["halfday"].ToString();
                     l1.ToDate = Request.Form["halfday"].ToString();
                 }
                 l1.EmployeeID = Session["EmpID"].ToString();
+                l1.ApplicationType = false;//that's means this is type application
                 lb.SaveApplication(l1);
             }
 

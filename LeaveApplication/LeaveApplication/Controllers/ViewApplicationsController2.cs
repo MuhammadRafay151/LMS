@@ -37,7 +37,7 @@ namespace LeaveApplication.Controllers
 
                     ViewBag.PageNo = PageNo.Value;
 
-                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, PageNo);
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 5, PageNo);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("All", ds1);
                 }
@@ -45,7 +45,7 @@ namespace LeaveApplication.Controllers
                 {
                     ViewBag.PageNo = 1;
 
-                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, 1);
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 5, 1);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("All", ds1);
                 }
@@ -71,7 +71,7 @@ namespace LeaveApplication.Controllers
 
                     ViewBag.PageNo = PageNo.Value;
 
-                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, PageNo);
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 5, PageNo);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("Pending", ds1);
                 }
@@ -79,7 +79,7 @@ namespace LeaveApplication.Controllers
                 {
                     ViewBag.PageNo = 1;
 
-                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, 1);
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 5, 1);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("Pending", ds1);
                 }
@@ -105,7 +105,7 @@ namespace LeaveApplication.Controllers
 
                     ViewBag.PageNo = PageNo.Value;
 
-                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, PageNo);
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 5, PageNo);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("Approved", ds1);
                 }
@@ -113,7 +113,7 @@ namespace LeaveApplication.Controllers
                 {
                     ViewBag.PageNo = 1;
 
-                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, 1);
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 5, 1);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("Approved", ds1);
                 }
@@ -138,7 +138,7 @@ namespace LeaveApplication.Controllers
 
                     ViewBag.PageNo = PageNo.Value;
 
-                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, PageNo);
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 5, PageNo);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("Rejected", ds1);
                 }
@@ -146,7 +146,7 @@ namespace LeaveApplication.Controllers
                 {
                     ViewBag.PageNo = 1;
 
-                    System.Data.DataSet ds1 = p1.GetPage(ds, 2, 1);
+                    System.Data.DataSet ds1 = p1.GetPage(ds, 5, 1);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("Rejected", ds1);
                 }

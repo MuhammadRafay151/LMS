@@ -62,14 +62,15 @@ namespace LeaveApplication.Controllers
                 {
                     if (e.Number == 2627)
                     {
-                        ModelState.AddModelError("EmployeeID", "Employee ID is Not Available");
+                        ModelState.AddModelError("UserName", "User Name is Not Available");
+                        ViewBag.Employees = emp.GetEmployees();
                         ViewBag.List = emp.GetDesignation();
                         ViewBag.List2 = emp.GetDepartments();
                         return View("Registeration");
                     }
                     else
                     {
-                        return Content("Cannot process your request");
+                        return Content(e.Message);
                     }
                 }
 

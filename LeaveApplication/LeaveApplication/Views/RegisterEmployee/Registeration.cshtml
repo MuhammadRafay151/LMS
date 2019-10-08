@@ -5,7 +5,7 @@
 }
 
 
-<link href="~/daterangepicker-master/daterangepicker.css" rel="stylesheet" />
+
 <style>
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button {
@@ -32,8 +32,8 @@
                                     <fieldset>
 
                                         <div class="form-group">
-                                            @Html.TextBoxFor(Model => Model.EmployeeID, new { @class = "form-control", placeholder = "Employee Id", required = "required" })
-                                            @Html.ValidationMessageFor(m => m.EmployeeID, "", new { @class = "text-danger" })
+                                            @Html.TextBoxFor(Model => Model.UserName, new { @class = "form-control", placeholder = "User Name", required = "required" })
+                                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                                         </div>
 
                                         <div class="form-group">
@@ -140,7 +140,7 @@
                         <div class="row ">
                             <div class="d-flex col justify-content-center">
 
-                                <input id="Submit1" class="btn btn-info-grd btn-round col-6"  type="submit" value="submit" onclick="IsImgUploaded() " />
+                                <input id="Submit1" class="btn btn-info-grd btn-round col-6"  type="submit" value="submit" onclick="return IsImgUploaded() " />
 
                             </div>
                         </div>
@@ -162,7 +162,7 @@
 <script>
     $(document).ready(function () {
         $("#EmployeeID").mask("Emp0000");
-        $("#EmployeeName").mask("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+        //$("#EmployeeName").mask("AAAA");
         $("#PhoneNumber").mask('0000-0000000');
         $("#CNIC").mask("00000-0000000-0");
     });

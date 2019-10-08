@@ -10,7 +10,8 @@ namespace LeaveApplication.Models
     {
      
         //[Required(ErrorMessage = "please bhai dalo value")]
-        public String EmployeeID { get; set; }
+        public int EmployeeID { get; set; }
+        public string UserName { get; set; }
         public string EmployeeName { get; set; }
         public string Address { get; set; }
         public string Manager { get; set; }

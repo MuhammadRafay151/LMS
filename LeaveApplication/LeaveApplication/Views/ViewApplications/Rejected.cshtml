@@ -29,6 +29,7 @@
                                         }
                                     }
                                     <th class="align-middle  text-center" scope="col">Date</th>
+                                    <th class="align-middle  text-center" scope="col">Application Type</th>
                                     <th class="align-middle  text-center" scope="col">Leave Type</th>
                                     <th class="align-middle  text-center" scope="col">From Date</th>
                                     <th class="align-middle  text-center" scope="col">To Date</th>
@@ -40,10 +41,10 @@
                             </thead>
                             <tbody>
                                 @{
-                                                bool check = false;
-                                                System.Data.DataSet temp = Model;
-                                                foreach (System.Data.DataRow x in temp.Tables[0].Rows)
-                                                {
+                                    bool check = false;
+                                    System.Data.DataSet temp = Model;
+                                    foreach (System.Data.DataRow x in temp.Tables[0].Rows)
+                                    {
 
                                         <tr>
 
@@ -51,13 +52,29 @@
                                             @{
                                                 if (ViewBag.Manager == true)
                                                 {
-                                                    <td class="align-middle  text-center">@x[8].ToString()</td>
+                                                    <td class="align-middle  text-center">@x[9].ToString()</td>
                                                 }
-                                    }
-                                            <td class="align-middle  text-center">@x[2].ToString()</td>
+                                            }
+                                            <td class="align-middle  text-center">@DateTime.Parse(x[2].ToString()).ToString("dd-MM-yyyy")</td>
+                                            @if (bool.Parse(x[8].ToString()) == false)
+                                            {
+                                                <td class="align-middle  text-center">Application</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="align-middle  text-center">Request</td>
+                                            }
                                             <td class="align-middle  text-center">@x[1].ToString()</td>
-                                            <td class="align-middle  text-center">@x[3].ToString()</td>
-                                            <td class="align-middle  text-center">@x[4].ToString()</td>
+                                            @if (double.Parse(x[5].ToString()) == 0.5)
+                                            {//render date and time when half day else render date only
+                                                <td class="align-middle  text-center">@x[3].ToString()</td>
+                                                <td class="align-middle  text-center">@x[4].ToString()</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="align-middle  text-center">@DateTime.Parse(x[3].ToString()).ToString("dd-MM-yyyy")</td>
+                                                <td class="align-middle  text-center">@DateTime.Parse(x[4].ToString()).ToString("dd-MM-yyyy")</td>
+                                            }
                                             <td class="align-middle  text-center">@x[5].ToString()</td>
                                             <td class="align-middle  text-center">@x[6].ToString()</td>
                                             <td class="align-middle text-center">
@@ -89,95 +106,179 @@
                     else
                     {<div class="card-footer justify-content-end">
 
-    <ul id="paged" class="pagination pagination-info ">
-        @{
+                            <ul id="paged" class="pagination pagination-info ">
+                                @{
 
-            <li class="page-item ">
-                @Ajax.ActionLink("First", "Rejected", new { PageNo = 1 }, new AjaxOptions
+                                    <li class="page-item ">
+                                        @{
+                                            if (ViewContext.RouteData.Values["action"].ToString() == "Rejected")
+                                            { @Ajax.ActionLink("First", "Rejected", new { PageNo = 1 }, new AjaxOptions
+            {
+            HttpMethod = "GET",
+            UpdateTargetId = "div1",
+            InsertionMode = InsertionMode.Replace
+            }, new { @class = "page-link" })
+                                        }
+                                        else
+                                        {
+                                            @Ajax.ActionLink("First", "FacultyRejected", new { PageNo = 1 }, new AjaxOptions
+                                                                 {
+                                                                 HttpMethod = "GET",
+                                                                 UpdateTargetId = "div1",
+                                                                 InsertionMode = InsertionMode.Replace
+                                                                 }, new { @class = "page-link" })
+                                        }
+                                        }
+
+                                    </li>
+                                    <li class="page-item ">
+                                        @{
+                                            if (ViewContext.RouteData.Values["action"].ToString() == "Rejected")
+                                            { @Ajax.ActionLink("Previous", "Rejected", null, new AjaxOptions
+              {
+              HttpMethod = "GET",
+              UpdateTargetId = "div1",
+              InsertionMode = InsertionMode.Replace
+              }, new { @class = "page-link", id = "pre", onclick = "Pre('/ViewApplications/Rejected?PageNo=')" })
+                                        }
+                                        else
+                                        {
+                                            @Ajax.ActionLink("Previous", "FacultyRejected", null, new AjaxOptions
 {
 HttpMethod = "GET",
 UpdateTargetId = "div1",
 InsertionMode = InsertionMode.Replace
-}, new { @class = "page-link" })
-            </li>
-            <li class="page-item ">
-                @Ajax.ActionLink("Previous", "Rejected", null, new AjaxOptions
-{
-HttpMethod = "GET",
-UpdateTargetId = "div1",
-InsertionMode = InsertionMode.Replace
-}, new { @class = "page-link", id = "pre", onclick = "Pre('/ViewApplications/Rejected?PageNo=')" })
-            </li>
+}, new { @class = "page-link", id = "pre", onclick = "Pre('/ViewApplications/FacultyRejected?PageNo=')" })
+                                        }
+                                        }
 
-            int ax = ViewBag.PageNo;
-            if (ViewBag.TotalPages <= 3)
-            {
-                ax = 1;
-            }
-            else if (ViewBag.TotalPages - ViewBag.PageNo == 1)
-            {
-                ax -= 1;
-            }
-            else if (ViewBag.TotalPages - ViewBag.PageNo == 0)
-            {
-                ax -= 2;
-            }
-            int count = 0;
-            for (int i = ax; i <= ViewBag.TotalPages; i++)
-            {
-                if (i == ViewBag.PageNo)
-                {
-                    <li class="page-item active">
-                        @Ajax.ActionLink(i.ToString(), "Rejected", new { PageNo = i }, new AjaxOptions
+                                    </li>
+
+                                    int ax = ViewBag.PageNo;
+                                    if (ViewBag.TotalPages <= 3)
+                                    {
+                                        ax = 1;
+                                    }
+                                    else if (ViewBag.TotalPages - ViewBag.PageNo == 1)
+                                    {
+                                        ax -= 1;
+                                    }
+                                    else if (ViewBag.TotalPages - ViewBag.PageNo == 0)
+                                    {
+                                        ax -= 2;
+                                    }
+                                    int count = 0;
+                                    for (int i = ax; i <= ViewBag.TotalPages; i++)
+                                    {
+                                        if (i == ViewBag.PageNo)
+                                        {
+                                            <li class="page-item active">
+                                                @{
+                                                    if (ViewContext.RouteData.Values["action"].ToString() == "Rejected")
+                                                    { @Ajax.ActionLink(i.ToString(), "Rejected", new { PageNo = i }, new AjaxOptions
+                                 {
+                                     HttpMethod = "GET",
+                                     UpdateTargetId = "div1",
+                                     InsertionMode = InsertionMode.Replace
+                                 }, new { @class = "page-link" })
+                                                }
+                                                else
+                                                { @Ajax.ActionLink(i.ToString(), "FacultyRejected", new { PageNo = i }, new AjaxOptions
+                                                   {
+                                                       HttpMethod = "GET",
+                                                       UpdateTargetId = "div1",
+                                                       InsertionMode = InsertionMode.Replace
+                                                   }, new { @class = "page-link" })
+
+                                            }
+                                                }
+
+                                            </li>
+
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item ">
+                                                @{
+                                                    if (ViewContext.RouteData.Values["action"].ToString() == "Rejected")
+                                                    {@Ajax.ActionLink(i.ToString(), "Rejected", new { PageNo = i }, new AjaxOptions
+                                   {
+                                   HttpMethod = "GET",
+                                   UpdateTargetId = "div1",
+                                   InsertionMode = InsertionMode.Replace
+                                   }, new { @class = "page-link" })
+                                                }
+                                                else
+                                                {@Ajax.ActionLink(i.ToString(), "FacultyRejected", new { PageNo = i }, new AjaxOptions
+                                                    {
+                                                    HttpMethod = "GET",
+                                                    UpdateTargetId = "div1",
+                                                    InsertionMode = InsertionMode.Replace
+                                                    }, new { @class = "page-link" })
+
+                                            }
+                                                }
+
+                                            </li>
+
+                                        }
+                                        ++count;
+                                        if (count == 3)
+                                        {
+                                            break;
+                                        }
+
+                                    }
+                                    <li class="page-item">
+                                        @{
+                                            if (ViewContext.RouteData.Values["action"].ToString() == "Rejected")
+                                            { @Ajax.ActionLink("Next", "Rejected", null, new AjaxOptions
+              {
+              HttpMethod = "GET",
+              UpdateTargetId = "div1",
+              InsertionMode = InsertionMode.Replace
+              }, new { @class = "page-link", id = "next", onclick = "Next('/ViewApplications/Rejected?PageNo=')" })
+                                        }
+                                        else
+                                        {
+                                            @Ajax.ActionLink("Next", "FacultyRejected", null, new AjaxOptions
                    {
-                       HttpMethod = "GET",
-                       UpdateTargetId = "div1",
-                       InsertionMode = InsertionMode.Replace
-                   }, new { @class = "page-link" })
-                    </li>
+                   HttpMethod = "GET",
+                   UpdateTargetId = "div1",
+                   InsertionMode = InsertionMode.Replace
+                   }, new { @class = "page-link", id = "next", onclick = "Next('/ViewApplications/FacultyRejected?PageNo=')" })
+                                        }
+                                        }
 
-                }
-                else
-                {
-                    <li class="page-item ">
-                        @Ajax.ActionLink(i.ToString(), "Rejected", new { PageNo = i }, new AjaxOptions
-{
- HttpMethod = "GET",
- UpdateTargetId = "div1",
- InsertionMode = InsertionMode.Replace
-}, new { @class = "page-link" })
-                    </li>
+                                    </li>
+                                    <li class="page-item ">
+                                        @{
+                                            if (ViewContext.RouteData.Values["action"].ToString() == "Rejected")
+                                            { @Ajax.ActionLink("Last", "Rejected", new { PageNo = @ViewBag.TotalPages }, new AjaxOptions
+             {
+             HttpMethod = "GET",
+             UpdateTargetId = "div1",
+             InsertionMode = InsertionMode.Replace
+             }, new { @class = "page-link" })
+                                        }
+                                        else
+                                        {
+                                            @Ajax.ActionLink("Last", "FacultyRejected", new { PageNo = @ViewBag.TotalPages }, new AjaxOptions
+                  {
+                  HttpMethod = "GET",
+                  UpdateTargetId = "div1",
+                  InsertionMode = InsertionMode.Replace
+                  }, new { @class = "page-link" })
+                                        }
+                                        }
 
-                }
-                ++count;
-                if (count == 3)
-                {
-                    break;
-                }
-
-            }
-            <li class="page-item">
-                @Ajax.ActionLink("Next", "Rejected", null, new AjaxOptions
-{
-HttpMethod = "GET",
-UpdateTargetId = "div1",
-InsertionMode = InsertionMode.Replace
-}, new { @class = "page-link", id = "next", onclick = "Next('/ViewApplications/Rejected?PageNo=')" })
-            </li>
-            <li class="page-item ">
-                @Ajax.ActionLink("Last", "Rejected", new { PageNo = @ViewBag.TotalPages }, new AjaxOptions
-{
-HttpMethod = "GET",
-UpdateTargetId = "div1",
-InsertionMode = InsertionMode.Replace
-}, new { @class = "page-link" })
-            </li>
+                                    </li>
 
 
-        }
+                                }
 
-    </ul>
-</div>
+                            </ul>
+                        </div>
 
                     }
                 }

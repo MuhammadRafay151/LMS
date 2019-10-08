@@ -4,19 +4,20 @@
      Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
 
-<h2>AffectedUsers</h2>
+<h2 class="text-center text-white mt-5 "style="font-family:g1" >AffectedUsers</h2>
+<hr class="bg-white mt-0"/>
 @model System.Data.DataSet
 
-<div class="row mt-lg-5">
+<div class="row mt-1 vh-100">
     <div class="col ">
         <div class="card">
-            <div class="card-header  " style="background-color:#FEFCFB">
-                <h4 class="card-title text-center">Affected Employees</h4>
+            <div class="card-header card-header-info " >
+                <h4 class="card-title text-center text-white"style="font-family:g1;font-size:20px">Affected Employees</h4>
             </div>
             <div class="card-body">
-                <table class="table table-hover table-striped ">
+                <table class="table table-hover ">
                     <thead class="">
-                        <tr class="table-dark">
+                        <tr class="">
                             <th scope="col">Employee Name</th>
                             <th scope="col">Department</th>
                             <th scope="col">Leave Type</th>
@@ -42,18 +43,11 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer">
-                <div class="d-flex  justify-content-end">
+            <div class="card-footer justify-content-end">
+                <button type="button" class="btn btn-info-grd mr-1" onclick="location.href='/Admin/CancelAssignLeave'">Cancel</button>
+                <button type="button" class="btn btn-info-grd" onclick="location.href='/Admin/Submit'">Submit</button>
+               
 
-                    <button type="button" class="btn btn-primary mr-1" onclick="location.href='/Admin/CancelAssignLeave'">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="location.href='/Admin/Submit'">Submit</button>
-                </div>
-                <div class="d-flex  justify-content-end">
-
-                    
-
-                </div>
-                
             </div>
 
         </div>

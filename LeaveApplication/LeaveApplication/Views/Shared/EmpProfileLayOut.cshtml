@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    @*<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">*@
     @{
         if (@ViewContext.RouteData.Values["controller"].ToString() == "ViewApplications" || @ViewContext.RouteData.Values["controller"].ToString() == "Admin")
         {
@@ -19,7 +19,7 @@
     }
 
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/datetime")
+   
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body style="background-image:url(../../Images/theme-photos-nJCW43biz9U-unsplashnew.jpg); background-size: cover; background-position: top center;">
@@ -48,6 +48,7 @@
                             <a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage Leaves</a>
                             <div class="dropdown-menu mt-3">
                                 @Html.ActionLink("Apply for leave", "Index", "ApplyForLeave", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Request Leave", "Index", "RequestLeave", null, new { @class = "dropdown-item" })
                                 @Html.ActionLink("View Applications", "Index", "ViewApplications", null, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Leave Count", "LeaveCount", "ViewApplications", null, new { @class = "dropdown-item" })
                             </div>
@@ -109,7 +110,7 @@
                             <p class="card-text">@LeaveApplication.Models.EmployeeBusinessLayer.Employee.EmployeeName</p>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Employee Id:  @LeaveApplication.Models.EmployeeBusinessLayer.Employee.EmployeeID</li>
+                            <li class="list-group-item">User Name:  @LeaveApplication.Models.EmployeeBusinessLayer.Employee.UserName</li>
                             <li class="list-group-item">Department:  @LeaveApplication.Models.EmployeeBusinessLayer.Employee.Department</li>
                             <li class="list-group-item">Designation:  @LeaveApplication.Models.EmployeeBusinessLayer.Employee.Designation</li>
                         </ul>
@@ -139,7 +140,8 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-
+    @Scripts.Render("~/bundles/datetime")
     @RenderSection("scripts", required: false)
+
 </body>
 </html>

@@ -1,4 +1,4 @@
-/*
+z/*
  =========================================================
  * Material Kit - v2.0.6
  =========================================================
@@ -16026,13 +16026,14 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   left: 15px;
 }
 
-.togglebutton label input[type=checkbox]:checked+.toggle {
-  background-color: rgba(156, 39, 176, 0.7);
+.togglebutton label input[type=checkbox]:checked + .toggle {
+    /*background-color: rgb(0, 188, 212);*/
+    background: linear-gradient(60deg, #26c6da, #0097a7);
 }
 
-.togglebutton label input[type=checkbox]:checked+.toggle:after {
-  border-color: #9c27b0;
-}
+    .togglebutton label input[type=checkbox]:checked + .toggle:after {
+        border-color: #18b5c7;
+    }
 
 .togglebutton label input[type=checkbox]:checked+.toggle:active:after {
   box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.4), 0 0 0 15px rgba(156, 39, 176, 0.1);

@@ -31,6 +31,7 @@
                                         }
                                     }
                                     <th class="align-middle  text-center" scope="col">Date</th>
+                                    <th class="align-middle  text-center" scope="col">Application Type</th>
                                     <th class="align-middle  text-center" scope="col">Leave Type</th>
                                     <th class="align-middle  text-center" scope="col">From Date</th>
                                     <th class="align-middle  text-center" scope="col">To Date</th>
@@ -53,13 +54,30 @@
                                             @{
                                                 if (ViewBag.Manager == true)
                                                 {
-                                                    <td class="align-middle  text-center">@x[8].ToString()</td>
+                                                    <td class="align-middle  text-center">@x[9].ToString()</td>
                                                 }
                                             }
-                                            <td class="align-middle  text-center">@x[2].ToString()</td>
+                                            <td class="align-middle  text-center">@DateTime.Parse(x[2].ToString()).ToString("dd-MM-yyyy")</td>
+                                            @if (bool.Parse(x[8].ToString()) == false)
+                                            {
+                                                <td class="align-middle  text-center">Application</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="align-middle  text-center">Request</td>
+                                            }
                                             <td class="align-middle  text-center">@x[1].ToString()</td>
-                                            <td class="align-middle  text-center">@x[3].ToString()</td>
-                                            <td class="align-middle  text-center">@x[4].ToString()</td>
+                                            @if (double.Parse(x[5].ToString()) == 0.5)
+                                            {//render date and time when half day else render date only
+                                                <td class="align-middle  text-center">@x[3].ToString()</td>
+                                                <td class="align-middle  text-center">@x[4].ToString()</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="align-middle  text-center">@DateTime.Parse(x[3].ToString()).ToString("dd-MM-yyyy")</td>
+                                                <td class="align-middle  text-center">@DateTime.Parse(x[4].ToString()).ToString("dd-MM-yyyy")</td>
+                                            }
+                                            
                                             <td class="align-middle  text-center">@x[5].ToString()</td>
                                             <td class="align-middle  text-center">@x[6].ToString()</td>
                                             @{
