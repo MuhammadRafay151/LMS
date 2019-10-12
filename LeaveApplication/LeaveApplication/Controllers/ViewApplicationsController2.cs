@@ -174,15 +174,18 @@ namespace LeaveApplication.Controllers
                 return Content("Access Denied");
             }
         }
-        public ActionResult AcceptApplication(String Application_Id)
+        [HttpPost]
+        public ActionResult AcceptApplication(String Application_Id,string ManagerRemarks)
         {
+            return Content(ManagerRemarks);
             lb.AcceptApplication(Application_Id);
             return RedirectToAction("FacultyApplications");
         }
-        public ActionResult RejectApplication(String Application_Id)
+        public ActionResult RejectApplication(String Application_Id,string ManagerRemarks)
         {
             if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager == true)
             {
+                return Content(ManagerRemarks);
                 lb.RejectApplication(Application_Id);
                 return RedirectToAction("FacultyApplications");
             }

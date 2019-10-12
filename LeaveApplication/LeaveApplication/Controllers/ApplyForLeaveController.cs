@@ -16,13 +16,26 @@ namespace LeaveApplication.Controllers
 
         EmployeeBusinessLayer e1 = new EmployeeBusinessLayer();
         LeaveBusinessLayer lb = new LeaveBusinessLayer();
-        public ActionResult Index()
+        public ActionResult Index(int? ViewId)
         {
             if (Session["EmpID"] != null)
             {
                
                 ViewBag.Reasons = lb.GetReasons();
                 ViewBag.Leavetypes = lb.GetLeaveTypes();
+                if(ViewId==null&&ViewId==0)
+                {
+                    ViewBag.ViewID = 0;
+                }
+                else if(ViewId==1)
+                {
+                    ViewBag.ViewID = 1;
+                }
+                else
+                {
+                    ViewBag.ViewID = 0;
+                }
+               
                 return View();
             }
             else
@@ -39,8 +52,10 @@ namespace LeaveApplication.Controllers
             {
                 if (l1.IsHalfDay == 1)
                 {
-                    l1.FromDate = Request.Form["halfday"].ToString();
-                    l1.ToDate = Request.Form["halfday"].ToString();
+                    l1.FromDate = Request.Form["halfday_from"].ToString();
+                    string[] temp = l1.FromDate.Split(' ');
+                    l1.ToDate = temp[0]+" "+Request.Form["halfday_to"].ToString();
+                    
                 }
                 l1.EmployeeID = Session["EmpID"].ToString();
                 l1.ApplicationType = false;//that's means this is type application
@@ -53,6 +68,24 @@ namespace LeaveApplication.Controllers
         public ActionResult Calculateadays(LeaveApplication.Models.LeaveApplication l1)
         {
             return Json(lb.CalculateTotalLeaveDays(l1));
+        }
+        public ActionResult GetView(int? ViewId)
+        {
+            if (ViewId == null && ViewId == 0)
+            {
+                ViewBag.ViewID = 0;
+            }
+            else if (ViewId == 1)
+            {
+                ViewBag.ViewID = 1;
+            }
+            else
+            {
+                ViewBag.ViewID = 0;
+            }
+            ViewBag.Reasons = lb.GetReasons();
+            ViewBag.Leavetypes = lb.GetLeaveTypes();
+            return PartialView("LeaveForm");
         }
 
 

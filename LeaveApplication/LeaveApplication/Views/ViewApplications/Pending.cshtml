@@ -14,7 +14,7 @@
     }
     function CancelApplication(row) {
         var Application_Id = document.getElementById('t1').rows[row.rowIndex].cells[0].innerHTML;
-     
+
         $('#f1').click(function () {
             window.location.href = "/ViewApplications/CancelApplication?Application_Id=" + Application_Id;
         });
@@ -22,37 +22,79 @@
     }
     function Accept(row) {
         var Application_Id = document.getElementById('t1').rows[row.rowIndex].cells[0].innerHTML;
-
-        window.location.href = "/ViewApplications/AcceptApplication?Application_Id=" + Application_Id;
+        $('#app_id').val(Application_Id);
+        $('#ar1').attr('action', '/ViewApplications/AcceptApplication');
+        //   window.location.href = "/ViewApplications/AcceptApplication?Application_Id=" + Application_Id;
 
     }
     function Reject(row) {
         var Application_Id = document.getElementById('t1').rows[row.rowIndex].cells[0].innerHTML;
-        window.location.href = "/ViewApplications/RejectApplication?Application_Id=" + Application_Id;
+        $('#app_id').val(Application_Id);
+        $('#ar1').attr('action', '/ViewApplications/RejectApplication');
+        //  window.location.href = "/ViewApplications/RejectApplication?Application_Id=" + Application_Id;
 
     }
+    function CloseRemark() {
+        $('#ar1').attr('action', '')
+        $('#app_id').val(null);
+    }
 </script>
-@* Model *@
-<div class="modal fade " id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
-    <div class="modal-dialog "  role="document" >
+@* Model for cancel*@
+<div class="modal fade " id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog " role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">Cancel</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick=" $('#f1').prop('onclick', null)">
                     <span aria-hidden="true">&times;</span>
                 </button>
-               
+
             </div>
             <div class="modal-body">
                 <p>Do you really want to cancel application ?</p>
 
             </div>
             <div class="modal-footer">
-              
 
-                    <button  type="button" class="btn btn-secondary" data-dismiss="modal" onclick=" $('#f1').prop('onclick', null)">No</button>
-                    <button id="f1" type="submit" class="btn btn-info-grd" >Yes</button>
-              
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick=" $('#f1').prop('onclick', null)">No</button>
+                <button id="f1" type="submit" class="btn btn-info-grd">Yes</button>
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+@* -------------------------------- *@
+@* Model for Approve/ Reject*@
+<div class="modal fade " id="remark" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Enter Remarks</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="CloseRemark()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                <form method="post" action="" id="ar1">
+                    <div class="form-group d-flex justify-content-center">
+                        <textarea name="ManagerRemarks" class="form-control " style="font-size:22px" cols="6" rows="6"></textarea>
+                        <input name="Application_Id" type="text" hidden id="app_id" />
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseRemark()">No</button>
+                <button  type="submit" class="btn btn-info-grd" onclick="$('#ar1').submit()">Yes</button>
+
 
             </div>
 
@@ -147,10 +189,10 @@
                                                 if (ViewBag.Manager == true)
                                                 {
                                                     <td class="align-middle text-center">
-                                                        <button type="button" class="btn  btn-info-grd" onclick="Accept(this.parentNode.parentNode)">Accept</button>
+                                                        <button type="button" class="btn  btn-info-grd" data-toggle="modal" data-target="#remark" onclick="Accept(this.parentNode.parentNode)" id="accept">Accept</button>
                                                     </td>
                                                     <td class="align-middle text-center">
-                                                        <button type="button" class="btn btn-info-grd" onclick="Reject(this.parentNode.parentNode)">Reject</button>
+                                                        <button type="button" class="btn btn-info-grd" data-toggle="modal" data-target="#remark" onclick="Reject(this.parentNode.parentNode)" id="reject">Reject</button>
                                                     </td>
                                                 }
                                                 else

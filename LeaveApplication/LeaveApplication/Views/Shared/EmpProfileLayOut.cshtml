@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-    @*<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">*@
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     @{
         if (@ViewContext.RouteData.Values["controller"].ToString() == "ViewApplications" || @ViewContext.RouteData.Values["controller"].ToString() == "Admin")
         {
@@ -130,7 +130,7 @@
         </ul>
 
     </nav>
-    <div class="container-fluid body-content">
+    <div id="empdiv" class="container-fluid body-content">
         @RenderBody()
         <hr />
         <footer class="d-flex justify-content-end text-white">

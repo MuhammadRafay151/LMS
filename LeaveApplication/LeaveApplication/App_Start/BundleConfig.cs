@@ -32,6 +32,7 @@ namespace LeaveApplication
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/material-kit-master/assets/css/material-kit.css",
                       "~/Content/site.css"));
+            BundleTable.EnableOptimizations = false;//to disbale optimization in Realenvironment
         }
     }
 }

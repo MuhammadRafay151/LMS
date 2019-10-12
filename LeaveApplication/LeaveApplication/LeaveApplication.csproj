@@ -531,6 +531,7 @@
     <Content Include="Fonts\GARA.TTF" />
     <Content Include="Fonts\GARABD.TTF" />
     <Content Include="Fonts\GARAIT.TTF" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -600,6 +601,7 @@
     <Content Include="Views\Admin\AffectedUsers.cshtml" />
     <Content Include="Views\Admin\Employees.cshtml" />
     <Content Include="Views\RequestLeave\Index.cshtml" />
+    <Content Include="Views\ApplyForLeave\LeaveForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
