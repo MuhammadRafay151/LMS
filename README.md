@@ -1,10 +1,14 @@
 # LMS
 HR System to manage employees leaves
+# Project Team
+* Muhammad Qasim Pasta
+* Muhammad Rafay 
+* Muhammad Aamir
+
 
 # Contributors
-
+* Muhammad Qasim Pasta
 * Muhammad Rafay 
-
 * Muhammad Aamir
 * Hassan
 
