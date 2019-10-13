@@ -23,13 +23,21 @@ namespace LeaveApplication.Controllers
                
                 ViewBag.Reasons = lb.GetReasons();
                 ViewBag.Leavetypes = lb.GetLeaveTypes();
-                if(ViewId==null&&ViewId==0)
+                if(ViewId==null||ViewId==0)
                 {
                     ViewBag.ViewID = 0;
                 }
                 else if(ViewId==1)
                 {
                     ViewBag.ViewID = 1;
+                    if (TempData["HrsError"]!=null&&Convert.ToBoolean(TempData["HrsError"]) == true)
+                    {
+                        ViewBag.HrsError = true;
+                    }
+                    else
+                    {
+                        ViewBag.HrsError = false;
+                    }
                 }
                 else
                 {
@@ -55,7 +63,13 @@ namespace LeaveApplication.Controllers
                     l1.FromDate = Request.Form["halfday_from"].ToString();
                     string[] temp = l1.FromDate.Split(' ');
                     l1.ToDate = temp[0]+" "+Request.Form["halfday_to"].ToString();
-                    
+                    Double hrs = lb.CalculateLeaveHours(l1);
+                    if (hrs>5||hrs<=0)
+                    {
+                        TempData["HrsError"] = true;
+                        return RedirectToAction("Index", "ApplyForLeave", new { ViewId = 1 });
+                    }
+                 
                 }
                 l1.EmployeeID = Session["EmpID"].ToString();
                 l1.ApplicationType = false;//that's means this is type application

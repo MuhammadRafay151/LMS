@@ -24,6 +24,11 @@ namespace LeaveApplication.Models
 
             return (int.Parse(x) + 1);
         }
+        public Double CalculateLeaveHours(LeaveApplication l1)
+        {
+            double Hrs = (DateTime.Parse(l1.ToDate) - DateTime.Parse(l1.FromDate)).Hours;
+            return Hrs;
+        }
         public void SaveApplication(LeaveApplication a1)
         {
             if (a1.IsHalfDay == 0)
