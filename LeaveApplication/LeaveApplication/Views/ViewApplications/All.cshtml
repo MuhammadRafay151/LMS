@@ -69,8 +69,8 @@
                                             <td class="align-middle  text-center">@x[1].ToString()</td>
                                             @if (double.Parse(x[5].ToString()) == 0.5)
                                             {//render date and time when half day else render date only
-                                                <td class="align-middle  text-center">@x[3].ToString()</td>
-                                                <td class="align-middle  text-center">@x[4].ToString()</td>
+                                                <td class="align-middle  text-center">@DateTime.Parse( x[3].ToString()).ToString("dd/MM/yyyy HH: mm  tt")</td>
+                                                <td class="align-middle  text-center">@DateTime.Parse(x[4].ToString()).ToString("dd/MM/yyyy HH: mm  tt")</td>
                                             }
                                             else
                                             {

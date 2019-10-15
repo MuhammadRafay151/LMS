@@ -5,6 +5,8 @@ using System.Web;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Data;
+using System.Globalization;
+
 namespace LeaveApplication.Models
 {
     public class LeaveBusinessLayer
@@ -15,18 +17,19 @@ namespace LeaveApplication.Models
         SqlCommand cmd;
         SqlDataReader reader;
         DataSet ds;
-        static LeaveApplication leave;
+        public static LeaveApplication leave;
 
         public int CalculateTotalLeaveDays(LeaveApplication l1)
         {
 
-            string x = (DateTime.Parse(l1.ToDate) - DateTime.Parse(l1.FromDate)).TotalDays.ToString();
-
+            string x = (DateTime.ParseExact(l1.ToDate, "dd/MM/yyyy", CultureInfo.InvariantCulture) - DateTime.ParseExact(l1.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture)).TotalDays.ToString();
             return (int.Parse(x) + 1);
         }
         public Double CalculateLeaveHours(LeaveApplication l1)
         {
-            double Hrs = (DateTime.Parse(l1.ToDate) - DateTime.Parse(l1.FromDate)).Hours;
+            DateTime d1 = DateTime.Parse(DateTimeHelper.ToDateTime(l1.FromDate));
+            DateTime d2 = DateTime.Parse(DateTimeHelper.ToDateTime(l1.ToDate));
+            double Hrs = (d2 - d1).Hours;
             return Hrs;
         }
         public void SaveApplication(LeaveApplication a1)
@@ -34,10 +37,14 @@ namespace LeaveApplication.Models
             if (a1.IsHalfDay == 0)
             {
                 a1.TotalDays = CalculateTotalLeaveDays(a1);
+                a1.ToDate = DateTime.ParseExact(a1.ToDate, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString();
+                a1.FromDate = DateTime.ParseExact(a1.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString();
             }
             else if (a1.IsHalfDay == 1)
             {
                 a1.TotalDays = 0.5;
+                a1.FromDate = DateTimeHelper.ToDateTime(a1.FromDate);
+                a1.ToDate = DateTimeHelper.ToDateTime(a1.ToDate);
             }
 
             a1.ApplyDate = DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss");
@@ -121,7 +128,8 @@ namespace LeaveApplication.Models
         {
             //return application for edit application feature...
 
-            string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveTypeID,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,LeaveApplication.ReasonID from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID  where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
+            string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveTypeID,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,LeaveApplication.ReasonID" +
+                " from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID  where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
 
             DataSet ds = database.Read(Querry);
 
@@ -131,21 +139,22 @@ namespace LeaveApplication.Models
             v1.EmployeeID = ds.Tables[0].Rows[0][1].ToString();
             v1.LeaveTypeID = ds.Tables[0].Rows[0][2].ToString();
             v1.LeaveType = ds.Tables[0].Rows[0][2].ToString();
-            v1.ApplyDate = DateTime.Parse(ds.Tables[0].Rows[0][3].ToString()).ToString("dd-MM-yyyy");
+            v1.ApplyDate = DateTimeHelper.dd_MM_yyyy(ds.Tables[0].Rows[0][3].ToString());
 
             v1.TotalDays = double.Parse(ds.Tables[0].Rows[0][6].ToString());
             if (v1.TotalDays == 0.5)
             {
-                v1.FromDate = ds.Tables[0].Rows[0][4].ToString();
+                v1.FromDate = DateTimeHelper.dd_MM_yyyy_HH_mm_tt(ds.Tables[0].Rows[0][4].ToString());
+                v1.ToDate = DateTimeHelper.ToTime(ds.Tables[0].Rows[0][5].ToString());
             }
             else
             {
-
-                v1.FromDate = DateTime.Parse(ds.Tables[0].Rows[0][4].ToString()).ToString("dd-MM-yyyy");
-                v1.ToDate = DateTime.Parse(ds.Tables[0].Rows[0][5].ToString()).ToString("dd-MM-yyyy");
+                v1.FromDate = DateTimeHelper.dd_MM_yyyy(ds.Tables[0].Rows[0][4].ToString());
+                v1.ToDate = DateTimeHelper.dd_MM_yyyy(ds.Tables[0].Rows[0][5].ToString());
             }
             v1.LeaveRemarks = ds.Tables[0].Rows[0][7].ToString();
             v1.LeaveReason = ds.Tables[0].Rows[0][8].ToString();
+            
             v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);
 
             leave = v1;
@@ -182,9 +191,21 @@ namespace LeaveApplication.Models
             return v1;
         }
         public void SaveChanges(LeaveApplication l1)
-        {
-            l1.TotalDays = CalculateTotalLeaveDays(l1);
-            l1.ApplicationId = leave.ApplicationId;
+        {//half day functionality should be added ....
+            if (leave.TotalDays==0.5)
+            {
+                l1.TotalDays = 0.5;
+                l1.FromDate = DateTimeHelper.ToDateTime(l1.FromDate);
+                l1.ToDate = DateTimeHelper.ToDateTime(l1.ToDate);
+                l1.ApplicationId = leave.ApplicationId;
+            }
+            else
+            {
+                l1.TotalDays = CalculateTotalLeaveDays(l1);
+                l1.ApplicationId = leave.ApplicationId;
+                l1.ToDate = DateTime.ParseExact(l1.ToDate, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString();
+                l1.FromDate = DateTime.ParseExact(l1.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString();
+            }
 
             string Querry = string.Format("update LeaveApplication set LeaveTypeID='{0}',FromDate='{1}',ToDate='{2}',TotalDays='{3}',Remarks='{4}',ReasonID='{5}' where LeaveApplicationID='{6}'", l1.LeaveType, l1.FromDate, l1.ToDate, l1.TotalDays, l1.LeaveRemarks, l1.LeaveReason, l1.ApplicationId);
             database.ExecuteQuerry(Querry);

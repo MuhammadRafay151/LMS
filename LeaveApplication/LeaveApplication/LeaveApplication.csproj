@@ -138,6 +138,7 @@
     </Compile>
     <Compile Include="Models\AdminBusinessLayer.cs" />
     <Compile Include="Models\AssignLeaves.cs" />
+    <Compile Include="Models\DateTimeHelper.cs" />
     <Compile Include="Models\db.cs" />
     <Compile Include="Models\LeaveApplication.cs" />
     <Compile Include="Models\Department.cs" />
@@ -602,6 +603,7 @@
     <Content Include="Views\Admin\Employees.cshtml" />
     <Content Include="Views\RequestLeave\Index.cshtml" />
     <Content Include="Views\ApplyForLeave\LeaveForm.cshtml" />
+    <Content Include="Views\RequestLeave\LeaveForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -44,7 +44,7 @@ function Pre(href) {
 
 }
 function StateChange(ToggleBtn,id) {
-    var form = $(ToggleBtn).parent().parent();
+   
     $.ajax({
         type: "post",
         url: "/Admin/RequestableStateChange",

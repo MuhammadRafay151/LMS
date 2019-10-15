@@ -38,7 +38,7 @@ namespace LeaveApplication.Controllers
             {
 
                 ViewBag.PageNo = PageNo.Value;
-               
+
                 System.Data.DataSet ds1 = p1.GetPage(ds, 5, PageNo);
                 ViewBag.TotalPages = p1.GetTotalPages();
                 return PartialView("ALL", ds1);
@@ -75,7 +75,7 @@ namespace LeaveApplication.Controllers
                 ViewBag.TotalPages = p1.GetTotalPages();
                 return PartialView("Pending", ds1);
             }
-           
+
         }
         public PartialViewResult Approved(int? PageNo)
         {
@@ -100,7 +100,7 @@ namespace LeaveApplication.Controllers
                 return PartialView("Approved", ds1);
             }
 
-            
+
         }
         public PartialViewResult Rejected(int? PageNo)
         {
@@ -124,7 +124,7 @@ namespace LeaveApplication.Controllers
                 ViewBag.TotalPages = p1.GetTotalPages();
                 return PartialView("Rejected", ds1);
             }
-            
+
         }
         public ActionResult EditDetails(string Application_Id)
         {
@@ -139,7 +139,14 @@ namespace LeaveApplication.Controllers
                 {
                     ViewBag.Reasons = lb.GetReasons();
                     ViewBag.Leavetypes = lb.GetLeaveTypes();
-
+                    if (TempData["HrsError"] != null && Convert.ToBoolean(TempData["HrsError"]) == true)
+                    {
+                        ViewBag.HrsError = true;
+                    }
+                    else
+                    {
+                        ViewBag.HrsError = false;
+                    }
                     return View(x);
                 }
             }
@@ -172,7 +179,26 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult SaveChanges(LeaveApplication.Models.LeaveApplication l1)
         {
-            lb.SaveChanges(l1);
+            if (LeaveApplication.Models.LeaveBusinessLayer.leave.TotalDays==0.5)
+            {
+                l1.FromDate = Request.Form["halfday_from"].ToString();
+                string[] temp = l1.FromDate.Split(' ');
+                l1.ToDate = temp[0] + " " + Request.Form["halfday_to"].ToString();
+             
+                Double hrs = lb.CalculateLeaveHours(l1);
+
+                if (hrs > 5 || hrs <= 0)
+                {
+                    
+                    TempData["HrsError"] = true;
+                    return RedirectToAction("EditDetails", "ViewApplications", new { ViewId = 1 });
+                }
+                lb.SaveChanges(l1);
+            }
+            else
+            {
+                lb.SaveChanges(l1);
+            }
 
             return RedirectToAction("Index", "ViewApplications");
         }

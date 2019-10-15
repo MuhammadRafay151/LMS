@@ -46,45 +46,45 @@
                                     foreach (System.Data.DataRow x in temp.Tables[0].Rows)
                                     {
 
-                                        <tr>
+                                                                <tr>
 
-                                            <td hidden class="align-middle  text-center">@x[0].ToString()</td>
-                                            @{
-                                                if (ViewBag.Manager == true)
-                                                {
-                                                    <td class="align-middle  text-center">@x[9].ToString()</td>
-                                                }
-                                            }
-                                            <td class="align-middle  text-center">@DateTime.Parse(x[2].ToString()).ToString("dd-MM-yyyy")</td>
-                                            @if (bool.Parse(x[8].ToString()) == false)
-                                            {
-                                                <td class="align-middle  text-center">Application</td>
-                                            }
-                                            else
-                                            {
-                                                <td class="align-middle  text-center">Request</td>
-                                            }
-                                            <td class="align-middle  text-center">@x[1].ToString()</td>
-                                            @if (double.Parse(x[5].ToString()) == 0.5)
-                                            {//render date and time when half day else render date only
-                                                <td class="align-middle  text-center">@x[3].ToString()</td>
-                                                <td class="align-middle  text-center">@x[4].ToString()</td>
-                                            }
-                                            else
-                                            {
-                                                <td class="align-middle  text-center">@DateTime.Parse(x[3].ToString()).ToString("dd-MM-yyyy")</td>
-                                                <td class="align-middle  text-center">@DateTime.Parse(x[4].ToString()).ToString("dd-MM-yyyy")</td>
-                                            }
-                                            <td class="align-middle  text-center">@x[5].ToString()</td>
-                                            <td class="align-middle  text-center">@x[6].ToString()</td>
-                                            <td class="align-middle text-center">
-                                                <span class="badge badge-danger" style="font-size:15px">Rejected</span>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <button type="button" class="btn btn-info-grd" onclick="View(this.parentNode.parentNode)">View Details</button>
-                                            </td>
+                                                                    <td hidden class="align-middle  text-center">@x[0].ToString()</td>
+                                                                    @{
+                                                                        if (ViewBag.Manager == true)
+                                                                        {
+                                                                            <td class="align-middle  text-center">@x[9].ToString()</td>
+                                                                        }
+                                                                    }
+                                                                    <td class="align-middle  text-center">@DateTime.Parse(x[2].ToString()).ToString("dd-MM-yyyy")</td>
+                                                                    @if (bool.Parse(x[8].ToString()) == false)
+                                                                    {
+                                                                        <td class="align-middle  text-center">Application</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td class="align-middle  text-center">Request</td>
+                                                                    }
+                                                                    <td class="align-middle  text-center">@x[1].ToString()</td>
+                                                                    @if (double.Parse(x[5].ToString()) == 0.5)
+                                                                    {//render date and time when half day else render date only
+                                                                        <td class="align-middle  text-center">@DateTime.Parse(x[3].ToString()).ToString("dd/MM/yyyy HH: mm tt")</td>
+                                                                        <td class="align-middle  text-center">@DateTime.Parse(x[4].ToString()).ToString("dd/MM/yyyy HH: mm tt")</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td class="align-middle  text-center">@DateTime.Parse(x[3].ToString()).ToString("dd-MM-yyyy")</td>
+                                                                        <td class="align-middle  text-center">@DateTime.Parse(x[4].ToString()).ToString("dd-MM-yyyy")</td>
+                                                                    }
+                                                                    <td class="align-middle  text-center">@x[5].ToString()</td>
+                                                                    <td class="align-middle  text-center">@x[6].ToString()</td>
+                                                                    <td class="align-middle text-center">
+                                                                        <span class="badge badge-danger" style="font-size:15px">Rejected</span>
+                                                                    </td>
+                                                                    <td class="align-middle text-center">
+                                                                        <button type="button" class="btn btn-info-grd" onclick="View(this.parentNode.parentNode)">View Details</button>
+                                                                    </td>
 
-                                        </tr>
+                                                                </tr>
                                         check = true;
                                     }
 

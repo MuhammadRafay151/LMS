@@ -64,6 +64,7 @@ namespace LeaveApplication.Controllers
                     string[] temp = l1.FromDate.Split(' ');
                     l1.ToDate = temp[0]+" "+Request.Form["halfday_to"].ToString();
                     Double hrs = lb.CalculateLeaveHours(l1);
+                    
                     if (hrs>5||hrs<=0)
                     {
                         TempData["HrsError"] = true;

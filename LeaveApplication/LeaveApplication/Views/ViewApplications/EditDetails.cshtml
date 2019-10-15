@@ -6,23 +6,6 @@
 
 @model LeaveApplication.Models.LeaveApplication
 @*<h2>Index</h2>*@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Leave</title>
-    @*<link rel="stylesheet" href="main.css">*@
-    <link rel="stylesheet" href="~/Content/main.css" />
-
-    <script>
-
-/**/</script>
-</head>
-
-<body>
 
 
     <div id="div1" class="container mt-lg-5 mt-5">
@@ -39,23 +22,28 @@
                             <label style="font-size:22px" id="date" for="">Date Of Application: @Model.ApplyDate</label>
                             <br><br>
 
-                                <div class="form-group">
-                                    <label class="label-control" >Select Leaves</label>
-                                    <select class="form-control" name="@Html.NameFor(m=>m.LeaveType)" id="@Html.IdFor(m=>m.LeaveType)">
-                                        <option selected disabled> Select Leave Type</option>
-                                        @{
-                                            foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
-                                            {
-                                                <option value="@x.LeaveTypeID">@x.LeaveType</option>
-                                            }
+                            <div class="form-group">
+                                <label class="label-control">Select Leaves</label>
+                                <select class="form-control" name="@Html.NameFor(m=>m.LeaveType)" id="@Html.IdFor(m=>m.LeaveType)">
+                                    <option selected disabled> Select Leave Type</option>
+                                    @{
+                                        foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
+                                        {
+                                            <option value="@x.LeaveTypeID">@x.LeaveType</option>
                                         }
-                                    </select>
-                                </div>
+                                    }
+                                </select>
+                            </div>
                             if (Model.TotalDays == 0.5)
                             {
                                 <div class="form-group " id="d1">
-                                    <label class="label-control" id="l1">Date & time</label>
-                                    <input type="text" class="form-control datetimepicker1" id="halfday" name="halfday" value="@Model.FromDate" required />
+                                    <label class="label-control" id="l1">Date & time </label>
+                                    <input type="text" class="form-control datetimepicker1" id="halfday" name="halfday_from" value="@Model.FromDate" required />
+                                </div>
+
+                                <div class="form-group ">
+                                    <label class="label-control " id="hf2">To time</label>
+                                    <input type="text" class="form-control datetimepicker2" id="halfday_to" name="halfday_to" value="@Model.ToDate" required />
                                 </div>
                             }
                             else
@@ -77,8 +65,15 @@
                                 <input class="form-control" type="text" name="days" value="@Model.TotalDays" id="days" disabled>
 
                             </div>
+                            if (ViewBag.HrsError == true)
+                            {
+                                <div id="alert" class=" alert alert-danger  fade-in">
+
+                                    <strong>Error!</strong> Exceeds hours Limitation
+                                </div>
+                            }
                             <div class="form-group">
-                                <label class="label-control" >Select Reasons</label>
+                                <label class="label-control">Select Reasons</label>
                                 <select class="form-control" name="@Html.NameFor(m=>m.LeaveReason)" id="@Html.IdFor(m=>m.LeaveReason)">
                                     <option selected disabled>Reason For Leave</option>
                                     @{ System.Data.DataSet i = ViewBag.Reasons;
@@ -90,13 +85,13 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="label-control" >Description</label>
+                                <label class="label-control">Description</label>
                                 <textarea class="form-control" style="resize:none" name="@Html.NameFor(m=>m.LeaveRemarks)" id="@Html.IdFor(m=>m.LeaveRemarks)" cols="30" rows="10" placeholder="Enter Description if any.">@Model.LeaveRemarks</textarea>
                             </div>
 
                             <div class="card-footer ">
                                 <input id="Submit1" class="btn btn-round btn-info-grd col-lg-12" type="submit" value="Save Changes" />
-
+                         
                             </div>
                         }
                     </div>
@@ -110,9 +105,16 @@
 
     <script>
 
-        $(document).ready(function () {
+    $(document).ready(function () {
+            
+        if (document.getElementById("alert")) {
+            setTimeout(Hide, 3000)
+        }
+        function Hide() {
+            $('#alert').hide('fade');
+        }
             $('.datetimepicker1').datetimepicker({
-                format: 'L LT',
+                format: 'DD/MM/YYYY LT',
                 icons: {
                     time: "fa fa-clock-o",
                     date: "fa fa-calendar",
@@ -128,7 +130,7 @@
 
             });
             $('.datetimepicker').datetimepicker({
-                format: 'L',
+                format: 'DD/MM/YYYY',
                 icons: {
                     time: "fa fa-clock-o",
                     date: "fa fa-calendar",
@@ -143,17 +145,35 @@
                 }
 
             });
+         $('.datetimepicker2').datetimepicker({
+            format: 'LT',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+
+            }
+
+        });
         });
 
 
     </script>
     <script>
-          var FromDate = null;
+    var FromDate = null;
     var ToDate = null;
+     document.getElementById("LeaveType").value = "@Model.LeaveTypeID";
+    document.getElementById("LeaveReason").value = "@Model.LeaveReason";
      FromDate = document.getElementById("FromDate").value;
     ToDate = document.getElementById("ToDate").value;
-    document.getElementById("LeaveType").value = "@Model.LeaveTypeID";
-    document.getElementById("LeaveReason").value = "@Model.LeaveReason";
+   
+   
    
     function DateSelect(date) {
 
@@ -172,8 +192,9 @@
             }
 
 
-            if (FromDate != null && ToDate != null) {
-
+        if (FromDate != null && ToDate != null) {
+            console.log(LeaveDetails.FromDate);
+            console.log(LeaveDetails.ToDate);
                 var xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = fun;
                 function fun() {
@@ -193,8 +214,5 @@
 
         }
     </script>
-</body>
-
-</html>
 
 

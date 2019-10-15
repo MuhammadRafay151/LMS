@@ -1,10 +1,11 @@
-﻿<div class="container mt-lg-5 mt-5">
-    <div class="row  justify-content-center  vh-100"    >
+﻿
+<div class="container mt-lg-5 mt-5">
+    <div class="row  justify-content-center  vh-100">
 
         <div class="col-sm-6 col-lg-6 col-8 ">
 
 
-            @using (Html.BeginForm("Submit", "ApplyForLeave", FormMethod.Post, new { id = "form1", onsubmit = "return OnSubmit()" }))
+            @using (Html.BeginForm("Submit", "RequestLeave", FormMethod.Post, new { id = "form1", onsubmit = "return OnSubmit()" }))
             {
 
                 <div class="card ">
@@ -176,7 +177,7 @@
         });
 
         $('.datetimepicker').datetimepicker({
-            format: 'DD/MM/YYYY',
+            format: 'L',
 
             icons: {
                 time: "fa fa-clock-o",
@@ -193,7 +194,7 @@
 
         });
         $('.datetimepicker1').datetimepicker({
-            format: 'DD/MM/YYYY LT',
+            format: 'L LT',
 
             icons: {
                 time: "fa fa-clock-o",
@@ -235,12 +236,12 @@
             $('#empdiv').html('');
             $.ajax({
                 type: "post",
-                url: "/ApplyForLeave/GetView?ViewId=" + ViewId,
+                url: "/RequestLeave/GetView?ViewId=" + ViewId,
 
                 success: function (html) {
 
                     $('#empdiv').html(html);
-                    console.log(html);
+                
                 }
 
 
@@ -288,3 +289,4 @@
     }
 
 </script>
+
