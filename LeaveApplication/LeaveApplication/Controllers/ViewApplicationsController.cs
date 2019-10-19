@@ -186,12 +186,12 @@ namespace LeaveApplication.Controllers
                 l1.ToDate = temp[0] + " " + Request.Form["halfday_to"].ToString();
              
                 Double hrs = lb.CalculateLeaveHours(l1);
-
+              
                 if (hrs > 5 || hrs <= 0)
                 {
                     
                     TempData["HrsError"] = true;
-                    return RedirectToAction("EditDetails", "ViewApplications", new { ViewId = 1 });
+                    return RedirectToAction("EditDetails", "ViewApplications", new { Application_Id=LeaveApplication.Models.LeaveBusinessLayer.leave.ApplicationId });
                 }
                 lb.SaveChanges(l1);
             }
@@ -199,7 +199,7 @@ namespace LeaveApplication.Controllers
             {
                 lb.SaveChanges(l1);
             }
-
+            LeaveBusinessLayer.leave = null;
             return RedirectToAction("Index", "ViewApplications");
         }
 

@@ -177,16 +177,16 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult AcceptApplication(String Application_Id,string ManagerRemarks)
         {
-            return Content(ManagerRemarks);
-            lb.AcceptApplication(Application_Id);
+           
+            lb.AcceptApplication(Application_Id,ManagerRemarks);
             return RedirectToAction("FacultyApplications");
         }
         public ActionResult RejectApplication(String Application_Id,string ManagerRemarks)
         {
             if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager == true)
             {
-                return Content(ManagerRemarks);
-                lb.RejectApplication(Application_Id);
+                
+                lb.RejectApplication(Application_Id,ManagerRemarks);
                 return RedirectToAction("FacultyApplications");
             }
             else

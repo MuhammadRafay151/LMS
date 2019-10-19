@@ -29,7 +29,7 @@ namespace LeaveApplication.Models
         {
             DateTime d1 = DateTime.Parse(DateTimeHelper.ToDateTime(l1.FromDate));
             DateTime d2 = DateTime.Parse(DateTimeHelper.ToDateTime(l1.ToDate));
-            double Hrs = (d2 - d1).Hours;
+            double Hrs = (d2 - d1).TotalHours;
             return Hrs;
         }
         public void SaveApplication(LeaveApplication a1)
@@ -154,7 +154,7 @@ namespace LeaveApplication.Models
             }
             v1.LeaveRemarks = ds.Tables[0].Rows[0][7].ToString();
             v1.LeaveReason = ds.Tables[0].Rows[0][8].ToString();
-            
+
             v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);
 
             leave = v1;
@@ -192,7 +192,7 @@ namespace LeaveApplication.Models
         }
         public void SaveChanges(LeaveApplication l1)
         {//half day functionality should be added ....
-            if (leave.TotalDays==0.5)
+            if (leave.TotalDays == 0.5)
             {
                 l1.TotalDays = 0.5;
                 l1.FromDate = DateTimeHelper.ToDateTime(l1.FromDate);
@@ -305,15 +305,50 @@ namespace LeaveApplication.Models
             string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveType.LeaveType,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,LeaveApplication.ApplicationType,Employee.EmployeeName  from LeaveApplication INNER JOIN Employee on Employee.EmployeeID=LeaveApplication.EmployeeID inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID inner join Reasons on Reasons.ReasonID=LeaveApplication.ReasonID inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID='s3' inner join ApplicationStatus on StatusHistory.ApplicationStatusID=ApplicationStatus.ApplicationStatusID where Employee.Manager='{0}'", EmployeeBusinessLayer.Employee.EmployeeID);
             return database.Read(Querry);
         }
-        public void AcceptApplication(string ApplicationID)
+        public void AcceptApplication(string ApplicationID,string ManagerRemarks)
         {
-            string Querry = string.Format("insert into StatusHistory(LeaveApplicationID,Date,ApplicationStatusID) select '{0}','{1}',ApplicationStatus.ApplicationStatusID from ApplicationStatus where ApplicationStatus.ApplicationStatus='Approved' ", ApplicationID, DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss"));
-            database.ExecuteQuerry(Querry);
+            if (ManagerBusinessLayer.IsUnderManagement(ApplicationID, EmployeeBusinessLayer.Employee.EmployeeID.ToString()))
+            {
+                string Querry = string.Format("select LeaveApplication.EmployeeID, LeaveApplication.LeaveTypeID,LeaveApplication.ApplicationType,LeaveApplication.TotalDays,EmployeeLeaveCount.Count as CurrentBalance from LeaveApplication  inner join EmployeeLeaveCount on LeaveApplication.EmployeeID=EmployeeLeaveCount.EmployeeID where LeaveApplication.LeaveApplicationID={0}", ApplicationID);
+                DataSet ds = database.Read(Querry);
+                EmployeeLeaveCount e1 = new EmployeeLeaveCount();
+                e1.EmployeeID = Convert.ToInt32(ds.Tables[0].Rows[0][0]); 
+                e1.LeaveTypeID = Convert.ToInt32(ds.Tables[0].Rows[0][1]); 
+                e1.Count = Convert.ToInt32(ds.Tables[0].Rows[0][4]);
+                LeaveApplication l1 = new LeaveApplication();
+                l1.ApplicationType = Convert.ToBoolean(ds.Tables[0].Rows[0][2]);
+                l1.TotalDays = Convert.ToInt32(ds.Tables[0].Rows[0][3]);
+              
+
+                if (l1.ApplicationType==false&& e1.Count >= l1.TotalDays)
+                {
+                    e1.Count -= l1.TotalDays;
+                   
+                } else if(l1.ApplicationType==true && e1.Count>l1.TotalDays)
+                {
+                    e1.Count += l1.TotalDays;
+                }
+                Querry = string.Format("insert into StatusHistory(LeaveApplicationID,Date,ApplicationStatusID) select '{0}','{1}',ApplicationStatus.ApplicationStatusID from ApplicationStatus where ApplicationStatus.ApplicationStatus='Approved' ", ApplicationID, DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss"));
+                database.ExecuteQuerry(Querry);
+                UpdateManagerRemarks(ApplicationID, ManagerRemarks);
+                Querry = string.Format("update EmployeeLeaveCount set Count={0} where EmployeeLeaveCount.EmployeeID={1} and EmployeeLeaveCount.LeaveTypeID={2}", e1.Count, e1.EmployeeID, e1.LeaveTypeID);
+                database.ExecuteQuerry(Querry);
+            }
+
+          
+           
 
         }
-        public void RejectApplication(string ApplicationID)
+        public void RejectApplication(string ApplicationID,string ManagerRemarks)
         {
+            
             string Querry = string.Format("insert into StatusHistory(LeaveApplicationID,Date,ApplicationStatusID) select '{0}','{1}',ApplicationStatus.ApplicationStatusID from ApplicationStatus where ApplicationStatus.ApplicationStatus='Rejected' ", ApplicationID, DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss"));
+            database.ExecuteQuerry(Querry);
+            UpdateManagerRemarks(ApplicationID, ManagerRemarks);
+        }
+        public void UpdateManagerRemarks(string ApplicationID, string ManagerRemarks)
+        {//update remarks on apprve or reject leave...
+           string Querry = string.Format("update LeaveApplication set ManagerRemarks='{0}' where LeaveApplicationID='{1}'", ManagerRemarks, ApplicationID);
             database.ExecuteQuerry(Querry);
         }
         private string GetApplicationId()
@@ -343,11 +378,6 @@ namespace LeaveApplication.Models
             id = "App" + x;
             con.Close();
             return id;
-        }
-        public DataSet GetFaculty()
-        {
-            string Querry = string.Format("select EmployeeID ,EmployeeName from employee where manager='{0}'", EmployeeBusinessLayer.Employee.EmployeeID);
-            return database.Read(Querry); ;
         }
         public DataSet GetReasons()
         {

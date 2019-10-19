@@ -148,6 +148,7 @@
     <Compile Include="Models\LeaveBusinessLayer.cs" />
     <Compile Include="Models\EmployeeLeaveCount.cs" />
     <Compile Include="Models\LeaveTypes.cs" />
+    <Compile Include="Models\ManagerBusinessLayer.cs" />
     <Compile Include="Models\StatusHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

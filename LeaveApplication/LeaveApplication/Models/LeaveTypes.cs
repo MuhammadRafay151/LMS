@@ -9,6 +9,6 @@ namespace LeaveApplication.Models
     {
         public int LeaveTypeID { get; set; }
         public string LeaveType { get; set; }
-        public string TotalDays { get; set; }
+ 
     }
 }
