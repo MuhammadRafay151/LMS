@@ -1,0 +1,222 @@
+﻿@model LeaveApplication.Models.Employee
+@{
+    ViewBag.Title = "EditEmployees";
+  Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+}
+
+
+
+<style>
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center align-content-center">
+        <div class="col">
+            <div class="card ">
+                <div class="card-header card-header-info">
+                    <h2 class="card-title">Registeration</h2>
+                </div>
+                <div class="container">
+                    @using (Html.BeginForm("Register", "RegisterEmployee", FormMethod.Post, new { autocomplete = "off", enctype = "multipart/form-data" }))
+                    {
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-flex justify-content-center">
+                                    <fieldset>
+
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(Model => Model.UserName, new { @class = "form-control", placeholder = "User Name", required = "required" })
+                                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(Model => Model.EmployeeName, new { @class = "form-control", placeholder = "Employee Name", required = "required" })
+
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(Model => Model.Address, new { @class = "form-control", placeholder = "Address", required = "required" })
+
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(Model => Model.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number", required = "required" })
+
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(Model => Model.CNIC, new { @class = "form-control", placeholder = "CNIC", required = "required" })
+
+                                        </div>
+                                       
+                                        <div class="form-group">
+
+                                            <select class="custom-select" id="@Html.IdFor(m=>m.DepartmentID)" name=@Html.NameFor(m=>m.DepartmentID) required>
+                                                <option value="" disabled selected>Select Department</option>
+                                                @{
+                                                    foreach (LeaveApplication.Models.Department x in ViewBag.List2)
+                                                    {
+                                                        <option value="@x.DepartmentId">
+                                                            @x.department
+                                                        </option>
+                                                    }
+                                                }
+
+
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <select class="custom-select" id=@Html.IdFor(m=>m.DesignationID) name=@Html.NameFor(m=>m.DesignationID) required>
+                                                <option value="" disabled selected>Select Designation</option>
+                                                @{
+                                                    foreach (LeaveApplication.Models.Designation x in ViewBag.List)
+                                                    {
+                                                        <option value="@x.DesignationID">
+                                                            @x.designation
+                                                        </option>
+                                                    }
+                                                }
+
+
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+
+                                            <select class="custom-select" id=@Html.IdFor(m=>m.Manager) name=@Html.NameFor(m=>m.Manager) required>
+                                                <option value="" disabled selected>Select Manager</option>
+                                                @{System.Data.DataSet emp = ViewBag.Employees;
+                                                    foreach (System.Data.DataRow i in emp.Tables[0].Rows)
+                                                    {
+                                                        <option value="@i[0].ToString()">
+                                                            @i[1].ToString()
+                                                        </option>
+                                                    }
+                                                }
+
+
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" id="password" name="password" type="password" placeholder="Password" required />
+                                            <div class="checkbox" style="padding-top:10px">
+                                                <label>
+                                                    <input id="chk1" type="checkbox" onclick="ShowPass()"> Show Password
+                                                </label>
+                                            </div>
+                                        </div>
+
+
+                                    </fieldset>
+
+
+
+                                </div>
+                            </div>
+                            <div class="col my-auto">
+                                <div class="card ">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Profile Picture</h3>
+                                    </div>
+                                    <div class="d-flex card-body justify-content-center">
+                                        <img id="img1" src="~/Images/mark.jpg" alt="" style="height:350px; width:350px;border:3px solid black;" />
+
+                                    </div>
+
+                                    <div class="card-footer justify-content-center">
+
+                                        <input class="form-control-file " id="@Html.IdFor(m=>m.Image)" name="@Html.NameFor(Model=>Model.Image)" type="file" placeholder="Upload Image" onchange="openFile(event)" />
+
+                                        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="d-flex col justify-content-center">
+
+                                <input id="Submit1" class="btn btn-info-grd btn-round col-6"  type="submit" value="submit" onclick="return IsImgUploaded() " />
+
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#EmployeeID").mask("Emp0000");
+        //$("#EmployeeName").mask("AAAA");
+        $("#PhoneNumber").mask('0000-0000000');
+        $("#CNIC").mask("00000-0000000-0");
+    });
+    function IsImgUploaded() {
+        var img = document.getElementById("File1");
+        if (img.files.length == 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+
+    }
+    function ShowPass() {
+        var x = document.getElementById("chk1");
+        var passbox = document.getElementById("password");
+        if (x.checked == true) {
+            passbox.type = "text";
+        } else {
+            passbox.type = "password";
+        }
+    }
+    function openFile(file) {
+        var ImgFormat = ["jpg", "jpeg", "png"];
+        var check = false;
+        var input = file.target;
+        var fname = input.files[0].name;
+        var array = fname.split(".");
+
+        for (var x = 0; x < ImgFormat.length; x++) {
+            if (array[array.length - 1] == ImgFormat[x]) {
+                check = true;
+                break;
+            }
+            else
+                check = false;
+        }
+        if (check == false) {
+            document.getElementById("Image").value = null;
+        }
+        else {
+            var reader = new FileReader();
+            reader.onload = LoadImg;
+
+            function LoadImg() {
+
+                var dataURL = reader.result;
+                var output = document.getElementById("img1");
+                //alert(dataURL);
+                output.src = dataURL;
+            };
+        }
+
+
+        reader.readAsDataURL(input.files[0]);
+    };
+</script>

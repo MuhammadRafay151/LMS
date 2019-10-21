@@ -74,6 +74,21 @@ namespace LeaveApplication.Controllers
             }
 
         }
+        public ActionResult EditEmployees()
+        {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {//empty dataset...
+                System.Data.DataSet x = new System.Data.DataSet();
+                x.Tables.Add(new System.Data.DataTable());
+                //here you pass your filled dataset in place of x
+                return View(x);
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
+        }
         [HttpPost]
         public ActionResult AddDepartment(Department dp)
         {
