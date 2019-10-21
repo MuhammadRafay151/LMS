@@ -74,7 +74,7 @@ namespace LeaveApplication.Controllers
             }
 
         }
-        public ActionResult EditEmployees()
+        public ActionResult EditEmployees(int EmployeeID)
         {
             if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
             {//empty dataset...
