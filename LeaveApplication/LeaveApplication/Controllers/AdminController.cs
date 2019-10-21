@@ -432,6 +432,9 @@ namespace LeaveApplication.Controllers
             ad.RequestableStateChange(LeaveTypeID, IsRequestable);
         }
 
-
+        public void EmployeeStateChange(string EmployeeID, bool IsActive)
+        {
+            ad.EmployeeStateChange(EmployeeID, IsActive);
+        }
     }
 }
