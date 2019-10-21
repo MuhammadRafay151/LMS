@@ -150,6 +150,14 @@ namespace LeaveApplication.Models
             DataBase.ExecuteQuerry(Querry);
 
         }
+
+        public void EmployeeStateChange(string EmployeeID, bool IsActive)
+        {
+            //change enable/disable isactive for Employee based on user input
+            string Querry = string.Format("update Employee set IsActive='{0}' where EmployeeID='{1}'", IsActive, EmployeeID);
+            DataBase.ExecuteQuerry(Querry);
+
+        }
         public Employee ReadEmployee(int EmployeeID)
         {
 
