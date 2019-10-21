@@ -10,6 +10,11 @@ namespace LeaveApplication.Models
 {
     public class AdminBusinessLayer
     {
+        SqlConnection con;
+        string connection = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        SqlDataReader reader;
+        SqlCommand cmd;
+        public static Employee Employee;
         db DataBase = new db();
         public static AssignLeaves Al;
 
@@ -145,7 +150,49 @@ namespace LeaveApplication.Models
             DataBase.ExecuteQuerry(Querry);
 
         }
+        public Employee ReadEmployee(int EmployeeID)
+        {
 
+            string Querry = string.Format("select Employee.EmployeeID,Employee.UserName,Employee.EmployeeName,Employee.Address,Employee.PhoneNumber,Employee.CNIC,Employee.JoiningDate,Designations.Designation,Departments.Department,Picture.Picture,Employee.IsAdmin  from Employee inner join Picture on Employee.EmployeeID=Picture.EmployeeID inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join Designations on Employee.DesignationID=Designations.DesignationID where Employee.EmployeeID='{0}'", EmployeeID);
+
+            DataSet d1 = DataBase.Read(Querry);
+
+            Employee e1 = new Employee();
+            e1.EmployeeID = int.Parse(d1.Tables[0].Rows[0][0].ToString());
+            e1.UserName = d1.Tables[0].Rows[0][1].ToString();
+            e1.EmployeeName = d1.Tables[0].Rows[0][2].ToString();
+            e1.Department = d1.Tables[0].Rows[0][8].ToString();
+            e1.Designation = d1.Tables[0].Rows[0][7].ToString();
+            e1.ImageBase64 = GetBase64Image((Byte[])d1.Tables[0].Rows[0][9]);
+            e1.isAdmin = bool.Parse(d1.Tables[0].Rows[0][10].ToString());
+
+            Employee = e1;
+            Employee.IsManager = IsManager();
+            return Employee;
+
+        }
+        public string GetBase64Image(Byte[] Image)
+        {
+            string temp = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Image));
+            return temp;
+        }
+        private bool IsManager()
+        {
+            con = new SqlConnection(connection);
+            string Querry = string.Format("select COUNT(*) from Employee where Manager='{0}' group by Manager", Employee.EmployeeID);
+            cmd = new SqlCommand(Querry, con);
+            con.Open();
+            if (cmd.ExecuteScalar() != null && int.Parse(cmd.ExecuteScalar().ToString()) > 0)
+            {
+                con.Close();
+                return true;
+            }
+            else
+            {
+                con.Close();
+                return false;
+            }
+        }
     }
 
 }

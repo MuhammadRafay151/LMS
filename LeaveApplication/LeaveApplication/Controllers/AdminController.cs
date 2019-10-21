@@ -78,10 +78,12 @@ namespace LeaveApplication.Controllers
         {
             if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
             {//empty dataset...
-                System.Data.DataSet x = new System.Data.DataSet();
-                x.Tables.Add(new System.Data.DataTable());
-                //here you pass your filled dataset in place of x
-                return View(x);
+                Employee e1 = ad.ReadEmployee(EmployeeID);
+
+                //System.Data.DataSet x = new System.Data.DataSet();
+                //x.Tables.Add(new System.Data.DataTable());
+                ////here you pass your filled dataset in place of x
+                return View(e1);
             }
             else
             {
@@ -89,6 +91,7 @@ namespace LeaveApplication.Controllers
             }
 
         }
+        
         [HttpPost]
         public ActionResult AddDepartment(Department dp)
         {
