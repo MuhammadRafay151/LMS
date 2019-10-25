@@ -15,7 +15,7 @@ namespace LeaveApplication.Controllers
         // GET: ViewApplications
         //partial class for user(faculty) level features
         LeaveBusinessLayer lb = new LeaveBusinessLayer();
-
+        
         public ActionResult Index()
         {
 
@@ -159,6 +159,7 @@ namespace LeaveApplication.Controllers
         {
             if (Application_Id != null && Session["EmpID"] != null)
             {
+                LeaveBusinessLayer.FileId = 0;
                 LeaveApplication.Models.LeaveApplication x = lb.GetViewApplication(Application_Id);
                 List<StatusHistory> a = lb.GetStatusHistory(Application_Id);
 
@@ -229,6 +230,12 @@ namespace LeaveApplication.Controllers
         public string GetEmpID()
         {
             return Session["EmpID"].ToString();
+        }
+        public ActionResult DownLoadFile()
+        {
+            DataSet ds = lb.DownloadFile(LeaveBusinessLayer.FileId);
+            return File((Byte[])ds.Tables[0].Rows[0][1], ds.Tables[0].Rows[0][0].ToString(), ds.Tables[0].Rows[0][2].ToString());
+
         }
 
 

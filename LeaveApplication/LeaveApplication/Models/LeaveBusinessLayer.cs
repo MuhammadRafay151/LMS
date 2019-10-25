@@ -19,6 +19,7 @@ namespace LeaveApplication.Models
         SqlDataReader reader;
         DataSet ds;
         public static LeaveApplication leave;
+        public static int FileId;//store file id on full view leave application  to download attachemnt for that application on user request..
 
         public int CalculateTotalLeaveDays(LeaveApplication l1)
         {
@@ -62,12 +63,12 @@ namespace LeaveApplication.Models
             }
             reader.Close();
             con.Close();
-            InsertAttachement(a1.Attachment,int.Parse(a1.ApplicationId));
+            InsertAttachement(a1.Attachment, int.Parse(a1.ApplicationId));
             Querry = string.Format("insert into StatusHistory (LeaveApplicationID,Date,ApplicationStatusID) values ('{0}','{1}','{2}')", a1.ApplicationId, a1.ApplyDate, Status.s1.ToString());
             database.ExecuteQuerry(Querry);
-            
-          
-         
+
+
+
         }
         public byte[] GetFileBytes(HttpPostedFileBase file)
         {
@@ -81,18 +82,23 @@ namespace LeaveApplication.Models
             }
             return bytes;
         }
-        public void InsertAttachement(HttpPostedFileBase file,int ApplicationId)
+        public void InsertAttachement(HttpPostedFileBase file, int ApplicationId)
         {
-            string Name = Path.GetFileNameWithoutExtension(file.FileName);
+            string Name =file.FileName;
             string FileType = System.Web.MimeMapping.GetMimeMapping(file.FileName);
             string Querry = string.Format(@"declare @id int=''
             insert into Files([Content])values(@File)
             select @id = SCOPE_IDENTITY()
-            insert into Attachments(FileId, FileName, FileType, LeaveApplicationId) values(@id,'{0}','{1}','{2}')", Name,FileType,ApplicationId);
+            insert into Attachments(FileId, FileName, FileType, LeaveApplicationId) values(@id,'{0}','{1}','{2}')", Name, FileType, ApplicationId);
             SqlParameter p1 = new SqlParameter();
             p1.ParameterName = "File";
             p1.Value = GetFileBytes(file);
             database.ExecuteQuerry(Querry, p1);
+        }
+        public DataSet DownloadFile(int FileId)
+        {
+            string Querry = string.Format("select Attachments.FileType,Files.Content,Attachments.FileName from Files inner join Attachments on Attachments.FileId = Files.FileId where Files.FileId ={0}", FileId);
+            return database.Read(Querry);
         }
         public LeaveTypes[] GetLeaveTypes()
         {
@@ -200,7 +206,11 @@ namespace LeaveApplication.Models
         {
 
 
-            string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveType,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,Reasons.LeaveReason from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID inner join Reasons on LeaveApplication.ReasonID=Reasons.ReasonID  where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
+            string Querry = string.Format(@"select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveType,LeaveApplication.ApplyDate,
+LeaveApplication.FromDate, LeaveApplication.ToDate, LeaveApplication.TotalDays, LeaveApplication.Remarks,
+Reasons.LeaveReason, Attachments.FileId, Attachments.FileName from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID = LeaveType.LeaveTypeID
+  inner join Reasons on LeaveApplication.ReasonID = Reasons.ReasonID  left join Attachments on LeaveApplication.LeaveApplicationID = Attachments.LeaveApplicationId
+where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
 
             DataSet ds = database.Read(Querry);
 
@@ -215,6 +225,12 @@ namespace LeaveApplication.Models
             v1.LeaveRemarks = ds.Tables[0].Rows[0][7].ToString();
             v1.LeaveReason = ds.Tables[0].Rows[0][8].ToString();
             v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);
+            if (ds.Tables[0].Rows[0][9] != DBNull.Value)
+            {
+                FileId = Convert.ToInt32(ds.Tables[0].Rows[0][9]);
+                v1.FileName = ds.Tables[0].Rows[0][10].ToString();
+            }
+
 
 
             return v1;

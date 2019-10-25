@@ -54,6 +54,14 @@
                                             <th scope="row" class="text-info">Leave Remarks</th>
                                             <td class="align-middle  text-justify">@Model.LeaveRemarks</td>
                                         </tr>
+                                        @if (!string.IsNullOrWhiteSpace(@Model.FileName))
+                                        {
+                                            <tr>
+                                                <th scope="row" class="text-info">Attach</th>
+                                                <td class="align-middle  text-justify"><a href="/ViewApplications/DownLoadFile">@Model.FileName</a></td>
+                                            </tr>
+                                        }
+
                                     </tbody>
                                 </table>
                             </div>
