@@ -21,7 +21,7 @@ namespace LeaveApplication.Controllers
 
             if (Session["EmpID"] != null)
             {
-
+                Session["FileName"] = string.Empty;
                 return View();
             }
             else
@@ -164,7 +164,7 @@ namespace LeaveApplication.Controllers
                 List<StatusHistory> a = lb.GetStatusHistory(Application_Id);
 
                 ViewBag.SH = lb.GetStatusHistory(Application_Id);
-
+                Session["FileName"] = x.FileName;
                 return View("ViewFullApplication", x);
             }
             else
@@ -231,10 +231,25 @@ namespace LeaveApplication.Controllers
         {
             return Session["EmpID"].ToString();
         }
-        public ActionResult DownLoadFile()
+        public ActionResult DownLoadFile(string FileName)
         {
-            DataSet ds = lb.DownloadFile(LeaveBusinessLayer.FileId);
-            return File((Byte[])ds.Tables[0].Rows[0][1], ds.Tables[0].Rows[0][0].ToString(), ds.Tables[0].Rows[0][2].ToString());
+            if (Session["EmpID"] != null)
+            {
+                if (Session["FileName"].ToString() == FileName)
+                {
+                    DataSet ds = lb.DownloadFile(LeaveBusinessLayer.FileId);
+                    return File((Byte[])ds.Tables[0].Rows[0][1], ds.Tables[0].Rows[0][0].ToString(), ds.Tables[0].Rows[0][2].ToString());
+                }
+                else
+                {
+                    return Content("Access Denied");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+           
 
         }
 
