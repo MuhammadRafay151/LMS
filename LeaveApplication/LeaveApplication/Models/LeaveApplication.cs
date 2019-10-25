@@ -23,7 +23,8 @@ namespace LeaveApplication.Models
         public string ApplicationStatus { get; set; }
         public int IsHalfDay { get; set; }//full day leave or half day leave
 
-        public bool ApplicationType { get; set; }   
+        public bool ApplicationType { get; set; }   //leaverequest or leaveapplication...
+        public HttpPostedFileBase Attachment { get; set; }
 
     }
     public enum Status

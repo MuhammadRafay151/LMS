@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Data;
 using System.Globalization;
+using System.IO;
 
 namespace LeaveApplication.Models
 {
@@ -60,10 +61,38 @@ namespace LeaveApplication.Models
                 a1.ApplicationId = reader[0].ToString();
             }
             reader.Close();
-            Querry = string.Format("insert into StatusHistory (LeaveApplicationID,Date,ApplicationStatusID) values ('{0}','{1}','{2}')", a1.ApplicationId, a1.ApplyDate, Status.s1.ToString());
-            cmd = new SqlCommand(Querry, con);
-            cmd.ExecuteNonQuery(); cmd.Dispose();
             con.Close();
+            InsertAttachement(a1.Attachment,int.Parse(a1.ApplicationId));
+            Querry = string.Format("insert into StatusHistory (LeaveApplicationID,Date,ApplicationStatusID) values ('{0}','{1}','{2}')", a1.ApplicationId, a1.ApplyDate, Status.s1.ToString());
+            database.ExecuteQuerry(Querry);
+            
+          
+         
+        }
+        public byte[] GetFileBytes(HttpPostedFileBase file)
+        {
+            Byte[] bytes = null;
+            if (file != null)
+            {
+                Stream s1 = file.InputStream;
+                BinaryReader b1 = new BinaryReader(s1);
+                bytes = b1.ReadBytes((int)s1.Length);
+
+            }
+            return bytes;
+        }
+        public void InsertAttachement(HttpPostedFileBase file,int ApplicationId)
+        {
+            string Name = Path.GetFileNameWithoutExtension(file.FileName);
+            string FileType = System.Web.MimeMapping.GetMimeMapping(file.FileName);
+            string Querry = string.Format(@"declare @id int=''
+            insert into Files([Content])values(@File)
+            select @id = SCOPE_IDENTITY()
+            insert into Attachments(FileId, FileName, FileType, LeaveApplicationId) values(@id,'{0}','{1}','{2}')", Name,FileType,ApplicationId);
+            SqlParameter p1 = new SqlParameter();
+            p1.ParameterName = "File";
+            p1.Value = GetFileBytes(file);
+            database.ExecuteQuerry(Querry, p1);
         }
         public LeaveTypes[] GetLeaveTypes()
         {
@@ -305,26 +334,27 @@ namespace LeaveApplication.Models
             string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveType.LeaveType,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,LeaveApplication.ApplicationType,Employee.EmployeeName  from LeaveApplication INNER JOIN Employee on Employee.EmployeeID=LeaveApplication.EmployeeID inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID inner join Reasons on Reasons.ReasonID=LeaveApplication.ReasonID inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID='s3' inner join ApplicationStatus on StatusHistory.ApplicationStatusID=ApplicationStatus.ApplicationStatusID where Employee.Manager='{0}'", EmployeeBusinessLayer.Employee.EmployeeID);
             return database.Read(Querry);
         }
-        public void AcceptApplication(string ApplicationID,string ManagerRemarks)
+        public void AcceptApplication(string ApplicationID, string ManagerRemarks)
         {
             if (ManagerBusinessLayer.IsUnderManagement(ApplicationID, EmployeeBusinessLayer.Employee.EmployeeID.ToString()))
             {
                 string Querry = string.Format("select LeaveApplication.EmployeeID, LeaveApplication.LeaveTypeID,LeaveApplication.ApplicationType,LeaveApplication.TotalDays,EmployeeLeaveCount.Count as CurrentBalance from LeaveApplication  inner join EmployeeLeaveCount on LeaveApplication.EmployeeID=EmployeeLeaveCount.EmployeeID where LeaveApplication.LeaveApplicationID={0}", ApplicationID);
                 DataSet ds = database.Read(Querry);
                 EmployeeLeaveCount e1 = new EmployeeLeaveCount();
-                e1.EmployeeID = Convert.ToInt32(ds.Tables[0].Rows[0][0]); 
-                e1.LeaveTypeID = Convert.ToInt32(ds.Tables[0].Rows[0][1]); 
+                e1.EmployeeID = Convert.ToInt32(ds.Tables[0].Rows[0][0]);
+                e1.LeaveTypeID = Convert.ToInt32(ds.Tables[0].Rows[0][1]);
                 e1.Count = Convert.ToInt32(ds.Tables[0].Rows[0][4]);
                 LeaveApplication l1 = new LeaveApplication();
                 l1.ApplicationType = Convert.ToBoolean(ds.Tables[0].Rows[0][2]);
                 l1.TotalDays = Convert.ToInt32(ds.Tables[0].Rows[0][3]);
-              
 
-                if (l1.ApplicationType==false&& e1.Count >= l1.TotalDays)
+
+                if (l1.ApplicationType == false && e1.Count >= l1.TotalDays)
                 {
                     e1.Count -= l1.TotalDays;
-                   
-                } else if(l1.ApplicationType==true && e1.Count>l1.TotalDays)
+
+                }
+                else if (l1.ApplicationType == true && e1.Count > l1.TotalDays)
                 {
                     e1.Count += l1.TotalDays;
                 }
@@ -335,20 +365,20 @@ namespace LeaveApplication.Models
                 database.ExecuteQuerry(Querry);
             }
 
-          
-           
+
+
 
         }
-        public void RejectApplication(string ApplicationID,string ManagerRemarks)
+        public void RejectApplication(string ApplicationID, string ManagerRemarks)
         {
-            
+
             string Querry = string.Format("insert into StatusHistory(LeaveApplicationID,Date,ApplicationStatusID) select '{0}','{1}',ApplicationStatus.ApplicationStatusID from ApplicationStatus where ApplicationStatus.ApplicationStatus='Rejected' ", ApplicationID, DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss"));
             database.ExecuteQuerry(Querry);
             UpdateManagerRemarks(ApplicationID, ManagerRemarks);
         }
         public void UpdateManagerRemarks(string ApplicationID, string ManagerRemarks)
         {//update remarks on apprve or reject leave...
-           string Querry = string.Format("update LeaveApplication set ManagerRemarks='{0}' where LeaveApplicationID='{1}'", ManagerRemarks, ApplicationID);
+            string Querry = string.Format("update LeaveApplication set ManagerRemarks='{0}' where LeaveApplicationID='{1}'", ManagerRemarks, ApplicationID);
             database.ExecuteQuerry(Querry);
         }
         private string GetApplicationId()
@@ -415,7 +445,7 @@ print @st
  SET @b='
 select * from
  (
-select Employee.EmployeeName,StatusHistory.ApplicationStatusID,LeaveType.LeaveType from Employee left join LeaveApplication on Employee.EmployeeID=LeaveApplication.EmployeeID left join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID=@st left join LeaveType on LeaveType.LeaveTypeID=LeaveApplication.LeaveTypeID where Employee.Manager=@id
+select Employee.EmployeeID,Employee.EmployeeName,StatusHistory.ApplicationStatusID,LeaveType.LeaveType from Employee left join LeaveApplication on Employee.EmployeeID=LeaveApplication.EmployeeID left join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID=@st left join LeaveType on LeaveType.LeaveTypeID=LeaveApplication.LeaveTypeID where Employee.Manager=@id
  
  )t
  pivot(
@@ -423,6 +453,18 @@ count(ApplicationStatusID) for LeaveType in('+@a+')
 )as ax';
 EXECUTE sp_executesql @b, N'@id NVARCHAR(MAX),@st NVARCHAR(MAX)', @id = @id,@st=@st;", EmployeeBusinessLayer.Employee.EmployeeID);
 
+            return database.Read(Querry);
+        }
+        public DataSet GetBalance(String EmployeeId)
+        {//for faculty
+            string Querry = string.Format(@"select LeaveType.LeaveType,COALESCE( EmployeeLeaveCount.Count,0) from LeaveType left join EmployeeLeaveCount on EmployeeLeaveCount.EmployeeID={0} and LeaveType.LeaveTypeID=EmployeeLeaveCount.LeaveTypeID 
+inner join Employee on Employee.EmployeeID = {0} where  Employee.Manager = {1}", EmployeeId, EmployeeBusinessLayer.Employee.EmployeeID);
+            return database.Read(Querry);
+        }
+        public DataSet GetLeaveBalance(String EmployeeId)
+        {//for user itself
+            string Querry = string.Format(@"select LeaveType.LeaveType,COALESCE( EmployeeLeaveCount.Count,0) from LeaveType left join EmployeeLeaveCount on EmployeeLeaveCount.EmployeeID={0} and LeaveType.LeaveTypeID=EmployeeLeaveCount.LeaveTypeID 
+inner join Employee on Employee.EmployeeID = {0}", EmployeeId);
             return database.Read(Querry);
         }
 

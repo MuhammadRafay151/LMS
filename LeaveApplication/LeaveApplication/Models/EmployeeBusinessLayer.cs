@@ -193,7 +193,7 @@ namespace LeaveApplication.Models
             return e1;
         }
         private bool IsManager()
-        {
+        {//should modify with top1 record
             con = new SqlConnection(connection);
             string Querry = string.Format("select COUNT(*) from Employee where Manager='{0}' group by Manager", Employee.EmployeeID);
             cmd = new SqlCommand(Querry, con);

@@ -200,16 +200,26 @@ namespace LeaveApplication.Controllers
 
             if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager == true)
             {
-
-                ViewBag.LeaveCount = lb.FacultyLeaveCount();
-
-                return View("LeaveCount");
+                ViewBag.LeaveCount = false;
+                return View("LeaveCount", lb.FacultyLeaveCount());
             }
             else
             {
                 return RedirectToAction("Index", "LogIn");
             }
 
+
+        }
+        public ActionResult FacultyLeaveBalance(int? id)
+        {
+            if (id.HasValue)
+            {
+                return PartialView("LeaveBalance", lb.GetBalance(id.Value.ToString()));
+            }
+            else
+            {
+                return Content("Some thing going wrong");
+            }
 
         }
 

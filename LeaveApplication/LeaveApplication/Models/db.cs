@@ -57,5 +57,6 @@ namespace LeaveApplication.Models
             con.Close();
             return x;
         }
+       
     }
 }

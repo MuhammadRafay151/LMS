@@ -55,7 +55,7 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult Submit(LeaveApplication.Models.LeaveApplication l1)
         {
-
+           
             if (l1.IsHalfDay == 0 || l1.IsHalfDay == 1)
             {
                 if (l1.IsHalfDay == 1)

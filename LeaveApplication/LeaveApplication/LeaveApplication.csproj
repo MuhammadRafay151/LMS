@@ -605,6 +605,7 @@
     <Content Include="Views\RequestLeave\Index.cshtml" />
     <Content Include="Views\ApplyForLeave\LeaveForm.cshtml" />
     <Content Include="Views\RequestLeave\LeaveForm.cshtml" />
+    <Content Include="Views\ViewApplications\LeaveBalance.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

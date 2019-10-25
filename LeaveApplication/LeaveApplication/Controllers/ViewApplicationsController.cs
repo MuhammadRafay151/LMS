@@ -179,19 +179,19 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult SaveChanges(LeaveApplication.Models.LeaveApplication l1)
         {
-            if (LeaveApplication.Models.LeaveBusinessLayer.leave.TotalDays==0.5)
+            if (LeaveApplication.Models.LeaveBusinessLayer.leave.TotalDays == 0.5)
             {
                 l1.FromDate = Request.Form["halfday_from"].ToString();
                 string[] temp = l1.FromDate.Split(' ');
                 l1.ToDate = temp[0] + " " + Request.Form["halfday_to"].ToString();
-             
+
                 Double hrs = lb.CalculateLeaveHours(l1);
-              
+
                 if (hrs > 5 || hrs <= 0)
                 {
-                    
+
                     TempData["HrsError"] = true;
-                    return RedirectToAction("EditDetails", "ViewApplications", new { Application_Id=LeaveApplication.Models.LeaveBusinessLayer.leave.ApplicationId });
+                    return RedirectToAction("EditDetails", "ViewApplications", new { Application_Id = LeaveApplication.Models.LeaveBusinessLayer.leave.ApplicationId });
                 }
                 lb.SaveChanges(l1);
             }
@@ -207,13 +207,20 @@ namespace LeaveApplication.Controllers
         {
             if (Session["EmpID"] != null)
             {
-                ViewBag.LeaveCount = lb.GetLeaveCount();
-                return View();
+                ViewBag.LeaveCount = true;
+                return View(lb.GetLeaveCount());
             }
             else
             {
                 return RedirectToAction("Index", "LogIn");
             }
+
+
+        }
+        public ActionResult LeaveBalance()
+        {
+          
+            return PartialView(lb.GetLeaveBalance(EmployeeBusinessLayer.Employee.EmployeeID.ToString()));
 
 
         }

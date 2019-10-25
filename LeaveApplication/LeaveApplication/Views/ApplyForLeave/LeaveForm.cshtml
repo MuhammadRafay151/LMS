@@ -4,7 +4,7 @@
         <div class="col-sm-6 col-lg-6 col-8 ">
 
 
-            @using (Html.BeginForm("Submit", "ApplyForLeave", FormMethod.Post, new { id = "form1", onsubmit = "return OnSubmit()" }))
+            @using (Html.BeginForm("Submit", "ApplyForLeave", FormMethod.Post, new { id = "form1", onsubmit = "return OnSubmit()" , autocomplete = "off", enctype = "multipart/form-data" }))
             {
 
                 <div class="card ">
@@ -129,7 +129,9 @@
                         <div class="form-group d-flex justify-content-center">
                             <textarea class="form-control" style="resize:none" name="LeaveRemarks" id="LeaveRemarks" cols="30" rows="5" placeholder="Enter Description if any."></textarea>
                         </div>
-
+                        <label>Upload files </label>
+                        <input type="file"  name="Attachment"/>
+                   
                     </div>
                     <div class="d-flex justify-content-center card-footer">
 

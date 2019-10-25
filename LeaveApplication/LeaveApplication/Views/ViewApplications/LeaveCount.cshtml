@@ -1,9 +1,9 @@
 ﻿
+@model System.Data.DataSet
 @{
     ViewBag.Title = "LeaveCount";
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
-
 
 
 
@@ -19,45 +19,104 @@
                     <h2 class="text-white card-header card-header-info text-center" style="font-family:g1">Leave count</h2>
                 </div>
                 <div class="card-body">
-                    <table class="table table-hover  ">
-                        <thead>
-                            <tr>
-                                @{
-                                    System.Data.DataSet d1 = ViewBag.LeaveCount;
+                    <div class="table-responsive">
+                        <table class="table table-hover " id="t1">
+                            <thead>
+                                <tr>
 
-                                    for (int i = 0; i < d1.Tables[0].Columns.Count; i++)
-                                    {
-                                        <th class="text-center text-info" scope="col">@d1.Tables[0].Columns[i].ColumnName</th>
-                                    }
-                                }
-
-                            </tr>
-
-                        </thead>
-                        <tbody>
-                            <tr>
-                                @{
-
-                                    foreach (System.Data.DataRow x in d1.Tables[0].Rows)
-                                    {
-                                        <td class="text-center">@x[0].ToString()</td>
-                                        <td class="text-center">@x[1].ToString()</td>
-                                        <td class="text-center">@x[2].ToString()</td>
-                                        if (d1.Tables[0].Columns.Count == 4)
+                                    @{
+                                        System.Data.DataSet d1 = Model;
+                                        if (ViewBag.LeaveCount == true)
                                         {
-                                            <td class="text-center">@x[3].ToString()</td>
+                                            for (int i = 0; i < d1.Tables[0].Columns.Count; i++)
+                                            {
+                                                <th class="text-center text-info" scope="col">@d1.Tables[0].Columns[i].ColumnName</th>
+                                            }
+                                            <th class="text-center text-info" scope="col">Actions</th>
+                                        }
+                                        else
+                                        {
+                                            for (int i = 1; i < d1.Tables[0].Columns.Count; i++)
+                                            {
+                                                <th class="text-center text-info" scope="col">@d1.Tables[0].Columns[i].ColumnName</th>
+                                            }
+                                            <th class="text-center text-info" scope="col">Actions</th>
+                                        }
+
+                                    }
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+
+                                @{if (ViewBag.LeaveCount == true)
+                                    {
+                                        foreach (System.Data.DataRow x in d1.Tables[0].Rows)
+                                        {
+                                            <tr>
+
+                                                @for (int i = 0; i < d1.Tables[0].Columns.Count; i++)
+                                                {
+                                                    <td class="align-middle text-center">@x[i].ToString()</td>
+                                                }
+                                                <td class="align-middle text-center" width="20">
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-info-grd " onclick="GetLeaveBalance()">View Balance</button>
+
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+
+
+
                                         }
                                     }
-                                }
-                                @*<th scope="row" class="text-info">Count</th>*@
-                            </tr>
+                                    else
+                                    {
 
-                        </tbody>
-                    </table>
+                                        foreach (System.Data.DataRow x in d1.Tables[0].Rows)
+                                        {
+                                            <tr>
+
+                                                @for (int i = 1; i < d1.Tables[0].Columns.Count; i++)
+                                                {
+                                                    <td class="align-middle text-center">@x[i].ToString()</td>
+                                                }
+                                                <td class="align-middle text-center" width="20">
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-info-grd " onclick="GetBalance(@x[0].ToString(), this.parentNode.parentNode.parentNode)">View Balance</button>
+
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+
+
+
+                                        }
+                                    }
+
+                                }
+
+
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
-           
+
+            <div class="row" id="bal1">
+                @*@Html.Action("LeaveBalance", "ViewApplications");*@
+
+            </div>
         </div>
+
 
     </div>
 

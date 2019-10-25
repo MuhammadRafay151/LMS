@@ -54,3 +54,29 @@ function StateChange(ToggleBtn,id) {
     //window.location.href = "/Admin/RequestableStateChange?LeaveTypeID=" + id + "&IsRequestable="+ToggleBtn.checked;
    
 }
+function GetBalance(Empid, row) {
+   
+   
+    $.ajax({
+        type: "post",
+        url: "/ViewApplications/FacultyLeaveBalance?id=" + Empid,
+        data: Empid,
+        success: function (html) {
+            $('#bal1').html(html);
+            $('#EmpName').html(document.getElementById('t1').rows[row.rowIndex].cells[0].innerHTML);
+        }
+
+    })
+}
+function GetLeaveBalance() {
+    $.ajax({
+        type: "post",
+        url: "/ViewApplications/LeaveBalance",
+        success: function (html) {
+            $('#bal1').html(html);
+            $('#EmpNameHead').remove();
+            $('#EmpName').remove();
+        }
+
+    })
+}
