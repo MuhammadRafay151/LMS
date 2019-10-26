@@ -84,12 +84,11 @@ namespace LeaveApplication.Models
         }
         public void InsertAttachement(HttpPostedFileBase file, int ApplicationId)
         {
-            string Name =file.FileName;
-            string FileType = System.Web.MimeMapping.GetMimeMapping(file.FileName);
+            string Name = file.FileName;
             string Querry = string.Format(@"declare @id int=''
             insert into Files([Content])values(@File)
             select @id = SCOPE_IDENTITY()
-            insert into Attachments(FileId, FileName, FileType, LeaveApplicationId) values(@id,'{0}','{1}','{2}')", Name, FileType, ApplicationId);
+            insert into Attachments(FileId, FileName, LeaveApplicationId) values(@id,'{0}','{1}')", Name, ApplicationId);
             SqlParameter p1 = new SqlParameter();
             p1.ParameterName = "File";
             p1.Value = GetFileBytes(file);
@@ -97,7 +96,7 @@ namespace LeaveApplication.Models
         }
         public DataSet DownloadFile(int FileId)
         {
-            string Querry = string.Format("select Attachments.FileType,Files.Content,Attachments.FileName from Files inner join Attachments on Attachments.FileId = Files.FileId where Files.FileId ={0}", FileId);
+            string Querry = string.Format("select Files.Content,Attachments.FileName from Files inner join Attachments on Attachments.FileId = Files.FileId where Files.FileId ={0}", FileId);
             return database.Read(Querry);
         }
         public LeaveTypes[] GetLeaveTypes()

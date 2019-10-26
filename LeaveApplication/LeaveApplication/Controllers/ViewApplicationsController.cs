@@ -238,7 +238,7 @@ namespace LeaveApplication.Controllers
                 if (Session["FileName"].ToString() == FileName)
                 {
                     DataSet ds = lb.DownloadFile(LeaveBusinessLayer.FileId);
-                    return File((Byte[])ds.Tables[0].Rows[0][1], ds.Tables[0].Rows[0][0].ToString(), ds.Tables[0].Rows[0][2].ToString());
+                    return File((Byte[])ds.Tables[0].Rows[0][0],System.Web.MimeMapping.GetMimeMapping( ds.Tables[0].Rows[0][1].ToString()), ds.Tables[0].Rows[0][1].ToString());
                 }
                 else
                 {
