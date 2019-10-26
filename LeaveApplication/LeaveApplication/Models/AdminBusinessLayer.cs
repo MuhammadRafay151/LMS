@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.IO;
 
 namespace LeaveApplication.Models
 {
@@ -158,6 +159,48 @@ namespace LeaveApplication.Models
             DataBase.ExecuteQuerry(Querry);
 
         }
+
+        public void UpdateEmployee(Employee Emp)
+        {
+
+            Emp.DateOfJoining = DateTime.Now.ToString("yyyy-MM-dd");
+            Byte[] bytes = null;
+            if (Emp.Image != null)
+            {
+                Stream s1 = Emp.Image.InputStream;
+                BinaryReader b1 = new BinaryReader(s1);
+                bytes = b1.ReadBytes((int)s1.Length);
+
+            }
+
+            //UserName='{0}', UserName='{0}',
+            if (string.IsNullOrWhiteSpace(Emp.Manager))
+            {
+                string Querry = string.Format("UPDATE Users Set  Password='{1}'" +
+                 "update employee set  employeename='{2}', address='{3}', PhoneNumber='{4}', cnic='{5}', JoiningDate='{6}', DesignationID='{7}', DepartmentID='{8}', IsActive={9}" +
+                 "declare @id int = SCOPE_IDENTITY()" +
+                 "Update Picture set EmployeeID=@id, Picture=@img", Emp.UserName, Emp.Password, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DateOfJoining, Emp.DesignationID, Emp.DepartmentID, 1);
+                SqlParameter p1 = new SqlParameter();
+                p1.ParameterName = "img";
+                p1.Value = bytes;
+                DataBase.ExecuteQuerry(Querry, p1);
+
+            }
+            else
+            {
+                string Querry = string.Format("UPDATE Users Set Password='{1}'" +
+                "update employee set  employeename='{2}', address='{3}', PhoneNumber='{4}', cnic='{5}', JoiningDate='{6}', DesignationID='{7}', DepartmentID='{8}', Manager={9},IsActive={10}" +
+                "declare @id int = SCOPE_IDENTITY()" +
+                "Update Picture set EmployeeID=@id, Picture=@img", Emp.UserName, Emp.Password, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DateOfJoining, Emp.DesignationID, Emp.DepartmentID, Emp.Manager, 1);
+                SqlParameter p1 = new SqlParameter();
+                p1.ParameterName = "img";
+                p1.Value = bytes;
+                DataBase.ExecuteQuerry(Querry, p1);
+            }
+
+
+        }
+
         public Employee ReadEmployee(int EmployeeID)
         {
 
@@ -169,8 +212,12 @@ namespace LeaveApplication.Models
             e1.EmployeeID = int.Parse(d1.Tables[0].Rows[0][0].ToString());
             e1.UserName = d1.Tables[0].Rows[0][1].ToString();
             e1.EmployeeName = d1.Tables[0].Rows[0][2].ToString();
+            e1.Address= d1.Tables[0].Rows[0][3].ToString();
+            e1.PhoneNumber= d1.Tables[0].Rows[0][4].ToString();
+            e1.CNIC= d1.Tables[0].Rows[0][5].ToString();
             e1.Department = d1.Tables[0].Rows[0][8].ToString();
             e1.Designation = d1.Tables[0].Rows[0][7].ToString();
+           // e1.Image= Convert.FromBase64String(Convert.ToString( d1.Tables[0].Rows[0][9]));
             e1.ImageBase64 = GetBase64Image((Byte[])d1.Tables[0].Rows[0][9]);
             e1.isAdmin = bool.Parse(d1.Tables[0].Rows[0][10].ToString());
 

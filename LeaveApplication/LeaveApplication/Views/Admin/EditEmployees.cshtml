@@ -21,10 +21,10 @@
         <div class="col">
             <div class="card ">
                 <div class="card-header card-header-info">
-                    <h2 class="card-title">Registeration</h2>
+                    <h2 class="card-title">EditEmployee</h2>
                 </div>
                 <div class="container">
-                    @using (Html.BeginForm("Register", "RegisterEmployee", FormMethod.Post, new { autocomplete = "off", enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("UpdateEmployee", "Admin", FormMethod.Post, new { autocomplete = "off", enctype = "multipart/form-data" }))
                     {
                         <div class="row">
                             <div class="col">
@@ -160,6 +160,8 @@
 
 
 <script>
+
+    @*document.getElementById("designation").value = "@Model.DesignationID";*@
     $(document).ready(function () {
         $("#EmployeeID").mask("Emp0000");
         //$("#EmployeeName").mask("AAAA");

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LeaveApplication.Models;
+using System.Data.SqlClient;
 using System.IO;
 namespace LeaveApplication.Controllers
 {
@@ -80,6 +81,9 @@ namespace LeaveApplication.Controllers
             {//empty dataset...
                 Employee e1 = ad.ReadEmployee(EmployeeID);
 
+                ViewBag.Employees = eb.GetEmployees();
+                ViewBag.List = eb.GetDesignation();
+                ViewBag.List2 = eb.GetDepartments();
                 //System.Data.DataSet x = new System.Data.DataSet();
                 //x.Tables.Add(new System.Data.DataTable());
                 ////here you pass your filled dataset in place of x
@@ -436,5 +440,47 @@ namespace LeaveApplication.Controllers
         {
             ad.EmployeeStateChange(EmployeeID, IsActive);
         }
+
+        public ActionResult UpdateEmployee(Employee e1)
+        {
+            EmployeeBusinessLayer emp = new EmployeeBusinessLayer();
+            //   string text = e1.EmployeeID + "<br />" + e1.EmployeeID + "<br />" + "<br />" + e1.Address + "<br />" + e1.CNIC + "<br />" + e1.DateOfJoining + "<br />" + e1.Password + "<br />" + e1.Picture;
+            //return RedirectToAction("Registeration");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ad.UpdateEmployee(e1);
+                    //   string text = e1.EmployeeID + "<br />" + e1.EmployeeID + "<br />" + "<br />" + e1.Address + "<br />" + e1.CNIC + "<br />" + e1.DateOfJoining + "<br />" + e1.Password + "<br />" + e1.Picture;
+                    return RedirectToAction("EditEmployees");
+                }
+                catch (SqlException e)
+                {
+                    if (e.Number == 2627)
+                    {
+                        ModelState.AddModelError("UserName", "User Name is Not Available");
+                        ViewBag.Employees = emp.GetEmployees();
+                        ViewBag.List = emp.GetDesignation();
+                        ViewBag.List2 = emp.GetDepartments();
+                        ad.UpdateEmployee(e1);
+                        return View("EditEmployees");
+                    }
+                    else
+                    {
+                        return Content(e.Message);
+                    }
+                }
+
+            }
+            else
+            {
+                ViewBag.Employees = emp.GetEmployees();
+                ViewBag.List = emp.GetDesignation();
+                ViewBag.List2 = emp.GetDepartments();
+                return View("EditEmployees");
+            }
+
+        }
+
     }
 }
