@@ -140,6 +140,7 @@
     <Compile Include="Models\AssignLeaves.cs" />
     <Compile Include="Models\DateTimeHelper.cs" />
     <Compile Include="Models\db.cs" />
+    <Compile Include="Models\Email.cs" />
     <Compile Include="Models\LeaveApplication.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Designation.cs" />
@@ -606,6 +607,7 @@
     <Content Include="Views\ApplyForLeave\LeaveForm.cshtml" />
     <Content Include="Views\RequestLeave\LeaveForm.cshtml" />
     <Content Include="Views\ViewApplications\LeaveBalance.cshtml" />
+    <Content Include="Views\Admin\EditEmployees.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

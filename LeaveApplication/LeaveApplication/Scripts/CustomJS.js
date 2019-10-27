@@ -80,3 +80,14 @@ function GetLeaveBalance() {
 
     })
 }
+function EmployeeStateChange(ToggleBtn, id) {
+    var form = $(ToggleBtn).parent().parent();
+    $.ajax({
+        type: "post",
+        url: "/Admin/EmployeeStateChange",
+        data: { EmployeeID: id, IsActive: ToggleBtn.checked }
+
+    })
+
+
+}

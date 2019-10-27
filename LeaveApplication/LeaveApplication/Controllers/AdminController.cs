@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using LeaveApplication.Models;
 using System.IO;
+using System.Data.SqlClient;
+
 namespace LeaveApplication.Controllers
 {
     public class AdminController : Controller
@@ -62,10 +64,10 @@ namespace LeaveApplication.Controllers
         public ActionResult Employees()
         {
             if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
-            {//empty dataset...
-                System.Data.DataSet x = new System.Data.DataSet();
-                x.Tables.Add(new System.Data.DataTable());
-                //here you pass your filled dataset in place of x
+            {
+
+                System.Data.DataSet x = eb.GetEmployeesDs();
+
                 return View(x);
             }
             else
@@ -74,6 +76,93 @@ namespace LeaveApplication.Controllers
             }
 
         }
+        public ActionResult EditEmployees(int EmployeeID)
+        {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                Employee e1 = eb.GetEmployeeData(EmployeeID);
+                ViewBag.Employees = eb.GetEmployees();
+                ViewBag.List = eb.GetDesignation();
+                ViewBag.List2 = eb.GetDepartments();
+
+                return View(e1);
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
+        }
+        public void EmployeeStateChange(string EmployeeID, bool IsActive)
+        {
+            ad.EmployeeStateChange(EmployeeID, IsActive);
+        }
+        public ActionResult UpdateEmployee(Employee e1)
+        {
+
+            EmployeeBusinessLayer emp = new EmployeeBusinessLayer();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ad.UpdateEmployee(e1);
+                    return RedirectToAction("Employees");
+                }
+                catch (SqlException e)
+                {
+                    if (e.Number == 2627)
+                    {
+                        ModelState.AddModelError("UserName", "User Name is Not Available");
+                        ViewBag.Employees = emp.GetEmployees();
+                        ViewBag.List = emp.GetDesignation();
+                        ViewBag.List2 = emp.GetDepartments();
+                        Employee e2 = eb.GetEmployeeData(e1.EmployeeID);
+                        return View("EditEmployees",e2);
+                    }
+                    else
+                    {
+                        return Content(e.Message);
+                    }
+                }
+
+            }
+            else
+            {
+                if (e1.Image==null)
+                {
+                    try
+                    {
+                        ad.UpdateEmployee(e1);
+                        return RedirectToAction("Employees");
+                    }
+                    catch (SqlException e)
+                    {
+                        if (e.Number == 2627)
+                        {
+                            ModelState.AddModelError("UserName", "User Name is Not Available");
+                            ViewBag.Employees = emp.GetEmployees();
+                            ViewBag.List = emp.GetDesignation();
+                            ViewBag.List2 = emp.GetDepartments();
+                            
+                            return View("EditEmployees", eb.GetEmployeeData(e1.EmployeeID));
+                        }
+                        else
+                        {
+                            return Content(e.Message);
+                        }
+                    }
+                  
+                }
+                ViewBag.Employees = emp.GetEmployees();
+                ViewBag.List = emp.GetDesignation();
+                ViewBag.List2 = emp.GetDepartments();
+                Employee e2 = eb.GetEmployeeData(e1.EmployeeID);
+                return View("EditEmployees", e2);
+            }
+
+        }
+
         [HttpPost]
         public ActionResult AddDepartment(Department dp)
         {

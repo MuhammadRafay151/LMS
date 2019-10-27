@@ -1,12 +1,12 @@
-﻿@model LeaveApplication.Models.Employee
+﻿
 @{
-    ViewBag.Title = "Registeration";
-  Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+    ViewBag.Title = "EditEmployees";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
-
-
+@model LeaveApplication.Models.Employee
 
 <style>
+
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -21,16 +21,16 @@
         <div class="col">
             <div class="card ">
                 <div class="card-header card-header-info">
-                    <h3 class="card-title">Registeration</h3>
+                    <h2 class="card-title">EditEmployee</h2>
                 </div>
                 <div class="container">
-                    @using (Html.BeginForm("Register", "RegisterEmployee", FormMethod.Post, new { autocomplete = "off", enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("UpdateEmployee", "Admin",new {EmployeeID=Model.EmployeeID} ,FormMethod.Post, new { autocomplete = "off", enctype = "multipart/form-data" }))
                     {
                         <div class="row">
                             <div class="col">
                                 <div class="d-flex justify-content-center">
                                     <fieldset>
-
+                                        
                                         <div class="form-group">
                                             @Html.TextBoxFor(Model => Model.UserName, new { @class = "form-control", placeholder = "User Name", required = "required" })
                                             @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
@@ -64,9 +64,19 @@
                                                 @{
                                                     foreach (LeaveApplication.Models.Department x in ViewBag.List2)
                                                     {
-                                                        <option value="@x.DepartmentId">
-                                                            @x.department
-                                                        </option>
+                                                        if (Model.DepartmentID == x.DepartmentId)
+                                                        {
+                                                            <option value="@x.DepartmentId" selected>
+                                                                @x.department
+                                                            </option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@x.DepartmentId">
+                                                                @x.department
+                                                            </option>
+                                                        }
+
                                                     }
                                                 }
 
@@ -81,9 +91,19 @@
                                                 @{
                                                     foreach (LeaveApplication.Models.Designation x in ViewBag.List)
                                                     {
-                                                        <option value="@x.DesignationID">
-                                                            @x.designation
-                                                        </option>
+                                                        if (Model.DesignationID == x.DesignationID)
+                                                        {
+                                                            <option value="@x.DesignationID" selected>
+                                                                @x.designation
+                                                            </option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@x.DesignationID">
+                                                                @x.designation
+                                                            </option>
+                                                        }
+
                                                     }
                                                 }
 
@@ -92,14 +112,23 @@
                                         </div>
                                         <div class="form-group">
 
-                                            <select class="custom-select" id=@Html.IdFor(m=>m.Manager) name=@Html.NameFor(m=>m.Manager) required>
+                                            <select class="custom-select" id=@Html.IdFor(m=>m.Manager) name=@Html.NameFor(m=>m.Manager)>
                                                 <option value="" disabled selected>Select Manager</option>
                                                 @{System.Data.DataSet emp = ViewBag.Employees;
                                                     foreach (System.Data.DataRow i in emp.Tables[0].Rows)
                                                     {
-                                                        <option value="@i[0].ToString()">
-                                                            @i[1].ToString()
-                                                        </option>
+                                                        if (Model.Manager == i[0].ToString())
+                                                        {
+                                                            <option value="@i[0].ToString()" selected>
+                                                                @i[1].ToString()
+                                                            </option>}
+                                                        else
+                                                        {
+                                                            <option value="@i[0].ToString()">
+                                                                @i[1].ToString()
+                                                            </option>
+                                                        }
+
                                                     }
                                                 }
 
@@ -107,7 +136,7 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <input class="form-control" id="password" name="password" type="password" placeholder="Password" required />
+                                            <input class="form-control" id="password" name="password" type="password" placeholder="Password" value="@Model.Password" required />
                                             <div class="checkbox" style="padding-top:10px">
                                                 <label>
                                                     <input id="chk1" type="checkbox" onclick="ShowPass()"> Show Password
@@ -128,13 +157,13 @@
                                         <h3 class="card-title">Profile Picture</h3>
                                     </div>
                                     <div class="d-flex card-body justify-content-center">
-                                        <img id="img1" src="~/Images/mark.jpg" alt="" style="height:350px; width:350px;border:3px solid black;" />
+                                        <img id="img1" src="@Model.ImageBase64" alt="" style="height:350px; width:350px;border:3px solid black;" />
 
                                     </div>
 
                                     <div class="card-footer justify-content-center">
 
-                                        <input class="form-control-file " id="@Html.IdFor(m=>m.Image)" name="@Html.NameFor(Model=>Model.Image)" type="file" placeholder="Upload Image" onchange="openFile(event)" />
+                                        <input class="form-control-file " id="@Html.IdFor(m=>m.Image)" name="@Html.NameFor(Model=>Model.Image)" type="file" placeholder="Upload Image"  onchange="openFile(event)" />
 
                                         @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
                                     </div>
@@ -144,7 +173,7 @@
                         <div class="row ">
                             <div class="d-flex col justify-content-center">
 
-                                <input id="Submit1" class="btn btn-info-grd btn-round col-6"  type="submit" value="submit" onclick="return IsImgUploaded() " />
+                                <input id="Submit1" class="btn btn-info-grd btn-round col-6" type="submit" value="submit" onclick="return IsImgUploaded() " />
 
                             </div>
                         </div>
@@ -164,6 +193,8 @@
 
 
 <script>
+
+    @*document.getElementById("designation").value = "@Model.DesignationID";*@
     $(document).ready(function () {
         $("#EmployeeID").mask("Emp0000");
         //$("#EmployeeName").mask("AAAA");
@@ -224,3 +255,4 @@
         reader.readAsDataURL(input.files[0]);
     };
 </script>
+

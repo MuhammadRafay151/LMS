@@ -29,6 +29,9 @@ namespace LeaveApplication.Models
         public String Department { get; set; }
         public string Password { get; set; }
         public bool isAdmin { get; set; }
+        [EmailAddress(ErrorMessage ="Invalid Email Address")]
+        [Required(ErrorMessage ="Email is required")]
+        public string Email { get; set; }
 
         //public bool IsEmployeeEmpty()
         //{

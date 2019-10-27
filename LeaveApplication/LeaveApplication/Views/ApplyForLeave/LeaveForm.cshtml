@@ -51,12 +51,15 @@
                         <label class="label-control text-left"> Select Leave</label>
                         <div class="form-group d-flex justify-content-center ">
 
-                            <select class="form-control" name="LeaveType" id="LeaveType" required>
-                                <option selected disabled> Select Leave Type</option>
-                                @{
+                            <select class="custom-select" name="LeaveType" id="LeaveType" required>
+                               
+                                @{bool Isfirst = true;
                                     foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
-                                    {
-                                        <option value="@x.LeaveTypeID">@x.LeaveType</option>
+                                    { 
+                                       
+                                            <option value="@x.LeaveTypeID">@x.LeaveType</option>
+                                      
+
                                     }
                                 }
                             </select>
@@ -115,12 +118,16 @@
 
                         <label class="label-control text-left"> Select Reason</label>
                         <div class="form-group d-flex justify-content-center">
-                            <select class="form-control" name="LeaveReason" id="LeaveReason">
-                                <option selected disabled>Reason For Leave</option>
+                            <select class="custom-select" name="LeaveReason" id="LeaveReason" required>
+                                
                                 @{ System.Data.DataSet i = ViewBag.Reasons;
+                                    Isfirst = true;
                                     foreach (System.Data.DataRow x in i.Tables[0].Rows)
                                     {
-                                        <option value="@x[0].ToString()">@x[1].ToString()</option>
+                                       
+                                            <option value="@x[0].ToString()">@x[1].ToString()</option>
+                                        
+
                                     }
                                 }
                             </select>

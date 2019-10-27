@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -12,6 +13,7 @@ namespace LeaveApplication.Models
     {
         db DataBase = new db();
         public static AssignLeaves Al;
+       EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
 
         public void updateDeparment(Department dp)
         {
@@ -127,7 +129,7 @@ namespace LeaveApplication.Models
             DataSet ds = DataBase.Read(Querry);
             return ds;
         }
-        public DataSet ShowAffectedUsers(AssignLeaves al,String Querry)
+        public DataSet ShowAffectedUsers(AssignLeaves al, String Querry)
         {//this method store the data temporarily from incoming assign leave request for further processing and return data for users who are getting affected by this request
             DataSet ds = DataBase.Read(Querry);
             Al = al;
@@ -135,14 +137,83 @@ namespace LeaveApplication.Models
         }
         public void RemoveAssignLeaveRequest()
         {//this method remove the request data from temporary method after recording in the database or if user cancel the request
-           Al = null;
+            Al = null;
 
         }
-        public void RequestableStateChange(string LeaveTypeID,bool IsRequestable)
+        public void RequestableStateChange(string LeaveTypeID, bool IsRequestable)
         {
             //change enable/disable isrequestable for leave type based on user input
-            string Querry= string.Format("update LeaveType set IsRequestable='{0}' where LeaveTypeID='{1}'", IsRequestable, LeaveTypeID);
+            string Querry = string.Format("update LeaveType set IsRequestable='{0}' where LeaveTypeID='{1}'", IsRequestable, LeaveTypeID);
             DataBase.ExecuteQuerry(Querry);
+
+        }
+        public void EmployeeStateChange(string EmployeeID, bool IsActive)
+        {
+            //change enable/disable isactive for Employee based on user input
+            string Querry = string.Format("update Employee set IsActive='{0}' where EmployeeID='{1}'", IsActive, EmployeeID);
+            DataBase.ExecuteQuerry(Querry);
+
+        }
+        public void UpdateEmployee(Employee Emp)
+        {
+            string Querry;
+            string UserName = eb.GetUserName(Emp.EmployeeID);
+            Emp.DateOfJoining = DateTime.Now.ToString("yyyy-MM-dd");
+            Byte[] bytes = null;
+            if (Emp.Image != null)
+            {
+                Stream s1 = Emp.Image.InputStream;
+                BinaryReader b1 = new BinaryReader(s1);
+                bytes = b1.ReadBytes((int)s1.Length);
+
+            }
+            if (string.IsNullOrWhiteSpace(Emp.Manager))
+            {
+                if (Emp.Image == null)
+                {
+                    Querry = string.Format(@"UPDATE Users Set UserName='{0}', Password='{1}' where Users.UserName='{2}'
+update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Email='{10}' where Employee.EmployeeID = '{9}'",
+Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID,Emp.Email);
+                    DataBase.ExecuteQuerry(Querry);
+                }
+                else
+                {
+                    Querry = string.Format(@"UPDATE Users Set UserName='{0}', Password='{1}' where Users.UserName='{2}'
+update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Email='{10}' where Employee.EmployeeID = '{9}'
+Update Picture set Picture.Picture = @img where Picture.EmployeeID = '{9}'",
+  Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID,Emp.Email);
+                    SqlParameter p1 = new SqlParameter();
+                    p1.ParameterName = "img";
+                    p1.Value = bytes;
+                    DataBase.ExecuteQuerry(Querry, p1);
+                }
+
+
+
+            }
+            else
+            {
+                if (Emp.Image == null)
+                {
+                    Querry = string.Format(@"UPDATE Users Set UserName='{0}', Password='{1}' where Users.UserName='{2}'
+update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Manager='{10}',Email='{11}' where Employee.EmployeeID = '{9}'",
+Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Manager,Emp.Email);
+
+                    DataBase.ExecuteQuerry(Querry);
+                }
+                else
+                {
+                    Querry = string.Format(@"UPDATE Users Set UserName='{0}', Password='{1}' where Users.UserName='{2}'
+update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Manager='{10}',Email='{11}' where Employee.EmployeeID = '{9}'
+Update Picture set Picture.Picture = @img where Picture.EmployeeID = '{9}'",
+Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Manager,Emp.Email);
+                    SqlParameter p1 = new SqlParameter();
+                    p1.ParameterName = "img";
+                    p1.Value = bytes;
+                    DataBase.ExecuteQuerry(Querry, p1);
+                }
+            }
+
 
         }
 

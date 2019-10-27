@@ -63,7 +63,11 @@ namespace LeaveApplication.Models
             }
             reader.Close();
             con.Close();
-            InsertAttachement(a1.Attachment, int.Parse(a1.ApplicationId));
+            if(a1.Attachment!=null)
+            {
+                InsertAttachement(a1.Attachment, int.Parse(a1.ApplicationId));
+            }
+        
             Querry = string.Format("insert into StatusHistory (LeaveApplicationID,Date,ApplicationStatusID) values ('{0}','{1}','{2}')", a1.ApplicationId, a1.ApplyDate, Status.s1.ToString());
             database.ExecuteQuerry(Querry);
 
