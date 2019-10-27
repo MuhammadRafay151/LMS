@@ -63,11 +63,11 @@ namespace LeaveApplication.Models
             }
             reader.Close();
             con.Close();
-            if(a1.Attachment!=null)
+            if (a1.Attachment != null)
             {
                 InsertAttachement(a1.Attachment, int.Parse(a1.ApplicationId));
             }
-        
+
             Querry = string.Format("insert into StatusHistory (LeaveApplicationID,Date,ApplicationStatusID) values ('{0}','{1}','{2}')", a1.ApplicationId, a1.ApplyDate, Status.s1.ToString());
             database.ExecuteQuerry(Querry);
 
@@ -166,8 +166,12 @@ namespace LeaveApplication.Models
         {
             //return application for edit application feature...
 
-            string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveTypeID,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,LeaveApplication.Remarks,LeaveApplication.ReasonID" +
-                " from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID  where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
+            string Querry = string.Format(@"select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveTypeID,
+                LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,
+LeaveApplication.Remarks,LeaveApplication.ReasonID,Attachments.AttachmentId,Attachments.FileName from 
+LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID 
+left join Attachments on LeaveApplication.LeaveApplicationID=Attachments.LeaveApplicationId 
+where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
 
             DataSet ds = database.Read(Querry);
 
@@ -194,6 +198,12 @@ namespace LeaveApplication.Models
             v1.LeaveReason = ds.Tables[0].Rows[0][8].ToString();
 
             v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);
+            if (ds.Tables[0].Rows[0][9] != DBNull.Value)
+            {
+                FileId = 0;
+                FileId = Convert.ToInt32(ds.Tables[0].Rows[0][9]);
+                v1.FileName = ds.Tables[0].Rows[0][10].ToString();
+            }
 
             leave = v1;
             if (v1.ApplicationStatus == "Pending")
@@ -238,8 +248,9 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
 
             return v1;
         }
-        public void SaveChanges(LeaveApplication l1)
+        public void SaveChanges(LeaveApplication l1, bool IsDeletedFile)
         {//half day functionality should be added ....
+            string Querry = string.Empty;
             if (leave.TotalDays == 0.5)
             {
                 l1.TotalDays = 0.5;
@@ -254,8 +265,43 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
                 l1.ToDate = DateTime.ParseExact(l1.ToDate, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString();
                 l1.FromDate = DateTime.ParseExact(l1.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString();
             }
-
-            string Querry = string.Format("update LeaveApplication set LeaveTypeID='{0}',FromDate='{1}',ToDate='{2}',TotalDays='{3}',Remarks='{4}',ReasonID='{5}' where LeaveApplicationID='{6}'", l1.LeaveType, l1.FromDate, l1.ToDate, l1.TotalDays, l1.LeaveRemarks, l1.LeaveReason, l1.ApplicationId);
+            if (IsDeletedFile == false && l1.Attachment == null)
+            {
+                Querry = string.Format(@"update LeaveApplication set LeaveTypeID='{0}',FromDate='{1}',ToDate='{2}',TotalDays='{3}',Remarks='{4}',ReasonID='{5}' where LeaveApplicationID='{6}'", l1.LeaveType, l1.FromDate, l1.ToDate, l1.TotalDays, l1.LeaveRemarks, l1.LeaveReason, l1.ApplicationId);
+                database.ExecuteQuerry(Querry);
+                FileId = 0;
+            }
+            else if (l1.Attachment != null)
+            {
+                Querry = string.Format(@"update LeaveApplication set LeaveTypeID='{0}',FromDate='{1}',ToDate='{2}',TotalDays='{3}',Remarks='{4}',ReasonID='{5}' where LeaveApplicationID='{6}'", l1.LeaveType, l1.FromDate, l1.ToDate, l1.TotalDays, l1.LeaveRemarks, l1.LeaveReason, l1.ApplicationId);
+                database.ExecuteQuerry(Querry);
+                if (FileId != 0)
+                    UpdateAttachment(l1.Attachment, FileId);
+                else
+                    InsertAttachement(l1.Attachment,Convert.ToInt32( l1.ApplicationId));
+                FileId = 0;
+            }
+            else if (IsDeletedFile == true)
+            {
+                Querry = string.Format(@"update LeaveApplication set LeaveTypeID='{0}',FromDate='{1}',ToDate='{2}',TotalDays='{3}',Remarks='{4}',ReasonID='{5}' where LeaveApplicationID='{6}'", l1.LeaveType, l1.FromDate, l1.ToDate, l1.TotalDays, l1.LeaveRemarks, l1.LeaveReason, l1.ApplicationId, FileId);
+                database.ExecuteQuerry(Querry);
+                DeleteAttachement(FileId);
+                FileId = 0;
+            }
+           
+        }
+        public void UpdateAttachment(HttpPostedFileBase Attachment,int FileId)
+        {
+            String Querry =string.Format( "update Attachments set FileName='{1}' where FileId='{0}' update Files set Content=@File where FileId={0}",  FileId,Attachment.FileName);
+            SqlParameter p1 = new SqlParameter();
+            p1.ParameterName = "File";
+            p1.Value = GetFileBytes(Attachment);
+            database.ExecuteQuerry(Querry, p1);
+       
+        }
+        public void DeleteAttachement(int FileId)
+        {
+            String Querry = string.Format("delete from Attachments where FileId = '{0}' delete from Files where FileId='{0}' ", FileId);
             database.ExecuteQuerry(Querry);
         }
         private string GetApplicationStatus(string ApplicationId)

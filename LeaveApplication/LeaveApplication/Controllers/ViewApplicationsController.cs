@@ -14,6 +14,7 @@ namespace LeaveApplication.Controllers
     {
         // GET: ViewApplications
         //partial class for user(faculty) level features
+       
         LeaveBusinessLayer lb = new LeaveBusinessLayer();
         
         public ActionResult Index()
@@ -139,6 +140,7 @@ namespace LeaveApplication.Controllers
                 {
                     ViewBag.Reasons = lb.GetReasons();
                     ViewBag.Leavetypes = lb.GetLeaveTypes();
+                    Session["FileName"] = x.FileName;
                     if (TempData["HrsError"] != null && Convert.ToBoolean(TempData["HrsError"]) == true)
                     {
                         ViewBag.HrsError = true;
@@ -180,6 +182,11 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult SaveChanges(LeaveApplication.Models.LeaveApplication l1)
         {
+           
+             bool IsDeletedFile =Convert.ToBoolean( Request.Form["IsDeleted"]);
+                
+           
+       
             if (LeaveApplication.Models.LeaveBusinessLayer.leave.TotalDays == 0.5)
             {
                 l1.FromDate = Request.Form["halfday_from"].ToString();
@@ -194,13 +201,14 @@ namespace LeaveApplication.Controllers
                     TempData["HrsError"] = true;
                     return RedirectToAction("EditDetails", "ViewApplications", new { Application_Id = LeaveApplication.Models.LeaveBusinessLayer.leave.ApplicationId });
                 }
-                lb.SaveChanges(l1);
+                lb.SaveChanges(l1, IsDeletedFile);
             }
             else
             {
-                lb.SaveChanges(l1);
+                lb.SaveChanges(l1, IsDeletedFile);
             }
             LeaveBusinessLayer.leave = null;
+            LeaveBusinessLayer.FileId = 0;
             return RedirectToAction("Index", "ViewApplications");
         }
 

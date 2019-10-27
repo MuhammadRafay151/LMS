@@ -17,7 +17,7 @@
                         <a href='/ViewApplications/'><img src="~/Images/go back.png" style="width:35px" /></a>
                     </div>
                     <div class="card-body d-flex justify-content-center">
-                        @using (Html.BeginForm("SaveChanges", "ViewApplications", FormMethod.Post, new { id = "form1" }))
+                        @using (Html.BeginForm("SaveChanges", "ViewApplications", FormMethod.Post, new { id = "form1" , autocomplete = "off", enctype = "multipart/form-data"}))
                         {
                             <label style="font-size:22px" id="date" for="">Date Of Application: @Model.ApplyDate</label>
                             <br><br>
@@ -88,10 +88,28 @@
                                 <label class="label-control">Description</label>
                                 <textarea class="form-control" style="resize:none" name="@Html.NameFor(m=>m.LeaveRemarks)" id="@Html.IdFor(m=>m.LeaveRemarks)" cols="30" rows="10" placeholder="Enter Description if any.">@Model.LeaveRemarks</textarea>
                             </div>
+                            if (!string.IsNullOrWhiteSpace(@Model.FileName))
+                            {
+                                <div class="form-group">
+                                    <label>Your Attachment:</label>
+                                    <a href="/ViewApplications/DownLoadFile?FileName=@Model.FileName">@Model.FileName</a>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" name="IsDeleted" id="IsDeleted" type="checkbox" onclick="$(this).val(this.checked)" value="false">
+                                            Delete Current Attachment
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            }
 
+                            <label>Update Attachment</label>
+                            <input type="file" name="Attachment" />
                             <div class="card-footer ">
                                 <input id="Submit1" class="btn btn-round btn-info-grd col-lg-12" type="submit" value="Save Changes" />
-                         
+
                             </div>
                         }
                     </div>
