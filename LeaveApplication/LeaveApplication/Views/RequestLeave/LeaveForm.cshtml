@@ -53,7 +53,7 @@
                         <div class="form-group d-flex justify-content-center ">
 
                             <select class="form-control" name="LeaveType" id="LeaveType" required>
-                                <option selected disabled> Select Leave Type</option>
+                                <option value="" selected disabled> Select Leave Type</option>
                                 @{
                                     foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
                                     {
@@ -116,8 +116,8 @@
 
                         <label class="label-control text-left"> Select Reason</label>
                         <div class="form-group d-flex justify-content-center">
-                            <select class="form-control" name="LeaveReason" id="LeaveReason">
-                                <option selected disabled>Reason For Leave</option>
+                            <select class="form-control" name="LeaveReason" id="LeaveReason" required>
+                                <option value="" selected disabled>Reason For Leave</option>
                                 @{ System.Data.DataSet i = ViewBag.Reasons;
                                     foreach (System.Data.DataRow x in i.Tables[0].Rows)
                                     {

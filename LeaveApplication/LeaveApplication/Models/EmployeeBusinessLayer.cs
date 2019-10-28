@@ -222,7 +222,10 @@ namespace LeaveApplication.Models
                 e1.Add(new Employee() { EmployeeID = int.Parse(x[0].ToString()), EmployeeName = x[1].ToString() });
             }
 
-            return e1;
+            if (e1.Count > 0)
+                return e1;
+            else
+                return null;
         }
         private bool IsManager()
         {//should modify with top1 record

@@ -1,0 +1,115 @@
+﻿
+@{
+                /**/
+
+                ViewBag.Title = "LeaveReason";
+                Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+}
+
+<!-- Modal for edit form-->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("UpdateLeaveReason", "Admin", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <div class="form-group d-flex justify-content-center my-auto">
+                        <input id="id" name="id" type="text" hidden />
+                        <input id="edittxt" name="edittxt" type="text" class="form-control" value="Change me....." />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info-grd">Save changes</button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+@* ------------------------------------------ *@
+
+<div id="div1" class="container" style="margin-top:5%">
+    <div class="row  justify-content-center  vh-100">
+
+        <div class="col-sm-6 col-md-6 col-lg-12  mb-3 ">
+            <div class="card">
+                <div class="card-header card-header-info">
+                    <h5 class="card-title">Enter Leave Reasons</h5>
+
+                </div>
+                <div class=" card-body">
+                    <div class="card">
+                        @using (Html.BeginForm("AddLeaveReason", "Admin", FormMethod.Post))
+                        {<div class="form-group d-flex  justify-content-center ">
+                                <input type="text" name="LeaveReason" class="form-control " placeholder="Leave Reason" required />
+                                <input id="Submit1" class="btn btn-info-grd  ml-2" type="submit" value="Add Leave Reason" />
+
+                            </div>
+
+
+
+
+                        }
+                    </div>
+                    <div class="table-responsive">
+                        <table id="t1" class="table table-hover table-light  ">
+                            <thead>
+                                <tr class="text-center">
+                                    <th scope="col">Leave Reason</th>
+                                    <th class="text-right" scope="col">Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    //IEnumerable<LeaveApplication.Models.LeaveTypes> d1 = ViewBag.leaves_t;
+                                    foreach (System.Data.DataRow i in Model.Tables[0].Rows)
+                                    {
+                                        <tr class="text-center ">
+                                            <td class="text-dark align-middle">@i[1].ToString()</td>
+
+                                            <td class="align-middle">
+                                                <div class="d-flex justify-content-end">
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-info-grd" data-toggle="modal" data-target="#exampleModalCenter" onclick="ModelOnclick(this.parentNode.parentNode.parentNode.parentNode,@i[0].ToString())">Edit</button>
+                                                        <button class="btn btn-info-grd" onclick="document.getElementById('@i[0].ToString()').submit()">Delete</button>
+                                                    </div>
+                                                    @using (Html.BeginForm("DeleteLeaveReason", "Admin", FormMethod.Post, new { id = i[0].ToString() }))
+                                                    {
+                                                        <input type="text" name="LeaveReasonID" value="@i[0].ToString()" hidden />
+
+                                                    }
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+

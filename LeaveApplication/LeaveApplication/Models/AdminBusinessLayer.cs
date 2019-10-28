@@ -216,7 +216,23 @@ Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNu
 
 
         }
+        public void UpdateLeaveReason(String LeaveReason, int LeaveReasonID)
+        {
+            string Querry = string.Format("update Reasons set LeaveReason='{0}' where ReasonID='{1}'", LeaveReason, LeaveReasonID);
+            DataBase.ExecuteQuerry(Querry);
+        }
 
+        public void AddLeaveReason(string LeaveReason)
+        {
+            string Querry = string.Format("insert into Reasons(LeaveReason) values('{0}')",LeaveReason);
+            DataBase.ExecuteQuerry(Querry);
+        }
+
+        public void DeleteLeaveReason(int LeaveReasonID)
+        {
+            string Querry = string.Format("delete from Reasons where ReasonID='{0}'",LeaveReasonID);
+            DataBase.ExecuteQuerry(Querry);
+        }
     }
 
 }

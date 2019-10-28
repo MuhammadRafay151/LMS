@@ -373,6 +373,12 @@ namespace LeaveApplication.Controllers
 
                     return RedirectToAction("AssignLeave");
                 }
+                catch (FormatException)
+                {
+                    TempData["ValidationError"] = true;
+
+                    return RedirectToAction("AssignLeave");
+                }
             }
             else
             {
@@ -501,6 +507,61 @@ namespace LeaveApplication.Controllers
         public void RequestableStateChange(string LeaveTypeID, bool IsRequestable)
         {
             ad.RequestableStateChange(LeaveTypeID, IsRequestable);
+        }
+        public ActionResult LeaveReason()
+        {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                System.Data.DataSet x = lb.GetReasons();
+                return View(x);
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
+        }
+        [HttpPost]
+        public ActionResult AddLeaveReason(String LeaveReason)
+        {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                ad.AddLeaveReason(LeaveReason);
+                return RedirectToAction("LeaveReason");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
+        }
+        [HttpPost]
+        public ActionResult DeleteLeaveReason(int LeaveReasonID)
+        {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                ad.DeleteLeaveReason(LeaveReasonID);
+                return RedirectToAction("LeaveReason");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
+        }
+        [HttpPost]
+        public ActionResult UpdateLeaveReason(String LeaveReason, int id)
+        {
+            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            {
+                ad.UpdateLeaveReason(Request.Form["edittxt"].ToString(),int.Parse(Request.Form["id"].ToString()));
+                return RedirectToAction("LeaveReason");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
         }
 
 

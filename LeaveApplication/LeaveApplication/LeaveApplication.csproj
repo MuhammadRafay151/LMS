@@ -608,6 +608,7 @@
     <Content Include="Views\RequestLeave\LeaveForm.cshtml" />
     <Content Include="Views\ViewApplications\LeaveBalance.cshtml" />
     <Content Include="Views\Admin\EditEmployees.cshtml" />
+    <Content Include="Views\Admin\LeaveReason.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

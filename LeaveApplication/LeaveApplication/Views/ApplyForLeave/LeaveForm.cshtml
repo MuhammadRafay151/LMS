@@ -52,29 +52,35 @@
                         <div class="form-group d-flex justify-content-center ">
 
                             <select class="custom-select" name="LeaveType" id="LeaveType" required>
-                               
-                                @{bool Isfirst = true;
+                                <option value="" disabled selected>Select Leave Type</option>
+                                @{
                                     foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
-                                    { 
-                                       
-                                            <option value="@x.LeaveTypeID">@x.LeaveType</option>
-                                      
+                                    {
+
+                                        <option value="@x.LeaveTypeID">@x.LeaveType</option>
+
 
                                     }
                                 }
                             </select>
+                            @Html.ValidationMessage("LeaveType", new { @class = "text-danger" })
+                            
+
                         </div>
+                       
                         @{if (ViewBag.ViewID == 0)
                             { <label for="date1" class="text-left" id="l2">From</label>
                                 <div class="form-group d-flex justify-content-center">
 
 
                                     <input class="form-control datetimepicker" type="text" name="FromDate" id="FromDate" required onfocusout="DateSelect(this)">
+                                    @Html.ValidationMessage("FromDate", new { @class = "text-danger" })
                                 </div>
                                 <label for="date2" id="l3" class="text-left">To</label>
                                 <div class="form-group d-flex justify-content-center">
 
                                     <input class="form-control datetimepicker" type="text" name="ToDate" id="ToDate" required onfocusout="DateSelect(this)">
+                                    @Html.ValidationMessage("ToDate", new { @class = "text-danger" })
                                 </div>
                                 <label for="days" class="text-left">Total Days</label>
                                 <div class=" form-group d-flex justify-content-center">
@@ -90,11 +96,13 @@
                                 <div class="form-group d-flex justify-content-center">
 
                                     <input class="form-control datetimepicker1" type="text" id="halfday_from" name="halfday_from" required onfocusout="" />
+                                    @Html.ValidationMessage("halfday_from", new { @class = "text-danger" })
                                 </div>
                                 <label class="label-control text-left" id="hf2">To time</label>
                                 <div class="form-group d-flex justify-content-center">
 
                                     <input type="text" class="form-control datetimepicker2" id="halfday_to" name="halfday_to" required />
+                                    @Html.ValidationMessage("halfday_to", new { @class = "text-danger" })
                                 </div>
                                 <label for="days" class="text-left">Total Days</label>
                                 <div class=" form-group d-flex justify-content-center">
@@ -119,26 +127,29 @@
                         <label class="label-control text-left"> Select Reason</label>
                         <div class="form-group d-flex justify-content-center">
                             <select class="custom-select" name="LeaveReason" id="LeaveReason" required>
-                                
+                                <option value="" disabled selected>Select Leave Reason</option>
                                 @{ System.Data.DataSet i = ViewBag.Reasons;
-                                    Isfirst = true;
+
                                     foreach (System.Data.DataRow x in i.Tables[0].Rows)
                                     {
-                                       
-                                            <option value="@x[0].ToString()">@x[1].ToString()</option>
-                                        
+
+                                        <option value="@x[0].ToString()">@x[1].ToString()</option>
+
 
                                     }
                                 }
                             </select>
+                            @Html.ValidationMessage("LeaveReason", new { @class = "text-danger" })
                         </div>
-                        <label class="label-control text-left"> Select Reason</label>
+                        <label class="label-control text-left">Enter Description</label>
                         <div class="form-group d-flex justify-content-center">
-                            <textarea class="form-control" style="resize:none" name="LeaveRemarks" id="LeaveRemarks" cols="30" rows="5" placeholder="Enter Description if any."></textarea>
+                            <textarea class="form-control text-d" style="resize:none" name="LeaveRemarks" id="LeaveRemarks" cols="30" rows="5" placeholder="Enter Description if any."></textarea>
+
                         </div>
                         <label>Upload files </label>
-                        <input type="file"  name="Attachment"/>
-                   
+                        <input type="file" name="Attachment" />
+
+
                     </div>
                     <div class="d-flex justify-content-center card-footer">
 
