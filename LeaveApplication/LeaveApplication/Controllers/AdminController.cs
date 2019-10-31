@@ -16,11 +16,8 @@ namespace LeaveApplication.Controllers
         LeaveBusinessLayer lb = new LeaveBusinessLayer();
         EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
         AdminBusinessLayer ad = new AdminBusinessLayer();
-        public ActionResult Index()
-        {
-
-            return View();
-        }
+       
+     
         public ActionResult LeaveType()
         {
 
