@@ -29,7 +29,10 @@ namespace LeaveApplication.Controllers
             {
                 
                 this.e1.ReadEmployee(e1.UserName);
-                Session["EmpID"] = EmployeeBusinessLayer.Employee.EmployeeID;
+              
+                Session["Employee"]= this.e1.ReadEmployee(e1.UserName);
+                Employee e2 =(Employee) Session["Employee"];
+                Session["EmpID"] =e2.EmployeeID;
                 return RedirectToAction("Index", "ApplyForLeave");
                
             }
@@ -44,6 +47,7 @@ namespace LeaveApplication.Controllers
         public ActionResult LogOff()
         {
             Session["EmpID"] = null;
+            Session["Employee"] = null;
             EmployeeBusinessLayer.Employee = null;
             return RedirectToAction("Index");
         }

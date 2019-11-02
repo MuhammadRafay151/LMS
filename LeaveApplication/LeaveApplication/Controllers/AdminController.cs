@@ -12,18 +12,21 @@ namespace LeaveApplication.Controllers
     public class AdminController : Controller
     {
         // GET: Admin
-       
+
         LeaveBusinessLayer lb = new LeaveBusinessLayer();
         EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
         AdminBusinessLayer ad = new AdminBusinessLayer();
-       
-     
+
+        public ActionResult Index()
+        {
+            return Content(Session["EmpID"].ToString());
+        }
         public ActionResult LeaveType()
         {
-
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
-              
+
                 return View(lb.GetLeaveTypesDS());
             }
             else
@@ -34,7 +37,8 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult Designation()
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
 
                 return View(eb.GetDesignation());
@@ -47,7 +51,8 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult Department()
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 ViewBag.Departments = eb.GetDepartments();
                 return View();
@@ -60,7 +65,8 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult Employees()
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
 
                 System.Data.DataSet x = eb.GetEmployeesDs();
@@ -75,7 +81,8 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult EditEmployees(int EmployeeID)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e2 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e2.isAdmin == true)
             {
                 Employee e1 = eb.GetEmployeeData(EmployeeID);
                 ViewBag.Employees = eb.GetEmployees();
@@ -115,7 +122,7 @@ namespace LeaveApplication.Controllers
                         ViewBag.List = emp.GetDesignation();
                         ViewBag.List2 = emp.GetDepartments();
                         Employee e2 = eb.GetEmployeeData(e1.EmployeeID);
-                        return View("EditEmployees",e2);
+                        return View("EditEmployees", e2);
                     }
                     else
                     {
@@ -126,7 +133,7 @@ namespace LeaveApplication.Controllers
             }
             else
             {
-                if (e1.Image==null)
+                if (e1.Image == null)
                 {
                     try
                     {
@@ -141,7 +148,7 @@ namespace LeaveApplication.Controllers
                             ViewBag.Employees = emp.GetEmployees();
                             ViewBag.List = emp.GetDesignation();
                             ViewBag.List2 = emp.GetDepartments();
-                            
+
                             return View("EditEmployees", eb.GetEmployeeData(e1.EmployeeID));
                         }
                         else
@@ -149,7 +156,7 @@ namespace LeaveApplication.Controllers
                             return Content(e.Message);
                         }
                     }
-                  
+
                 }
                 ViewBag.Employees = emp.GetEmployees();
                 ViewBag.List = emp.GetDesignation();
@@ -163,7 +170,8 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult AddDepartment(Department dp)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 ad.AddDeparment(dp.department);
                 return RedirectToAction("Department");
@@ -177,7 +185,8 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult DeleteDepartment(Department dp)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 ad.DeleteDeparment(dp.DepartmentId);
                 return RedirectToAction("Department");
@@ -191,7 +200,8 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult UpdateDepartment()
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 ad.updateDeparment(new Models.Department() { DepartmentId = Request.Form["id"].ToString(), department = Request.Form["edittxt"].ToString() });
                 return RedirectToAction("Department");
@@ -206,7 +216,8 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult AddDesignation(Designation ds)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 ad.AddDesignation(ds);
                 return RedirectToAction("Designation");
@@ -220,7 +231,8 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult DeleteDesignation(Designation ds)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
 
                 ad.DeleteDesignation(ds);
@@ -234,7 +246,8 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult UpdateDesignation(Designation ds)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 ad.updateDesignation(new Designation() { DesignationID = int.Parse(Request.Form["id"].ToString()), designation = Request.Form["edittxt"].ToString() });
                 return RedirectToAction("Designation");
@@ -247,7 +260,8 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult AddLeaveType(LeaveTypes lt)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 ad.AddLeaveType(lt);
                 return RedirectToAction("LeaveType");
@@ -261,7 +275,8 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult DeleteLeaveType(LeaveTypes lt)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 ad.DeleteLeaveType(lt);
                 return RedirectToAction("LeaveType");
@@ -275,7 +290,8 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult UpdateLeaveType(LeaveTypes lt)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 ad.updateLeaveType(new LeaveTypes() { LeaveTypeID = int.Parse(Request.Form["id"].ToString()), LeaveType = Request.Form["edittxt"].ToString() });
                 return RedirectToAction("LeaveType");
@@ -289,7 +305,8 @@ namespace LeaveApplication.Controllers
 
         public ActionResult AssignLeave()
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 List<System.Data.DataSet> d1 = new List<System.Data.DataSet>();
                 d1.Add(lb.GetLeaveTypesDS());
@@ -313,8 +330,10 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public JsonResult GetEmployees(Department d1)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
-            { return Json(eb.GetEmployeesList(d1.DepartmentId)); }
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
+            {
+                return Json(eb.GetEmployeesList(d1.DepartmentId)); }
             else
             {
                 return Json(null);
@@ -324,7 +343,8 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult AffectedUsers()
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 AssignLeaves al = new AssignLeaves();
                 AdminBusinessLayer.Al = null;
@@ -386,7 +406,8 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult Submit()
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 if (AdminBusinessLayer.Al != null)
                 {
@@ -421,7 +442,8 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult CancelAssignLeave()
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 AdminBusinessLayer.Al = null;
                 return RedirectToAction("AssignLeave");
@@ -432,46 +454,11 @@ namespace LeaveApplication.Controllers
             }
 
         }
-        //public ActionResult Submit()
-        //{
-        //    EmployeeLeaveCount el = new EmployeeLeaveCount();
-        //    try
-        //    {
-        //        if (Request.Form["customRadio"].ToString() == "Select Employee")
-        //        {
-        //            el.EmployeeID = Request.Form["emp"].ToString();
-        //            el.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
-        //            el.Count = int.Parse(Request.Form["count"].ToString());
-        //            ad.AssignLeave(el);
-        //        }
-        //        else if (Request.Form["customRadio"].ToString() == "All(Select Department)")
-        //        {
-        //            el.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
-        //            el.Count = int.Parse(Request.Form["count"].ToString());
-        //            ad.AssignAllDep(el, Request.Form["dep"].ToString());
-        //        }
-        //        else if (Request.Form["customRadio"].ToString() == "All Employess")
-        //        {
-        //            el.LeaveTypeID = int.Parse(Request.Form["lev"].ToString());
-        //            el.Count = int.Parse(Request.Form["count"].ToString());
-        //            ad.AssignAll(el);
-        //        }
-
-
-        //        return RedirectToAction("AssignLeave");
-        //    }
-        //    catch (NullReferenceException)
-        //    {
-        //        TempData["ValidationError"] = true;
-
-        //        return RedirectToAction("AssignLeave");
-        //    }
-
-
-        //}
+       
         public ActionResult Assign_Leave_History(int? PageNo)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 System.Data.DataSet ds = ad.ShowAssignLeaveHistory();
                 PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
@@ -507,7 +494,8 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult LeaveReason()
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 System.Data.DataSet x = lb.GetReasons();
                 return View(x);
@@ -521,7 +509,8 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult AddLeaveReason(String LeaveReason)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 ad.AddLeaveReason(LeaveReason);
                 return RedirectToAction("LeaveReason");
@@ -535,7 +524,8 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult DeleteLeaveReason(int LeaveReasonID)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 ad.DeleteLeaveReason(LeaveReasonID);
                 return RedirectToAction("LeaveReason");
@@ -549,9 +539,10 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult UpdateLeaveReason(String LeaveReason, int id)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.isAdmin == true)
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
-                ad.UpdateLeaveReason(Request.Form["edittxt"].ToString(),int.Parse(Request.Form["id"].ToString()));
+                ad.UpdateLeaveReason(Request.Form["edittxt"].ToString(), int.Parse(Request.Form["id"].ToString()));
                 return RedirectToAction("LeaveReason");
             }
             else

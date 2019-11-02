@@ -145,7 +145,7 @@ namespace LeaveApplication.Models
             }
 
         }
-        public void ReadEmployee(string UserName)
+        public Employee ReadEmployee(string UserName)
         {
             //load user data on login
             string Querry = string.Format("select Employee.EmployeeID,Employee.UserName,Employee.EmployeeName,Employee.Address,Employee.PhoneNumber,Employee.CNIC,Employee.JoiningDate,Designations.Designation,Departments.Department,Picture.Picture,Employee.IsAdmin  from Employee inner join Picture on Employee.EmployeeID=Picture.EmployeeID inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join Designations on Employee.DesignationID=Designations.DesignationID where Employee.UserName='{0}'", UserName);
@@ -160,9 +160,9 @@ namespace LeaveApplication.Models
             e1.Designation = d1.Tables[0].Rows[0][7].ToString();
             e1.ImageBase64 = GetBase64Image((Byte[])d1.Tables[0].Rows[0][9]);
             e1.isAdmin = bool.Parse(d1.Tables[0].Rows[0][10].ToString());
-
+            e1.IsManager = IsManager(e1.EmployeeID);
             Employee = e1;
-            Employee.IsManager = IsManager();
+            return e1;
 
         }
         public DataSet GetEmployeesDs()
@@ -227,10 +227,10 @@ namespace LeaveApplication.Models
             else
                 return null;
         }
-        private bool IsManager()
+        private bool IsManager(int EmployeeID)
         {//should modify with top1 record
             con = new SqlConnection(connection);
-            string Querry = string.Format("select COUNT(*) from Employee where Manager='{0}' group by Manager", Employee.EmployeeID);
+            string Querry = string.Format("select COUNT(*) from Employee where Manager='{0}' group by Manager", EmployeeID);
             cmd = new SqlCommand(Querry, con);
             con.Open();
             if (cmd.ExecuteScalar() != null && int.Parse(cmd.ExecuteScalar().ToString()) > 0)

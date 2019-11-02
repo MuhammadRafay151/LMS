@@ -55,7 +55,7 @@
                         </div>
                     </li>
                     @{
-                        if (LeaveApplication.Models.EmployeeBusinessLayer.Employee.IsManager == true)
+                        if (((LeaveApplication.Models.Employee)Session["Employee"]).IsManager == true)
                         {
                             <li class="nav-item dropdown ">
                                 <div class="dropdown ">
@@ -69,7 +69,7 @@
                             </li>
 
                         }
-                        if (LeaveApplication.Models.EmployeeBusinessLayer.Employee.isAdmin == true)
+                        if (((LeaveApplication.Models.Employee)Session["Employee"]).isAdmin == true)
                         {
                             <li class="nav-item dropdown ">
                                 <div class="dropdown  ">
@@ -102,18 +102,18 @@
 
             <li class="nav-item dropdown">
 
-                <a class="nav-link font-weight-bold text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@LeaveApplication.Models.EmployeeBusinessLayer.Employee.EmployeeName<img class="rounded ml-2" src="~/Images/account.png" style="width:30px" /> </a>
+                <a class="nav-link font-weight-bold text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)<img class="rounded ml-2" src="~/Images/account.png" style="width:30px" /> </a>
                 <div class="dropdown-menu dropdown-menu-right mr-1">
                     <div class=" card border-0  mt-4" style="width: 18rem;">
-                        <img src="@LeaveApplication.Models.EmployeeBusinessLayer.Employee.ImageBase64" class="card-img-top" alt="...">
+                        <img src="@(((LeaveApplication.Models.Employee)Session["Employee"]).ImageBase64)" class="card-img-top" alt="...">
                         <div class="card-body ">
                             <h5 class="card-title ">Account Information</h5>
-                            <p class="card-text">@LeaveApplication.Models.EmployeeBusinessLayer.Employee.EmployeeName</p>
+                            <p class="card-text">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)</p>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">User Name:  @LeaveApplication.Models.EmployeeBusinessLayer.Employee.UserName</li>
-                            <li class="list-group-item">Department:  @LeaveApplication.Models.EmployeeBusinessLayer.Employee.Department</li>
-                            <li class="list-group-item">Designation:  @LeaveApplication.Models.EmployeeBusinessLayer.Employee.Designation</li>
+                            <li class="list-group-item">User Name:  @(((LeaveApplication.Models.Employee)Session["Employee"]).UserName)</li>
+                            <li class="list-group-item">Department:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Department)</li>
+                            <li class="list-group-item">Designation:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Designation)</li>
                         </ul>
                         <div class="card-body">
                             @Html.ActionLink("Sign Out", "LogOff", "Login")
