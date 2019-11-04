@@ -132,6 +132,7 @@ namespace LeaveApplication.Controllers
             if (Application_Id != null && Session["EmpID"] != null)
             {
                 LeaveApplication.Models.LeaveApplication x = lb.GetApplication(Application_Id);
+                Session["EditLeave"] = x;
                 if (x == null)
                 {
                     return RedirectToAction("Index", "ViewApplications");
@@ -140,7 +141,7 @@ namespace LeaveApplication.Controllers
                 {
                     ViewBag.Reasons = lb.GetReasons();
                     ViewBag.Leavetypes = lb.GetLeaveTypes();
-                    Session["FileName"] = x.FileName;
+                    
                     if (TempData["HrsError"] != null && Convert.ToBoolean(TempData["HrsError"]) == true)
                     {
                         ViewBag.HrsError = true;
@@ -161,12 +162,12 @@ namespace LeaveApplication.Controllers
         {
             if (Application_Id != null && Session["EmpID"] != null)
             {
-                LeaveBusinessLayer.FileId = 0;
+       
                 LeaveApplication.Models.LeaveApplication x = lb.GetViewApplication(Application_Id);
                 List<StatusHistory> a = lb.GetStatusHistory(Application_Id);
 
                 ViewBag.SH = lb.GetStatusHistory(Application_Id);
-                Session["FileName"] = x.FileName;
+               // Session["FileName"] = x.FileName;
                 return View("ViewFullApplication", x);
             }
             else
@@ -184,10 +185,11 @@ namespace LeaveApplication.Controllers
         {
            
              bool IsDeletedFile =Convert.ToBoolean( Request.Form["IsDeleted"]);
-                
-           
-       
-            if (LeaveApplication.Models.LeaveBusinessLayer.leave.TotalDays == 0.5)
+            l1.ApplicationId = ((LeaveApplication.Models.LeaveApplication)Session["EditLeave"]).ApplicationId;
+            l1.TotalDays = ((LeaveApplication.Models.LeaveApplication)Session["EditLeave"]).TotalDays;
+            l1.FileId =((LeaveApplication.Models.LeaveApplication)Session["EditLeave"]).FileId;
+
+            if (((LeaveApplication.Models.LeaveApplication)Session["EditLeave"]).TotalDays  == 0.5)
             {
                 l1.FromDate = Request.Form["halfday_from"].ToString();
                 string[] temp = l1.FromDate.Split(' ');
@@ -199,7 +201,7 @@ namespace LeaveApplication.Controllers
                 {
 
                     TempData["HrsError"] = true;
-                    return RedirectToAction("EditDetails", "ViewApplications", new { Application_Id = LeaveApplication.Models.LeaveBusinessLayer.leave.ApplicationId });
+                    return RedirectToAction("EditDetails", "ViewApplications", new { Application_Id = l1.ApplicationId});
                 }
                 lb.SaveChanges(l1, IsDeletedFile);
             }
@@ -207,8 +209,8 @@ namespace LeaveApplication.Controllers
             {
                 lb.SaveChanges(l1, IsDeletedFile);
             }
-            LeaveBusinessLayer.leave = null;
-            LeaveBusinessLayer.FileId = 0;
+           
+            Session.Remove("EditLeave");
             return RedirectToAction("Index", "ViewApplications");
         }
 
@@ -217,7 +219,7 @@ namespace LeaveApplication.Controllers
             if (Session["EmpID"] != null)
             {
                 ViewBag.LeaveCount = true;
-                return View(lb.GetLeaveCount());
+                return View(lb.GetLeaveCount(((Employee)Session["Employee"]).EmployeeID));
             }
             else
             {
@@ -229,7 +231,7 @@ namespace LeaveApplication.Controllers
         public ActionResult LeaveBalance()
         {
           
-            return PartialView(lb.GetLeaveBalance(EmployeeBusinessLayer.Employee.EmployeeID.ToString()));
+            return PartialView(lb.GetLeaveBalance(((Employee)Session["Employee"]).EmployeeID));
 
 
         }
@@ -239,19 +241,15 @@ namespace LeaveApplication.Controllers
         {
             return Session["EmpID"].ToString();
         }
-        public ActionResult DownLoadFile(string FileName)
+        public ActionResult DownLoadFile(string Fileid)
         {
+           
             if (Session["EmpID"] != null)
             {
-                if (Session["FileName"].ToString() == FileName)
-                {
-                    DataSet ds = lb.DownloadFile(LeaveBusinessLayer.FileId);
+                
+                    DataSet ds = lb.DownloadFile(Convert.ToInt32( Encryption.Base64Decode(Fileid)));
                     return File((Byte[])ds.Tables[0].Rows[0][0],System.Web.MimeMapping.GetMimeMapping( ds.Tables[0].Rows[0][1].ToString()), ds.Tables[0].Rows[0][1].ToString());
-                }
-                else
-                {
-                    return Content("Access Denied");
-                }
+                
             }
             else
             {

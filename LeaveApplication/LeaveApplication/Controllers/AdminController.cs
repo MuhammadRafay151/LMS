@@ -26,7 +26,7 @@ namespace LeaveApplication.Controllers
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null && e1.isAdmin == true)
             {
-
+              
                 return View(lb.GetLeaveTypesDS());
             }
             else
@@ -347,7 +347,7 @@ namespace LeaveApplication.Controllers
             if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 AssignLeaves al = new AssignLeaves();
-                AdminBusinessLayer.Al = null;
+              
                 System.Data.DataSet ds = null;
                 string Querry = string.Empty;
                 al.AssignType = Request.Form["customRadio"].ToString();
@@ -360,6 +360,7 @@ namespace LeaveApplication.Controllers
                         al.Count = int.Parse(Request.Form["count"].ToString());
                         Querry = string.Format("Select EmployeeName,Departments.Department,LeaveType.LeaveType from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join LeaveType on LeaveType.LeaveTypeID='{0}' where EmployeeID='{1}'", al.LeaveTypeID, al.EmployeeID);
                         ds = ad.ShowAffectedUsers(al, Querry);
+
                     }
                     else if (al.AssignType == "All(Select Department)")
                     {
@@ -380,7 +381,7 @@ namespace LeaveApplication.Controllers
                         ds = ad.ShowAffectedUsers(al, Querry);
 
                     }
-
+                    Session["AffectedEmp"] = al;
                     ViewBag.Count = al.Count;
                     return View(ds);
                 }
@@ -409,23 +410,23 @@ namespace LeaveApplication.Controllers
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null && e1.isAdmin == true)
             {
-                if (AdminBusinessLayer.Al != null)
+                if (Session["AffectedEmp"]!=null)
                 {
-                    if (AdminBusinessLayer.Al.AssignType == "Select Employee")
+                    if (((AssignLeaves)Session["AffectedEmp"]).AssignType == "Select Employee")
                     {
-                        ad.AssignLeave();
+                        ad.AssignLeave((AssignLeaves)Session["AffectedEmp"]);
                     }
-                    else if (AdminBusinessLayer.Al.AssignType == "All(Select Department)")
+                    else if (((AssignLeaves)Session["AffectedEmp"]).AssignType == "All(Select Department)")
                     {
-                        ad.AssignAllDep();
+                        ad.AssignAllDep((AssignLeaves)Session["AffectedEmp"]);
 
                     }
-                    else if (AdminBusinessLayer.Al.AssignType == "All Employess")
+                    else if (((AssignLeaves)Session["AffectedEmp"]).AssignType == "All Employess")
                     {
-                        ad.AssignAll();
+                        ad.AssignAll((AssignLeaves)Session["AffectedEmp"]);
                     }
-                    ad.RemoveAssignLeaveRequest();
 
+                    Session.Remove("AffectedEmp");
                 }
 
                 return RedirectToAction("AssignLeave");
@@ -443,9 +444,9 @@ namespace LeaveApplication.Controllers
         public ActionResult CancelAssignLeave()
         {
             Employee e1 = (Employee)Session["Employee"];
-            if (Session["EmpID"] != null && e1.isAdmin == true)
+            if (Session["EmpID"] != null && e1.isAdmin == true && Session["AffectedEmp"]!=null)
             {
-                AdminBusinessLayer.Al = null;
+                Session.Remove("AffectedEmp");
                 return RedirectToAction("AssignLeave");
             }
             else

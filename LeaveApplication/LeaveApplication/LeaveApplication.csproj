@@ -141,6 +141,8 @@
     <Compile Include="Models\DateTimeHelper.cs" />
     <Compile Include="Models\db.cs" />
     <Compile Include="Models\Email.cs" />
+    <Compile Include="Models\Encryption.cs" />
+    <Compile Include="Models\File.cs" />
     <Compile Include="Models\LeaveApplication.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Designation.cs" />

@@ -48,7 +48,8 @@ namespace LeaveApplication.Controllers
         {
             Session["EmpID"] = null;
             Session["Employee"] = null;
-            EmployeeBusinessLayer.Employee = null;
+            Session.Clear();
+            Session.Abandon();
             return RedirectToAction("Index");
         }
     

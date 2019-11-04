@@ -25,8 +25,8 @@ namespace LeaveApplication.Models
 
         public bool ApplicationType { get; set; }   //leaverequest or leaveapplication...
         public HttpPostedFileBase Attachment { get; set; }
-        public string FileName { get; set; }//use when displaying leave in detail view
-      
+        public string FileId { get; set; }//use when displaying leave in detail view
+        public string FileName { get; set; }
 
     }
     public enum Status

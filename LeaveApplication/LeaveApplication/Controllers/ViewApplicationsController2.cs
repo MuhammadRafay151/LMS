@@ -13,7 +13,7 @@ namespace LeaveApplication.Controllers
 
         public ActionResult FacultyApplications()
         {
-            if (Session["EmpID"] != null && Session["Manager"] == null)
+            if (Session["EmpID"] != null && ((Employee)Session["Employee"]).IsManager == true)
             {
 
                 return View();
@@ -27,9 +27,9 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult FacultyAll(int? PageNo)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager)
+            if (Session["EmpID"] != null && ((Employee)Session["Employee"]).IsManager)
             {
-                System.Data.DataSet ds = lb.GetFacultyAll();
+                System.Data.DataSet ds = lb.GetFacultyAll(((Employee)Session["Employee"]).EmployeeID);
                 PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
                 ViewBag.Manager = true;
                 if (PageNo.HasValue && PageNo.Value > 0)
@@ -60,10 +60,10 @@ namespace LeaveApplication.Controllers
         {
 
 
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager)
+            if (Session["EmpID"] != null && ((Employee)Session["Employee"]).IsManager)
             {
-                System.Data.DataSet ds = lb.GetFacultyPending();
-               
+                System.Data.DataSet ds = lb.GetFacultyPending(((Employee)Session["Employee"]).EmployeeID);
+
                 PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
                 ViewBag.Manager = true;
                 if (PageNo.HasValue && PageNo.Value > 0)
@@ -95,9 +95,9 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult FacultyApproved(int? PageNo)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager)
+            if (Session["EmpID"] != null && ((Employee)Session["Employee"]).IsManager)
             {
-                System.Data.DataSet ds = lb.GetFacultyApproved();
+                System.Data.DataSet ds = lb.GetFacultyApproved(((Employee)Session["Employee"]).EmployeeID);
                 PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
                 ViewBag.Manager = true;
                 if (PageNo.HasValue && PageNo.Value > 0)
@@ -128,9 +128,9 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult FacultyRejected(int? PageNo)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager)
+            if (Session["EmpID"] != null && ((Employee)Session["Employee"]).IsManager)
             {
-                System.Data.DataSet ds = lb.GetFacultyReject();
+                System.Data.DataSet ds = lb.GetFacultyReject(((Employee)Session["Employee"]).EmployeeID);
                 PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
                 ViewBag.Manager = true;
                 if (PageNo.HasValue && PageNo.Value > 0)
@@ -160,7 +160,7 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult FacultyDetiledView(string Application_Id)
         {
-            if (Application_Id != null && EmployeeBusinessLayer.Employee.IsManager)
+            if (Application_Id != null && ((Employee)Session["Employee"]).IsManager)
             {
                 LeaveApplication.Models.LeaveApplication x = lb.GetViewApplication(Application_Id);
                 List<StatusHistory> a = lb.GetStatusHistory(Application_Id);
@@ -175,33 +175,37 @@ namespace LeaveApplication.Controllers
             }
         }
         [HttpPost]
-        public ActionResult AcceptApplication(String Application_Id,string ManagerRemarks)
+        public ActionResult AcceptApplication(String Application_Id, string ManagerRemarks)
         {
-           
-            lb.AcceptApplication(Application_Id,ManagerRemarks);
+            if (ManagerBusinessLayer.IsUnderManagement(Application_Id, ((Employee)Session["Employee"]).EmployeeID))
+            {
+                lb.AcceptApplication(Application_Id, ManagerRemarks);
+            }
+
             return RedirectToAction("FacultyApplications");
         }
-        public ActionResult RejectApplication(String Application_Id,string ManagerRemarks)
+        public ActionResult RejectApplication(String Application_Id, string ManagerRemarks)
         {
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager == true)
+            if (Session["EmpID"] != null && ((Employee)Session["Employee"]).IsManager)
             {
-                
-                lb.RejectApplication(Application_Id,ManagerRemarks);
-                return RedirectToAction("FacultyApplications");
+                if (ManagerBusinessLayer.IsUnderManagement(Application_Id, ((Employee)Session["Employee"]).EmployeeID))
+                {
+                    lb.RejectApplication(Application_Id, ManagerRemarks);
+                   
+                }
             }
-            else
-            {
+            
                 return RedirectToAction("Index", "LogIn");
-            }
+            
         }
 
         public ActionResult FacultyLeaveCount()
         {
 
-            if (Session["EmpID"] != null && EmployeeBusinessLayer.Employee.IsManager == true)
+            if (Session["EmpID"] != null && ((Employee)Session["Employee"]).IsManager)
             {
                 ViewBag.LeaveCount = false;
-                return View("LeaveCount", lb.FacultyLeaveCount());
+                return View("LeaveCount", lb.FacultyLeaveCount(((Employee)Session["Employee"]).EmployeeID));
             }
             else
             {
@@ -214,7 +218,7 @@ namespace LeaveApplication.Controllers
         {
             if (id.HasValue)
             {
-                return PartialView("LeaveBalance", lb.GetBalance(id.Value.ToString()));
+                return PartialView("LeaveBalance", lb.GetBalance(id.Value, ((Employee)Session["Employee"]).EmployeeID));
             }
             else
             {

@@ -21,7 +21,7 @@ namespace LeaveApplication.Models
         SqlCommand cmd;
         DataSet ds;
         db database = new db();
-        public static Employee Employee;
+        //public static Employee Employee;
        
         /// <summary>
         /// Pass An employee object to register in Db...
@@ -161,7 +161,7 @@ namespace LeaveApplication.Models
             e1.ImageBase64 = GetBase64Image((Byte[])d1.Tables[0].Rows[0][9]);
             e1.isAdmin = bool.Parse(d1.Tables[0].Rows[0][10].ToString());
             e1.IsManager = IsManager(e1.EmployeeID);
-            Employee = e1;
+
             return e1;
 
         }

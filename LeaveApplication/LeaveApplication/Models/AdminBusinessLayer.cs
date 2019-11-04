@@ -12,8 +12,8 @@ namespace LeaveApplication.Models
     public class AdminBusinessLayer
     {
         db DataBase = new db();
-        public static AssignLeaves Al;
-       EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
+
+        EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
 
         public void updateDeparment(Department dp)
         {
@@ -68,20 +68,20 @@ namespace LeaveApplication.Models
             string Querry = string.Format("delete from LeaveType where LeaveTypeID='{0}'", lt.LeaveTypeID);
             DataBase.ExecuteQuerry(Querry);
         }
-        public void AssignLeave()
-        {
-            string Querry = string.Format("insert into EmployeeLeaveCountHistory (EmployeeID,LeaveTypeID,Count,Date) values('{0}','{1}','{2}','{3}')", Al.EmployeeID, Al.LeaveTypeID, Al.Count, DateTime.Now);
-            DataBase.ExecuteQuerry(Querry);
+        //public void AssignLeave(AssignLeaves Al)
+        //{
+        //    string Querry = string.Format("insert into EmployeeLeaveCountHistory (EmployeeID,LeaveTypeID,Count,Date) values('{0}','{1}','{2}','{3}')", Al.EmployeeID, Al.LeaveTypeID, Al.Count, DateTime.Now);
+        //    DataBase.ExecuteQuerry(Querry);
 
-            Al.Count += GetLeaveCount(Al);
-            Querry = string.Format("update  EmployeeLeaveCount set Count = '{0}' where EmployeeID = '{1}'and LeaveTypeID ='{2}'  " +
-                "if @@ROWCOUNT = 0 " +
-                "insert into EmployeeLeaveCount(Count,EmployeeID,LeaveTypeID) values('{0}', '{1}', '{2}')", Al.Count, Al.EmployeeID, Al.LeaveTypeID);
-            DataBase.ExecuteQuerry(Querry);
+        //    Al.Count += GetLeaveCount(Al);
+        //    Querry = string.Format("update  EmployeeLeaveCount set Count = '{0}' where EmployeeID = '{1}'and LeaveTypeID ='{2}'  " +
+        //        "if @@ROWCOUNT = 0 " +
+        //        "insert into EmployeeLeaveCount(Count,EmployeeID,LeaveTypeID) values('{0}', '{1}', '{2}')", Al.Count, Al.EmployeeID, Al.LeaveTypeID);
+        //    DataBase.ExecuteQuerry(Querry);
 
-        }
+        //}
         public void AssignLeave(AssignLeaves al)
-        {//this function is used by assign all or assign_all_dep
+        {//this function is used by assign all or assign_all_dep or single assign employee
             string Querry = string.Format("insert into EmployeeLeaveCountHistory (EmployeeID,LeaveTypeID,Count,Date) values('{0}','{1}','{2}','{3}')", al.EmployeeID, al.LeaveTypeID, al.Count, DateTime.Now);
             DataBase.ExecuteQuerry(Querry);
 
@@ -95,7 +95,7 @@ namespace LeaveApplication.Models
         /// <summary>
         /// Assign Leave to all employees
         /// </summary>
-        public void AssignAll()
+        public void AssignAll(AssignLeaves Al)
         {
             string Querry = "select EmployeeID from Employee";
             DataSet ds = DataBase.Read(Querry);
@@ -106,7 +106,7 @@ namespace LeaveApplication.Models
         }/// <summary>
          /// Assign Leaves to all department employees
          /// </summary>
-        public void AssignAllDep()
+        public void AssignAllDep(AssignLeaves Al)
         {
             string Querry = string.Format("select * from Employee where DepartmentID='{0}'", Al.DepartmentID);
             DataSet ds = DataBase.Read(Querry);
@@ -132,14 +132,9 @@ namespace LeaveApplication.Models
         public DataSet ShowAffectedUsers(AssignLeaves al, String Querry)
         {//this method store the data temporarily from incoming assign leave request for further processing and return data for users who are getting affected by this request
             DataSet ds = DataBase.Read(Querry);
-            Al = al;
             return ds;
         }
-        public void RemoveAssignLeaveRequest()
-        {//this method remove the request data from temporary method after recording in the database or if user cancel the request
-            Al = null;
 
-        }
         public void RequestableStateChange(string LeaveTypeID, bool IsRequestable)
         {
             //change enable/disable isrequestable for leave type based on user input
@@ -173,7 +168,7 @@ namespace LeaveApplication.Models
                 {
                     Querry = string.Format(@"UPDATE Users Set UserName='{0}', Password='{1}' where Users.UserName='{2}'
 update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Email='{10}' where Employee.EmployeeID = '{9}'",
-Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID,Emp.Email);
+Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Email);
                     DataBase.ExecuteQuerry(Querry);
                 }
                 else
@@ -181,7 +176,7 @@ Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNu
                     Querry = string.Format(@"UPDATE Users Set UserName='{0}', Password='{1}' where Users.UserName='{2}'
 update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Email='{10}' where Employee.EmployeeID = '{9}'
 Update Picture set Picture.Picture = @img where Picture.EmployeeID = '{9}'",
-  Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID,Emp.Email);
+  Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Email);
                     SqlParameter p1 = new SqlParameter();
                     p1.ParameterName = "img";
                     p1.Value = bytes;
@@ -197,7 +192,7 @@ Update Picture set Picture.Picture = @img where Picture.EmployeeID = '{9}'",
                 {
                     Querry = string.Format(@"UPDATE Users Set UserName='{0}', Password='{1}' where Users.UserName='{2}'
 update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Manager='{10}',Email='{11}' where Employee.EmployeeID = '{9}'",
-Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Manager,Emp.Email);
+Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Manager, Emp.Email);
 
                     DataBase.ExecuteQuerry(Querry);
                 }
@@ -206,7 +201,7 @@ Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNu
                     Querry = string.Format(@"UPDATE Users Set UserName='{0}', Password='{1}' where Users.UserName='{2}'
 update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Manager='{10}',Email='{11}' where Employee.EmployeeID = '{9}'
 Update Picture set Picture.Picture = @img where Picture.EmployeeID = '{9}'",
-Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Manager,Emp.Email);
+Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Manager, Emp.Email);
                     SqlParameter p1 = new SqlParameter();
                     p1.ParameterName = "img";
                     p1.Value = bytes;
@@ -224,13 +219,13 @@ Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNu
 
         public void AddLeaveReason(string LeaveReason)
         {
-            string Querry = string.Format("insert into Reasons(LeaveReason) values('{0}')",LeaveReason);
+            string Querry = string.Format("insert into Reasons(LeaveReason) values('{0}')", LeaveReason);
             DataBase.ExecuteQuerry(Querry);
         }
 
         public void DeleteLeaveReason(int LeaveReasonID)
         {
-            string Querry = string.Format("delete from Reasons where ReasonID='{0}'",LeaveReasonID);
+            string Querry = string.Format("delete from Reasons where ReasonID='{0}'", LeaveReasonID);
             DataBase.ExecuteQuerry(Querry);
         }
     }

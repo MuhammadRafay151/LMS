@@ -20,9 +20,10 @@ namespace LeaveApplication.Controllers
         {
             if (Session["EmpID"] != null)
             {
-
+                LeaveBusinessLayer lb = new LeaveBusinessLayer();
                 ViewBag.Reasons = lb.GetReasons();
                 ViewBag.Leavetypes = lb.GetLeaveTypes();
+
                 if (ViewId == null || ViewId == 0)
                 {
                     ViewBag.ViewID = 0;
@@ -71,16 +72,16 @@ namespace LeaveApplication.Controllers
             {
                 ModelState.AddModelError("halfday_from", "Required");
             }
-            if (l1.IsHalfDay==1 && string.IsNullOrWhiteSpace(Request.Form["halfday_to"]))
+            if (l1.IsHalfDay == 1 && string.IsNullOrWhiteSpace(Request.Form["halfday_to"]))
             {
                 ModelState.AddModelError("halfday_to", "Required");
             }
-            
+
             if (string.IsNullOrWhiteSpace(l1.LeaveReason))
             {
                 ModelState.AddModelError("LeaveReason", "Required");
             }
-           //end...
+            //end...
             if (ModelState.IsValid)
             {
                 if (l1.IsHalfDay == 0 || l1.IsHalfDay == 1)

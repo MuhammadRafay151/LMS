@@ -88,11 +88,11 @@
                                 <label class="label-control">Description</label>
                                 <textarea class="form-control" style="resize:none" name="@Html.NameFor(m=>m.LeaveRemarks)" id="@Html.IdFor(m=>m.LeaveRemarks)" cols="30" rows="10" placeholder="Enter Description if any.">@Model.LeaveRemarks</textarea>
                             </div>
-                            if (!string.IsNullOrWhiteSpace(@Model.FileName))
+                            if (!string.IsNullOrWhiteSpace(@Model.FileId))
                             {
                                 <div class="form-group">
                                     <label>Your Attachment:</label>
-                                    <a href="/ViewApplications/DownLoadFile?FileName=@Model.FileName">@Model.FileName</a>
+                                    <a href="/ViewApplications/DownLoadFile?Fileid=@Model.FileId">@Model.FileName</a>
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input class="form-check-input" name="IsDeleted" id="IsDeleted" type="checkbox" onclick="$(this).val(this.checked)" value="false">
