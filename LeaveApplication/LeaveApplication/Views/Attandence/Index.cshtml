@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+}
+<style>
+    .back{
+        background: rgb(129,129,129);
+background: linear-gradient(90deg, rgba(129,129,129,1) 0%, rgba(201,201,201,1) 44%, rgba(240,240,240,1) 75%);
+    }
+</style>
+<div class="container">
+    <div class="row justify-content-center align-content-center vh-100">
+        <div class="col">
+            <div class="card">
+                <div class="card-header card-header-info">
+                    <h3 class="card-title" style="font-family:g1">Upload Attandence</h3>
+                </div>
+                <div class="card-body ">
+                    @using (Html.BeginForm("SendNotifications","Attandence",FormMethod.Post,new { enctype = "multipart/form-data" }))
+                    {
+                        <div class=" d-flex justify-content-center my-auto back p-2">
+                            <input name="Attendance" id="input1" type="file" class="d-none" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                            <button type="button" id="up1" class="btn btn-info-grd">Upload Attandence</button><span id="span1" class="ml-2 mt-3">Empty...</span>
+
+                        </div>
+                        <div class="card-footer justify-content-end">
+                            <input id="sad33" type="submit" class="btn btn-info-grd" />
+                        </div>
+                    }
+
+                   
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Add the following code if you want the name of the file appear on select
+    $(document).ready(function () {
+        $('#up1').click(function () {
+            $('#input1').trigger('click');
+         
+        });
+        $('#input1').change(function () {
+            document.getElementById('span1').innerHTML= document.getElementById('input1').files.item(0).name;
+        });
+
+    });
+
+</script>

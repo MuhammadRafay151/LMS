@@ -7,14 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace ConsoleApp4
+namespace LeaveApplication.Models
 {
-    class Excels
+    public class Excels
     {
-
-        public List<Attendance> Read(FileStream FileStream)
+        
+        public List<Attendance> Read(Stream FileStream)
         {
-           
+
             List<Attendance> l1 = new List<Attendance>();
 
             using (var excelWorkbook = new XLWorkbook(FileStream))
@@ -23,15 +23,17 @@ namespace ConsoleApp4
 
                 foreach (IXLRow dataRow in nonEmptyDataRows)
                 {
-                   
+
                     if (dataRow.RowNumber() != 1)
                     {
                         var cell = dataRow.Cell(1).Value;
                         var cell2 = dataRow.Cell(12).Value;
+                        var cell3 = dataRow.Cell(4).Value;
                         l1.Add(new Attendance()
                         {
                             EmpId = Convert.ToInt32(cell.ToString()),
-                            Abscent = Convert.ToBoolean(cell2.ToString())
+                            Abscent = Convert.ToBoolean(cell2.ToString()),
+                            Date = Convert.ToDateTime(cell3)
 
                         });
                         Console.WriteLine(cell.ToString() + "\t" + cell2);

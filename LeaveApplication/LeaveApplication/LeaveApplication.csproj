@@ -147,6 +147,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\RequestLeaveController.cs" />
     <Compile Include="Controllers\ViewApplicationsController2.cs" />
     <Compile Include="Controllers\ApplyForLeaveController.cs" />
@@ -634,6 +635,9 @@
     <Content Include="Views\ViewApplications\LeaveBalance.cshtml" />
     <Content Include="Views\Admin\EditEmployees.cshtml" />
     <Content Include="Views\Admin\LeaveReason.cshtml" />
+    <Content Include="Views\Attandence\ViewAttandence.cshtml" />
+    <Content Include="Views\Attandence\NotifiedList.cshtml" />
+    <Content Include="Views\Attandence\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

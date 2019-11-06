@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp4
+namespace LeaveApplication.Models
 {
-    class Attendance
+    public class Attendance
     {
         public int EmpId { get; set; }
         public bool Abscent { get; set; }
+        public DateTime Date { get; set; }
     }
 }
