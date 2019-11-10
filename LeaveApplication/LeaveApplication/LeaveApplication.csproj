@@ -176,6 +176,7 @@
     <Compile Include="Models\EmployeeLeaveCount.cs" />
     <Compile Include="Models\LeaveTypes.cs" />
     <Compile Include="Models\ManagerBusinessLayer.cs" />
+    <Compile Include="Models\Pagination.cs" />
     <Compile Include="Models\StatusHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

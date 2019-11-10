@@ -50,7 +50,7 @@
 
                                         <tr class="">
 
-                                            <td hidden class="align-middle  text-center">@x[0].ToString()</td>
+                                            <td hidden class="align-middle  text-center">@LeaveApplication.Models.Encryption.Base64Encode( x[0].ToString())</td>
                                             @{
                                                 if (ViewBag.Manager == true)
                                                 {

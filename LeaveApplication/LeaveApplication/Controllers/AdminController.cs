@@ -7,6 +7,7 @@ using LeaveApplication.Models;
 using System.IO;
 using System.Data.SqlClient;
 
+
 namespace LeaveApplication.Controllers
 {
     public class AdminController : Controller
@@ -26,7 +27,7 @@ namespace LeaveApplication.Controllers
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null && e1.isAdmin == true)
             {
-              
+
                 return View(lb.GetLeaveTypesDS());
             }
             else
@@ -63,13 +64,30 @@ namespace LeaveApplication.Controllers
             }
 
         }
-        public ActionResult Employees()
+        public ActionResult Employees(int? PageNo)
         {
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null && e1.isAdmin == true)
             {
+                if (PageNo == null)
+                {
+                    PageNo = 1;
+                }
+                System.Data.DataSet x = eb.GetEmployeesDs(PageNo.Value);
+               
+                if (x == null)
+                {
+                    return RedirectToAction("Employees");
+                    //x = eb.GetEmployeesDs(1);
+                    //ViewBag.PageNo = 1;
+                    //ViewBag.TotalPages = Convert.ToInt32(x.Tables[1].Rows[0][0]);
+                }
+                else
+                {
+                    ViewBag.PageNo = PageNo.Value;
+                    ViewBag.TotalPages = Convert.ToInt32(x.Tables[1].Rows[0][0]);
+                }
 
-                System.Data.DataSet x = eb.GetEmployeesDs();
 
                 return View(x);
             }
@@ -333,7 +351,8 @@ namespace LeaveApplication.Controllers
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null && e1.isAdmin == true)
             {
-                return Json(eb.GetEmployeesList(d1.DepartmentId)); }
+                return Json(eb.GetEmployeesList(d1.DepartmentId));
+            }
             else
             {
                 return Json(null);
@@ -347,7 +366,7 @@ namespace LeaveApplication.Controllers
             if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 AssignLeaves al = new AssignLeaves();
-              
+
                 System.Data.DataSet ds = null;
                 string Querry = string.Empty;
                 al.AssignType = Request.Form["customRadio"].ToString();
@@ -410,7 +429,7 @@ namespace LeaveApplication.Controllers
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null && e1.isAdmin == true)
             {
-                if (Session["AffectedEmp"]!=null)
+                if (Session["AffectedEmp"] != null)
                 {
                     if (((AssignLeaves)Session["AffectedEmp"]).AssignType == "Select Employee")
                     {
@@ -444,7 +463,7 @@ namespace LeaveApplication.Controllers
         public ActionResult CancelAssignLeave()
         {
             Employee e1 = (Employee)Session["Employee"];
-            if (Session["EmpID"] != null && e1.isAdmin == true && Session["AffectedEmp"]!=null)
+            if (Session["EmpID"] != null && e1.isAdmin == true && Session["AffectedEmp"] != null)
             {
                 Session.Remove("AffectedEmp");
                 return RedirectToAction("AssignLeave");
@@ -455,7 +474,7 @@ namespace LeaveApplication.Controllers
             }
 
         }
-       
+
         public ActionResult Assign_Leave_History(int? PageNo)
         {
             Employee e1 = (Employee)Session["Employee"];

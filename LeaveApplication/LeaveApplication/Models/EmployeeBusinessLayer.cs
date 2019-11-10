@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.IO;
 using System.Net.Http;
+using Pagination;
 
 namespace LeaveApplication.Models
 {
@@ -22,7 +23,7 @@ namespace LeaveApplication.Models
         DataSet ds;
         db database = new db();
         //public static Employee Employee;
-       
+
         /// <summary>
         /// Pass An employee object to register in Db...
         /// </summary>
@@ -46,7 +47,7 @@ namespace LeaveApplication.Models
                 string Querry = string.Format("insert into Users(UserName,Password) values('{0}','{1}')" +
                  "insert into employee(UserName, employeename, address, PhoneNumber, cnic, JoiningDate, DesignationID, DepartmentID, IsActive,Email) values('{0}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', {9},{10})" +
                  "declare @id int = SCOPE_IDENTITY()" +
-                 "insert  into Picture(EmployeeID, Picture) values(@id, @img)", Emp.UserName, Emp.Password, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DateOfJoining, Emp.DesignationID, Emp.DepartmentID, 1,Emp.Email);
+                 "insert  into Picture(EmployeeID, Picture) values(@id, @img)", Emp.UserName, Emp.Password, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DateOfJoining, Emp.DesignationID, Emp.DepartmentID, 1, Emp.Email);
                 SqlParameter p1 = new SqlParameter();
                 p1.ParameterName = "img";
                 p1.Value = bytes;
@@ -58,7 +59,7 @@ namespace LeaveApplication.Models
                 string Querry = string.Format("insert into Users(UserName,Password) values('{0}','{1}')" +
                 "insert into employee(UserName, employeename, address, PhoneNumber, cnic, JoiningDate, DesignationID, DepartmentID,Manager, IsActive,Email) values('{0}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}','{10}','{11}')" +
                 "declare @id int = SCOPE_IDENTITY()" +
-                "insert  into Picture(EmployeeID, Picture) values(@id, @img)", Emp.UserName, Emp.Password, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DateOfJoining, Emp.DesignationID, Emp.DepartmentID, Emp.Manager, 1,Emp.Email);
+                "insert  into Picture(EmployeeID, Picture) values(@id, @img)", Emp.UserName, Emp.Password, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DateOfJoining, Emp.DesignationID, Emp.DepartmentID, Emp.Manager, 1, Emp.Email);
                 SqlParameter p1 = new SqlParameter();
                 p1.ParameterName = "img";
                 p1.Value = bytes;
@@ -85,7 +86,7 @@ namespace LeaveApplication.Models
                 d1.department = ds.Tables[0].Rows[i][1].ToString();
                 Departments.Add(d1);
             }
-        
+
             return Departments;
         }
         public DataSet GetDepartmentsDS()
@@ -103,7 +104,7 @@ namespace LeaveApplication.Models
             string command = string.Format("select * from designations");
 
             DataSet ds = database.Read(command);
-          
+
 
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
@@ -112,7 +113,7 @@ namespace LeaveApplication.Models
                 d1.designation = ds.Tables[0].Rows[i][1].ToString();
                 Designations.Add(d1);
             }
-         
+
             return Designations;
         }
 
@@ -165,15 +166,36 @@ namespace LeaveApplication.Models
             return e1;
 
         }
-        public DataSet GetEmployeesDs()
+        public DataSet GetEmployeesDs(int PageNumber)
         {// send employees for manage employees forms...
-            string Querry = "select Employee.EmployeeID,Employee.EmployeeName,Departments.Department,Designations.Designation,IsActive from Employee inner join Designations on Designations.DesignationID=Employee.DesignationID inner join Departments on Employee.DepartmentID=Departments.DepartmentID order by EmployeeName Asc";
-            DataSet ds = database.Read(Querry);
-            return ds;
+            string Querry1 = "select COUNT(*)as TotalEmp  from Employee;";
+
+            Pagination.Pagination p1 = new Pagination.Pagination();
+            int RowsPerPage = 6;
+            p1.CalculateRanges(Convert.ToInt32(database.ExecuteScalar(Querry1)), PageNumber, RowsPerPage);
+            if (PageNumber > p1.TotalPages)
+            {
+                return null;
+            }
+            else
+            {
+                string Querry = string.Format(@"select Employee.EmployeeID,Employee.EmployeeName,Departments.Department,Designations.Designation,IsActive from Employee inner join Designations on Designations.DesignationID=Employee.DesignationID inner join Departments on Employee.DepartmentID=Departments.DepartmentID order by EmployeeName Asc offset {0} rows fetch next {1} rows only;
+", p1.OffsetRows, RowsPerPage);
+                DataSet ds = database.Read(Querry);
+              
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Count");
+                dt.Rows.Add(p1.TotalPages);
+                ds.Tables.Add(dt);
+                return ds;
+            }
+
+
+           
         }
         public Employee GetEmployeeData(int Empid)
         {
-           
+
             string Querry = string.Format("select Employee.EmployeeID,Employee.UserName,Employee.EmployeeName,Employee.Address,Employee.PhoneNumber,Employee.CNIC,Employee.JoiningDate,Employee.DesignationID,Employee.DepartmentID,Picture.Picture,Employee.IsAdmin,Employee.Manager,Users.Password,Employee.Email  from Employee inner join Picture on Employee.EmployeeID=Picture.EmployeeID inner join Users on Employee.UserName=Users.UserName where Employee.EmployeeID='{0}'", Empid);
 
             DataSet d1 = database.Read(Querry);

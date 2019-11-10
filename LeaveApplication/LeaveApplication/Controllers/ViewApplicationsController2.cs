@@ -177,26 +177,55 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult AcceptApplication(String Application_Id, string ManagerRemarks)
         {
-            if (ManagerBusinessLayer.IsUnderManagement(Application_Id, ((Employee)Session["Employee"]).EmployeeID))
+            if (Session["EmpID"] == null)
             {
-                lb.AcceptApplication(Application_Id, ManagerRemarks);
+                return RedirectToAction("Index", "LogIn");
+            }
+            Application_Id = LeaveApplication.Models.Encryption.Base64Decode(Application_Id);
+           
+            try
+            {
+
+                int.Parse(Application_Id);
+                if (((Employee)Session["Employee"]).IsManager && ManagerBusinessLayer.IsUnderManagement(Application_Id, ((Employee)Session["Employee"]).EmployeeID))
+                {
+
+                    lb.AcceptApplication(Application_Id, ManagerRemarks);
+                }
+
+            }
+            catch (FormatException)
+            {
+                return RedirectToAction("FacultyApplications");
             }
 
             return RedirectToAction("FacultyApplications");
         }
         public ActionResult RejectApplication(String Application_Id, string ManagerRemarks)
         {
-            if (Session["EmpID"] != null && ((Employee)Session["Employee"]).IsManager)
+            if (Session["EmpID"] == null)
             {
-                if (ManagerBusinessLayer.IsUnderManagement(Application_Id, ((Employee)Session["Employee"]).EmployeeID))
-                {
-                    lb.RejectApplication(Application_Id, ManagerRemarks);
-                   
-                }
-            }
-            
                 return RedirectToAction("Index", "LogIn");
-            
+            }
+
+            try
+            {
+                Application_Id = LeaveApplication.Models.Encryption.Base64Decode(Application_Id);
+                int.Parse(Application_Id);
+                if (((Employee)Session["Employee"]).IsManager && ManagerBusinessLayer.IsUnderManagement(Application_Id, ((Employee)Session["Employee"]).EmployeeID))
+                {
+
+                    lb.RejectApplication(Application_Id, ManagerRemarks);
+                }
+
+            }
+            catch (FormatException)
+            {
+                return RedirectToAction("FacultyApplications");
+            }
+
+            return RedirectToAction("FacultyApplications");
+
         }
 
         public ActionResult FacultyLeaveCount()
