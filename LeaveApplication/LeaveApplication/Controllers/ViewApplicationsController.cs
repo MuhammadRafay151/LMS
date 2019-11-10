@@ -132,28 +132,40 @@ namespace LeaveApplication.Controllers
 
             if (Application_Id != null && Session["EmpID"] != null)
             {
-
-                LeaveApplication.Models.LeaveApplication x = lb.GetApplication(Application_Id);
-                Session["EditLeave"] = x;
-                if (x == null)
+                Application_Id = LeaveApplication.Models.Encryption.Base64Decode(Application_Id);
+                try
                 {
-                    return RedirectToAction("Index", "ViewApplications");
-                }
-                else
-                {
-                    ViewBag.Reasons = lb.GetReasons();
-                    ViewBag.Leavetypes = lb.GetLeaveTypes();
 
-                    if (TempData["HrsError"] != null && Convert.ToBoolean(TempData["HrsError"]) == true)
+                    int.Parse(Application_Id);
+                    LeaveApplication.Models.LeaveApplication x = lb.GetApplication(Application_Id);
+                    Session["EditLeave"] = x;
+                    if (x == null)
                     {
-                        ViewBag.HrsError = true;
+                        return RedirectToAction("Index", "ViewApplications");
                     }
                     else
                     {
-                        ViewBag.HrsError = false;
+                        ViewBag.Reasons = lb.GetReasons();
+                        ViewBag.Leavetypes = lb.GetLeaveTypes();
+
+                        if (TempData["HrsError"] != null && Convert.ToBoolean(TempData["HrsError"]) == true)
+                        {
+                            ViewBag.HrsError = true;
+                        }
+                        else
+                        {
+                            ViewBag.HrsError = false;
+                        }
+                        return View(x);
                     }
-                    return View(x);
+
                 }
+                catch (FormatException)
+                {
+                    return RedirectToAction("FacultyApplications");
+                }
+
+               
             }
             else
             {
@@ -192,8 +204,18 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult CancelApplication(string Application_Id)
         {
-            lb.CancelApplication(Application_Id);
-            return RedirectToAction("Index");
+            try
+            {
+                Application_Id = LeaveApplication.Models.Encryption.Base64Decode(Application_Id);
+                int.Parse(Application_Id);
+                lb.CancelApplication(Application_Id);
+                return RedirectToAction("Index");
+            }
+            catch (FormatException)
+            {
+                return RedirectToAction("Index");
+            }
+           
         }
         [HttpPost]
         public ActionResult SaveChanges(LeaveApplication.Models.LeaveApplication l1)
