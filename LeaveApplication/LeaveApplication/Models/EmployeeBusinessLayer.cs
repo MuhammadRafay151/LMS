@@ -289,5 +289,20 @@ namespace LeaveApplication.Models
             return database.ExecuteScalar(Querry).ToString();
         }
 
+        public void ResetPassword(string NewPassword, string UserName)
+        {
+            
+            string Querry = string.Format("update Users set Password='{0}' where UserName='{1}'", NewPassword, UserName);
+            database.ExecuteQuerry(Querry);
+
+        }
+
+        public string UserPassword(string UserName)
+        {
+
+            string Querry = string.Format("select Password from Users where UserName='{0}'",UserName);
+            return Convert.ToString(database.ExecuteScalar(Querry));
+
+        }
     }
 }
