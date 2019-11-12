@@ -19,7 +19,7 @@ namespace LeaveApplication.Controllers
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                
+
                 return View();
             }
             else
@@ -28,6 +28,27 @@ namespace LeaveApplication.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult ChangePassword(string OldPassword, string NewPassword, string ComfirmPassword)
+        {
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && OldPassword == e1.Password)
+            {
+
+                if (NewPassword == ComfirmPassword)
+                {
+                    eb.ResetPassword(NewPassword, e1.UserName);
+                }
+
+
+                return RedirectToAction("ResetPassword", "Profile");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+
+        }
 
     }
 }
