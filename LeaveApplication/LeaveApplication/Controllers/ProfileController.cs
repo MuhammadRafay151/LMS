@@ -14,7 +14,7 @@ namespace LeaveApplication.Controllers
     {
         // GET: Profile
         EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
-        public ActionResult ResetPassword(string OldPassword,string NewPassword,string ComfirmPassword)
+        public ActionResult ResetPassword()
         {
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
@@ -27,5 +27,7 @@ namespace LeaveApplication.Controllers
                 return RedirectToAction("Index", "LogIn");
             }
         }
+
+
     }
 }
