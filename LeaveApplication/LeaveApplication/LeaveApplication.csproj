@@ -155,6 +155,7 @@
     <Compile Include="Controllers\LogInController.cs" />
     <Compile Include="Controllers\RegisterEmployeeController.cs" />
     <Compile Include="Controllers\ViewApplicationsController.cs" />
+    <Compile Include="Exceptional Classes\DuplicatePrimaryKeyException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -637,7 +638,6 @@
     <Content Include="Views\Admin\EditEmployees.cshtml" />
     <Content Include="Views\Admin\LeaveReason.cshtml" />
     <Content Include="Views\Attandence\ViewAttandence.cshtml" />
-    <Content Include="Views\Attandence\NotifiedList.cshtml" />
     <Content Include="Views\Attandence\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

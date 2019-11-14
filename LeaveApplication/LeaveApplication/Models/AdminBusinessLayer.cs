@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web;
-
+using LeaveApplication.Exceptional_Classes;
 namespace LeaveApplication.Models
 {
     public class AdminBusinessLayer
@@ -151,6 +151,10 @@ namespace LeaveApplication.Models
         }
         public void UpdateEmployee(Employee Emp)
         {
+            if (!eb.IsUserAvailable(Emp.EmployeeID, Emp.UserName))
+                throw new DuplicateException(1);
+            if (!eb.IsEmpNoAvailable(Emp.EmployeeID, Emp.EmpNo))
+                throw new DuplicateException(2);
             string Querry;
             string UserName = eb.GetUserName(Emp.EmployeeID);
             Emp.DateOfJoining = DateTime.Now.ToString("yyyy-MM-dd");

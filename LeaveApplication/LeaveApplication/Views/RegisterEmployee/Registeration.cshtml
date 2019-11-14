@@ -38,7 +38,7 @@
 
                                         <div class="form-group">
                                             @Html.TextBoxFor(Model => Model.EmployeeName, new { @class = "form-control", placeholder = "Employee Name", required = "required" })
-
+                                            @Html.ValidationMessageFor(m => m.EmployeeName, "", new { @class = "text-danger" })
                                         </div>
                                         <div class="form-group">
                                             @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control", placeholder = "Email", required = "required",type="email" })
@@ -46,15 +46,15 @@
                                         </div>
                                         <div class="form-group">
                                             @Html.TextBoxFor(Model => Model.Address, new { @class = "form-control", placeholder = "Address", required = "required" })
-
+                                            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
                                         </div>
                                         <div class="form-group">
                                             @Html.TextBoxFor(Model => Model.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number", required = "required" })
-
+                                            @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
                                         </div>
                                         <div class="form-group">
                                             @Html.TextBoxFor(Model => Model.CNIC, new { @class = "form-control", placeholder = "CNIC", required = "required" })
-
+                                            @Html.ValidationMessageFor(m => m.CNIC, "", new { @class = "text-danger" })
                                         </div>
 
                                         <div class="form-group">
@@ -72,6 +72,7 @@
 
 
                                             </select>
+                                            @Html.ValidationMessageFor(m => m.DepartmentID, "", new { @class = "text-danger" })
                                         </div>
 
                                         <div class="form-group">
@@ -89,6 +90,7 @@
 
 
                                             </select>
+                                            @Html.ValidationMessageFor(m => m.DesignationID, "", new { @class = "text-danger" })
                                         </div>
                                         <div class="form-group">
 
@@ -113,6 +115,7 @@
                                                     <input id="chk1" type="checkbox" onclick="ShowPass()"> Show Password
                                                 </label>
                                             </div>
+                                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                                         </div>
 
 
@@ -122,8 +125,14 @@
 
                                 </div>
                             </div>
-                            <div class="col my-auto">
-                                <div class="card ">
+                           
+                            <div class="col  ">
+
+                                <div class="d-flex justify-content-center justify-content-lg-start justify-content-md-start form-group">
+                                    @Html.TextBoxFor(Model => Model.EmpNo, new { @class = "form-control", placeholder = "Employee No.", required = "required" })
+                                    @Html.ValidationMessageFor(m => m.EmpNo, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="card pt-5">
                                     <div class="card-header">
                                         <h3 class="card-title">Profile Picture</h3>
                                     </div>
@@ -139,6 +148,8 @@
                                         @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
+                               
+
                             </div>
                         </div>
                         <div class="row ">

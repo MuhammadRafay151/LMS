@@ -8,7 +8,8 @@ namespace LeaveApplication.Models
 {
     public class Attendance
     {
-        public int EmpId { get; set; }
+        public int EmpNo { get; set; }
+        public String EmployeeName { get; set; }
         public bool Abscent { get; set; }
         public DateTime Date { get; set; }
     }

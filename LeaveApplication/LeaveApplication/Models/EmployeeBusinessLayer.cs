@@ -8,6 +8,7 @@ using System.Configuration;
 using System.IO;
 using System.Net.Http;
 using Pagination;
+using LeaveApplication.Exceptional_Classes;
 
 namespace LeaveApplication.Models
 {
@@ -30,7 +31,10 @@ namespace LeaveApplication.Models
         /// <param name="Emp">Emp Type Object</param>
         public void Register(Employee Emp)
         {
-
+            if (!IsUserAvailable(Emp.UserName))
+                throw new DuplicateException(1);
+            if(!IsEmpNoAvailable(Emp.EmpNo))
+                throw new DuplicateException(2);
             Emp.DateOfJoining = DateTime.Now.ToString("yyyy-MM-dd");
             Byte[] bytes = null;
             if (Emp.Image != null)
@@ -45,9 +49,9 @@ namespace LeaveApplication.Models
             if (string.IsNullOrWhiteSpace(Emp.Manager))
             {
                 string Querry = string.Format("insert into Users(UserName,Password) values('{0}','{1}')" +
-                 "insert into employee(UserName, employeename, address, PhoneNumber, cnic, JoiningDate, DesignationID, DepartmentID, IsActive,Email) values('{0}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', {9},{10})" +
+                 "insert into employee(UserName, employeename, address, PhoneNumber, cnic, JoiningDate, DesignationID, DepartmentID, IsActive,Email,EmpNo) values('{0}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', {9},{10},{11})" +
                  "declare @id int = SCOPE_IDENTITY()" +
-                 "insert  into Picture(EmployeeID, Picture) values(@id, @img)", Emp.UserName, Emp.Password, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DateOfJoining, Emp.DesignationID, Emp.DepartmentID, 1, Emp.Email);
+                 "insert  into Picture(EmployeeID, Picture) values(@id, @img)", Emp.UserName, Emp.Password, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DateOfJoining, Emp.DesignationID, Emp.DepartmentID, 1, Emp.Email,Emp.EmpNo);
                 SqlParameter p1 = new SqlParameter();
                 p1.ParameterName = "img";
                 p1.Value = bytes;
@@ -57,9 +61,9 @@ namespace LeaveApplication.Models
             else
             {
                 string Querry = string.Format("insert into Users(UserName,Password) values('{0}','{1}')" +
-                "insert into employee(UserName, employeename, address, PhoneNumber, cnic, JoiningDate, DesignationID, DepartmentID,Manager, IsActive,Email) values('{0}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}','{10}','{11}')" +
+                "insert into employee(UserName, employeename, address, PhoneNumber, cnic, JoiningDate, DesignationID, DepartmentID,Manager, IsActive,Email,EmpNo) values('{0}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}','{10}','{11}','{12}')" +
                 "declare @id int = SCOPE_IDENTITY()" +
-                "insert  into Picture(EmployeeID, Picture) values(@id, @img)", Emp.UserName, Emp.Password, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DateOfJoining, Emp.DesignationID, Emp.DepartmentID, Emp.Manager, 1, Emp.Email);
+                "insert  into Picture(EmployeeID, Picture) values(@id, @img)", Emp.UserName, Emp.Password, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DateOfJoining, Emp.DesignationID, Emp.DepartmentID, Emp.Manager, 1, Emp.Email,Emp.EmpNo);
                 SqlParameter p1 = new SqlParameter();
                 p1.ParameterName = "img";
                 p1.Value = bytes;
@@ -98,10 +102,38 @@ namespace LeaveApplication.Models
 
             return ds;
         }
+        public List<Designation> GetDesignation(Pagination.Pagination p1, int PageNo)
+        {
+            String Querry = "select count(*) from Designations";
+      
+            int RowPerPage = 5;
+            p1.CalculateRanges(Convert.ToInt32(database.ExecuteScalar(Querry)), PageNo, RowPerPage);
+            List<Designation> Designations = new List<Designation>();
+            string command = string.Format("select * from Designations order by DesignationID offset {0} rows fetch next {1} rows only", p1.OffsetRows, RowPerPage);
+
+            DataSet ds = database.Read(command);
+
+            if (PageNo>p1.TotalPages)
+                return null;
+            else
+            {
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    Designation d1 = new Designation();
+                    d1.DesignationID = int.Parse(ds.Tables[0].Rows[i][0].ToString());
+                    d1.designation = ds.Tables[0].Rows[i][1].ToString();
+                    Designations.Add(d1);
+                }
+
+                return Designations;
+            }
+
+        }
         public List<Designation> GetDesignation()
         {
+            String Querry = "select count(*) from Designations";
             List<Designation> Designations = new List<Designation>();
-            string command = string.Format("select * from designations");
+            string command = string.Format("select * from Designations order by DesignationID");
 
             DataSet ds = database.Read(command);
 
@@ -182,7 +214,7 @@ namespace LeaveApplication.Models
                 string Querry = string.Format(@"select Employee.EmployeeID,Employee.EmployeeName,Departments.Department,Designations.Designation,IsActive from Employee inner join Designations on Designations.DesignationID=Employee.DesignationID inner join Departments on Employee.DepartmentID=Departments.DepartmentID order by EmployeeName Asc offset {0} rows fetch next {1} rows only;
 ", p1.OffsetRows, RowsPerPage);
                 DataSet ds = database.Read(Querry);
-              
+
                 DataTable dt = new DataTable();
                 dt.Columns.Add("Count");
                 dt.Rows.Add(p1.TotalPages);
@@ -191,12 +223,12 @@ namespace LeaveApplication.Models
             }
 
 
-           
+
         }
         public Employee GetEmployeeData(int Empid)
         {
 
-            string Querry = string.Format("select Employee.EmployeeID,Employee.UserName,Employee.EmployeeName,Employee.Address,Employee.PhoneNumber,Employee.CNIC,Employee.JoiningDate,Employee.DesignationID,Employee.DepartmentID,Picture.Picture,Employee.IsAdmin,Employee.Manager,Users.Password,Employee.Email  from Employee inner join Picture on Employee.EmployeeID=Picture.EmployeeID inner join Users on Employee.UserName=Users.UserName where Employee.EmployeeID='{0}'", Empid);
+            string Querry = string.Format("select Employee.EmployeeID,Employee.UserName,Employee.EmployeeName,Employee.Address,Employee.PhoneNumber,Employee.CNIC,Employee.JoiningDate,Employee.DesignationID,Employee.DepartmentID,Picture.Picture,Employee.IsAdmin,Employee.Manager,Users.Password,Employee.Email,Employee.EmpNo  from Employee inner join Picture on Employee.EmployeeID=Picture.EmployeeID inner join Users on Employee.UserName=Users.UserName where Employee.EmployeeID='{0}'", Empid);
 
             DataSet d1 = database.Read(Querry);
 
@@ -214,6 +246,7 @@ namespace LeaveApplication.Models
             e1.Manager = d1.Tables[0].Rows[0][11].ToString();
             e1.Password = d1.Tables[0].Rows[0][12].ToString();
             e1.Email = d1.Tables[0].Rows[0][13].ToString();
+            e1.EmpNo = Convert.ToInt32(d1.Tables[0].Rows[0][14]);
             return e1;
         }
         public string GetBase64Image(Byte[] Image)
@@ -287,6 +320,42 @@ namespace LeaveApplication.Models
         {
             string Querry = " select Employee.UserName from Employee where Employee.EmployeeID =" + Empid;
             return database.ExecuteScalar(Querry).ToString();
+        }
+        public bool IsUserAvailable(string UserName)
+        {
+            string Querry = string.Format("select UserName from Users where UserName='{0}'",UserName);
+            DataSet ds = database.Read(Querry);
+            if (ds.Tables[0].Rows.Count == 0)
+                return true;
+            else
+                return false;
+        }
+        public bool IsEmpNoAvailable(int EmpNo)
+        {
+            string Querry = string.Format("select EmpNo from Employee where EmpNo={0}",EmpNo);
+            DataSet ds = database.Read(Querry);
+            if (ds.Tables[0].Rows.Count == 0)
+                return true;
+            else
+                return false;
+        }
+        public bool IsEmpNoAvailable(int EmpId,int EmpNo)
+        {//this code will be called during employee details updation
+            string Querry = string.Format("select EmpNo from Employee where EmpNo ={0} and EmployeeID != {1}", EmpNo,EmpId);
+            DataSet ds = database.Read(Querry);
+            if (ds.Tables[0].Rows.Count == 0)
+                return true;
+            else
+                return false;
+        }
+        public bool IsUserAvailable(int EmpId,string UserName)
+        {
+            string Querry = string.Format("select UserName from Employee where UserName='{0}' and EmployeeID!='{1}'", UserName,EmpId);
+            DataSet ds = database.Read(Querry);
+            if (ds.Tables[0].Rows.Count == 0)
+                return true;
+            else
+                return false;
         }
 
     }

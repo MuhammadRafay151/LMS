@@ -17,7 +17,7 @@ background: linear-gradient(90deg, rgba(129,129,129,1) 0%, rgba(201,201,201,1) 4
                     <h3 class="card-title" style="font-family:g1">Upload Attandence</h3>
                 </div>
                 <div class="card-body ">
-                    @using (Html.BeginForm("SendNotifications","Attandence",FormMethod.Post,new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("ViewAttandence","Attandence",FormMethod.Post,new { enctype = "multipart/form-data" }))
                     {
                         <div class=" d-flex justify-content-center my-auto back p-2">
                             <input name="Attendance" id="input1" type="file" class="d-none" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />

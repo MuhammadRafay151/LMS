@@ -13,18 +13,19 @@ namespace LeaveApplication.Controllers
         {
             return View();
         }
-        public ActionResult ViewAttandence()
-        {
-            return View();
-        }
-        public ActionResult SendNotifications(HttpPostedFileBase Attendance)
+        public ActionResult ViewAttandence(HttpPostedFileBase Attendance)
         {
             if (Session["Employee"] != null && ((Employee)Session["Employee"]).isAdmin == true)
             {
                 Excels WorkBook = new Excels();
-                return View("NotifiedList", WorkBook.Read(Attendance.InputStream));
+                return View("ViewAttandence", WorkBook.Read(Attendance.InputStream));
             }
-            return View("NotifiedList");
+            return RedirectToAction("","");
+        
+        }
+        public ActionResult SendNotifications(HttpPostedFileBase Attendance)
+        {
+            return RedirectToAction("Index");
         }
 
     }

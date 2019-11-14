@@ -31,7 +31,8 @@ namespace LeaveApplication.Models
                         var cell3 = dataRow.Cell(4).Value;
                         l1.Add(new Attendance()
                         {
-                            EmpId = Convert.ToInt32(cell.ToString()),
+                            EmpNo = Convert.ToInt32(cell.ToString()),
+                            EmployeeName = dataRow.Cell(3).Value.ToString(),
                             Abscent = Convert.ToBoolean(cell2.ToString()),
                             Date = Convert.ToDateTime(cell3)
 

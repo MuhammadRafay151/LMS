@@ -36,13 +36,29 @@ namespace LeaveApplication.Controllers
             }
 
         }
-        public ActionResult Designation()
+        public ActionResult Designation(int? PageNo)
         {
             Employee e1 = (Employee)Session["Employee"];
+            Pagination.Pagination p1 = new Pagination.Pagination();
             if (Session["EmpID"] != null && e1.isAdmin == true)
             {
+                if (PageNo == null)
+                {
+                    PageNo = 1;
+                }
+                List<Designation> x = eb.GetDesignation(p1, PageNo.Value);
+                if (x == null)
+                {
+                    return RedirectToAction("Designation");
 
-                return View(eb.GetDesignation());
+
+                }
+                else
+                {
+                    ViewBag.PageNo = PageNo.Value;
+                    ViewBag.TotalPages = p1.TotalPages;
+                }
+                return View(x);
             }
             else
             {
@@ -74,7 +90,7 @@ namespace LeaveApplication.Controllers
                     PageNo = 1;
                 }
                 System.Data.DataSet x = eb.GetEmployeesDs(PageNo.Value);
-               
+
                 if (x == null)
                 {
                     return RedirectToAction("Employees");
@@ -121,7 +137,9 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult UpdateEmployee(Employee e1)
         {
-
+            //select EmpNo from Employee where EmpNo = 10 and EmployeeID != 6
+            //use above querry 
+           
             EmployeeBusinessLayer emp = new EmployeeBusinessLayer();
 
             if (ModelState.IsValid)
@@ -133,46 +151,58 @@ namespace LeaveApplication.Controllers
                 }
                 catch (SqlException e)
                 {
-                    if (e.Number == 2627)
-                    {
+
+                    return Content(e.Message);
+
+                }
+                catch (LeaveApplication.Exceptional_Classes.DuplicateException e)
+                {
+                    if (e.ExceptionID == 1)
                         ModelState.AddModelError("UserName", "User Name is Not Available");
-                        ViewBag.Employees = emp.GetEmployees();
-                        ViewBag.List = emp.GetDesignation();
-                        ViewBag.List2 = emp.GetDepartments();
-                        Employee e2 = eb.GetEmployeeData(e1.EmployeeID);
-                        return View("EditEmployees", e2);
-                    }
-                    else
-                    {
-                        return Content(e.Message);
-                    }
+                    else if (e.ExceptionID == 2)
+                        ModelState.AddModelError("EmpNo", "Employee Number is already in use");
+                    ViewBag.Employees = emp.GetEmployees();
+                    ViewBag.List = emp.GetDesignation();
+                    ViewBag.List2 = emp.GetDepartments();
+                    return View("EditEmployees", eb.GetEmployeeData(e1.EmployeeID));
                 }
 
             }
             else
             {
-                if (e1.Image == null)
+                int count = 0;
+                foreach (string i in ModelState.Keys)
+                {
+                    if (!ModelState.IsValidField(i))
+                    {
+                        ++count;
+                    }
+                }
+                if (count==1&&e1.Image == null)
                 {
                     try
                     {
+                      
                         ad.UpdateEmployee(e1);
                         return RedirectToAction("Employees");
                     }
                     catch (SqlException e)
                     {
-                        if (e.Number == 2627)
-                        {
-                            ModelState.AddModelError("UserName", "User Name is Not Available");
-                            ViewBag.Employees = emp.GetEmployees();
-                            ViewBag.List = emp.GetDesignation();
-                            ViewBag.List2 = emp.GetDepartments();
 
-                            return View("EditEmployees", eb.GetEmployeeData(e1.EmployeeID));
-                        }
-                        else
-                        {
-                            return Content(e.Message);
-                        }
+                        return Content(e.Message);
+
+                    }
+                    catch (LeaveApplication.Exceptional_Classes.DuplicateException e)
+                    {
+                        if (e.ExceptionID == 1)
+                            ModelState.AddModelError("UserName", "User Name is Not Available");
+                        else if (e.ExceptionID == 2)
+                            ModelState.AddModelError("EmpNo", "Employee Number is already in use");
+                   
+                        ViewBag.Employees = emp.GetEmployees();
+                        ViewBag.List = emp.GetDesignation();
+                        ViewBag.List2 = emp.GetDepartments();
+                        return View("EditEmployees", eb.GetEmployeeData(e1.EmployeeID));
                     }
 
                 }

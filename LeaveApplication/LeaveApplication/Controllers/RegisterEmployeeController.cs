@@ -60,18 +60,18 @@ namespace LeaveApplication.Controllers
                 }
                 catch (SqlException e)
                 {
-                    if (e.Number == 2627)
-                    {
-                        ModelState.AddModelError("UserName", "User Name is Not Available");
-                        ViewBag.Employees = emp.GetEmployees();
-                        ViewBag.List = emp.GetDesignation();
-                        ViewBag.List2 = emp.GetDepartments();
-                        return View("Registeration");
-                    }
-                    else
-                    {
-                        return Content(e.Message);
-                    }
+                   return Content(e.Message);
+                   
+                }
+                catch(LeaveApplication.Exceptional_Classes.DuplicateException e )
+                {if(e.ExceptionID==1)
+                    ModelState.AddModelError("UserName", "User Name is Not Available");
+                else if (e.ExceptionID == 2)
+                    ModelState.AddModelError("EmpNo", "Employee Number is already in use");
+                    ViewBag.Employees = emp.GetEmployees();
+                    ViewBag.List = emp.GetDesignation();
+                    ViewBag.List2 = emp.GetDepartments();
+                    return View("Registeration");
                 }
 
             }
