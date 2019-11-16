@@ -171,23 +171,21 @@ namespace LeaveApplication.Models
                 if (Emp.Image == null)
                 {
                     Querry = string.Format(@"UPDATE Users Set UserName='{0}', Password='{1}' where Users.UserName='{2}'
-update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Email='{10}' where Employee.EmployeeID = '{9}'",
-Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Email);
+update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Email='{10}',EmpNo='{11}' where Employee.EmployeeID = '{9}'",
+Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Email, Emp.EmpNo);
                     DataBase.ExecuteQuerry(Querry);
                 }
                 else
                 {
                     Querry = string.Format(@"UPDATE Users Set UserName='{0}', Password='{1}' where Users.UserName='{2}'
-update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Email='{10}' where Employee.EmployeeID = '{9}'
+update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Email='{10}',EmpNo='{11}'  where Employee.EmployeeID = '{9}'
 Update Picture set Picture.Picture = @img where Picture.EmployeeID = '{9}'",
-  Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Email);
+  Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Email, Emp.EmpNo);
                     SqlParameter p1 = new SqlParameter();
                     p1.ParameterName = "img";
                     p1.Value = bytes;
                     DataBase.ExecuteQuerry(Querry, p1);
                 }
-
-
 
             }
             else
@@ -195,17 +193,17 @@ Update Picture set Picture.Picture = @img where Picture.EmployeeID = '{9}'",
                 if (Emp.Image == null)
                 {
                     Querry = string.Format(@"UPDATE Users Set UserName='{0}', Password='{1}' where Users.UserName='{2}'
-update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Manager='{10}',Email='{11}' where Employee.EmployeeID = '{9}'",
-Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Manager, Emp.Email);
+update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Manager='{10}',Email='{11}',EmpNo='{12}'  where Employee.EmployeeID = '{9}'",
+Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Manager, Emp.Email, Emp.EmpNo);
 
                     DataBase.ExecuteQuerry(Querry);
                 }
                 else
                 {
                     Querry = string.Format(@"UPDATE Users Set UserName='{0}', Password='{1}' where Users.UserName='{2}'
-update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Manager='{10}',Email='{11}' where Employee.EmployeeID = '{9}'
+update employee set  employeename = '{3}', address = '{4}', PhoneNumber = '{5}', cnic = '{6}', DesignationID = '{7}', DepartmentID = '{8}',Manager='{10}',Email='{11}',EmpNo='{12}'  where Employee.EmployeeID = '{9}'
 Update Picture set Picture.Picture = @img where Picture.EmployeeID = '{9}'",
-Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Manager, Emp.Email);
+Emp.UserName, Emp.Password, UserName, Emp.EmployeeName, Emp.Address, Emp.PhoneNumber, Emp.CNIC, Emp.DesignationID, Emp.DepartmentID, Emp.EmployeeID, Emp.Manager, Emp.Email, Emp.EmpNo);
                     SqlParameter p1 = new SqlParameter();
                     p1.ParameterName = "img";
                     p1.Value = bytes;
