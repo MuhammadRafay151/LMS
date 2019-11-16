@@ -15,7 +15,7 @@ namespace LeaveApplication.Controllers
             if (Session["EmpID"] != null)
             {
                 ViewBag.Reasons = lb.GetReasons();
-                ViewBag.Leavetypes = lb.GetLeaveTypes();
+                ViewBag.Leavetypes = lb.GetRequestableLeaves();
                 if (ViewId == null || ViewId == 0)
                 {
                     ViewBag.ViewID = 0;
@@ -37,7 +37,7 @@ namespace LeaveApplication.Controllers
                     ViewBag.ViewID = 0;
                 }
 
-                return View(lb.GetRequestableLeaves());
+                return View();
             }
             else
             {

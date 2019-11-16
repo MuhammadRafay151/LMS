@@ -174,6 +174,7 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult DetiledView(string Application_Id)
         {
+
             if (Session["EmpID"] == null)
             {
                 return RedirectToAction("Index", "LogIn");
@@ -193,7 +194,7 @@ namespace LeaveApplication.Controllers
                 LeaveApplication.Models.LeaveApplication x = lb.GetViewApplication(Application_Id);
                 List<StatusHistory> a = lb.GetStatusHistory(Application_Id);
 
-                ViewBag.SH = lb.GetStatusHistory(Application_Id);
+                ViewBag.SH = a; // lb.GetStatusHistory(Application_Id);
                 // Session["FileName"] = x.FileName;
                 return View("ViewFullApplication", x);
             }

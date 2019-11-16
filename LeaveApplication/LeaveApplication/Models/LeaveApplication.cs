@@ -31,10 +31,11 @@ namespace LeaveApplication.Models
         {//notify manger about new leave...
             if(Manager!=null)
             {
-                string Body = System.Configuration.ConfigurationManager.AppSettings["SubjectNewLeaveReceive"];
-                string Subject = "";
-                //Email e1 = new Email();
-                //e1.Send(Manager.Email, Subject, Body);
+                string Body = string.Format("Dear {0} your received a leave application from {1}",Manager.EmployeeName,FacultyMember.EmployeeName);
+                string Subject = System.Configuration.ConfigurationManager.AppSettings["SubjectNewLeaveReceive"];
+                Email e1 = new Email();
+                e1.Send(Manager.Email, Subject, Body);
+                
             }
 
         }

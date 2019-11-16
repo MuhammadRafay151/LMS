@@ -107,7 +107,7 @@
                     <a class="nav-link font-weight-bold text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)<img class="rounded ml-2" src="~/Images/account.png" style="width:30px" /> </a>
                     <div class="dropdown-menu dropdown-menu-right mr-1">
                         <div class=" card border-0  mt-4" style="width: 18rem;">
-                            <img src="@(((LeaveApplication.Models.Employee)Session["Employee"]).ImageBase64)" class="card-img-top" alt="...">
+                            <img src="/LogIn/ProfileImg" class="card-img-top" alt="...">
                             <div class="card-body ">
                                 <h5 class="card-title ">Account Information</h5>
                                 <p class="card-text">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)</p>

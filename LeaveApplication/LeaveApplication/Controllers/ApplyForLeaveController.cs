@@ -18,9 +18,10 @@ namespace LeaveApplication.Controllers
         LeaveBusinessLayer lb = new LeaveBusinessLayer();
         public ActionResult Index(int? ViewId)
         {
+
             if (Session["EmpID"] != null)
             {
-                LeaveBusinessLayer lb = new LeaveBusinessLayer();
+                
                 ViewBag.Reasons = lb.GetReasons();
                 ViewBag.Leavetypes = lb.GetLeaveTypes();
 
@@ -139,6 +140,10 @@ namespace LeaveApplication.Controllers
             ViewBag.Reasons = lb.GetReasons();
             ViewBag.Leavetypes = lb.GetLeaveTypes();
             return PartialView("LeaveForm");
+        }
+        public ContentResult mgr()
+        {
+            return Content(((Employee)Session["Employee"]).GetManager().Manager);
         }
 
 

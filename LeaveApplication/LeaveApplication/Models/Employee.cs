@@ -30,7 +30,7 @@ namespace LeaveApplication.Models
         [Required(ErrorMessage = "Employee image is required")]
         public HttpPostedFileBase Image { get; set; }
 
-        public string ImageBase64 { get; set; }
+        public byte[] ImageBytes { get; set; }
         [Required(ErrorMessage = "The information is required")]
         public int DesignationID { get; set; }
 
@@ -61,8 +61,12 @@ namespace LeaveApplication.Models
             Employee e1 = new Employee();
             db database = new db();
             DataSet ds = database.Read(Querry);
+            if(ds.Tables[0].Rows.Count==0)
+            {
+                return null;
+            }
             e1.EmployeeName = ds.Tables[0].Rows[0][0].ToString();
-            e1.Email= ds.Tables[0].Rows[0][0].ToString();
+            e1.Email= ds.Tables[0].Rows[0][1].ToString();
             return e1;
         }
     }
