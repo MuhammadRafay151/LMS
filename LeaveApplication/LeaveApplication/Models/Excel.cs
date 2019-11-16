@@ -29,15 +29,19 @@ namespace LeaveApplication.Models
                         var cell = dataRow.Cell(1).Value;
                         var cell2 = dataRow.Cell(12).Value;
                         var cell3 = dataRow.Cell(4).Value;
-                        l1.Add(new Attendance()
+                        if(Convert.ToBoolean(cell2.ToString())==true)
                         {
-                            EmpNo = Convert.ToInt32(cell.ToString()),
-                            EmployeeName = dataRow.Cell(3).Value.ToString(),
-                            Abscent = Convert.ToBoolean(cell2.ToString()),
-                            Date = Convert.ToDateTime(cell3)
+                            l1.Add(new Attendance()
+                            {
+                                EmpNo = Convert.ToInt32(cell.ToString()),
+                                EmployeeName = dataRow.Cell(3).Value.ToString(),
+                                Abscent = Convert.ToBoolean(cell2.ToString()),
+                                Date = Convert.ToDateTime(cell3)
 
-                        });
-                        Console.WriteLine(cell.ToString() + "\t" + cell2);
+                            });
+                        }
+                       
+                       
                     }
 
 
@@ -48,7 +52,7 @@ namespace LeaveApplication.Models
             return l1;
 
         }
-
+      
 
     }
 }

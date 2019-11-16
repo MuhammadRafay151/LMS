@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Web;
-
+using System.Data;
 namespace LeaveApplication.Models
 {
     public class LeaveApplication
@@ -27,8 +27,46 @@ namespace LeaveApplication.Models
         public HttpPostedFileBase Attachment { get; set; }
         public string FileId { get; set; }//use when displaying leave in detail view
         public string FileName { get; set; }
+        public void NotifyManager(Employee Manager, Employee FacultyMember)
+        {//notify manger about new leave...
+            if(Manager!=null)
+            {
+                string Body = System.Configuration.ConfigurationManager.AppSettings["SubjectNewLeaveReceive"];
+                string Subject = "";
+                //Email e1 = new Email();
+                //e1.Send(Manager.Email, Subject, Body);
+            }
+
+        }
+        public void NotifyAcceptedLeave()
+        {// call when leave has been accpted
+            string Querry = string.Format("select Employee.EmployeeName,Employee.Email from LeaveApplication inner join Employee on LeaveApplication.EmployeeID=Employee.EmployeeID where LeaveApplication.LeaveApplicationID={0}", ApplicationId);
+            db d1 = new db();
+           DataSet ds= d1.Read(Querry);
+            string Subject= System.Configuration.ConfigurationManager.AppSettings["SubjectAccept"]; ;
+            string Content = "";
+            Email e1 = new Email();
+            //e1.Send(ds.Tables[0].Rows[0][1].ToString(), Subject, Content);
+            e1 = null;
+            d1 = null;
+            ds = null;
+        }
+        public void NotifyRejectedLeave()
+        {// call when leave has been rejected
+            string Querry = string.Format("select Employee.EmployeeName,Employee.Email from LeaveApplication inner join Employee on LeaveApplication.EmployeeID=Employee.EmployeeID where LeaveApplication.LeaveApplicationID={0}", ApplicationId);
+            db d1 = new db();
+            DataSet ds = d1.Read(Querry);
+            string Subject = System.Configuration.ConfigurationManager.AppSettings["SubjectAccept"]; ;
+            string Content = "";
+             Email e1 = new Email();
+            //e1.Send(ds.Tables[0].Rows[0][1].ToString(), Subject, Content);
+            e1 = null;
+            d1 = null;
+            ds = null;
+        }
 
     }
+
     public enum Status
     {
         [Description("Pending")] s1, [Description("Approved")] s2, [Description("Rejected")] s3

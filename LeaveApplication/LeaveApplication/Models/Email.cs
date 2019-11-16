@@ -11,6 +11,8 @@ namespace LeaveApplication.Models
 {
     public class Email
     {
+        public string Subject { get; set; }
+        public string Content { get; set; }
         SmtpSection secObj = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
         SmtpClient smtp = new SmtpClient();
         public Email()

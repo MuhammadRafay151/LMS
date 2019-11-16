@@ -70,7 +70,7 @@ namespace LeaveApplication.Models
                 database.ExecuteQuerry(Querry, p1);
             }
             //Email Email = new Email();
-            //string Subject = "Account Information";
+           // string Subject = System.Configuration.ConfigurationManager.AppSettings["SubjectNewEmpAccInfo"];
             //string Body = string.Format("Your User name is: {0} \nYour Password is: {1} \nKindly login your account and change your password \n ©Reckon Force", Emp.UserName,Emp.Password);
             //Email.Send(Emp.Email,Subject,Body);
 

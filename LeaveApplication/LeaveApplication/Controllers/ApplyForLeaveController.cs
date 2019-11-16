@@ -103,6 +103,7 @@ namespace LeaveApplication.Controllers
                     l1.EmployeeID = Session["EmpID"].ToString();
                     l1.ApplicationType = false;//that's means this is type application
                     lb.SaveApplication(l1);
+                    l1.NotifyManager(((Employee)Session["Employee"]).GetManager(),(Employee)Session["Employee"]);
                 }
 
             }

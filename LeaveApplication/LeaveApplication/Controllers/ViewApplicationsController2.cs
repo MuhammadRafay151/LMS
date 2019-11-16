@@ -191,6 +191,9 @@ namespace LeaveApplication.Controllers
                 {
 
                     lb.AcceptApplication(Application_Id, ManagerRemarks);
+                    LeaveApplication.Models.LeaveApplication l1 = new Models.LeaveApplication();
+                    l1.ApplicationId = Application_Id;
+                    l1.NotifyAcceptedLeave();
                 }
 
             }
@@ -216,6 +219,9 @@ namespace LeaveApplication.Controllers
                 {
 
                     lb.RejectApplication(Application_Id, ManagerRemarks);
+                    LeaveApplication.Models.LeaveApplication l1 = new Models.LeaveApplication();
+                    l1.ApplicationId = Application_Id;
+                    l1.NotifyRejectedLeave();
                 }
 
             }

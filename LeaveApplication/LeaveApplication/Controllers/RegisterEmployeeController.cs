@@ -48,14 +48,11 @@ namespace LeaveApplication.Controllers
         public ActionResult Register(Employee e1)
         {
             
-            //   string text = e1.EmployeeID + "<br />" + e1.EmployeeID + "<br />" + "<br />" + e1.Address + "<br />" + e1.CNIC + "<br />" + e1.DateOfJoining + "<br />" + e1.Password + "<br />" + e1.Picture;
-            //return RedirectToAction("Registeration");
             if (ModelState.IsValid)
             {
                 try
                 {
                     emp.Register(e1);
-                    //   string text = e1.EmployeeID + "<br />" + e1.EmployeeID + "<br />" + "<br />" + e1.Address + "<br />" + e1.CNIC + "<br />" + e1.DateOfJoining + "<br />" + e1.Password + "<br />" + e1.Picture;
                     return RedirectToAction("Registeration");
                 }
                 catch (SqlException e)

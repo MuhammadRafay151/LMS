@@ -18,13 +18,22 @@ namespace LeaveApplication.Controllers
             if (Session["Employee"] != null && ((Employee)Session["Employee"]).isAdmin == true)
             {
                 Excels WorkBook = new Excels();
-                return View("ViewAttandence", WorkBook.Read(Attendance.InputStream));
+                List < Attendance > x= WorkBook.Read(Attendance.InputStream);
+                //Get data for only absecent employees....
+                Session["AttFile"] = x;
+                return View("ViewAttandence",x);
             }
-            return RedirectToAction("","");
+            return RedirectToAction("Index", "ApplyForLeave");
         
         }
-        public ActionResult SendNotifications(HttpPostedFileBase Attendance)
+        public ActionResult SendNotifications()
         {
+            List<Attendance> x = (List<Attendance>)Session["AttFile"];
+            foreach(Attendance i in x)
+            {
+                i.NotifyAbsentees();
+            }
+            Session.Remove("AttFile");
             return RedirectToAction("Index");
         }
 
