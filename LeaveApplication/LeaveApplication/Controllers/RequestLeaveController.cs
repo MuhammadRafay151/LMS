@@ -37,7 +37,7 @@ namespace LeaveApplication.Controllers
                     ViewBag.ViewID = 0;
                 }
 
-                return View();
+                return View(lb.GetRequestableLeaves());
             }
             else
             {
@@ -73,7 +73,7 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult GetView(int? ViewId)
         {
-            if (ViewId == null && ViewId == 0)
+            if (ViewId == null || ViewId == 0)
             {
                 ViewBag.ViewID = 0;
             }
@@ -85,9 +85,10 @@ namespace LeaveApplication.Controllers
             {
                 ViewBag.ViewID = 0;
             }
+           
             ViewBag.Reasons = lb.GetReasons();
-            ViewBag.Leavetypes = lb.GetLeaveTypes();
-            return PartialView("LeaveForm");
+          
+            return PartialView("LeaveForm", lb.GetRequestableLeaves());
         }
     }
 }

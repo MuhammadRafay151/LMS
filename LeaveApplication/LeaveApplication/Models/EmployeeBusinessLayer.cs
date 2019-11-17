@@ -239,7 +239,7 @@ namespace LeaveApplication.Models
             e1.CNIC = d1.Tables[0].Rows[0][5].ToString();
             e1.DepartmentID = d1.Tables[0].Rows[0][8].ToString();
             e1.DesignationID = Convert.ToInt32(d1.Tables[0].Rows[0][7]);
-            //e1.ImageBase64 = GetBase64Image((Byte[])d1.Tables[0].Rows[0][9]);
+            e1.ImageBytes = (Byte[])d1.Tables[0].Rows[0][9];
             e1.isAdmin = bool.Parse(d1.Tables[0].Rows[0][10].ToString());
             e1.Manager = d1.Tables[0].Rows[0][11].ToString();
             e1.Password = d1.Tables[0].Rows[0][12].ToString();
@@ -252,7 +252,7 @@ namespace LeaveApplication.Models
             string temp = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Image));
             return temp;
         }
-       
+
 
         public DataSet GetEmployees()
         {
@@ -359,7 +359,7 @@ namespace LeaveApplication.Models
 
         public void ResetPassword(string NewPassword, string UserName)
         {
-            
+
             string Querry = string.Format("update Users set Password='{0}' where UserName='{1}'", NewPassword, UserName);
             database.ExecuteQuerry(Querry);
 
@@ -368,7 +368,7 @@ namespace LeaveApplication.Models
         public string UserPassword(string UserName)
         {
 
-            string Querry = string.Format("select Password from Users where UserName='{0}'",UserName);
+            string Querry = string.Format("select Password from Users where UserName='{0}'", UserName);
             return Convert.ToString(database.ExecuteScalar(Querry));
 
         }

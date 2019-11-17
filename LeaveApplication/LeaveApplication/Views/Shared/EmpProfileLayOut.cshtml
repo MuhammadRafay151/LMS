@@ -22,7 +22,7 @@
    
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body style="background-image:url(../../Images/theme-photos-nJCW43biz9U-unsplashnew.jpg); background-size: cover; background-position: top center; background-repeat:no-repeat;">
+<body style="background-image:url(../../Images/uitreckon3.jpg); background-size: cover; background-position: top center; background-repeat:no-repeat;">
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-white">
         <div class="container">
             <div class="navbar-translate">
@@ -113,18 +113,16 @@
                                 <p class="card-text">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)</p>
                             </div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">User Name:  @(((LeaveApplication.Models.Employee)Session["Employee"]).UserName)</li>
+                                <li class="list-group-item ">User Name:  @(((LeaveApplication.Models.Employee)Session["Employee"]).UserName)</li>
                                 <li class="list-group-item">Department:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Department)</li>
                                 <li class="list-group-item">Designation:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Designation)</li>
-                                @Html.ActionLink("Settings","ResetPassword","Profile",null, new { @class ="list-group-item" })
-                                
+                                @Html.ActionLink("Settings", "ResetPassword", "Profile", null, new { @class = "list-group-item" })
+                                @Html.ActionLink("Sign Out", "LogOff", "Login", null, new { @class = "list-group-item" })
                             </ul>
                            
                                 
                            
-                            <div class="card-body">
-                                @Html.ActionLink("Sign Out", "LogOff", "Login")
-                            </div>
+                           
                         </div>
                         @*<p class="dropdown-item">@LeaveApplication.Models.EmployeeBusinessLayer.Employee.EmployeeName</p>
                     <a class="dropdown-item" href="#">Action</a>

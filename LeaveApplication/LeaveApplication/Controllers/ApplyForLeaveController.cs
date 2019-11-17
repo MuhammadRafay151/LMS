@@ -57,6 +57,9 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult Submit(LeaveApplication.Models.LeaveApplication l1)
         {//data validation
+            string ContentType = System.Web.MimeMapping.GetMimeMapping(l1.Attachment.FileName);
+            List<string> MimeType = new List<string>() { "image/jpeg", "The application/pdf","image/png",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"};
             if (string.IsNullOrWhiteSpace(l1.LeaveType))
             {
                 ModelState.AddModelError("LeaveType", "Required");
@@ -81,6 +84,11 @@ namespace LeaveApplication.Controllers
             if (string.IsNullOrWhiteSpace(l1.LeaveReason))
             {
                 ModelState.AddModelError("LeaveReason", "Required");
+            }
+           
+            if (!MimeType.Contains(ContentType))
+            {
+                ModelState.AddModelError("Attachment", "Invalid Format");
             }
             //end...
             if (ModelState.IsValid)

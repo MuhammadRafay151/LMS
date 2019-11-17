@@ -123,6 +123,7 @@ namespace LeaveApplication.Controllers
                 ViewBag.List = eb.GetDesignation();
                 ViewBag.List2 = eb.GetDepartments();
 
+                TempData["Image"] = e1.ImageBytes;
                 return View(e1);
             }
             else
@@ -600,6 +601,11 @@ namespace LeaveApplication.Controllers
                 return RedirectToAction("Index", "LogIn");
             }
 
+        }
+        public ActionResult Image()
+        {
+            //this controller return image when edit is called...
+            return File((byte[])TempData["Image"], "image/jpeg","ds.jpg");
         }
 
 

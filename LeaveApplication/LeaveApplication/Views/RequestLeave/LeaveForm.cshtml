@@ -1,10 +1,10 @@
-﻿    
+﻿@model System.Data.DataSet
 <div class="container mt-lg-5 mt-5">
     <div class="row  justify-content-center  vh-100">
 
         <div class="col-12 col-sm-12 col-md-6 col-lg-6 ">
 
-
+     
             @using (Html.BeginForm("Submit", "RequestLeave", FormMethod.Post, new { id = "form1", onsubmit = "return OnSubmit()" }))
             {
 
@@ -55,9 +55,9 @@
                             <select class="form-control" name="LeaveType" id="LeaveType" required>
                                 <option value="" selected disabled> Select Leave Type</option>
                                 @{
-                                    foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
+                                    foreach (System.Data.DataRow x in  Model.Tables[0].Rows )
                                     {
-                                        <option value="@x.LeaveTypeID">@x.LeaveType</option>
+                                        <option value="@x[0].ToString()">@x[1].ToString()</option>
                                     }
                                 }
                             </select>
