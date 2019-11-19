@@ -4,103 +4,139 @@
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
 @model LeaveApplication.Models.LeaveApplication
+@* Model for Approve/ Reject*@
+@Html.Partial("ApproveRejectModel");
+@* -------------------------------- *@
+<div class="container ">
+    <div class="row justify-content-center align-content-center vh-100">
+        <div class="col text-center">
 
-    <div class="container " >
-        <div class="row justify-content-center align-content-center vh-100">
-            <div class="col text-center">
-              
-                <div class="card">
-                    <div class="card-body">
-                        <div class="header">
-                            <h1 class="text-white card-header card-header-info " style="font-family:g1">View Application</h1>
+            <div class="card">
+                <div class="card-body">
+                    <div class="header">
+                        <h1 class="text-white card-header card-header-info " style="font-family:g1">View Application</h1>
+                    </div>
+                    <div class="row ">
+
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <h3 class="text-center">Application</h3>
+
+                            <table id="t1" class="table table-hover">
+
+                                <tbody>
+                                    <tr>
+                                        <th class="text-info" scope="row">Date</th>
+                                        <td class="align-middle  ">@Model.ApplyDate</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="text-info">Leave Type</th>
+                                        <td class="align-middle ">@Model.LeaveType</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="text-info">From Date</th>
+                                        <td class="align-middle  ">@Model.FromDate</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="text-info">To Date</th>
+                                        <td class="align-middle  ">@Model.ToDate</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="text-info">Total Days</th>
+                                        <td class="align-middle  ">@Model.TotalDays</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="text-info">Leave Reason</th>
+                                        <td class="align-middle  ">@Model.LeaveReason</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="text-info">Application Status</th>
+                                        <td class="align-middle  ">@Model.ApplicationStatus</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="text-info">Leave Remarks</th>
+                                        <td class="align-middle  text-justify">@Model.LeaveRemarks</td>
+                                    </tr>
+                                    @if (!string.IsNullOrWhiteSpace(@Model.FileName))
+                                    {
+                                        <tr>
+                                            <th scope="row" class="text-info" id="at1">Attachment</th>
+                                            <td class="align-middle  text-justify"><a href="/ViewApplications/DownLoadFile?Fileid=@Model.FileId">@Model.FileName</a></td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="row ">
+                        <div class="col-sm-6 col-md-6 col-lg-6 text-center">
+                            <h3>Status History</h3>
+                            <table id="t1" class="table table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th class="align-middle  text-center text-info" scope="col">Date</th>
+                                        <th class="align-middle  text-center text-info" scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                            <div class="col-sm-6 col-md-6 col-lg-6">
-                                <h3 class="text-center">Application</h3>
-
-                                <table id="t1" class="table table-hover">
-
-                                    <tbody>
-                                        <tr>
-                                            <th class="text-info" scope="row">Date</th>
-                                            <td class="align-middle  ">@Model.ApplyDate</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="text-info">Leave Type</th>
-                                            <td class="align-middle ">@Model.LeaveType</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="text-info">From Date</th>
-                                            <td class="align-middle  ">@Model.FromDate</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="text-info">To Date</th>
-                                            <td class="align-middle  ">@Model.ToDate</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="text-info">Total Days</th>
-                                            <td class="align-middle  ">@Model.TotalDays</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="text-info">Leave Reason</th>
-                                            <td class="align-middle  ">@Model.LeaveReason</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="text-info">Application Status</th>
-                                            <td class="align-middle  ">@Model.ApplicationStatus</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="text-info">Leave Remarks</th>
-                                            <td class="align-middle  text-justify">@Model.LeaveRemarks</td>
-                                        </tr>
-                                        @if (!string.IsNullOrWhiteSpace(@Model.FileName))
+                                    @{
+                                        foreach (LeaveApplication.Models.StatusHistory x in ViewBag.SH)
                                         {
                                             <tr>
-                                                <th scope="row" class="text-info" id="at1">Attach</th>
-                                                <td class="align-middle  text-justify"><a href="/ViewApplications/DownLoadFile?Fileid=@Model.FileId">@Model.FileName</a></td>
+
+                                                <td class="align-middle  text-center">@x.Date</td>
+                                                <td class="align-middle  text-center">@x.Status</td>
                                             </tr>
-                                        }
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-sm-6 col-md-6 col-lg-6 text-center">
-                                <h3>Status History</h3>
-                                <table id="t1" class="table table-hover ">
-                                    <thead>
-                                        <tr>
-                                            <th class="align-middle  text-center text-info" scope="col">Date</th>
-                                            <th class="align-middle  text-center text-info" scope="col">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        @{
-                                            foreach (LeaveApplication.Models.StatusHistory x in ViewBag.SH)
+                                            if (ViewBag.ShowAction == true)
                                             {
                                                 <tr>
+                                                    <td class="align-middle">
+                                                        <button class="btn btn-info-grd"  data-toggle="modal" data-target="#remark" onclick="Accept('@ViewBag.ApplicationId')">Accept</button>
+                                                    </td>
+                                                    <td class="align-middle">
+                                                        <button class="btn btn-info-grd"  data-toggle="modal" data-target="#remark"onclick="Reject('@ViewBag.ApplicationId')">Reject</button>
+                                                    </td>
 
-                                                    <td class="align-middle  text-center">@x.Date</td>
-                                                    <td class="align-middle  text-center">@x.Status</td>
                                                 </tr>
                                             }
+
                                         }
+                                    }
 
 
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
+
                         </div>
                     </div>
-                    <div class="d-flex justify-content-end card-footer">
-                        <button class="btn btn-info-grd" onclick="window.history.back()">Go back</button>
-                    </div>
+                </div>
+                <div class="d-flex justify-content-end card-footer">
+                    <button class="btn btn-info-grd" onclick="window.history.back()">Go back</button>
                 </div>
             </div>
         </div>
-        <br />
-        
-      
-      
     </div>
+    <br />
+
+
+
+</div>
+<script>
+     function Accept(Application_Id) {
+        
+        $('#app_id').val(Application_Id);
+        $('#ar1').attr('action', '/ViewApplications/AcceptApplication');
+      
+
+    }
+    function Reject(Application_Id) {
+      
+        $('#app_id').val(Application_Id);
+        $('#ar1').attr('action', '/ViewApplications/RejectApplication');
+        
+
+    }
+    function CloseRemark() {
+        $('#ar1').attr('action', '')
+        $('#app_id').val(null);
+    }
+</script>

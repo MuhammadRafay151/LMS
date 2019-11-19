@@ -645,6 +645,7 @@
     <Content Include="Views\Attandence\ViewAttandence.cshtml" />
     <Content Include="Views\Attandence\Index.cshtml" />
     <Content Include="Views\Profile\ResetPassword.cshtml" />
+    <Content Include="Views\ViewApplications\ApproveRejectModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

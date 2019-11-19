@@ -18,8 +18,7 @@ namespace LeaveApplication.Models
         SqlCommand cmd;
         SqlDataReader reader;
         DataSet ds;
-       
-
+ 
         public int CalculateTotalLeaveDays(LeaveApplication l1)
         {
 
@@ -388,7 +387,7 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
                 {
                     st = ds1.Tables[0].Rows[0][0].ToString();
                 }
-                Querry = string.Format("Select ApplicationStatus from ApplicationStatus where ApplicationStatusID ='{0}'", st);
+                Querry = string.Format("Select ApplicationStatus from ApplicationStatus where ApplicationStatusID ={0}", st);
                 ds1 = database.Read(Querry); ;
 
                 return ds1.Tables[0].Rows[0][0].ToString();
@@ -633,6 +632,18 @@ inner join Employee on Employee.EmployeeID = {0} where  Employee.Manager = {1}",
             string Querry = string.Format(@"select LeaveType.LeaveType,COALESCE( EmployeeLeaveCount.Count,0) from LeaveType left join EmployeeLeaveCount on EmployeeLeaveCount.EmployeeID={0} and LeaveType.LeaveTypeID=EmployeeLeaveCount.LeaveTypeID 
 inner join Employee on Employee.EmployeeID = {0}", EmployeeId);
             return database.Read(Querry);
+        }
+        public bool IsPending(int ApplicationId)
+        {//select LeaveApplicationID,MAX(ApplicationStatusID) as st from StatusHistory 
+            //where StatusHistory.LeaveApplicationID ={ 0}
+            //group by LeaveApplicationID
+            string Querry = string.Format(@"select MAX(ApplicationStatusID) as st from StatusHistory 
+where StatusHistory.LeaveApplicationID={0} group by LeaveApplicationID",ApplicationId);
+            int status =Convert.ToInt32( database.ExecuteScalar(Querry));
+            if (status == 1)
+                return true;
+            else
+                return false;
         }
 
 

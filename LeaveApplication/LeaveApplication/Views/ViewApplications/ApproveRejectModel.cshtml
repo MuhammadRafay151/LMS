@@ -1,0 +1,33 @@
+﻿<div class="modal fade " id="remark" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Enter Remarks</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="CloseRemark()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                <form method="post" action="" id="ar1">
+                    <div class="form-group d-flex justify-content-center">
+                        <textarea name="ManagerRemarks" class="form-control " style="font-size:22px" cols="6" rows="6"></textarea>
+                        <input name="Application_Id" type="text" hidden id="app_id" />
+                    </div>
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseRemark()">No</button>
+                <button type="submit" class="btn btn-info-grd" onclick="$('#ar1').submit()">Yes</button>
+
+
+            </div>
+
+
+        </div>
+    </div>
+</div>

@@ -181,6 +181,7 @@ namespace LeaveApplication.Controllers
             }
             if (Application_Id != null && Session["EmpID"] != null)
             {
+                ViewBag.ApplicationId = Application_Id;
                 Application_Id = LeaveApplication.Models.Encryption.Base64Decode(Application_Id);
 
                 try
@@ -190,10 +191,17 @@ namespace LeaveApplication.Controllers
                 catch (FormatException)
                 {
                     return RedirectToAction("Index", "ViewApplications");
-                }
+                } 
                 LeaveApplication.Models.LeaveApplication x = lb.GetViewApplication(Application_Id);
                 List<StatusHistory> a = lb.GetStatusHistory(Application_Id);
-
+                if(((Employee)Session["Employee"]).IsManager && ManagerBusinessLayer.IsUnderManagement(Application_Id, ((Employee)Session["Employee"]).EmployeeID)&&lb.IsPending(int.Parse( Application_Id)))
+                {
+                    ViewBag.ShowAction = true;
+                }
+                else
+                {
+                    ViewBag.ShowAction = false;
+                }
                 ViewBag.SH = a; // lb.GetStatusHistory(Application_Id);
                 // Session["FileName"] = x.FileName;
                 return View("ViewFullApplication", x);
