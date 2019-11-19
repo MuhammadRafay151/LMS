@@ -64,15 +64,17 @@
                         </div>
                         @{if (ViewBag.ViewID == 0)
                             { <label for="date1" class="text-left" id="l2">From</label>
-                                <div class="form-group d-flex justify-content-center">
+                              <div class="form-group d-flex justify-content-center">
 
 
-                                    <input class="form-control datetimepicker" type="text" name="FromDate" id="FromDate" required onfocusout="DateSelect(this)">
-                                </div>
+                                  <input class="form-control datetimepicker" type="text" name="FromDate" id="FromDate" required onfocusout="DateSelect(this)">
+                                  <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+                              </div>
                                 <label for="date2" id="l3" class="text-left">To</label>
                                 <div class="form-group d-flex justify-content-center">
 
                                     <input class="form-control datetimepicker" type="text" name="ToDate" id="ToDate" required onfocusout="DateSelect(this)">
+                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
                                 </div>
                                 <label for="days" class="text-left">Total Days</label>
                                 <div class=" form-group d-flex justify-content-center">
