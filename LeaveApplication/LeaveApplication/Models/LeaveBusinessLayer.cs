@@ -67,7 +67,7 @@ namespace LeaveApplication.Models
                 InsertAttachement(a1.Attachment, int.Parse(a1.ApplicationId));
             }
 
-            Querry = string.Format("insert into StatusHistory (LeaveApplicationID,Date,ApplicationStatusID) values ('{0}','{1}','{2}')", a1.ApplicationId, a1.ApplyDate, Status.s1.ToString());
+            Querry = string.Format("insert into StatusHistory (LeaveApplicationID,Date,ApplicationStatusID) values ('{0}','{1}','{2}')", a1.ApplicationId, a1.ApplyDate,1);//1 means pending...
             database.ExecuteQuerry(Querry);
           
 
@@ -140,25 +140,80 @@ namespace LeaveApplication.Models
         }
         public DataSet GetAllApplications(string EmployeeID)
         {
-            string Querry = string.Format("select a.LeaveApplicationID,LeaveType.LeaveType,a.ApplyDate,a.FromDate,a.ToDate,a.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,a.ApplicationType from LeaveApplication a inner join( select  LeaveApplication.LeaveApplicationID,MAX(StatusHistory.Date) as date from StatusHistory inner join LeaveApplication on LeaveApplication.LeaveApplicationID=StatusHistory.LeaveApplicationID inner join ApplicationStatus on StatusHistory.ApplicationStatusID=ApplicationStatus.ApplicationStatusID where LeaveApplication.EmployeeID='{0}' group by LeaveApplication.LeaveApplicationID" +
-                ")bc on a.LeaveApplicationID = bc.LeaveApplicationID inner join LeaveType on a.LeaveTypeID = LeaveType.LeaveTypeID inner join Reasons on a.ReasonID = Reasons.ReasonID inner join StatusHistory on bc.LeaveApplicationID = StatusHistory.LeaveApplicationID and bc.date = StatusHistory.Date inner join ApplicationStatus on StatusHistory.ApplicationStatusID = ApplicationStatus.ApplicationStatusID    where a.EmployeeID = '{0}'", EmployeeID);
+            string Querry = string.Format(@"select a.LeaveApplicationID,LeaveType.LeaveType,a.ApplyDate,a.FromDate,a.ToDate,
+a.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,a.ApplicationType 
+from LeaveApplication a inner join
+( select  LeaveApplication.LeaveApplicationID,Max(StatusHistory.ApplicationStatusID) as StatusId 
+from StatusHistory inner join LeaveApplication on 
+LeaveApplication.LeaveApplicationID=StatusHistory.LeaveApplicationID inner join 
+ApplicationStatus on StatusHistory.ApplicationStatusID=ApplicationStatus.ApplicationStatusID 
+where LeaveApplication.EmployeeID={0}
+group by LeaveApplication.LeaveApplicationID)bc on
+a.LeaveApplicationID = bc.LeaveApplicationID inner join 
+LeaveType on a.LeaveTypeID = LeaveType.LeaveTypeID inner join 
+Reasons on a.ReasonID = Reasons.ReasonID
+inner join ApplicationStatus on 
+bc.StatusId = ApplicationStatus.ApplicationStatusID  where a.EmployeeID = {0}
+order by a.ApplyDate desc", EmployeeID);
             return database.Read(Querry);
         }
 
         public DataSet GetPendingApplications(string EmployeeID)
         {
-            string Querry = string.Format("select a.LeaveApplicationID,LeaveType.LeaveType,a.ApplyDate,a.FromDate,a.ToDate,a.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,a.ApplicationType from LeaveApplication a inner join( select  LeaveApplication.LeaveApplicationID,MAX(StatusHistory.Date) as date from StatusHistory inner join LeaveApplication on LeaveApplication.LeaveApplicationID=StatusHistory.LeaveApplicationID inner join ApplicationStatus on StatusHistory.ApplicationStatusID=ApplicationStatus.ApplicationStatusID where LeaveApplication.EmployeeID='{0}' group by LeaveApplication.LeaveApplicationID)bc on a.LeaveApplicationID = bc.LeaveApplicationID inner join LeaveType on a.LeaveTypeID = LeaveType.LeaveTypeID inner join Reasons on a.ReasonID = Reasons.ReasonID inner join StatusHistory on bc.LeaveApplicationID = StatusHistory.LeaveApplicationID and bc.date = StatusHistory.Date inner join ApplicationStatus on StatusHistory.ApplicationStatusID = ApplicationStatus.ApplicationStatusID and ApplicationStatus.ApplicationStatusID = 's1'    where a.EmployeeID = '{0}'", EmployeeID);
+            string Querry = string.Format(@"select a.LeaveApplicationID,LeaveType.LeaveType,a.ApplyDate,a.FromDate,a.ToDate,
+a.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,a.ApplicationType 
+from LeaveApplication a inner join
+( select  LeaveApplication.LeaveApplicationID,Max(StatusHistory.ApplicationStatusID) as StatusId 
+from StatusHistory inner join LeaveApplication on 
+LeaveApplication.LeaveApplicationID=StatusHistory.LeaveApplicationID inner join 
+ApplicationStatus on StatusHistory.ApplicationStatusID=ApplicationStatus.ApplicationStatusID 
+where LeaveApplication.EmployeeID={0}
+group by LeaveApplication.LeaveApplicationID)bc on
+a.LeaveApplicationID = bc.LeaveApplicationID inner join 
+LeaveType on a.LeaveTypeID = LeaveType.LeaveTypeID inner join 
+Reasons on a.ReasonID = Reasons.ReasonID
+inner join ApplicationStatus on 
+bc.StatusId = ApplicationStatus.ApplicationStatusID and ApplicationStatus.ApplicationStatusID=1 where a.EmployeeID = {0}
+order by a.ApplyDate desc", EmployeeID);
 
             return database.Read(Querry);
         }
         public DataSet GetApprovedApplications(string EmployeeID)
         {
-            string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveType.LeaveType,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,LeaveApplication.ApplicationType from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID inner join Reasons on LeaveApplication.ReasonID=Reasons.ReasonID inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID inner join ApplicationStatus on ApplicationStatus.ApplicationStatusID=StatusHistory.ApplicationStatusID and ApplicationStatus.ApplicationStatusID='s2' where LeaveApplication.EmployeeID='{0}'", EmployeeID);
+            string Querry = string.Format(@"select a.LeaveApplicationID,LeaveType.LeaveType,a.ApplyDate,a.FromDate,a.ToDate,
+a.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,a.ApplicationType 
+from LeaveApplication a inner join
+( select  LeaveApplication.LeaveApplicationID,Max(StatusHistory.ApplicationStatusID) as StatusId 
+from StatusHistory inner join LeaveApplication on 
+LeaveApplication.LeaveApplicationID=StatusHistory.LeaveApplicationID inner join 
+ApplicationStatus on StatusHistory.ApplicationStatusID=ApplicationStatus.ApplicationStatusID 
+where LeaveApplication.EmployeeID={0}
+group by LeaveApplication.LeaveApplicationID)bc on
+a.LeaveApplicationID = bc.LeaveApplicationID inner join 
+LeaveType on a.LeaveTypeID = LeaveType.LeaveTypeID inner join 
+Reasons on a.ReasonID = Reasons.ReasonID
+inner join ApplicationStatus on 
+bc.StatusId = ApplicationStatus.ApplicationStatusID and ApplicationStatus.ApplicationStatusID=2 where a.EmployeeID = {0}
+order by a.ApplyDate desc", EmployeeID);
             return database.Read(Querry);
         }
         public DataSet GetRejectedApplications(string EmployeeID)
         {
-            string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveType.LeaveType,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,LeaveApplication.ApplicationType from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID inner join Reasons on LeaveApplication.ReasonID=Reasons.ReasonID inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID inner join ApplicationStatus on ApplicationStatus.ApplicationStatusID=StatusHistory.ApplicationStatusID and ApplicationStatus.ApplicationStatusID='s3' where LeaveApplication.EmployeeID='{0}'", EmployeeID);
+            string Querry = string.Format(@"select a.LeaveApplicationID,LeaveType.LeaveType,a.ApplyDate,a.FromDate,a.ToDate,
+a.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,a.ApplicationType 
+from LeaveApplication a inner join
+( select  LeaveApplication.LeaveApplicationID,Max(StatusHistory.ApplicationStatusID) as StatusId 
+from StatusHistory inner join LeaveApplication on 
+LeaveApplication.LeaveApplicationID=StatusHistory.LeaveApplicationID inner join 
+ApplicationStatus on StatusHistory.ApplicationStatusID=ApplicationStatus.ApplicationStatusID 
+where LeaveApplication.EmployeeID={0}
+group by LeaveApplication.LeaveApplicationID)bc on
+a.LeaveApplicationID = bc.LeaveApplicationID inner join 
+LeaveType on a.LeaveTypeID = LeaveType.LeaveTypeID inner join 
+Reasons on a.ReasonID = Reasons.ReasonID
+inner join ApplicationStatus on 
+bc.StatusId = ApplicationStatus.ApplicationStatusID and ApplicationStatus.ApplicationStatusID=3 where a.EmployeeID = {0}
+order by a.ApplyDate desc", EmployeeID);
             return database.Read(Querry);
         }
         public LeaveApplication GetApplication(string Application_Id)
@@ -377,26 +432,72 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
         }
         public DataSet GetFacultyAll(int EmployeeId)
         {
-
-            string Querry = string.Format("select a.LeaveApplicationID,LeaveType.LeaveType,a.ApplyDate,a.FromDate,a.ToDate,a.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,a.ApplicationType,bc.EmployeeName from LeaveApplication a  inner join( select  LeaveApplication.LeaveApplicationID,MAX(StatusHistory.Date) as date,Employee.Manager,Employee.EmployeeName from StatusHistory inner join LeaveApplication on LeaveApplication.LeaveApplicationID=StatusHistory.LeaveApplicationID inner join ApplicationStatus on StatusHistory.ApplicationStatusID=ApplicationStatus.ApplicationStatusID inner join Employee on Employee.EmployeeID=LeaveApplication.EmployeeID and Employee.Manager='{0}'" +
-                "  group by LeaveApplication.LeaveApplicationID,Employee.Manager,Employee.EmployeeName)bc on a.LeaveApplicationID = bc.LeaveApplicationID inner join LeaveType on a.LeaveTypeID = LeaveType.LeaveTypeID inner join Reasons on a.ReasonID = Reasons.ReasonID inner join StatusHistory on bc.LeaveApplicationID = StatusHistory.LeaveApplicationID and bc.date = StatusHistory.Date inner join ApplicationStatus on StatusHistory.ApplicationStatusID = ApplicationStatus.ApplicationStatusID   ", EmployeeId);
+            //if need manager name apply group by on manager as well...
+            string Querry = string.Format(@"select a.LeaveApplicationID,LeaveType.LeaveType,a.ApplyDate,a.FromDate,a.ToDate,a.TotalDays,Reasons.LeaveReason,
+ApplicationStatus.ApplicationStatus, a.ApplicationType, bc.EmployeeName from LeaveApplication a  inner
+                                                                        join
+( select LeaveApplication.LeaveApplicationID, MAX(StatusHistory.ApplicationStatusID) as statusId, Employee.EmployeeName
+from StatusHistory inner join LeaveApplication on LeaveApplication.LeaveApplicationID = StatusHistory.LeaveApplicationID
+inner
+join ApplicationStatus on StatusHistory.ApplicationStatusID = ApplicationStatus.ApplicationStatusID
+inner
+join Employee on Employee.EmployeeID = LeaveApplication.EmployeeID and Employee.Manager = {0}
+group by LeaveApplication.LeaveApplicationID, Employee.EmployeeName)bc
+on a.LeaveApplicationID = bc.LeaveApplicationID inner join LeaveType on a.LeaveTypeID = LeaveType.LeaveTypeID
+inner join Reasons on a.ReasonID = Reasons.ReasonID  inner join ApplicationStatus on bc.statusId = ApplicationStatus.ApplicationStatusID order by a.ApplyDate desc", EmployeeId);
 
             return database.Read(Querry);
 
         }
         public DataSet GetFacultyPending(int EmployeeId)
         {
-            string Querry = string.Format("select a.LeaveApplicationID,LeaveType.LeaveType,a.ApplyDate,a.FromDate,a.ToDate,a.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,a.ApplicationType,bc.EmployeeName from LeaveApplication a  inner join( select  LeaveApplication.LeaveApplicationID,MAX(StatusHistory.Date) as date,Employee.Manager,Employee.EmployeeName from StatusHistory inner join LeaveApplication on LeaveApplication.LeaveApplicationID=StatusHistory.LeaveApplicationID inner join ApplicationStatus on StatusHistory.ApplicationStatusID=ApplicationStatus.ApplicationStatusID inner join Employee on Employee.EmployeeID=LeaveApplication.EmployeeID and Employee.Manager='{0}'  group by LeaveApplication.LeaveApplicationID,Employee.Manager,Employee.EmployeeName)bc on a.LeaveApplicationID = bc.LeaveApplicationID inner join LeaveType on a.LeaveTypeID = LeaveType.LeaveTypeID inner join Reasons on a.ReasonID = Reasons.ReasonID inner join StatusHistory on bc.LeaveApplicationID = StatusHistory.LeaveApplicationID and bc.date = StatusHistory.Date inner join ApplicationStatus on StatusHistory.ApplicationStatusID = ApplicationStatus.ApplicationStatusID  and ApplicationStatus.ApplicationStatusID = 's1'   ", EmployeeId);
+            string Querry = string.Format(@"select a.LeaveApplicationID,LeaveType.LeaveType,a.ApplyDate,a.FromDate,a.ToDate,a.TotalDays,Reasons.LeaveReason,
+ApplicationStatus.ApplicationStatus, a.ApplicationType, bc.EmployeeName from LeaveApplication a  inner join
+( select LeaveApplication.LeaveApplicationID, MAX(StatusHistory.ApplicationStatusID) as statusId, Employee.EmployeeName
+from StatusHistory inner join LeaveApplication on LeaveApplication.LeaveApplicationID = StatusHistory.LeaveApplicationID
+inner
+join ApplicationStatus on StatusHistory.ApplicationStatusID = ApplicationStatus.ApplicationStatusID
+inner
+join Employee on Employee.EmployeeID = LeaveApplication.EmployeeID and Employee.Manager = {0}
+group by LeaveApplication.LeaveApplicationID, Employee.EmployeeName)bc
+  on a.LeaveApplicationID = bc.LeaveApplicationID inner join LeaveType on a.LeaveTypeID = LeaveType.LeaveTypeID
+inner join Reasons on a.ReasonID = Reasons.ReasonID  inner join ApplicationStatus on bc.statusId = ApplicationStatus.ApplicationStatusID and ApplicationStatus.ApplicationStatusID = 1
+ order by a.ApplyDate desc", EmployeeId);
             return database.Read(Querry);
         }
         public DataSet GetFacultyApproved(int EmployeeId)
         {
-            string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveType.LeaveType,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,LeaveApplication.ApplicationType,Employee.EmployeeName  from LeaveApplication INNER JOIN Employee on Employee.EmployeeID=LeaveApplication.EmployeeID inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID inner join Reasons on Reasons.ReasonID=LeaveApplication.ReasonID inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID='s2' inner join ApplicationStatus on StatusHistory.ApplicationStatusID=ApplicationStatus.ApplicationStatusID where Employee.Manager='{0}'", EmployeeId);
+            string Querry = string.Format(@"select a.LeaveApplicationID,LeaveType.LeaveType,a.ApplyDate,a.FromDate,a.ToDate,a.TotalDays,Reasons.LeaveReason,
+ApplicationStatus.ApplicationStatus, a.ApplicationType, bc.EmployeeName from LeaveApplication a  inner
+                                                                        join
+( select LeaveApplication.LeaveApplicationID, MAX(StatusHistory.ApplicationStatusID) as statusId, Employee.EmployeeName
+from StatusHistory inner join LeaveApplication on LeaveApplication.LeaveApplicationID = StatusHistory.LeaveApplicationID
+inner
+join ApplicationStatus on StatusHistory.ApplicationStatusID = ApplicationStatus.ApplicationStatusID
+inner
+join Employee on Employee.EmployeeID = LeaveApplication.EmployeeID and Employee.Manager = {0}
+group by LeaveApplication.LeaveApplicationID,Employee.EmployeeName)bc
+  on a.LeaveApplicationID = bc.LeaveApplicationID inner join LeaveType on a.LeaveTypeID = LeaveType.LeaveTypeID
+inner join Reasons on a.ReasonID = Reasons.ReasonID  inner join ApplicationStatus on bc.statusId = ApplicationStatus.ApplicationStatusID and ApplicationStatus.ApplicationStatusID = 2
+ order by a.ApplyDate desc
+", EmployeeId);
             return database.Read(Querry);
         }
         public DataSet GetFacultyReject(int EmployeeId)
         {
-            string Querry = string.Format("select LeaveApplication.LeaveApplicationID,LeaveType.LeaveType,LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,Reasons.LeaveReason,ApplicationStatus.ApplicationStatus,LeaveApplication.ApplicationType,Employee.EmployeeName  from LeaveApplication INNER JOIN Employee on Employee.EmployeeID=LeaveApplication.EmployeeID inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID inner join Reasons on Reasons.ReasonID=LeaveApplication.ReasonID inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID='s3' inner join ApplicationStatus on StatusHistory.ApplicationStatusID=ApplicationStatus.ApplicationStatusID where Employee.Manager='{0}'", EmployeeId);
+            string Querry = string.Format(@"select a.LeaveApplicationID,LeaveType.LeaveType,a.ApplyDate,a.FromDate,a.ToDate,a.TotalDays,Reasons.LeaveReason,
+ApplicationStatus.ApplicationStatus, a.ApplicationType, bc.EmployeeName from LeaveApplication a  inner
+                                                                        join
+( select LeaveApplication.LeaveApplicationID, MAX(StatusHistory.ApplicationStatusID) as statusId, Employee.EmployeeName
+from StatusHistory inner join LeaveApplication on LeaveApplication.LeaveApplicationID = StatusHistory.LeaveApplicationID
+inner
+join ApplicationStatus on StatusHistory.ApplicationStatusID = ApplicationStatus.ApplicationStatusID
+inner
+join Employee on Employee.EmployeeID = LeaveApplication.EmployeeID and Employee.Manager = {0}
+group by LeaveApplication.LeaveApplicationID, Employee.EmployeeName)bc
+  on a.LeaveApplicationID = bc.LeaveApplicationID inner join LeaveType on a.LeaveTypeID = LeaveType.LeaveTypeID
+inner join Reasons on a.ReasonID = Reasons.ReasonID  inner join ApplicationStatus on bc.statusId = ApplicationStatus.ApplicationStatusID and ApplicationStatus.ApplicationStatusID = 3
+ order by a.ApplyDate desc", EmployeeId);
             return database.Read(Querry);
         }
         public void AcceptApplication(string ApplicationID, string ManagerRemarks)
@@ -482,7 +583,7 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
         {
 
             string Querry = string.Format(@"declare @a NVARCHAR(MAX) = '',@b NVARCHAR(MAX) = '';
-declare @id NVARCHAR(MAX)='{0}',@st NVARCHAR(MAX)='s2';
+declare @id NVARCHAR(MAX)='{0}',@st int=2;
 select @a+=QUOTENAME(LeaveType.LeaveType) + ',' from LeaveType
 
 SET @a = LEFT(@a, LEN(@a) - 1);
@@ -503,7 +604,7 @@ EXECUTE sp_executesql @b, N'@id NVARCHAR(MAX),@st NVARCHAR(MAX)', @id = @id,@st=
         public DataSet FacultyLeaveCount(int EmployeeId)
         {
             string Querry = string.Format(@"declare @a NVARCHAR(MAX) = '',@b NVARCHAR(MAX) = '';
-declare @id NVARCHAR(MAX)='{0}',@st NVARCHAR(MAX)='s2';
+declare @id NVARCHAR(MAX)='{0}',@st int='2';
 select @a+=QUOTENAME(LeaveType.LeaveType) + ',' from LeaveType
 
 SET @a = LEFT(@a, LEN(@a) - 1);

@@ -11,10 +11,19 @@
     <div id="div1" class="container mt-lg-5 mt-5">
         <div class="row  justify-content-center ">
 
-            <div class="col-sm-6 col-lg-6 col-8 ">
+            <div class="col-sm-12 col-md-6 col-lg-6 col-12 ">
                 <div class="card ">
                     <div class="card-header card-header-info">
-                        <a href='/ViewApplications/'><img src="~/Images/go back.png" style="width:35px" /></a>
+                      <div class="row ">
+                          <div class="col-4 ">
+                              <a  href='/ViewApplications/'><img  src="~/Images/go back.png" style="margin-top:12%; width:35px" /></a>
+
+                          </div>
+                          <div class="col">
+                              <h4 style="font-size:2em">Edit Application</h4>
+                          </div>
+                      </div>
+                      
                     </div>
                     <div class="card-body d-flex justify-content-center">
                         @using (Html.BeginForm("SaveChanges", "ViewApplications", FormMethod.Post, new { id = "form1" , autocomplete = "off", enctype = "multipart/form-data"}))

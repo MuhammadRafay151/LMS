@@ -68,9 +68,4 @@ namespace LeaveApplication.Models
 
     }
 
-    public enum Status
-    {
-        [Description("Pending")] s1, [Description("Approved")] s2, [Description("Rejected")] s3
-
-    };
 }

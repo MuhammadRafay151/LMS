@@ -21,7 +21,7 @@ namespace LeaveApplication.Controllers
 
             if (Session["EmpID"] != null)
             {
-                
+
                 ViewBag.Reasons = lb.GetReasons();
                 ViewBag.Leavetypes = lb.GetLeaveTypes();
 
@@ -57,9 +57,19 @@ namespace LeaveApplication.Controllers
         [HttpPost]
         public ActionResult Submit(LeaveApplication.Models.LeaveApplication l1)
         {//data validation
-            string ContentType = System.Web.MimeMapping.GetMimeMapping(l1.Attachment.FileName);
-            List<string> MimeType = new List<string>() { "image/jpeg", "The application/pdf","image/png",
+            string ContentType=string.Empty;
+            List<string> MimeType=null;
+            if (l1.Attachment != null)
+            {
+                ContentType = System.Web.MimeMapping.GetMimeMapping(l1.Attachment.FileName);
+                MimeType = new List<string>() { "image/jpeg", "application/pdf","image/png",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document"};
+                if (!MimeType.Contains(ContentType))
+                {
+                    ModelState.AddModelError("Attachment", "Invalid Format");
+                }
+            }
+
             if (string.IsNullOrWhiteSpace(l1.LeaveType))
             {
                 ModelState.AddModelError("LeaveType", "Required");
@@ -85,11 +95,8 @@ namespace LeaveApplication.Controllers
             {
                 ModelState.AddModelError("LeaveReason", "Required");
             }
+
            
-            if (!MimeType.Contains(ContentType))
-            {
-                ModelState.AddModelError("Attachment", "Invalid Format");
-            }
             //end...
             if (ModelState.IsValid)
             {
@@ -112,7 +119,15 @@ namespace LeaveApplication.Controllers
                     l1.EmployeeID = Session["EmpID"].ToString();
                     l1.ApplicationType = false;//that's means this is type application
                     lb.SaveApplication(l1);
-                    l1.NotifyManager(((Employee)Session["Employee"]).GetManager(),(Employee)Session["Employee"]);
+                    try
+                    {
+                        l1.NotifyManager(((Employee)Session["Employee"]).GetManager(), (Employee)Session["Employee"]);
+                    }
+                    catch(System.Net.Mail.SmtpException )
+                    {
+
+                    }
+                   
                 }
 
             }
@@ -124,7 +139,7 @@ namespace LeaveApplication.Controllers
                 return View("Index");
             }
 
-            return RedirectToAction("Index", "ApplyForLeave");
+            return RedirectToAction("Index", "ViewApplications");
         }
         [HttpPost]
         public ActionResult Calculateadays(LeaveApplication.Models.LeaveApplication l1)

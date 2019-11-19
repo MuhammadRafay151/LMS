@@ -67,6 +67,7 @@ function GetBalance(Empid, row) {
         }
 
     })
+   
 }
 function GetLeaveBalance() {
     $.ajax({

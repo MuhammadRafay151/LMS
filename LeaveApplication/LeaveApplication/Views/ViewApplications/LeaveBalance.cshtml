@@ -5,15 +5,19 @@
     <div class="card-body">
         <div class="card-title">
             <div class="row">
-                
+
                 <div class="col">
                     <h4 style="font-family:g1">Leave Balance</h4>
                 </div>
-                <div class="col">
-                    <button type="button" class="close" aria-label="Close" onclick="$('#bal1').html('')">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                @if (ViewBag.HideCloseBtn != true)
+                {
+                    <div class="col">
+                        <button id="close1" type="button" class="close" aria-label="Close" onclick="$('#bal1').html('')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                }
+
             </div>
 
 

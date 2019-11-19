@@ -271,7 +271,7 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult LeaveBalance()
         {
-
+            ViewBag.HideCloseBtn = false;
             return PartialView(lb.GetLeaveBalance(((Employee)Session["Employee"]).EmployeeID));
 
 
