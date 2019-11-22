@@ -18,7 +18,7 @@ namespace LeaveApplication.Models
         SqlCommand cmd;
         SqlDataReader reader;
         DataSet ds;
- 
+
         public int CalculateTotalLeaveDays(LeaveApplication l1)
         {
 
@@ -66,9 +66,9 @@ namespace LeaveApplication.Models
                 InsertAttachement(a1.Attachment, int.Parse(a1.ApplicationId));
             }
 
-            Querry = string.Format("insert into StatusHistory (LeaveApplicationID,Date,ApplicationStatusID) values ('{0}','{1}','{2}')", a1.ApplicationId, a1.ApplyDate,1);//1 means pending...
+            Querry = string.Format("insert into StatusHistory (LeaveApplicationID,Date,ApplicationStatusID) values ('{0}','{1}','{2}')", a1.ApplicationId, a1.ApplyDate, 1);//1 means pending...
             database.ExecuteQuerry(Querry);
-          
+
 
 
         }
@@ -253,9 +253,9 @@ where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
             v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);
             if (ds.Tables[0].Rows[0][9] != DBNull.Value)
             {
-                
+
                 v1.FileId = Encryption.Base64Encode(Convert.ToString(ds.Tables[0].Rows[0][9]));
-                v1.FileName =ds.Tables[0].Rows[0][10].ToString();
+                v1.FileName = ds.Tables[0].Rows[0][10].ToString();
             }
 
 
@@ -322,7 +322,7 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
             {
                 Querry = string.Format(@"update LeaveApplication set LeaveTypeID='{0}',FromDate='{1}',ToDate='{2}',TotalDays='{3}',Remarks='{4}',ReasonID='{5}' where LeaveApplicationID='{6}'", l1.LeaveType, l1.FromDate, l1.ToDate, l1.TotalDays, l1.LeaveRemarks, l1.LeaveReason, l1.ApplicationId);
                 database.ExecuteQuerry(Querry);
-               
+
             }
             else if (l1.Attachment != null)
             {
@@ -330,9 +330,9 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
                 database.ExecuteQuerry(Querry);
                 if (string.IsNullOrEmpty(l1.FileId))
                     InsertAttachement(l1.Attachment, Convert.ToInt32(l1.ApplicationId));
-               
+
                 else
-                    UpdateAttachment(l1.Attachment,int.Parse(Encryption.Base64Decode( l1.FileId)));
+                    UpdateAttachment(l1.Attachment, int.Parse(Encryption.Base64Decode(l1.FileId)));
 
             }
             else if (IsDeletedFile == true)
@@ -340,7 +340,7 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
                 Querry = string.Format(@"update LeaveApplication set LeaveTypeID='{0}',FromDate='{1}',ToDate='{2}',TotalDays='{3}',Remarks='{4}',ReasonID='{5}' where LeaveApplicationID='{6}'", l1.LeaveType, l1.FromDate, l1.ToDate, l1.TotalDays, l1.LeaveRemarks, l1.LeaveReason, l1.ApplicationId, int.Parse(Encryption.Base64Decode(l1.FileId)));
                 database.ExecuteQuerry(Querry);
                 DeleteAttachement(int.Parse(Encryption.Base64Decode(l1.FileId)));
-               
+
             }
 
         }
@@ -501,31 +501,44 @@ inner join Reasons on a.ReasonID = Reasons.ReasonID  inner join ApplicationStatu
         }
         public void AcceptApplication(string ApplicationID, string ManagerRemarks)
         {
-
-            string Querry = string.Format("select LeaveApplication.EmployeeID, LeaveApplication.LeaveTypeID,LeaveApplication.ApplicationType,LeaveApplication.TotalDays,EmployeeLeaveCount.Count as CurrentBalance from LeaveApplication  inner join EmployeeLeaveCount on LeaveApplication.EmployeeID=EmployeeLeaveCount.EmployeeID where LeaveApplication.LeaveApplicationID={0}", ApplicationID);
+           
+            string Querry = string.Format(@"select LeaveApplication.EmployeeID, LeaveApplication.LeaveTypeID,LeaveApplication.ApplicationType,LeaveApplication.TotalDays,EmployeeLeaveCount.Count 
+as CurrentBalance from LeaveApplication  left join EmployeeLeaveCount on LeaveApplication.EmployeeID=EmployeeLeaveCount.EmployeeID and LeaveApplication.LeaveTypeID=
+EmployeeLeaveCount.LeaveTypeID
+where LeaveApplication.LeaveApplicationID='{0}'", ApplicationID);
             DataSet ds = database.Read(Querry);
             EmployeeLeaveCount e1 = new EmployeeLeaveCount();
             e1.EmployeeID = Convert.ToInt32(ds.Tables[0].Rows[0][0]);
             e1.LeaveTypeID = Convert.ToInt32(ds.Tables[0].Rows[0][1]);
-            e1.Count = Convert.ToInt32(ds.Tables[0].Rows[0][4]);
+            if (!string.IsNullOrEmpty(ds.Tables[0].Rows[0][4].ToString()))
+            {
+                e1.Count = Convert.ToInt32(ds.Tables[0].Rows[0][4]);
+            }
+           
             LeaveApplication l1 = new LeaveApplication();
             l1.ApplicationType = Convert.ToBoolean(ds.Tables[0].Rows[0][2]);
             l1.TotalDays = Convert.ToInt32(ds.Tables[0].Rows[0][3]);
 
 
-            if (l1.ApplicationType == false && e1.Count >= l1.TotalDays)
+            if (l1.ApplicationType == false)
             {
-                e1.Count -= l1.TotalDays;
+                
+                    e1.Count -= l1.TotalDays;
+
+              
 
             }
-            else if (l1.ApplicationType == true && e1.Count > l1.TotalDays)
+            else if (l1.ApplicationType == true)
             {
-                e1.Count += l1.TotalDays;
+                 e1.Count += l1.TotalDays;
+
             }
             Querry = string.Format("insert into StatusHistory(LeaveApplicationID,Date,ApplicationStatusID) select '{0}','{1}',ApplicationStatus.ApplicationStatusID from ApplicationStatus where ApplicationStatus.ApplicationStatus='Approved' ", ApplicationID, DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss"));
             database.ExecuteQuerry(Querry);
             UpdateManagerRemarks(ApplicationID, ManagerRemarks);
-            Querry = string.Format("update EmployeeLeaveCount set Count={0} where EmployeeLeaveCount.EmployeeID={1} and EmployeeLeaveCount.LeaveTypeID={2}", e1.Count, e1.EmployeeID, e1.LeaveTypeID);
+            Querry = string.Format("update  EmployeeLeaveCount set Count = '{0}' where EmployeeID = '{1}'and LeaveTypeID ='{2}'  " +
+                "if @@ROWCOUNT = 0 " +
+                "insert into EmployeeLeaveCount(Count,EmployeeID,LeaveTypeID) values('{0}', '{1}', '{2}')", e1.Count, e1.EmployeeID, e1.LeaveTypeID);
             database.ExecuteQuerry(Querry);
 
 
@@ -590,11 +603,13 @@ print @st
  SET @b='
 select * from
  (
- select StatusHistory.ApplicationStatusID,LeaveType.LeaveType from Employee inner join LeaveApplication on Employee.EmployeeID=@id and Employee.EmployeeID=LeaveApplication.EmployeeID inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID=@st right join LeaveType on LeaveType.LeaveTypeID=LeaveApplication.LeaveTypeID
+select LeaveApplication.TotalDays,LeaveType.LeaveType from LeaveApplication inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID
+inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID
+where LeaveApplication.EmployeeID=@id and StatusHistory.ApplicationStatusID=@st
  
  )t
  pivot(
-count(ApplicationStatusID) for LeaveType in('+@a+')
+sum(TotalDays) for LeaveType in('+@a+')
 )as ax';
 EXECUTE sp_executesql @b, N'@id NVARCHAR(MAX),@st NVARCHAR(MAX)', @id = @id,@st=@st;", EmployeeId);
 
@@ -603,19 +618,20 @@ EXECUTE sp_executesql @b, N'@id NVARCHAR(MAX),@st NVARCHAR(MAX)', @id = @id,@st=
         public DataSet FacultyLeaveCount(int EmployeeId)
         {
             string Querry = string.Format(@"declare @a NVARCHAR(MAX) = '',@b NVARCHAR(MAX) = '';
-declare @id NVARCHAR(MAX)='{0}',@st int='2';
+declare @id NVARCHAR(MAX)={0},@st int='2';
 select @a+=QUOTENAME(LeaveType.LeaveType) + ',' from LeaveType
 
 SET @a = LEFT(@a, LEN(@a) - 1);
 print @st
- SET @b='
+SET @b='
 select * from
- (
-select Employee.EmployeeID,Employee.EmployeeName,StatusHistory.ApplicationStatusID,LeaveType.LeaveType from Employee left join LeaveApplication on Employee.EmployeeID=LeaveApplication.EmployeeID left join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID=@st left join LeaveType on LeaveType.LeaveTypeID=LeaveApplication.LeaveTypeID where Employee.Manager=@id
- 
- )t
+(
+select x.EmployeeID,x.EmployeeName,ax.LeaveType,ax.TotalDays from Employee x left join (
+select Employee.EmployeeID,Employee.EmployeeName,StatusHistory.ApplicationStatusID,LeaveApplication.TotalDays,LeaveType.LeaveType from Employee inner join LeaveApplication on Employee.EmployeeID=LeaveApplication.EmployeeID inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID=@st inner join LeaveType on LeaveType.LeaveTypeID=LeaveApplication.LeaveTypeID where Employee.Manager=@id
+)ax on x.EmployeeID=ax.EmployeeID where x.Manager=@id
+)t
  pivot(
-count(ApplicationStatusID) for LeaveType in('+@a+')
+sum(TotalDays) for LeaveType in('+@a+')
 )as ax';
 EXECUTE sp_executesql @b, N'@id NVARCHAR(MAX),@st NVARCHAR(MAX)', @id = @id,@st=@st;", EmployeeId);
 
@@ -638,8 +654,8 @@ inner join Employee on Employee.EmployeeID = {0}", EmployeeId);
             //where StatusHistory.LeaveApplicationID ={ 0}
             //group by LeaveApplicationID
             string Querry = string.Format(@"select MAX(ApplicationStatusID) as st from StatusHistory 
-where StatusHistory.LeaveApplicationID={0} group by LeaveApplicationID",ApplicationId);
-            int status =Convert.ToInt32( database.ExecuteScalar(Querry));
+where StatusHistory.LeaveApplicationID={0} group by LeaveApplicationID", ApplicationId);
+            int status = Convert.ToInt32(database.ExecuteScalar(Querry));
             if (status == 1)
                 return true;
             else
