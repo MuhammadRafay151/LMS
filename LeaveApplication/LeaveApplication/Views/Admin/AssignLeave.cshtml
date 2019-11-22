@@ -7,10 +7,10 @@
             I'm in the middle
         </div>
     </div>*@
-    <div class="d-flex justify-content-center align-self-center position-absolute">
-        <div id="ac" class="  spinner-border text-primary "></div>
-    </div>
-    
+<div class="d-flex justify-content-center align-self-center position-absolute">
+    <div id="ac" class="  spinner-border text-primary "></div>
+</div>
+
 <div class="container  ">
     <div class=" row vh-100">
         <div class=" col  justify-content-center align-self-center">
@@ -25,7 +25,7 @@
             }
             <div class="card">
 
-                @using (Html.BeginForm("AffectedUsers", "Admin", FormMethod.Post))
+                @using (Html.BeginForm("AffectedUsers", "Admin", FormMethod.Post,new { onsubmit="return IsNegative();"}))
                 {<div class="card-header card-header-info">
                         <h4 class="card-title">Assign Leave</h4>
                         <table class="col-lg-6 col-md-8 col-sm-12 col-12 ">
@@ -33,7 +33,7 @@
                                 <td>
 
                                     <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" value="All Employess" >
+                                        <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" value="All Employess">
                                         <label class="custom-control-label text-white" for="customRadio1">All Employess</label>
                                     </div>
 
@@ -41,7 +41,7 @@
                                 <td>
 
                                     <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input"value="All(Select Department)">
+                                        <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input" value="All(Select Department)">
                                         <label class="custom-control-label text-white" for="customRadio2">All(Select Department)</label>
                                     </div>
 
@@ -49,7 +49,7 @@
                                 <td>
 
                                     <div class="custom-control custom-radio">
-                                        <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input"checked value="Select Employee" >
+                                        <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input" checked value="Select Employee">
                                         <label class="custom-control-label text-white" for="customRadio3">Select Employee</label>
                                     </div>
 
@@ -104,27 +104,27 @@
                     </div>
 
                     <div class="d-flex justify-content-center card-footer">
-                        <input type="submit" class="  btn btn-block btn-info-grd btn-round col-lg-6 col-md-6 col-sm-12 col-12" value="Proceed" />
+                        <input type="submit"  class="  btn btn-block btn-info-grd btn-round col-lg-6 col-md-6 col-sm-12 col-12" value="Proceed" />
                     </div>
-
+                  
                 }
             </div>
-            
-           
-       
+
+
+
         </div>
     </div>
 </div>
 <script>
-  
+
     $(document).ready(function () {
-       
-        function  show(){
-                    $('#ac').hide();
+
+        function show() {
+            $('#ac').hide();
         }
 
        
-      
+
         if (document.getElementById("alert")) {
             setTimeout(Hide, 3000)
         }
@@ -148,35 +148,52 @@
         });
         $('#emp').hide();
     });
-   
+
     function ShowEmployees() {
         if (document.getElementById('customRadio3').checked == true) {
-              $('#emp').show('fade');
-        $('#emp').empty();
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = fun;
+
+            $('#emp').empty();
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = fun;
             Department = { DepartmentId: document.getElementById('dep').value }
-           
-        function fun() {
-            if (this.readyState == 4 && this.status == 200) {
-                var x = null
-                x = JSON.parse(this.responseText);
 
-                if (x.length != 0) {
+            function fun() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var x = null
+                    try {
+                        x = JSON.parse(this.responseText);
+                        if (x.length != 0) {
 
-                    for (var i = 0; i < x.length; i++) {
-                        $('#emp').append(`<option value="${x[i].EmployeeID}">${x[i].EmployeeName}</option>`)
+                            for (var i = 0; i < x.length; i++) {
+                                $('#emp').append(`<option value="${x[i].EmployeeID}">${x[i].EmployeeName}</option>`)
+
+                            }
+                            $('#emp').show('fade');
+                        }
+                        else { $('#emp').hide(); }
+
+                    } catch (err) {
 
                     }
-                } else { $('#emp').hide(); }
 
-            }
-        };
-        xmlhttp.open("POST", "/Admin/GetEmployees", true);
-        xmlhttp.setRequestHeader("Content-Type", "application/json");
-        xmlhttp.send(JSON.stringify(Department));
+
+
+
+                }
+            };
+            xmlhttp.open("POST", "/Admin/GetEmployees", true);
+            xmlhttp.setRequestHeader("Content-Type", "application/json");
+            xmlhttp.send(JSON.stringify(Department));
         }
-      
-    }
 
+    }
+     function IsNegative() {
+          
+         if (parseInt($('#count').val()) <= 0) {
+             alert("count must be greater than 0");
+                return false;
+            } else {
+                return true;
+            }
+        }
 </script>

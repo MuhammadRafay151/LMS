@@ -285,8 +285,8 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
             v1.EmployeeID = ds.Tables[0].Rows[0][1].ToString();
             v1.LeaveType = ds.Tables[0].Rows[0][2].ToString();
             v1.ApplyDate = DateTime.Parse(ds.Tables[0].Rows[0][3].ToString()).ToString();
-            v1.FromDate = DateTime.Parse(ds.Tables[0].Rows[0][4].ToString()).ToString();
-            v1.ToDate = DateTime.Parse(ds.Tables[0].Rows[0][5].ToString()).ToString();
+            v1.FromDate = DateTime.Parse(ds.Tables[0].Rows[0][4].ToString()).ToString("dd/MM/yyyy h:mm tt");
+            v1.ToDate = DateTime.Parse(ds.Tables[0].Rows[0][5].ToString()).ToString("dd/MM/yyyy h:mm tt");
             v1.TotalDays = double.Parse(ds.Tables[0].Rows[0][6].ToString());
             v1.LeaveRemarks = ds.Tables[0].Rows[0][7].ToString();
             v1.LeaveReason = ds.Tables[0].Rows[0][8].ToString();
@@ -517,7 +517,7 @@ where LeaveApplication.LeaveApplicationID='{0}'", ApplicationID);
            
             LeaveApplication l1 = new LeaveApplication();
             l1.ApplicationType = Convert.ToBoolean(ds.Tables[0].Rows[0][2]);
-            l1.TotalDays = Convert.ToInt32(ds.Tables[0].Rows[0][3]);
+            l1.TotalDays = Convert.ToDouble(ds.Tables[0].Rows[0][3]);
 
 
             if (l1.ApplicationType == false)
@@ -605,7 +605,7 @@ select * from
  (
 select LeaveApplication.TotalDays,LeaveType.LeaveType from LeaveApplication inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID
 inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID
-where LeaveApplication.EmployeeID=@id and StatusHistory.ApplicationStatusID=@st
+where LeaveApplication.EmployeeID=@id and LeaveApplication.ApplicationType=0 and StatusHistory.ApplicationStatusID=@st
  
  )t
  pivot(
@@ -627,7 +627,7 @@ SET @b='
 select * from
 (
 select x.EmployeeID,x.EmployeeName,ax.LeaveType,ax.TotalDays from Employee x left join (
-select Employee.EmployeeID,Employee.EmployeeName,StatusHistory.ApplicationStatusID,LeaveApplication.TotalDays,LeaveType.LeaveType from Employee inner join LeaveApplication on Employee.EmployeeID=LeaveApplication.EmployeeID inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID=@st inner join LeaveType on LeaveType.LeaveTypeID=LeaveApplication.LeaveTypeID where Employee.Manager=@id
+select Employee.EmployeeID,Employee.EmployeeName,StatusHistory.ApplicationStatusID,LeaveApplication.TotalDays,LeaveType.LeaveType from Employee inner join LeaveApplication on Employee.EmployeeID=LeaveApplication.EmployeeID inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID and StatusHistory.ApplicationStatusID=@st inner join LeaveType on LeaveType.LeaveTypeID=LeaveApplication.LeaveTypeID where Employee.Manager=@id and LeaveApplication.ApplicationType=0
 )ax on x.EmployeeID=ax.EmployeeID where x.Manager=@id
 )t
  pivot(
@@ -645,8 +645,9 @@ inner join Employee on Employee.EmployeeID = {0} where  Employee.Manager = {1}",
         }
         public DataSet GetLeaveBalance(int EmployeeId)
         {//for user itself
-            string Querry = string.Format(@"select LeaveType.LeaveType,COALESCE( EmployeeLeaveCount.Count,0) from LeaveType left join EmployeeLeaveCount on EmployeeLeaveCount.EmployeeID={0} and LeaveType.LeaveTypeID=EmployeeLeaveCount.LeaveTypeID 
-inner join Employee on Employee.EmployeeID = {0}", EmployeeId);
+            string Querry = string.Format(@"select LeaveType.LeaveType, COALESCE( EmployeeLeaveCount.Count,0) 
+from EmployeeLeaveCount right join LeaveType on 
+EmployeeLeaveCount.LeaveTypeID=LeaveType.LeaveTypeID and EmployeeLeaveCount.EmployeeID={0}", EmployeeId);
             return database.Read(Querry);
         }
         public bool IsPending(int ApplicationId)

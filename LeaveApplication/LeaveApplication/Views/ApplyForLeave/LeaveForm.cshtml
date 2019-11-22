@@ -100,16 +100,25 @@
                             }
                             else if (ViewBag.ViewID == 1)
                             {
-                                <label class="label-control text-left LB" id="hf1">From date & time</label>
+                                <label class="label-control text-left LB" id="hf1">From date</label>
                                 <div class="form-group d-flex justify-content-center">
 
-                                    <input class="form-control datetimepicker1" type="text" id="halfday_from" name="halfday_from" required onfocusout="" />
+                                    <input class="form-control datetimepicker" type="text" id="Date" name="Date" required onfocusout="" />
+                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+                                    @Html.ValidationMessage("Date", new { @class = "text-danger" })
+                                </div>
+                                <label class="label-control text-left LB" id="hf1">From time</label>
+                                <div class="form-group d-flex justify-content-center">
+
+                                    <input type="text" class="form-control datetimepicker2" id="halfday_from" name="halfday_from" required />
+                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
                                     @Html.ValidationMessage("halfday_from", new { @class = "text-danger" })
                                 </div>
                                 <label class="label-control text-left LB" id="hf2">To time</label>
                                 <div class="form-group d-flex justify-content-center">
 
                                     <input type="text" class="form-control datetimepicker2" id="halfday_to" name="halfday_to" required />
+                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
                                     @Html.ValidationMessage("halfday_to", new { @class = "text-danger" })
                                 </div>
                                 <label for="days" class="text-left LB">Total Days</label>
@@ -118,15 +127,16 @@
                                     <input class="form-control" type="text" name="days" id="days" value="0.5" readonly>
 
                                 </div>
-                                if (ViewBag.HrsError == true)
-                                {
-                                    <div id="alert" class=" alert alert-danger  fade-in">
-
-                                        <strong>Error!</strong> Exceeds hours Limitation
-                                    </div>
-                                }
 
 
+
+                            }
+                            if (ViewBag.HrsError == true)
+                            {
+                                <div id="alert" class=" alert alert-danger  fade-in">
+
+                                    <strong>Error!</strong> Exceeds hours Limitation
+                                </div>
                             }
                         }
 
@@ -160,22 +170,22 @@
                             </div>
                         </div>
                         @*<label class="LB">Upload files </label>
-                        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center">
 
-                            <input type="file" name="Attachment" />
-                            @Html.ValidationMessage("Attachment", new { @class = "text-danger" })
-                        </div>*@
+            <input type="file" name="Attachment" />
+            @Html.ValidationMessage("Attachment", new { @class = "text-danger" })
+        </div>*@
                         <div class="fileinput fileinput-new text-center " data-provides="fileinput">
-                            
-                           
+
+
                             <div>
                                 <span id="s1" class="col-10 btn btn-raised btn-round btn-outline-info  btn-file">
                                     <span class="fileinput-new">Add Your Attachments Empty...</span>
-                                   
+
 
                                 </span>
                                 @*<a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>*@
-                                <input type="file" name="Attachment" id="Attachment" hidden/>
+                                <input type="file" name="Attachment" id="Attachment" hidden />
                             </div>
                         </div>
 
@@ -249,23 +259,7 @@
             }
 
         });
-        $('.datetimepicker1').datetimepicker({
-            format: 'DD/MM/YYYY LT',
-
-            icons: {
-                time: "fa fa-clock-o",
-                date: "fa fa-calendar",
-                up: "fa fa-chevron-up",
-                down: "fa fa-chevron-down",
-                previous: 'fa fa-chevron-left',
-                next: 'fa fa-chevron-right',
-                today: 'fa fa-screenshot',
-                clear: 'fa fa-trash',
-                close: 'fa fa-remove',
-
-            }
-
-        });
+       
         $('.datetimepicker2').datetimepicker({
             format: 'LT',
             icons: {

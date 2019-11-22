@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using LeaveApplication.Models;
 using System.Data;
+using System.Globalization;
 
 namespace LeaveApplication.Controllers
 {
@@ -32,20 +33,20 @@ namespace LeaveApplication.Controllers
                 else if (ViewId == 1)
                 {
                     ViewBag.ViewID = 1;
-                    if (TempData["HrsError"] != null && Convert.ToBoolean(TempData["HrsError"]) == true)
-                    {
-                        ViewBag.HrsError = true;
-                    }
-                    else
-                    {
-                        ViewBag.HrsError = false;
-                    }
+                   
                 }
                 else
                 {
                     ViewBag.ViewID = 0;
                 }
-
+                if (TempData["HrsError"] != null && Convert.ToBoolean(TempData["HrsError"]) == true)
+                {
+                    ViewBag.HrsError = true;
+                }
+                else
+                {
+                    ViewBag.HrsError = false;
+                }
                 return View();
             }
             else
@@ -82,13 +83,51 @@ namespace LeaveApplication.Controllers
             {
                 ModelState.AddModelError("ToDate", "Required");
             }
+            if (l1.IsHalfDay == 1 && string.IsNullOrWhiteSpace(Request.Form["Date"]))
+            {
+                ModelState.AddModelError("Date", "Required");
+            }
+            else if(l1.IsHalfDay == 1)
+            {
+                try
+                {
+                    DateTime.ParseExact(Request.Form["Date"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                   
+                }
+                catch(FormatException)
+                {
+                    ModelState.AddModelError("Date", "Date is not in correct format");
+                }
+            }
             if (l1.IsHalfDay == 1 && string.IsNullOrWhiteSpace(Request.Form["halfday_from"]))
             {
                 ModelState.AddModelError("halfday_from", "Required");
             }
+            else if (l1.IsHalfDay == 1)
+            {
+                try
+                {
+                    DateTime.Parse(Request.Form["halfday_from"].ToString());
+                }
+                catch (FormatException)
+                {
+                    ModelState.AddModelError("halfday_from", "Time is not in correct format");
+                }
+            }
             if (l1.IsHalfDay == 1 && string.IsNullOrWhiteSpace(Request.Form["halfday_to"]))
             {
                 ModelState.AddModelError("halfday_to", "Required");
+            }
+            else if (l1.IsHalfDay == 1)
+            {
+                try
+                {
+                    DateTime.Parse(Request.Form["halfday_to"].ToString());
+                }
+                catch (FormatException)
+                {
+                    ModelState.AddModelError("halfday_to", "Time is not in correct format");
+                }
             }
 
             if (string.IsNullOrWhiteSpace(l1.LeaveReason))
@@ -104,20 +143,30 @@ namespace LeaveApplication.Controllers
                 {
                     if (l1.IsHalfDay == 1)
                     {
-                        l1.FromDate = Request.Form["halfday_from"].ToString();
-                        string[] temp = l1.FromDate.Split(' ');
-                        l1.ToDate = temp[0] + " " + Request.Form["halfday_to"].ToString();
+                        l1.FromDate = Request.Form["Date"].ToString()+" "+ Request.Form["halfday_from"].ToString();
+                        
+                        l1.ToDate = Request.Form["Date"].ToString() + " "+ Request.Form["halfday_to"].ToString();
+                        
                         Double hrs = lb.CalculateLeaveHours(l1);
 
-                        if (hrs > 5 || hrs <= 0)
+                        if ( hrs <= 0)
                         {
                             TempData["HrsError"] = true;
                             return RedirectToAction("Index", "ApplyForLeave", new { ViewId = 1 });
                         }
 
                     }
+                    else
+                    {
+                        if (lb.CalculateTotalLeaveDays(l1) <= 0)
+                        {
+                            TempData["HrsError"] = true;
+                            return RedirectToAction("Index", "ApplyForLeave", new { ViewId = 0 });
+                        }
+                    }
                     l1.EmployeeID = Session["EmpID"].ToString();
                     l1.ApplicationType = false;//that's means this is type application
+                   
                     lb.SaveApplication(l1);
                     try
                     {
