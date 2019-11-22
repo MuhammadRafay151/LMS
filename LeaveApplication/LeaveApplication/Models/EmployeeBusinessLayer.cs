@@ -9,6 +9,8 @@ using System.IO;
 using System.Net.Http;
 using Pagination;
 using LeaveApplication.Exceptional_Classes;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace LeaveApplication.Models
 {
@@ -44,7 +46,7 @@ namespace LeaveApplication.Models
                 bytes = b1.ReadBytes((int)s1.Length);
 
             }
-
+            Emp.Password = MD5Hash(Emp.Password);
 
             if (string.IsNullOrWhiteSpace(Emp.Manager))
             {
@@ -154,6 +156,7 @@ namespace LeaveApplication.Models
         {
             con = new SqlConnection();
             cmd = new SqlCommand();
+            e1.Password=MD5Hash(e1.Password);
             cmd.CommandText = string.Format("Select * from Users where UserName='{0}' and Password='{1}'", e1.UserName, e1.Password);
             con.ConnectionString = connection;
             con.Open();
@@ -359,7 +362,7 @@ namespace LeaveApplication.Models
 
         public void ResetPassword(string NewPassword, string UserName)
         {
-
+            NewPassword =MD5Hash(NewPassword);
             string Querry = string.Format("update Users set Password='{0}' where UserName='{1}'", NewPassword, UserName);
             database.ExecuteQuerry(Querry);
 
@@ -372,5 +375,23 @@ namespace LeaveApplication.Models
             return Convert.ToString(database.ExecuteScalar(Querry));
 
         }
+
+        public string MD5Hash(string plaintext)
+        {
+            using (MD5 md5Hash = MD5.Create())
+            {
+                byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(plaintext));
+
+                StringBuilder sBuilder = new StringBuilder();
+                for (int i = 0; i < data.Length; i++)
+                {
+                    sBuilder.Append(data[i].ToString("x2"));
+                }
+
+                return sBuilder.ToString();
+
+            }
+        }
+       
     }
 }
