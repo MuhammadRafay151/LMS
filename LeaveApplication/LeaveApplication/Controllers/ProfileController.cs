@@ -34,7 +34,7 @@ namespace LeaveApplication.Controllers
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                if (eb.UserPassword(e1.UserName)== CurrentPassword)
+                if (eb.UserPassword(e1.UserName)== eb.MD5Hash(CurrentPassword))
                 {
                     if (NewPassword == ComfirmPassword)
                     {
