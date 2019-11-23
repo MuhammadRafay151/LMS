@@ -104,7 +104,7 @@
                     </div>
 
                     <div class="d-flex justify-content-center card-footer">
-                        <input type="submit"  class="  btn btn-block btn-info-grd btn-round col-lg-6 col-md-6 col-sm-12 col-12" value="Proceed" />
+                        <input  type="submit"  class="  btn btn-block btn-info-grd btn-round col-lg-6 col-md-6 col-sm-12 col-12" value="Proceed" />
                     </div>
                   
                 }
@@ -152,7 +152,7 @@
     function ShowEmployees() {
         if (document.getElementById('customRadio3').checked == true) {
 
-            $('#emp').empty();
+  
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = fun;
             Department = { DepartmentId: document.getElementById('dep').value }
@@ -163,17 +163,21 @@
                     try {
                         x = JSON.parse(this.responseText);
                         if (x.length != 0) {
-
+                            $('#emp').empty();
+                            $('#emp').removeAttr('disabled');
                             for (var i = 0; i < x.length; i++) {
                                 $('#emp').append(`<option value="${x[i].EmployeeID}">${x[i].EmployeeName}</option>`)
 
                             }
+                            
                             $('#emp').show('fade');
                         }
                         else { $('#emp').hide(); }
 
                     } catch (err) {
-
+                        $('#emp').empty();
+                        $('#emp').hide();
+                        $('#emp').attr('disabled', 'disabled');
                     }
 
 
