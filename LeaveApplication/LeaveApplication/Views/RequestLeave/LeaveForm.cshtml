@@ -1,9 +1,5 @@
 ﻿@model System.Data.DataSet
-<style>
-    .LB {
-        margin-left: 90px;
-    }
-</style>
+
 <div class="container mt-lg-5 mt-5">
     <div class="row  justify-content-center  vh-100">
 
@@ -54,81 +50,141 @@
 
                         <label style="font-size:22px" id="date" for="">Date Of Application: @System.DateTime.Now.Date.ToString("dd-MM-yyyy")</label>
                         <br><br>
-                        <label class="label-control text-left LB"> Select Leave</label>
-                        <div class="form-group d-flex justify-content-center ">
+                        <div class="d-flex justify-content-center">
+                            <div class="form-group col-8 ">
+                                <label class="label-control "> Select Leave</label>
+                                <select class="custom-select" name="LeaveType" id="LeaveType" required>
+                                    <option value="" disabled selected>Select Leave Type</option>
+                                    @{
 
-                            <select class="form-control" name="LeaveType" id="LeaveType" required>
-                                <option value="" selected disabled> Select Leave Type</option>
-                                @{
-                                    foreach (System.Data.DataRow x in Model.Tables[0].Rows)
-                                    {
-                                        <option value="@x[0].ToString()">@x[1].ToString()</option>
+                                        foreach (System.Data.DataRow x in Model.Tables[0].Rows)
+                                        {
+                                            <option value="@x[0].ToString()">@x[1].ToString()</option>
+                                        }
                                     }
-                                }
-                            </select>
-                            @Html.ValidationMessage("LeaveType", new { @class = "text-danger" })
+                                </select>
+                                @Html.ValidationMessage("LeaveType", new { @class = "text-danger" })
+
+
+                            </div>
                         </div>
+
                         @{if (ViewBag.ViewID == 0)
-                            { <label for="date1" class="text-left LB" id="l2">From</label>
-                                <div class="form-group d-flex justify-content-center">
+                            { <div class="d-flex justify-content-center ">
+                                    <div class="form-group col-8">
+                                        <label class="control-label">From</label>
+                                        <div class="form-group">
+                                            <div class="input-group ">
 
+                                                <input class="form-control datetimepicker " type="text" name="FromDate" id="FromDate" required onfocusout="DateSelect(this)">
 
-                                    <input class="form-control datetimepicker" type="text" name="FromDate" id="FromDate" required onfocusout="DateSelect(this)">
-                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
-                                    @Html.ValidationMessage("FromDate", new { @class = "text-danger" })
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" style="margin-left:-35px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @Html.ValidationMessage("FromDate", new { @class = "text-danger" })
+                                    </div>
                                 </div>
-                                <label for="date2" id="l3" class="text-left LB">To</label>
-                                <div class="form-group d-flex justify-content-center">
+                                <div class="d-flex justify-content-center ">
+                                    <div class="form-group col-8">
+                                        <label for="date2" id="l3">To</label>
+                                        <div class="form-group">
+                                            <div class="input-group ">
 
-                                    <input class="form-control datetimepicker" type="text" name="ToDate" id="ToDate" required onfocusout="DateSelect(this)">
-                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
-                                    @Html.ValidationMessage("ToDate", new { @class = "text-danger" })
+                                                <input class="form-control datetimepicker" type="text" name="ToDate" id="ToDate" required onfocusout="DateSelect(this)">
+
+                                                <div class="input-group-append">
+                                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @Html.ValidationMessage("ToDate", new { @class = "text-danger" })
+                                    </div>
                                 </div>
-                                <label for="days" class="text-left LB">Total Days</label>
-                                <div class=" form-group d-flex justify-content-center">
 
-                                    <input class="form-control" type="text" name="days" id="days" readonly>
 
+                                <div class=" d-flex justify-content-center">
+                                    <div class=" form-group col-8">
+                                        <label class="label-control ">Total days</label>
+                                        <input class="form-control" type="text" name="days" id="days" value="0.5" readonly>
+
+                                    </div>
                                 </div>
+
 
                             }
                             else if (ViewBag.ViewID == 1)
                             {
 
-                                <label class="label-control text-left LB" id="hf1">From date</label>
-                                <div class="form-group d-flex justify-content-center">
+                                <div class="d-flex justify-content-center ">
+                                    <div class="form-group col-8">
+                                        <label class="label-control " id="hf1">From date</label>
+                                        <div class="form-group">
+                                            <div class="input-group ">
 
-                                    <input class="form-control datetimepicker" type="text" id="Date" name="Date" required onfocusout="" />
-                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
-                                    @Html.ValidationMessage("Date", new { @class = "text-danger" })
-                                </div>
-                                <label class="label-control text-left LB" id="hf1">From time</label>
-                                <div class="form-group d-flex justify-content-center">
+                                                <input class="form-control datetimepicker" type="text" id="Date" name="Date" required onfocusout="" />
 
-                                    <input type="text" class="form-control datetimepicker2" id="halfday_from" name="halfday_from" required />
-                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
-                                    @Html.ValidationMessage("halfday_from", new { @class = "text-danger" })
-                                </div>
-                                <label class="label-control text-left LB" id="hf2">To time</label>
-                                <div class="form-group d-flex justify-content-center">
+                                                <div class="input-group-append">
+                                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
 
-                                    <input type="text" class="form-control datetimepicker2" id="halfday_to" name="halfday_to" required />
-                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
-                                    @Html.ValidationMessage("halfday_to", new { @class = "text-danger" })
-                                </div>
-                                <label for="days" class="text-left LB">Total Days</label>
-                                <div class=" form-group d-flex justify-content-center">
-
-                                    <input class="form-control" type="text" name="days" id="days" value="0.5" readonly>
-
-                                </div>
-                                if (ViewBag.HrsError == true)
-                                {
-                                    <div id="alert" class=" alert alert-danger  fade-in">
-
-                                        <strong>Error!</strong> Exceeds hours Limitation
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @Html.ValidationMessage("Date", new { @class = "text-danger" })
                                     </div>
-                                }
+                                </div>
+                                <div class="d-flex justify-content-center ">
+                                    <div class="form-group col-8">
+                                        <label class="label-control " id="hf1">From time</label>
+                                        <div class="form-group">
+                                            <div class="input-group ">
+
+                                                <input type="text" class="form-control datetimepicker2" id="halfday_from" name="halfday_from" required />
+
+                                                <div class="input-group-append">
+                                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @Html.ValidationMessage("halfday_from", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+
+
+                                <div class="d-flex justify-content-center ">
+                                    <div class="form-group col-8">
+                                        <label class="label-control " id="hf2">To time</label>
+                                        <div class="form-group">
+                                            <div class="input-group ">
+
+                                                <input type="text" class="form-control datetimepicker2" id="halfday_to" name="halfday_to" required />
+
+                                                <div class="input-group-append">
+                                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @Html.ValidationMessage("halfday_to", new { @class = "text-danger" })
+
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class=" d-flex justify-content-center">
+                                    <div class=" form-group col-8">
+                                        <label class="label-control ">Total days</label>
+                                        <input class="form-control" type="text" name="days" id="days" value="0.5" readonly>
+
+                                    </div>
+                                </div>
+
 
 
                             }
@@ -142,20 +198,29 @@
                         }
 
 
+                        <div class="d-flex justify-content-center">
+                            <div class="form-group col-8 ">
+                                <label class="label-control "> Reason</label>
+                                <select class="custom-select" name="LeaveType" id="LeaveType" required>
+                                    <option value="" disabled selected>Select Leave Reason</option>
+                                    @{ System.Data.DataSet i = ViewBag.Reasons;
 
-                        <label class="label-control text-left LB"> Select Reason</label>
-                        <div class="form-group d-flex justify-content-center">
-                            <select class="form-control" name="LeaveReason" id="LeaveReason" required>
-                                <option value="" selected disabled>Reason For Leave</option>
-                                @{ System.Data.DataSet i = ViewBag.Reasons;
-                                    foreach (System.Data.DataRow x in i.Tables[0].Rows)
-                                    {
-                                        <option value="@x[0].ToString()">@x[1].ToString()</option>
+                                        foreach (System.Data.DataRow x in i.Tables[0].Rows)
+                                        {
+
+                                            <option value="@x[0].ToString()">@x[1].ToString()</option>
+
+
+                                        }
                                     }
-                                }
-                            </select>
-                            @Html.ValidationMessage("LeaveReason", new { @class = "text-danger" })
+                                </select>
+                                @Html.ValidationMessage("LeaveReason", new { @class = "text-danger" })
+
+
+                            </div>
                         </div>
+
+
                         <div class="d-flex justify-content-center">
                             <div class="form-group col-8">
                                 <label class="label-control" for="LeaveRemarks"> Enter Description</label><br />

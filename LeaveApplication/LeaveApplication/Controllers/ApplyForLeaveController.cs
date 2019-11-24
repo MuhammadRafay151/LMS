@@ -47,6 +47,7 @@ namespace LeaveApplication.Controllers
                 {
                     ViewBag.HrsError = false;
                 }
+               
                 return View();
             }
             else
@@ -187,8 +188,8 @@ namespace LeaveApplication.Controllers
                 ViewBag.ViewID = l1.IsHalfDay;
                 return View("Index");
             }
-
-            return RedirectToAction("Index", "ViewApplications");
+            TempData["Notify"] = true;
+            return RedirectToAction("Index", "ApplyForLeave");
         }
         [HttpPost]
         public ActionResult Calculateadays(LeaveApplication.Models.LeaveApplication l1)

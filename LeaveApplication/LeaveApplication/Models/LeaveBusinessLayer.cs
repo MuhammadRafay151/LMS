@@ -512,7 +512,7 @@ where LeaveApplication.LeaveApplicationID='{0}'", ApplicationID);
             e1.LeaveTypeID = Convert.ToInt32(ds.Tables[0].Rows[0][1]);
             if (!string.IsNullOrEmpty(ds.Tables[0].Rows[0][4].ToString()))
             {
-                e1.Count = Convert.ToInt32(ds.Tables[0].Rows[0][4]);
+                e1.Count = Convert.ToDouble(ds.Tables[0].Rows[0][4]);
             }
            
             LeaveApplication l1 = new LeaveApplication();
