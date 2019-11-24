@@ -44,12 +44,14 @@ namespace LeaveApplication.Controllers
 
 
         }
+        [HttpPost]
         public ActionResult SendNotifications()
         {
             List<Attendance> x = (List<Attendance>)Session["AttFile"];
             foreach (Attendance i in x)
             {
-                i.NotifyAbsentees();
+                //i.NotifyAbsentees();
+                i.AttendanceRecord();
             }
             Session.Remove("AttFile");
             return RedirectToAction("Index");

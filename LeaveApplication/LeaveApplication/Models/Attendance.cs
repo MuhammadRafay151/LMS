@@ -9,6 +9,7 @@ namespace LeaveApplication.Models
 {
     public class Attendance
     {
+        db DataBase = new db();
         public int EmpNo { get; set; }
         public String EmployeeName { get; set; }
         public bool Abscent { get; set; }
@@ -25,6 +26,12 @@ namespace LeaveApplication.Models
             //Email e1 = new Email();
             //e1.Send(mail, subject, Body);
 
+        }
+
+        public void AttendanceRecord()
+        {
+            string Querry = string.Format("insert into Attendance(EmpNo,AbsentDate) values ('{0}','{1}')", EmpNo, Date);
+            DataBase.ExecuteQuerry(Querry);
         }
     }
 }

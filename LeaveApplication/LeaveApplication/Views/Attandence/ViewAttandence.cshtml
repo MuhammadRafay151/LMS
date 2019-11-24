@@ -32,14 +32,17 @@
                         </tbody>
                     </table>
                 </div>
-             
+
+                @using (Html.BeginForm("SendNotifications", "Attandence", FormMethod.Post))
+                {
+
                     <div class="card-footer justify-content-center">
                         <button type="submit" class="btn btn-info-grd btn-block">Notify Absentees</button>
                     </div>
+
                 }
 
-
-            </div>
+                </div>
 
         </div>
     </div>
