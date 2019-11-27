@@ -17,21 +17,29 @@ namespace LeaveApplication.Models
         public void NotifyAbsentees()
         {
             string Subject = System.Configuration.ConfigurationManager.AppSettings["SubjectAttandance"];
-            string Body = "";
+            string Body = "you are absent";
             string Querry = string.Format("select EmployeeName,Email from Employee where EmpNo='{0}'", EmpNo);
             db d1 = new db();
             DataSet ds = d1.Read(Querry);
             string Name = ds.Tables[0].Rows[0][0].ToString();
             string mail = ds.Tables[0].Rows[0][1].ToString();
+            AttendanceRecord(Body);
             //Email e1 = new Email();
             //e1.Send(mail, subject, Body);
 
         }
 
-        public void AttendanceRecord()
+        public void AttendanceRecord(string message)
         {
-            string Querry = string.Format("insert into Attendance(EmpNo,AbsentDate) values ('{0}','{1}')", EmpNo, Date);
+            string Querry = string.Format(
+                @"IF not EXISTS(select EmployeeID from  LeaveApplication where '{0}' between FromDate and ToDate and EmployeeID='{1}')
+                 BEGIN
+                 insert into Attendance(EmpNo, AbsentDate, Message) values('{1}', '{0}', '{2}')
+                 END"
+                , Date, EmpNo, message);
             DataBase.ExecuteQuerry(Querry);
         }
+
+
     }
 }

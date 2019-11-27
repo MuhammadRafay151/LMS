@@ -50,8 +50,9 @@ namespace LeaveApplication.Controllers
             List<Attendance> x = (List<Attendance>)Session["AttFile"];
             foreach (Attendance i in x)
             {
-                //i.NotifyAbsentees();
-                i.AttendanceRecord();
+                i.NotifyAbsentees();
+                
+             
             }
             Session.Remove("AttFile");
             return RedirectToAction("Index");
