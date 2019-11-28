@@ -16,7 +16,8 @@ namespace LeaveApplication.Controllers
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                return View(eb.GetAbsentees(e1.EmpNo));
+                int Empno = eb.GetEmpNo(e1.EmployeeID);
+                return View(eb.GetAbsentees(Empno));
             }
             else
             {
