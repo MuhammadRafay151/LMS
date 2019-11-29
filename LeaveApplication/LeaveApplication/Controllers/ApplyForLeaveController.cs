@@ -33,7 +33,7 @@ namespace LeaveApplication.Controllers
                 else if (ViewId == 1)
                 {
                     ViewBag.ViewID = 1;
-                   
+
                 }
                 else
                 {
@@ -41,14 +41,15 @@ namespace LeaveApplication.Controllers
                 }
                 if (TempData["HrsError"] != null && Convert.ToBoolean(TempData["HrsError"]) == true)
                 {
+                    TempData.Remove("HrsError");
                     ViewBag.HrsError = true;
                 }
                 else
                 {
                     ViewBag.HrsError = false;
                 }
-               
-                return View();
+
+                return View("Index");
             }
             else
             {
@@ -58,9 +59,10 @@ namespace LeaveApplication.Controllers
 
         [HttpPost]
         public ActionResult Submit(LeaveApplication.Models.LeaveApplication l1)
-        {//data validation
-            string ContentType=string.Empty;
-            List<string> MimeType=null;
+        {
+            //checking file type...
+            string ContentType = string.Empty;
+            List<string> MimeType = null;
             if (l1.Attachment != null)
             {
                 ContentType = System.Web.MimeMapping.GetMimeMapping(l1.Attachment.FileName);
@@ -71,7 +73,7 @@ namespace LeaveApplication.Controllers
                     ModelState.AddModelError("Attachment", "Invalid Format");
                 }
             }
-
+            //data validation
             if (string.IsNullOrWhiteSpace(l1.LeaveType))
             {
                 ModelState.AddModelError("LeaveType", "Required");
@@ -80,54 +82,78 @@ namespace LeaveApplication.Controllers
             {
                 ModelState.AddModelError("FromDate", "Required");
             }
+            else if (l1.IsHalfDay == 0)
+            {
+                try
+                {
+                    DateTime.ParseExact(l1.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+                }
+                catch (FormatException)
+                {
+                    ModelState.AddModelError("FromDate", "Date is not in correct format");
+                }
+            }
             if (l1.IsHalfDay == 0 && string.IsNullOrWhiteSpace(l1.ToDate))
             {
                 ModelState.AddModelError("ToDate", "Required");
             }
-            if (l1.IsHalfDay == 1 && string.IsNullOrWhiteSpace(Request.Form["Date"]))
-            {
-                ModelState.AddModelError("Date", "Required");
-            }
-            else if(l1.IsHalfDay == 1)
+            else if (l1.IsHalfDay == 0)
             {
                 try
                 {
-                    DateTime.ParseExact(Request.Form["Date"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                   
+                    DateTime.ParseExact(l1.ToDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
                 }
-                catch(FormatException)
+                catch (FormatException)
                 {
-                    ModelState.AddModelError("Date", "Date is not in correct format");
+                    ModelState.AddModelError("ToDate", "Date is not in correct format");
                 }
             }
-            if (l1.IsHalfDay == 1 && string.IsNullOrWhiteSpace(Request.Form["halfday_from"]))
+            if (l1.IsHalfDay == 1 && string.IsNullOrWhiteSpace(l1.FromDate))
             {
-                ModelState.AddModelError("halfday_from", "Required");
+                ModelState.AddModelError("FromDate", "Required");
             }
             else if (l1.IsHalfDay == 1)
             {
                 try
                 {
-                    DateTime.Parse(Request.Form["halfday_from"].ToString());
+                    DateTime.ParseExact(l1.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
                 }
                 catch (FormatException)
                 {
-                    ModelState.AddModelError("halfday_from", "Time is not in correct format");
+                    ModelState.AddModelError("FromDate", "Date is not in correct format");
                 }
             }
-            if (l1.IsHalfDay == 1 && string.IsNullOrWhiteSpace(Request.Form["halfday_to"]))
+            if (l1.IsHalfDay == 1 && string.IsNullOrWhiteSpace(l1.FromTime))
             {
-                ModelState.AddModelError("halfday_to", "Required");
+                ModelState.AddModelError("FromTime", "Required");
             }
             else if (l1.IsHalfDay == 1)
             {
                 try
                 {
-                    DateTime.Parse(Request.Form["halfday_to"].ToString());
+                    DateTime.Parse(l1.FromTime);
                 }
                 catch (FormatException)
                 {
-                    ModelState.AddModelError("halfday_to", "Time is not in correct format");
+                    ModelState.AddModelError("FromTime", "Time is not in correct format");
+                }
+            }
+            if (l1.IsHalfDay == 1 && string.IsNullOrWhiteSpace(l1.ToTime))
+            {
+                ModelState.AddModelError("ToTime", "Required");
+            }
+            else if (l1.IsHalfDay == 1)
+            {
+                try
+                {
+                    DateTime.Parse(l1.ToTime);
+                }
+                catch (FormatException)
+                {
+                    ModelState.AddModelError("ToTime", "Time is not in correct format");
                 }
             }
 
@@ -136,7 +162,7 @@ namespace LeaveApplication.Controllers
                 ModelState.AddModelError("LeaveReason", "Required");
             }
 
-           
+
             //end...
             if (ModelState.IsValid)
             {
@@ -144,16 +170,17 @@ namespace LeaveApplication.Controllers
                 {
                     if (l1.IsHalfDay == 1)
                     {
-                        l1.FromDate = Request.Form["Date"].ToString()+" "+ Request.Form["halfday_from"].ToString();
-                        
-                        l1.ToDate = Request.Form["Date"].ToString() + " "+ Request.Form["halfday_to"].ToString();
-                        
+                        string fm = l1.FromDate;
+                        l1.FromDate = l1.FromDate + " " + l1.FromTime;
+
+                        l1.ToDate = fm + " " + l1.ToTime;
+
                         Double hrs = lb.CalculateLeaveHours(l1);
 
-                        if ( hrs <= 0)
+                        if (hrs <= 0)
                         {
                             TempData["HrsError"] = true;
-                            return RedirectToAction("Index", "ApplyForLeave", new { ViewId = 1 });
+                            return Index(1);
                         }
 
                     }
@@ -162,22 +189,23 @@ namespace LeaveApplication.Controllers
                         if (lb.CalculateTotalLeaveDays(l1) <= 0)
                         {
                             TempData["HrsError"] = true;
-                            return RedirectToAction("Index", "ApplyForLeave", new { ViewId = 0 });
+                            return Index(0);
+
                         }
                     }
                     l1.EmployeeID = Session["EmpID"].ToString();
                     l1.ApplicationType = false;//that's means this is type application
-                   
+
                     lb.SaveApplication(l1);
                     try
                     {
                         l1.NotifyManager(((Employee)Session["Employee"]).GetManager(), (Employee)Session["Employee"]);
                     }
-                    catch(System.Net.Mail.SmtpException )
+                    catch (System.Net.Mail.SmtpException)
                     {
 
                     }
-                   
+
                 }
 
             }
@@ -218,7 +246,8 @@ namespace LeaveApplication.Controllers
         {
             return Content(((Employee)Session["Employee"]).GetManager().Manager);
         }
-
+       
+      
 
 
 

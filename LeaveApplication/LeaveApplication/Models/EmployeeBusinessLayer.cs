@@ -156,6 +156,10 @@ namespace LeaveApplication.Models
         {
             con = new SqlConnection();
             cmd = new SqlCommand();
+            if(string.IsNullOrWhiteSpace(e1.Password))
+            {
+                return false;
+            }
             e1.Password=MD5Hash(e1.Password);
             cmd.CommandText = string.Format("Select * from Users where UserName='{0}' and Password='{1}'", e1.UserName, e1.Password);
             con.ConnectionString = connection;

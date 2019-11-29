@@ -1,7 +1,7 @@
 ﻿@model LeaveApplication.Models.Employee
 @{
     ViewBag.Title = "Registeration";
-  Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
 
 
@@ -31,85 +31,109 @@
                                 <div class="d-flex justify-content-center">
                                     <fieldset>
 
-                                        <div class="form-group">
-                                            @Html.TextBoxFor(Model => Model.UserName, new { @class = "form-control", placeholder = "User Name", required = "required" })
+                                        <div class="form-group bmd-form-group">
+                                            <label for="UserName" class="text-center bmd-label-floating">User Name</label>
+
+                                            @Html.TextBoxFor(Model => Model.UserName, new { @class = "form-control", required = "required" })
                                             @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                                         </div>
 
-                                        <div class="form-group">
-                                            @Html.TextBoxFor(Model => Model.EmployeeName, new { @class = "form-control", placeholder = "Employee Name", required = "required" })
+                                        <div class="form-group bmd-form-group">
+                                            <label for="EmployeeName" class="text-center bmd-label-floating">Employee Name</label>
+                                            @Html.TextBoxFor(Model => Model.EmployeeName, new { @class = "form-control", required = "required" })
                                             @Html.ValidationMessageFor(m => m.EmployeeName, "", new { @class = "text-danger" })
+
                                         </div>
-                                        <div class="form-group">
-                                            @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control", placeholder = "Email", required = "required",type="email" })
+                                        <div class="form-group bmd-form-group">
+                                            <label for="Email" class="text-center bmd-label-floating">Email Address</label>
+                                            @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control", required = "required", type = "email" })
                                             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                                         </div>
-                                        <div class="form-group">
-                                            @Html.TextBoxFor(Model => Model.Address, new { @class = "form-control", placeholder = "Address", required = "required" })
+                                        <div class="form-group bmd-form-group">
+                                            <label for="Address" class="text-center bmd-label-floating">Address</label>
+                                            @Html.TextBoxFor(Model => Model.Address, new { @class = "form-control", required = "required" })
                                             @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+
                                         </div>
-                                        <div class="form-group">
-                                            @Html.TextBoxFor(Model => Model.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number", required = "required" })
+                                        <div class="form-group bmd-form-group">
+                                            <label for="PhoneNumber" class="text-center bmd-label-floating">Phone Number</label>
+                                            @Html.TextBoxFor(Model => Model.PhoneNumber, new { @class = "form-control", required = "required" })
                                             @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+
                                         </div>
-                                        <div class="form-group">
-                                            @Html.TextBoxFor(Model => Model.CNIC, new { @class = "form-control", placeholder = "CNIC", required = "required" })
+                                        <div class="form-group bmd-form-group">
+                                            <label for="CNIC" class="text-center bmd-label-floating">CNIC</label>
+                                            @Html.TextBoxFor(Model => Model.CNIC, new { @class = "form-control", required = "required" })
                                             @Html.ValidationMessageFor(m => m.CNIC, "", new { @class = "text-danger" })
+
                                         </div>
 
-                                        <div class="form-group">
 
+                                        <div class="form-group">
+                                            <label for="DepartmentID " class="d-block"> Select Department</label>
                                             <select class="custom-select" id="@Html.IdFor(m=>m.DepartmentID)" name=@Html.NameFor(m=>m.DepartmentID) required>
                                                 <option value="" disabled selected>Select Department</option>
                                                 @{
                                                     foreach (LeaveApplication.Models.Department x in ViewBag.List2)
                                                     {
-                                                        <option value="@x.DepartmentId">
-                                                            @x.department
-                                                        </option>
+                                                       
+                                                       
+                                                            <option value="@x.DepartmentId">
+                                                                @x.department
+                                                            </option>
+                                                       
+
                                                     }
                                                 }
 
 
                                             </select>
                                             @Html.ValidationMessageFor(m => m.DepartmentID, "", new { @class = "text-danger" })
+
                                         </div>
 
                                         <div class="form-group">
-
+                                            <label for="DesignationID " class="d-block">Select Designation</label>
                                             <select class="custom-select" id=@Html.IdFor(m=>m.DesignationID) name=@Html.NameFor(m=>m.DesignationID) required>
                                                 <option value="" disabled selected>Select Designation</option>
                                                 @{
                                                     foreach (LeaveApplication.Models.Designation x in ViewBag.List)
                                                     {
-                                                        <option value="@x.DesignationID">
-                                                            @x.designation
-                                                        </option>
+                                                          <option value="@x.DesignationID" >
+                                                                @x.designation
+                                                            </option>
+                                                       
+
                                                     }
                                                 }
 
 
                                             </select>
                                             @Html.ValidationMessageFor(m => m.DesignationID, "", new { @class = "text-danger" })
+
                                         </div>
                                         <div class="form-group">
-
-                                            <select class="custom-select" id=@Html.IdFor(m=>m.Manager) name=@Html.NameFor(m=>m.Manager) required>
+                                            <label for="Manager" class="control-label d-block">Select Manager</label>
+                                            <select class="custom-select" id=@Html.IdFor(m=>m.Manager) name=@Html.NameFor(m=>m.Manager)>
                                                 <option value="" disabled selected>Select Manager</option>
                                                 @{System.Data.DataSet emp = ViewBag.Employees;
                                                     foreach (System.Data.DataRow i in emp.Tables[0].Rows)
                                                     {
-                                                        <option value="@i[0].ToString()">
-                                                            @i[1].ToString()
-                                                        </option>
+                                                       
+                                                            <option value="@i[0].ToString()">
+                                                                @i[1].ToString()
+                                                            </option>
+                                                       
+
                                                     }
                                                 }
 
 
                                             </select>
                                         </div>
-                                        <div class="form-group">
-                                            <input class="form-control" id="password" name="password" type="password" placeholder="Password" required />
+                                        <div class="form-group bmd-form-group">
+                                            <label for="password"class="text-center bmd-label-floating">Password</label>
+                                            <input class="form-control" id="password" name="password" type="password"  required />
                                             <div class="checkbox" style="padding-top:10px">
                                                 <label>
                                                     <input id="chk1" type="checkbox" onclick="ShowPass()"> Show Password
@@ -125,12 +149,16 @@
 
                                 </div>
                             </div>
-                           
+
                             <div class="col  ">
 
-                                <div class="d-flex justify-content-center justify-content-lg-start justify-content-md-start form-group">
-                                    @Html.TextBoxFor(Model => Model.EmpNo, new { @class = "form-control", placeholder = "Employee No.", required = "required" })
-                                    @Html.ValidationMessageFor(m => m.EmpNo, "", new { @class = "text-danger" })
+                                <div class="d-flex justify-content-center justify-content-lg-start justify-content-md-start ">
+                                    <div class="form-group bmd-form-group">
+                                        <label for="EmpNo" class="text-center bmd-label-floating">EmpNo</label>
+                                        @Html.TextBoxFor(Model => Model.EmpNo, new { @class = "form-control", required = "required" })
+                                        @Html.ValidationMessageFor(m => m.EmpNo, "", new { @class = "text-danger" })
+                                    </div>
+
                                 </div>
                                 <div class="card pt-5">
                                     <div class="card-header">
@@ -148,14 +176,14 @@
                                         @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                               
+
 
                             </div>
                         </div>
                         <div class="row ">
                             <div class="d-flex col justify-content-center">
 
-                                <input id="Submit1" class="btn btn-info-grd btn-round col-6"  type="submit" value="submit" onclick="return IsImgUploaded() " />
+                                <input id="Submit1" class="btn btn-info-grd btn-round col-6" type="submit" value="submit" onclick="return IsImgUploaded() " />
 
                             </div>
                         </div>

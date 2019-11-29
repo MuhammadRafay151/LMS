@@ -1,5 +1,27 @@
-﻿@model System.Data.DataSet
-
+﻿@model LeaveApplication.Models.LeaveApplication
+@* Success message *@
+@if (Convert.ToBoolean(TempData["Notify"]) == true)
+{
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Notification</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Your response has been successfully submited...
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-danger btn-link" href="/ViewApplications/Index">View Response</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 <div class="container mt-lg-5 mt-5">
     <div class="row  justify-content-center  vh-100">
 
@@ -53,18 +75,21 @@
                         <div class="d-flex justify-content-center">
                             <div class="form-group col-8 ">
                                 <label class="label-control "> Select Leave</label>
-                                <select class="custom-select" name="LeaveType" id="LeaveType" required>
-                                    <option value="" disabled selected>Select Leave Type</option>
-                                    @{
+                                @{
+                                    List<SelectListItem> l1 = new List<SelectListItem>();
+                                    l1.Add(new SelectListItem() { Text = "Select Leave Type", Value = "", Disabled = true, Selected = true });
+                                    System.Data.DataSet ds = ViewBag.Leavetypes;
+                                    foreach (System.Data.DataRow x in ds.Tables[0].Rows)
+                                    {
+                                        l1.Add(new SelectListItem() { Text = @x[1].ToString(), Value = x[0].ToString() });
 
-                                        foreach (System.Data.DataRow x in Model.Tables[0].Rows)
-                                        {
-                                            <option value="@x[0].ToString()">@x[1].ToString()</option>
-                                        }
                                     }
-                                </select>
-                                @Html.ValidationMessage("LeaveType", new { @class = "text-danger" })
 
+                                }
+
+                                @Html.DropDownListFor(m => m.LeaveType, l1, new { @class = "custom-select", required = "required" })
+
+                                @Html.ValidationMessageFor(m => m.LeaveType, "", new { @class = "text-danger" })
 
                             </div>
                         </div>
@@ -76,14 +101,14 @@
                                         <div class="form-group">
                                             <div class="input-group ">
 
-                                                <input class="form-control datetimepicker " type="text" name="FromDate" id="FromDate" required onfocusout="DateSelect(this)">
+                                                @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control datetimepicker ", required = "required", onfocusout = "DateSelect(this)" })
 
                                                 <div class="input-group-append">
                                                     <span class="input-group-text" style="margin-left:-35px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
                                                 </div>
                                             </div>
                                         </div>
-                                        @Html.ValidationMessage("FromDate", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(m => m.FromDate, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center ">
@@ -92,7 +117,7 @@
                                         <div class="form-group">
                                             <div class="input-group ">
 
-                                                <input class="form-control datetimepicker" type="text" name="ToDate" id="ToDate" required onfocusout="DateSelect(this)">
+                                                @Html.TextBoxFor(m => m.ToDate, new { @class = "form-control datetimepicker ", required = "required", onfocusout = "DateSelect(this)" })
 
                                                 <div class="input-group-append">
                                                     <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
@@ -100,7 +125,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @Html.ValidationMessage("ToDate", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(m => m.ToDate, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
@@ -124,7 +149,7 @@
                                         <div class="form-group">
                                             <div class="input-group ">
 
-                                                <input class="form-control datetimepicker" type="text" id="Date" name="Date" required onfocusout="" />
+                                                @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control datetimepicker ", required = "required" })
 
                                                 <div class="input-group-append">
                                                     <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
@@ -132,7 +157,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @Html.ValidationMessage("Date", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(m => m.FromDate, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center ">
@@ -141,7 +166,7 @@
                                         <div class="form-group">
                                             <div class="input-group ">
 
-                                                <input type="text" class="form-control datetimepicker2" id="halfday_from" name="halfday_from" required />
+                                                @Html.TextBoxFor(m => m.FromTime, new { @class = "form-control datetimepicker2", required = "required" })
 
                                                 <div class="input-group-append">
                                                     <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
@@ -149,8 +174,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @Html.ValidationMessage("halfday_from", new { @class = "text-danger" })
-
+                                        @Html.ValidationMessageFor(m => m.FromTime, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
@@ -161,7 +185,7 @@
                                         <div class="form-group">
                                             <div class="input-group ">
 
-                                                <input type="text" class="form-control datetimepicker2" id="halfday_to" name="halfday_to" required />
+                                                @Html.TextBoxFor(m => m.ToTime, new { @class = "form-control datetimepicker2", required = "required" })
 
                                                 <div class="input-group-append">
                                                     <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
@@ -169,7 +193,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @Html.ValidationMessage("halfday_to", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(m => m.FromTime, "", new { @class = "text-danger" })
 
 
                                     </div>
@@ -200,21 +224,21 @@
 
                         <div class="d-flex justify-content-center">
                             <div class="form-group col-8 ">
-                                <label class="label-control "> Reason</label>
-                                <select class="custom-select" name="LeaveType" id="LeaveType" required>
-                                    <option value="" disabled selected>Select Leave Reason</option>
-                                    @{ System.Data.DataSet i = ViewBag.Reasons;
+                                @{
+                                    l1 = new List<SelectListItem>();
+                                    System.Data.DataSet i = ViewBag.Reasons;
 
-                                        foreach (System.Data.DataRow x in i.Tables[0].Rows)
-                                        {
+                                    foreach (System.Data.DataRow x in i.Tables[0].Rows)
+                                    {
 
-                                            <option value="@x[0].ToString()">@x[1].ToString()</option>
+                                        l1.Add(new SelectListItem() { Text = x[1].ToString(), Value = x[0].ToString() });
 
-
-                                        }
                                     }
-                                </select>
-                                @Html.ValidationMessage("LeaveReason", new { @class = "text-danger" })
+                                }
+                                <label class="label-control "> Reason</label>
+                                @Html.DropDownListFor(m => m.LeaveReason, l1, new { @class = "custom-select", required = "required" })
+
+                                @Html.ValidationMessageFor(m => m.LeaveReason, "", new { @class = "text-danger" })
 
 
                             </div>
@@ -225,7 +249,7 @@
                             <div class="form-group col-8">
                                 <label class="label-control" for="LeaveRemarks"> Enter Description</label><br />
                                 <div class="p-1" style="border:solid 1px #A9A9A9">
-                                    <textarea class="form-control " style="resize:none" name="LeaveRemarks" id="LeaveRemarks" cols="30" rows="5" placeholder="Enter Description if any."></textarea>
+                                    @Html.TextAreaFor(m => m.LeaveRemarks, new { @class = "form-control", style = "resize:none", cols = "30", rows = "5", placeholder = "Enter Description if any." })
 
                                 </div>
                             </div>
@@ -260,7 +284,9 @@
 <script>
 
     $(document).ready(function () {
-
+        if (document.getElementById("exampleModalCenter")) {
+            $('#exampleModalCenter').modal('show');
+        }
         if (document.getElementById("alert")) {
             setTimeout(Hide, 3000)
         }
