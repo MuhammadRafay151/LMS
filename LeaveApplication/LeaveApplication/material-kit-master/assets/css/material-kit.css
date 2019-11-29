@@ -14,6 +14,7 @@ z/*
  */
 
 /*     brand Colors              */
+
 @font-face {
     font-family: "g1";
     src: url(../../../Fonts/GARA.TTF);
@@ -18075,4 +18076,11 @@ footer .pull-center {
 /*Custom css*/
 .btn-info-grd {
     background: linear-gradient(60deg, #26c6da, #0097a7);
+}
+@media screen and (max-height: 600px) {
+    .scrollable-menu {
+        height: auto;
+        max-height: 200px;
+        overflow-x: hidden;
+    }
 }

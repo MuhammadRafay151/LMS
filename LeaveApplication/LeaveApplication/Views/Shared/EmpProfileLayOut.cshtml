@@ -20,6 +20,7 @@
     @Styles.Render("~/Content/css")
    
     @Scripts.Render("~/bundles/modernizr")
+  
 </head>
 <body style="background-image:url(../../Images/uitreckon3.jpg); background-size: cover; background-position: top center; background-repeat:no-repeat;">
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-white ">
@@ -104,7 +105,7 @@
                     <li class="nav-item dropdown">
 
                         <a class="nav-link font-weight-bold text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)<img class="rounded ml-2" src="~/Images/account.png" style="width:30px" /> </a>
-                        <div class="dropdown-menu dropdown-menu-right mr-1">
+                        <div class="dropdown-menu scrollable-menu dropdown-menu-right mr-1">
                             <div class=" card border-0  mt-4" style="width: 18rem;">
                                 <img src="/LogIn/ProfileImg" class="card-img-top" alt="...">
                                 <div class="card-body ">
