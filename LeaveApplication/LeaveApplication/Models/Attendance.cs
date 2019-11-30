@@ -26,5 +26,19 @@ namespace LeaveApplication.Models
             //e1.Send(mail, subject, Body);
 
         }
+        public bool IsLeaveApplied()
+        {
+            string Querry = string.Format("");
+            db database = new db();
+            DataSet ds = database.Read(Querry);
+            if(ds.Tables[0].Rows.Count>0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

@@ -113,12 +113,11 @@
                                                 @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control datetimepicker ", required = "required", onfocusout = "DateSelect(this)" })
 
                                                 <div class="input-group-append">
-                                                    <span class="input-group-text" style="margin-left:-35px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+                                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
                                                 </div>
                                             </div>
                                         </div>
                                         @Html.ValidationMessageFor(m => m.FromDate, "", new { @class = "text-danger" })
-
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center ">
