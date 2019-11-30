@@ -249,7 +249,7 @@ namespace LeaveApplication.Models
             e1.ImageBytes = (Byte[])d1.Tables[0].Rows[0][9];
             e1.isAdmin = bool.Parse(d1.Tables[0].Rows[0][10].ToString());
             e1.Manager = d1.Tables[0].Rows[0][11].ToString();
-            e1.Password = d1.Tables[0].Rows[0][12].ToString();
+            //e1.Password = d1.Tables[0].Rows[0][12].ToString();
             e1.Email = d1.Tables[0].Rows[0][13].ToString();
             e1.EmpNo = Convert.ToInt32(d1.Tables[0].Rows[0][14]);
             return e1;
