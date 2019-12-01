@@ -156,7 +156,7 @@ namespace LeaveApplication.Controllers
                         {
                             ViewBag.HrsError = false;
                         }
-                        return View(x);
+                        return View("EditDetails", x);
                     }
 
                 }
@@ -165,7 +165,7 @@ namespace LeaveApplication.Controllers
                     return RedirectToAction("FacultyApplications");
                 }
 
-               
+
             }
             else
             {
@@ -191,10 +191,10 @@ namespace LeaveApplication.Controllers
                 catch (FormatException)
                 {
                     return RedirectToAction("Index", "ViewApplications");
-                } 
+                }
                 LeaveApplication.Models.LeaveApplication x = lb.GetViewApplication(Application_Id);
                 List<StatusHistory> a = lb.GetStatusHistory(Application_Id);
-                if(((Employee)Session["Employee"]).IsManager && ManagerBusinessLayer.IsUnderManagement(Application_Id, ((Employee)Session["Employee"]).EmployeeID)&&lb.IsPending(int.Parse( Application_Id)))
+                if (((Employee)Session["Employee"]).IsManager && ManagerBusinessLayer.IsUnderManagement(Application_Id, ((Employee)Session["Employee"]).EmployeeID) && lb.IsPending(int.Parse(Application_Id)))
                 {
                     ViewBag.ShowAction = true;
                 }
@@ -224,7 +224,7 @@ namespace LeaveApplication.Controllers
             {
                 return RedirectToAction("Index");
             }
-           
+
         }
         [HttpPost]
         public ActionResult SaveChanges(LeaveApplication.Models.LeaveApplication l1)
@@ -234,34 +234,58 @@ namespace LeaveApplication.Controllers
             {
                 return RedirectToAction("Index", "LogIn");
             }
-            bool IsDeletedFile = Convert.ToBoolean(Request.Form["IsDeleted"]);
             l1.ApplicationId = ((LeaveApplication.Models.LeaveApplication)Session["EditLeave"]).ApplicationId;
             l1.TotalDays = ((LeaveApplication.Models.LeaveApplication)Session["EditLeave"]).TotalDays;
-            l1.FileId = ((LeaveApplication.Models.LeaveApplication)Session["EditLeave"]).FileId;
 
-            if (((LeaveApplication.Models.LeaveApplication)Session["EditLeave"]).TotalDays == 0.5)
+            LeaveApplication.Validation_Classes.Validation v1 = new Validation_Classes.Validation();
+            if (l1.TotalDays == 0.5)
             {
-                l1.FromDate = Request.Form["halfday_from"].ToString();
-                string[] temp = l1.FromDate.Split(' ');
-                l1.ToDate = temp[0] + " " + Request.Form["halfday_to"].ToString();
-
-                Double hrs = lb.CalculateLeaveHours(l1);
-
-                if (hrs > 5 || hrs <= 0)
-                {
-
-                    TempData["HrsError"] = true;
-                    return RedirectToAction("EditDetails", "ViewApplications", new { Application_Id = l1.ApplicationId });
-                }
-                lb.SaveChanges(l1, IsDeletedFile);
+                v1.ValidateHalfDay_L(l1, this.ModelState);
             }
             else
             {
-                lb.SaveChanges(l1, IsDeletedFile);
+                v1.ValidateFullDay_L(l1, this.ModelState);
             }
 
-            Session.Remove("EditLeave");
-            return RedirectToAction("Index", "ViewApplications");
+
+            if (ModelState.IsValid)
+            {
+                bool IsDeletedFile = Convert.ToBoolean(Request.Form["IsDeleted"]);
+                l1.FileId = ((LeaveApplication.Models.LeaveApplication)Session["EditLeave"]).FileId;
+
+                if (((LeaveApplication.Models.LeaveApplication)Session["EditLeave"]).TotalDays == 0.5)
+                {
+                    string fm = l1.FromDate;
+                    l1.FromDate = l1.FromDate + " " + l1.FromTime;
+
+                    l1.ToDate = fm + " " + l1.ToTime;
+
+                    Double hrs = lb.CalculateLeaveHours(l1);
+                    if (hrs <= 0)
+                    {
+
+                        TempData["HrsError"] = true;
+                        return EditDetails(LeaveApplication.Models.Encryption.Base64Encode(l1.ApplicationId));
+                    }
+                    lb.SaveChanges(l1, IsDeletedFile);
+                }
+                else
+                {
+                    if (lb.CalculateTotalLeaveDays(l1) <= 0)
+                    {
+                        TempData["HrsError"] = true;
+                        return EditDetails(LeaveApplication.Models.Encryption.Base64Encode(l1.ApplicationId));
+                    }
+                    lb.SaveChanges(l1, IsDeletedFile);
+                }
+                Session.Remove("EditLeave");
+                return RedirectToAction("Index", "ViewApplications");
+            }
+            else
+            {
+                return EditDetails(LeaveApplication.Models.Encryption.Base64Encode(l1.ApplicationId));
+            }
+
         }
         public ActionResult LeaveCount()
         {

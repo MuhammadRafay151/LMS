@@ -18080,7 +18080,14 @@ footer .pull-center {
 @media screen and (max-height: 600px) {
     .scrollable-menu {
         height: auto;
-        max-height: 200px;
+        max-height: 410px;
         overflow-x: hidden;
     }
 }
+@media screen and (max-width:500px) {
+    .scrollpagination {
+        width: 320px;
+        overflow: auto;
+    }
+}
+    

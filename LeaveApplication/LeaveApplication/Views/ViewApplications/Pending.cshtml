@@ -39,6 +39,7 @@
         $('#app_id').val(null);
     }
 </script>
+
 @* Model for cancel*@
 <div class="modal fade " id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog " role="document">
@@ -69,7 +70,12 @@
 </div>
 @* -------------------------------- *@
 @* Model for Approve/ Reject*@
-@Html.Partial("ApproveRejectModel");
+
+@if (ViewBag.Manager == true)
+{
+    @Html.Partial("ApproveRejectModel");
+}
+
 @* -------------------------------- *@
 <div class="container-fluid " id="a1">
 
@@ -205,7 +211,7 @@
                     else
                     {<div class="card-footer justify-content-end">
 
-                            <ul id="paged" class="pagination pagination-info ">
+                            <ul id="paged" class="pagination pagination-info scrollpagination">
                                 @{
 
                                     <li class="page-item ">

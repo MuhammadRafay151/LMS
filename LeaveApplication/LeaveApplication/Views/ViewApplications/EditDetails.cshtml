@@ -8,171 +8,331 @@
 @*<h2>Index</h2>*@
 
 
-    <div id="div1" class="container mt-lg-5 mt-5">
-        <div class="row  justify-content-center ">
+<div id="div1" class="container mt-5 mt-sm-5 mt-md-5 mt-lg-5">
+    <div class="row  justify-content-center ">
 
-            <div class="col-sm-12 col-md-6 col-lg-6 col-12 ">
-                <div class="card ">
-                    <div class="card-header card-header-info">
-                      <div class="row ">
-                          <div class="col-4 ">
-                              <a  href='/ViewApplications/'><img  src="~/Images/go back.png" style="margin-top:12%; width:35px" /></a>
+        <div class="col-12 col-sm-12 col-md-9 col-lg-6 ">
+            <div class="card ">
+                <div class="card-header card-header-info">
 
-                          </div>
-                          <div class="col">
-                              <h4 style="font-size:2em">Edit Application</h4>
-                          </div>
-                      </div>
-                      
-                    </div>
-                    <div class="card-body d-flex justify-content-center">
-                        @using (Html.BeginForm("SaveChanges", "ViewApplications", FormMethod.Post, new { id = "form1" , autocomplete = "off", enctype = "multipart/form-data"}))
+                    <a href='/ViewApplications/' class="p-3"><img src="~/Images/go back.png" style=" width:35px" /></a>
+                    @if (Model.TotalDays == 0.5)
+                    {
+                        <h4 class="card-title text-center  d-inline-block">Edit Application(Half day)</h4>
+                    }
+                    else
+                    {
+                        <h4 class="card-title text-center  d-inline-block">Edit Application(Full day)</h4>
+                    }
+
+
+                </div>
+                <div class="card-body ">
+                    @using (Html.BeginForm("SaveChanges", "ViewApplications", FormMethod.Post, new { id = "form1", autocomplete = "off", enctype = "multipart/form-data" }))
+                    {
+                        <label style="font-size:22px" id="date" for="">Date Of Application: @Model.ApplyDate</label>
+                        <br><br>
+                        <div class="d-flex justify-content-center">
+                            <div class="form-group col-8 ">
+                                <label class="label-control "> Select Leave</label>
+                                @{
+                                    List<SelectListItem> l1 = new List<SelectListItem>();
+                                    l1.Add(new SelectListItem() { Text = "Select Leave Type", Value = "", Disabled = true, Selected = true });
+                                    foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
+                                    {
+                                        l1.Add(new SelectListItem() { Text = @x.LeaveType, Value = x.LeaveTypeID.ToString() });
+
+                                    }
+
+                                }
+
+                                @Html.DropDownListFor(m => m.LeaveType, l1, new { @class = "custom-select", required = "required" })
+
+                                @Html.ValidationMessageFor(m => m.LeaveType, "", new { @class = "text-danger" })
+
+
+
+                            </div>
+                        </div>
+
+                        if (Model.TotalDays == 0.5)
                         {
-                            <label style="font-size:22px" id="date" for="">Date Of Application: @Model.ApplyDate</label>
-                            <br><br>
-
-                            <div class="form-group">
-                                <label class="label-control">Select Leaves</label>
-                                <select class="form-control" name="@Html.NameFor(m=>m.LeaveType)" id="@Html.IdFor(m=>m.LeaveType)">
-                                    <option selected disabled> Select Leave Type</option>
-                                    @{
-                                        foreach (LeaveApplication.Models.LeaveTypes x in ViewBag.Leavetypes)
-                                        {
-                                            <option value="@x.LeaveTypeID">@x.LeaveType</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                            if (Model.TotalDays == 0.5)
-                            {
-                                <div class="form-group " id="d1">
-                                    <label class="label-control" id="l1">Date & time </label>
-                                    <input type="text" class="form-control datetimepicker1" id="halfday" name="halfday_from" value="@Model.FromDate" required />
-                                </div>
-
-                                <div class="form-group ">
-                                    <label class="label-control " id="hf2">To time</label>
-                                    <input type="text" class="form-control datetimepicker2" id="halfday_to" name="halfday_to" value="@Model.ToDate" required />
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="form-group">
-                                    <label for="date1">From</label>
-                                    <input class="form-control datetimepicker" type="text" name="@Html.NameFor(m=>m.FromDate)" id="@Html.IdFor(m=>m.FromDate)" value="@Model.FromDate" required onfocusout="DateSelect(this)">
-                                </div>
-                                <div class="form-group">
-                                    <label for="date2">To</label>
-
-                                    <input type="text" class="form-control datetimepicker" value="@Model.ToDate" name="@Html.NameFor(m=>m.ToDate)" id="@Html.IdFor(m=>m.ToDate)" required onfocusout="DateSelect(this)">
-                                </div>
-                            }
+                            <div class="d-flex justify-content-center ">
+                                <div class="form-group col-8">
+                                    <label class="label-control" id="hf1">From date</label>
+                                    <div class="form-group">
+                                        <div class="input-group ">
+                                            @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control datetimepicker ", required = "required" })
 
 
-                            <div class=" form-group">
-                                <label for="days">Total Days</label>
-                                <input class="form-control" type="text" name="days" value="@Model.TotalDays" id="days" disabled>
 
-                            </div>
-                            if (ViewBag.HrsError == true)
-                            {
-                                <div id="alert" class=" alert alert-danger  fade-in">
+                                            <div class="input-group-append">
+                                                <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
 
-                                    <strong>Error!</strong> Exceeds hours Limitation
-                                </div>
-                            }
-                            <div class="form-group">
-                                <label class="label-control">Select Reasons</label>
-                                <select class="form-control" name="@Html.NameFor(m=>m.LeaveReason)" id="@Html.IdFor(m=>m.LeaveReason)">
-                                    <option selected disabled>Reason For Leave</option>
-                                    @{ System.Data.DataSet i = ViewBag.Reasons;
-                                        foreach (System.Data.DataRow x in i.Tables[0].Rows)
-                                        {
-                                            <option value="@x[0].ToString()">@x[1].ToString()</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="label-control">Description</label>
-                                <textarea class="form-control" style="resize:none" name="@Html.NameFor(m=>m.LeaveRemarks)" id="@Html.IdFor(m=>m.LeaveRemarks)" cols="30" rows="10" placeholder="Enter Description if any.">@Model.LeaveRemarks</textarea>
-                            </div>
-                            if (!string.IsNullOrWhiteSpace(@Model.FileId))
-                            {
-                                <div class="form-group">
-                                    <label>Your Attachment:</label>
-                                    <a href="/ViewApplications/DownLoadFile?Fileid=@Model.FileId">@Model.FileName</a>
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" name="IsDeleted" id="IsDeleted" type="checkbox" onclick="$(this).val(this.checked)" value="false">
-                                            Delete Current Attachment
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
+                                            </div>
+                                        </div>
                                     </div>
+                                    @Html.ValidationMessageFor(m => m.FromDate, "", new { @class = "text-danger" })
                                 </div>
-                            }
+                            </div>
+                            <div class="d-flex justify-content-center ">
+                                <div class="form-group col-8">
+                                    <label class="label-control " id="hf1">From time</label>
+                                    <div class="form-group">
+                                        <div class="input-group ">
+                                            @Html.TextBoxFor(m => m.FromTime, new { @class = "form-control datetimepicker2", required = "required" })
 
-                            <label>Update Attachment</label>
-                            <input type="file" name="Attachment" />
-                            <div class="card-footer ">
-                                <input id="Submit1" class="btn btn-round btn-info-grd col-lg-12" type="submit" value="Save Changes" />
 
+
+                                            <div class="input-group-append">
+                                                <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.FromTime, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+
+                            <div class="d-flex justify-content-center ">
+                                <div class="form-group col-8">
+                                    <label class="label-control " id="hf2">To time</label>
+                                    <div class="form-group">
+                                        <div class="input-group ">
+
+                                            @Html.TextBoxFor(m => m.ToTime, new { @class = "form-control datetimepicker2", required = "required" })
+
+                                            <div class="input-group-append">
+                                                <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.ToTime, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div class="d-flex justify-content-center ">
+                                <div class="form-group col-8">
+                                    <label class="control-label">From</label>
+                                    <div class="form-group">
+                                        <div class="input-group ">
+                                            @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control datetimepicker ", required = "required", onfocusout = "DateSelect(this)" })
+
+                                            <div class="input-group-append">
+                                                <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.FromDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center ">
+                                <div class="form-group col-8">
+                                    <label for="date2" id="l3">To</label>
+                                    <div class="form-group">
+                                        <div class="input-group ">
+                                            @Html.TextBoxFor(m => m.ToDate, new { @class = "form-control datetimepicker ", onfocusout = "DateSelect(this)" })
+
+
+                                            <div class="input-group-append">
+                                                <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.ToDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        }
+
+                        <div class="d-flex justify-content-center">
+                            <div class="form-group col-8">
+                                <label class="label-control" for="days">Total Days</label>
+                                <input class="form-control" type="text" name="days" value="@Model.TotalDays" id="days" readonly>
+
+                            </div>
+                        </div>
+
+                        if (ViewBag.HrsError == true)
+                        {
+                            <div id="alert" class=" alert alert-danger  fade-in">
+                                <strong>Error!</strong> Exceeds hours Limitation
                             </div>
                         }
-                    </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="form-group col-8 ">
+                                @{
+                                    l1 = new List<SelectListItem>();
+                                    System.Data.DataSet i = ViewBag.Reasons;
+                                    l1.Add(new SelectListItem() { Text = "Select leave reasons", Disabled = true, Selected = true, Value = "" });
+                                    foreach (System.Data.DataRow x in i.Tables[0].Rows)
+                                    {
+
+                                        l1.Add(new SelectListItem() { Text = x[1].ToString(), Value = x[0].ToString() });
+
+                                    }
+                                }
+                                <label class="label-control "> Reason</label>
+                                @Html.DropDownListFor(m => m.LeaveReason, l1, new { @class = "custom-select", required = "required" })
+
+                                @Html.ValidationMessageFor(m => m.LeaveReason, "", new { @class = "text-danger" })
+
+
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="form-group col-8">
+                                <label class="label-control" for="LeaveRemarks"> Enter Description</label><br />
+                                <div class="p-1" style="border:solid 1px #A9A9A9">
+                                    @Html.TextAreaFor(m => m.LeaveRemarks, new { @class = "form-control", style = "resize:none", cols = "30", rows = "5", placeholder = "Enter Description if any." })
+
+                                </div>
+                            </div>
+                        </div>
+                        if (Model.ApplicationType == false)
+                        {
+                            <div class="form-group">
+                                <div class="fileinput fileinput-new text-center " data-provides="fileinput">
+
+
+                                    <div>
+                                        <span id="s1" class="col-10 btn btn-raised btn-round btn-outline-info  btn-file">
+                                            @if (string.IsNullOrWhiteSpace(@Model.FileId))
+                                            {
+                                                <span class="fileinput-new">Add Attachments</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="fileinput-new">Update Attachments</span>
+                                            }
+
+
+
+
+                                        </span>
+                                        @*<a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>*@
+
+                                        <input type="file" name="Attachment" id="Attachment" hidden />
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    @Html.ValidationMessage("Attachment", new { @class = "text-danger pt-2 " })
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center">
+
+                                <p id="p1" class="pt-2 pr-1 d-inline">Attachment: empty...</p>
+                                <button type="button" id="c1" class="close " style="display:none" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+
+
+                            </div>
+                            if (!string.IsNullOrWhiteSpace(@Model.FileId))
+                            { <p class="text-center text-danger">Note: Updating attachment will replace your previous attachment</p>
+                                <div class="d-flex justify-content-center ">
+
+                                    <div class="form-group p-1" style="border:solid 1px #A9A9A9">
+                                        <label>Current Attachment:</label>
+                                        <a href="/ViewApplications/DownLoadFile?Fileid=@Model.FileId">@Model.FileName</a>
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" name="IsDeleted" id="IsDeleted" type="checkbox" onclick="$(this).val(this.checked)" value="false">
+                                                Delete Current Attachment
+                                                <span class="form-check-sign">
+                                                    <span class="check"></span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                        }
+
+
+
+
+
+                        <div class="card-footer ">
+                            <input id="Submit1" class="btn btn-round btn-info-grd col-lg-12" type="submit" value="Save Changes" />
+
+                        </div>
+                    }
                 </div>
-
-
             </div>
-        </div>
 
+
+        </div>
     </div>
 
-    <script>
+</div>
+
+<script>
 
     $(document).ready(function () {
-            
+
         if (document.getElementById("alert")) {
             setTimeout(Hide, 3000)
         }
+        $('#s1').click(function () {
+            $('#Attachment').trigger('click');
+        });
+        $('#Attachment').change(function () {
+            document.getElementById('p1').innerHTML = "Attachment: " + document.getElementById('Attachment').files.item(0).name;
+            $('#c1').show();
+        });
+        $('#c1').click(function () {
+
+            $('#c1').hide();
+            $('#Attachment').val(null);
+            document.getElementById('p1').innerHTML = "Attachment: empty...";
+
+        });
         function Hide() {
             $('#alert').hide('fade');
         }
-            $('.datetimepicker1').datetimepicker({
-                format: 'DD/MM/YYYY LT',
-                icons: {
-                    time: "fa fa-clock-o",
-                    date: "fa fa-calendar",
-                    up: "fa fa-chevron-up",
-                    down: "fa fa-chevron-down",
-                    previous: 'fa fa-chevron-left',
-                    next: 'fa fa-chevron-right',
-                    today: 'fa fa-screenshot',
-                    clear: 'fa fa-trash',
-                    close: 'fa fa-remove',
+        $('.datetimepicker1').datetimepicker({
+            format: 'DD/MM/YYYY LT',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
 
-                }
+            }
 
-            });
-            $('.datetimepicker').datetimepicker({
-                format: 'DD/MM/YYYY',
-                icons: {
-                    time: "fa fa-clock-o",
-                    date: "fa fa-calendar",
-                    up: "fa fa-chevron-up",
-                    down: "fa fa-chevron-down",
-                    previous: 'fa fa-chevron-left',
-                    next: 'fa fa-chevron-right',
-                    today: 'fa fa-screenshot',
-                    clear: 'fa fa-trash',
-                    close: 'fa fa-remove',
+        });
+        $('.datetimepicker').datetimepicker({
+            format: 'DD/MM/YYYY',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
 
-                }
+            }
 
-            });
-         $('.datetimepicker2').datetimepicker({
+        });
+        $('.datetimepicker2').datetimepicker({
             format: 'LT',
             icons: {
                 time: "fa fa-clock-o",
@@ -188,20 +348,20 @@
             }
 
         });
-        });
+    });
 
 
-    </script>
-    <script>
+</script>
+<script>
     var FromDate = null;
     var ToDate = null;
      document.getElementById("LeaveType").value = "@Model.LeaveTypeID";
     document.getElementById("LeaveReason").value = "@Model.LeaveReason";
      FromDate = document.getElementById("FromDate").value;
     ToDate = document.getElementById("ToDate").value;
-   
-   
-   
+
+
+
     function DateSelect(date) {
 
             var LeaveDetails = { FromDate: "", ToDate: "" };
@@ -240,6 +400,6 @@
 
 
         }
-    </script>
+</script>
 
 
