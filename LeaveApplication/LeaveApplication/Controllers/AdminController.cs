@@ -142,7 +142,7 @@ namespace LeaveApplication.Controllers
             //use above querry 
            
             EmployeeBusinessLayer emp = new EmployeeBusinessLayer();
-
+            ModelState.Remove("Password");
             if (ModelState.IsValid)
             {
                 try

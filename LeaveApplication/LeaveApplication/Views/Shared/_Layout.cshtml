@@ -5,8 +5,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - LMS</title>
-
+    <title>@ViewBag.Title - UIT HR</title>
+    <link rel=" icon" href="~/Images/uit1fav.png" sizes="16x16">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
@@ -19,7 +19,7 @@
 </head>
 <body style="background-image:url(../../Images/uitreckon.jpg); background-size: cover; background-position: top center;">
 
-   
+
 
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-white">
         <div class="container">
@@ -38,7 +38,7 @@
                     <li class="nav-item active">
                         <a class="nav-link font" href="/Home/Index">Home <span class="sr-only">(current)</span></a>
                     </li>
-                   
+
                     <li class="nav-item">
                         @Html.ActionLink("Log In", "Index", "Login", null, new { @class = "nav-link font" })
                     </li>
@@ -57,7 +57,7 @@
         @RenderBody()
         @*<hr />*@
         <footer class="justify-content-end">
-            <p class="text-white">&copy; @DateTime.Now.Year Reckon Force</p>
+            <p class="text-white">&copy; @DateTime.Now.Year Usman Institute of Technology</p>
         </footer>
     </div>
 

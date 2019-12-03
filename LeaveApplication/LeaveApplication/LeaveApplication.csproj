@@ -61,7 +61,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PagedDataSet">
-      <HintPath>..\..\..\PagedDataSet\PagedDataSet\bin\Release\PagedDataSet.dll</HintPath>
+      <HintPath>..\..\..\..\PagedDataSet\PagedDataSet\bin\Release\PagedDataSet.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -207,6 +207,7 @@
     <Content Include="Images\new1.jpg" />
     <Content Include="Images\theme-photos-nJCW43biz9U-unsplash.jpg" />
     <Content Include="Images\theme-photos-nJCW43biz9U-unsplashnew.jpg" />
+    <Content Include="Images\uit1fav.png" />
     <Content Include="Images\uitreckon.jpg" />
     <Content Include="Images\uitreckon2.jpg" />
     <Content Include="Images\uitreckon3.jpg" />

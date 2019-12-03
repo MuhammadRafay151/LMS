@@ -36,6 +36,7 @@ namespace LeaveApplication.Models
         public HttpPostedFileBase Attachment { get; set; }
         public string FileId { get; set; }//use when displaying leave in detail view
         public string FileName { get; set; }
+        public string ManagerRemarks { get; set; }
         public void NotifyManager(Employee Manager, Employee FacultyMember)
         {//notify manger about new leave...
             if(Manager!=null)

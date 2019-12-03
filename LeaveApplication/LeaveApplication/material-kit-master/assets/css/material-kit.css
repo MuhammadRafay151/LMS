@@ -11445,9 +11445,9 @@ label {
   .pagination.pagination-primary .page-item:nth-of-type(7) {
     display: none;
   }
-  .pagination.pagination-info .page-item:nth-of-type(2) {
+  /*.pagination.pagination-info .page-item:nth-of-type(2) {
     display: none;
-  }
+  }*/
   .main.main-raised {
     margin-top: -30px;
   }
