@@ -44,7 +44,7 @@ namespace LeaveApplication.Models
         {
             db DataBase = new db();
             string Querry = string.Format(
-                @"IF not EXISTS(select EmployeeID from  LeaveApplication where '{0}' between FromDate and ToDate and EmployeeID='{1}')
+                @"IF not EXISTS(select EmployeeID from  LeaveApplication  inner join statushistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID where '{0}' between FromDate and ToDate and EmployeeID='{1}' and StatusHistory.ApplicationStatusID='2')
                  BEGIN
                  insert into Attendance(EmpNo, AbsentDate, Message) values('{1}', '{0}', '{2}')
                  END"
