@@ -1,0 +1,148 @@
+﻿
+@{
+    ViewBag.Title = "Attendance Record";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+}
+@model System.Data.DataSet
+
+<div class="row mt-lg-5">
+    <div class="col ">
+
+        <div id="div1" class="container" style="margin-top:5%">
+            <div class="row  justify-content-center align-content-center">
+                <div class="card ">
+                    <div class="card-header card-header-info " style="background-color:#FEFCFB">
+                        <h4 class="card-title text-center">Attendance</h4>
+                    </div>
+                    <div class="card-body" id="div1">
+                        <table class="table table-hover table-striped ">
+                            <thead class="">
+                                <tr class="">
+                                    <th scope="col">Empno</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Arrival Time</th>
+                                        <th scope="col">Departure Time</th>
+                                        <th scope="col">Updated On</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ System.Data.DataSet x = Model;
+                                    bool check = false;
+                                    foreach (System.Data.DataRow i in x.Tables[0].Rows)
+                                    {
+                                        <tr>
+
+                                            <td>@i[0].ToString()</td>
+                                            <td>@i[1].ToString()</td>
+                                            <td>@i[2].ToString()</td>
+                                            <td>@i[3].ToString()</td>
+                                            <td>@i[4].ToString()</td>
+                                            <td class="align-middle">
+                                                <div class="d-flex justify-content-end">
+
+                                                    <button class="btn btn-info-grd" data-toggle="modal" data-target="#myModal">View Detail</button>
+
+                                                </div>
+
+                                            </td>
+
+
+                                        </tr>
+                                        check = true;
+                                    }
+                                }
+
+
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    @{
+                        if (check == false)
+                        {
+                            <h1 class="text-center align-middle">Records Not Found</h1>
+                        }
+                    }
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                @* <button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                                @if (ViewBag.HideCloseBtn != true)
+                                {
+                                    <div class="col">
+                                        <button id="close1" type="button" class="close" aria-label="Close" data-dismiss="modal">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                }
+
+                            </div>
+                            <div class="modal-body">
+                                <div class="card">
+
+                                    <div class="card-body col-12">
+                                        <div class="card-title">
+                                            <div class="row">
+
+                                                <div class="col">
+                                                    <h4 style="font-family:g1">Attendance Details</h4>
+                                                </div>
+
+
+                                            </div>
+
+
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+
+                                                        <th scope="col">Arrival time</th>
+                                                        <th scope="col">Departure time</th>
+                                                        <th scope="col">Updated on</th>
+
+                                                        @*@foreach (System.Data.DataRow z in Model.Tables[0].Rows)
+                                                            {
+                                                                <th scope="col" class="text-center text-info">@z[0].ToString()</th>
+                                                            }*@
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+
+                                                        @foreach (System.Data.DataRow z in Model.Tables[0].Rows)
+                                                        {
+                                                            <td class="text-center">@z[2].ToString()</td>
+                                                            <td class="text-center">@z[3].ToString()</td>
+                                                            <td class="text-center">@z[4].ToString()</td>
+                                                        <tr></tr>
+
+                                                    }
+
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>

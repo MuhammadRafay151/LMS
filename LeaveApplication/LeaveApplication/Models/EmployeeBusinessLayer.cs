@@ -412,5 +412,13 @@ namespace LeaveApplication.Models
             string Querry = string.Format("select EmpNo from Employee where EmployeeID='{0}'", EmpID);
             return Convert.ToInt32(database.ExecuteScalar(Querry));
         }
+
+        public DataSet GetAttendance(int EmpID)
+        {
+            string Querry = string.Format("select EmpNo,Date,ArrivalTime,DepartureTime,UpdatedOn from AttendanceRecord where EmpNo=(select EmpNo from Employee where EmployeeID='{0}')",EmpID);
+            ds = database.Read(Querry);
+
+            return ds;
+        }
     }
 }
