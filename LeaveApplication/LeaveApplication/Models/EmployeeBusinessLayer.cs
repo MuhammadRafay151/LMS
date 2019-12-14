@@ -397,20 +397,16 @@ namespace LeaveApplication.Models
             }
         }
 
-        public DataSet GetAbsentees(int EmpNo)
+        public DataSet GetAbsentees(int EmployeeId)
         {
 
-            string Querry = string.Format("select EmpNo,AbsentDate,Message from Attendance where EmpNo={0}",EmpNo);
+            string Querry = string.Format("select * from Attendance where EmployeeId={0} and IsClosed=0", EmployeeId);
 
             ds = database.Read(Querry);
 
             return ds;
         }
 
-        public int GetEmpNo(int EmpID)
-        {
-            string Querry = string.Format("select EmpNo from Employee where EmployeeID='{0}'", EmpID);
-            return Convert.ToInt32(database.ExecuteScalar(Querry));
-        }
+
     }
 }

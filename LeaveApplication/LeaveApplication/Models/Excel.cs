@@ -36,7 +36,7 @@ namespace LeaveApplication.Models
                                 EmpNo = Convert.ToInt32(cell.ToString()),
                                 EmployeeName = dataRow.Cell(3).Value.ToString(),
                                 Abscent = Convert.ToBoolean(cell2.ToString()),
-                                Date = Convert.ToDateTime(cell3, CultureInfo.InvariantCulture)
+                                Date = Convert.ToDateTime(cell3.ToString(), System.Globalization.CultureInfo.InvariantCulture)
 
                             });
                         }

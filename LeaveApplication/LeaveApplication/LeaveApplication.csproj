@@ -312,6 +312,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\canvasjs.min.js" />
     <Content Include="Scripts\CustomJS.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
@@ -572,6 +573,7 @@
     <Content Include="Fonts\GARABD.TTF" />
     <Content Include="Fonts\GARAIT.TTF" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\Filing.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

@@ -26,10 +26,18 @@ namespace LeaveApplication.Controllers
                 if (ContentType == "application/vnd.ms-excel" || ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                 {
                     Excels WorkBook = new Excels();
-                    List<Attendance> x = WorkBook.Read(Attendance.InputStream);
+                    try
+                    {
+                        List<Attendance> x = WorkBook.Read(Attendance.InputStream);
+                        Session["AttFile"] = x;
+                        return View("ViewAttandence", x);
+                    }
+                   catch(FormatException e)
+                    {
+                        return Content(e.Message+" Required format:mm/dd/yyyy");
+                    }
                     //Get data for only absecent employees....
-                    Session["AttFile"] = x;
-                    return View("ViewAttandence", x);
+                  
                 }
                 else
                     return RedirectToAction("Index");

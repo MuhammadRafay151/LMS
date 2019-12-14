@@ -34,7 +34,7 @@ namespace LeaveApplication.Controllers
                 Session["Employee"] = this.e1.ReadEmployee(e1.UserName);
                 Employee e2 = (Employee)Session["Employee"];
                 Session["EmpID"] = e2.EmployeeID;
-                return RedirectToAction("Index", "ApplyForLeave");
+                return RedirectToAction("Index", "Dashboard");
 
             }
             else
