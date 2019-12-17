@@ -156,11 +156,11 @@ namespace LeaveApplication.Models
         {
             con = new SqlConnection();
             cmd = new SqlCommand();
-            if(string.IsNullOrWhiteSpace(e1.Password))
+            if (string.IsNullOrWhiteSpace(e1.Password))
             {
                 return false;
             }
-            e1.Password=MD5Hash(e1.Password);
+            e1.Password = MD5Hash(e1.Password);
             cmd.CommandText = string.Format("Select * from Users where UserName='{0}' and Password='{1}'", e1.UserName, e1.Password);
             con.ConnectionString = connection;
             con.Open();
@@ -184,6 +184,11 @@ namespace LeaveApplication.Models
 
             }
 
+        }
+        public bool IsactiveEmployee(string Username)
+        {
+            string Querry = string.Format("select isactive from employee where username='{0}'", Username);
+            return Convert.ToBoolean(database.ExecuteScalar(Querry));
         }
         public Employee ReadEmployee(string UserName)
         {
@@ -366,7 +371,7 @@ namespace LeaveApplication.Models
 
         public void ResetPassword(string NewPassword, string UserName)
         {
-            NewPassword =MD5Hash(NewPassword);
+            NewPassword = MD5Hash(NewPassword);
             string Querry = string.Format("update Users set Password='{0}' where UserName='{1}'", NewPassword, UserName);
             database.ExecuteQuerry(Querry);
 

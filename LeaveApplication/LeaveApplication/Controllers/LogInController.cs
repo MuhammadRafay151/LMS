@@ -28,7 +28,10 @@ namespace LeaveApplication.Controllers
 
             if (this.e1.Authenticate(e1))
             {
-
+                if(!this.e1.IsactiveEmployee(e1.UserName))
+                {
+                    return RedirectToAction("inactive");
+                }
                 this.e1.ReadEmployee(e1.UserName);
 
                 Session["Employee"] = this.e1.ReadEmployee(e1.UserName);
@@ -58,6 +61,10 @@ namespace LeaveApplication.Controllers
             return File(((Employee)Session["Employee"]).ImageBytes, "image/jpeg");
             //MemoryStream m1 = new MemoryStream(((Employee)Session["Employee"]).ImageBytes);
             //return new FileStreamResult(m1, "image/jpeg");
+        }
+        public ActionResult inactive()
+        {
+            return Content("The account has been disabled try to contact HR in case of any misconception");
         }
 
     }

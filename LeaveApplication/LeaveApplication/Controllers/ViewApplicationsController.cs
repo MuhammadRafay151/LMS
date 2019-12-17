@@ -213,11 +213,15 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult CancelApplication(string Application_Id)
         {
+            if (Session["EmpID"] == null)
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+            
             try
             {
                 Application_Id = LeaveApplication.Models.Encryption.Base64Decode(Application_Id);
-                int.Parse(Application_Id);
-                lb.CancelApplication(Application_Id);
+                lb.CancelApplication(int.Parse(Application_Id),int.Parse(GetEmpID()));
                 return RedirectToAction("Index");
             }
             catch (FormatException)
@@ -303,6 +307,10 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult LeaveBalance()
         {
+            if (Session["EmpID"] == null)
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
             ViewBag.HideCloseBtn = false;
             return PartialView(lb.GetLeaveBalance(((Employee)Session["Employee"]).EmployeeID));
 

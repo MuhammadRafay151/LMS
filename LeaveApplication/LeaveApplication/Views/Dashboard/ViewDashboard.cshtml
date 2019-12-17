@@ -6,24 +6,23 @@
 @model System.Data.DataSet
 <style>
     .scroll {
-                                       
-
- max-height: 240px;
-   overflow-x: hidden;
-  overflow-y: scroll;
+        max-height: 240px;
+        overflow-x: hidden;
+        overflow-y: scroll;
     }
 </style>
-<div class="card"style="margin-top:40px;background-color:rgba(0, 0, 0, 0.46)">
+<div class="card" style="margin-top:40px;background-color:rgba(0, 0, 0, 0.46)">
     <div class="card-body ">
         <div class="row">
-            <div class="col" >
-               <div class="card"style="height:450px;width:100%;background-color:#32373a">
-                   <div class="card-body">
-                       <div id="chartContainer"></div>
-                   </div>
-                   <p class="text-white">Note: Graph has dummy data just for testing purpose</p>
-               </div>
-               
+            <div class="col">
+                <div class="card" style="height:450px;width:100%;background-color:#32373a">
+                    <div class="card-body d-flex justify-content-center ">
+                        <div id="piechart"style="width: 900px;margin-right:14%;margin-top:-50px; height: 500px;"></div>
+                        @*<div id="chartContainer"></div>*@
+                    </div>
+                    <p class="text-white">Note: Graph has dummy data just for testing purpose</p>
+                </div>
+
             </div>
 
         </div>
@@ -158,48 +157,74 @@
         </div>
     </div>*@
 
-<script src="~/Scripts/canvasjs.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-         $(function () {
-        var chart = new CanvasJS.Chart("chartContainer", {
+@*<script src="~/Scripts/canvasjs.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+             $(function () {
+            var chart = new CanvasJS.Chart("chartContainer", {
 
-            title: {
-                text: "Leave Chart"
+                title: {
+                    text: "Leave Chart"
 
-            },
-            animationEnabled: true,
-            legend: {
-                verticalAlign: "center",
-                horizontalAlign: "left",
-                fontSize: 20,
-                fontFamily: "Helvetica"
-            },
-            theme: "dark2",
-            data: [
-            {
-                type: "pie",
-                indexLabelFontFamily: "Garamond",
-                indexLabelFontSize: 20,
-                indexLabel: "{label} {y}%",
-                startAngle: -20,
-                showInLegend: true,
-                toolTipContent: "{legendText} {y}%",
-                    dataPoints: [
-                        { y: 80, legendText: "Leave Balance", label: "Leave Balance", color: "Gold " },
-                        { y: 10.39, legendText: "Sick Leave", label: "Sick Leave", color:"GreenYellow" },
-                        { y: 10.39, legendText: "Annual Leave", label: "Annual Leave" },
-                        { y: 10.39, legendText: "Casual Leave", label: "Casual Leave"},
-                   
-                ],
+                },
+                animationEnabled: true,
+                legend: {
+                    verticalAlign: "center",
+                    horizontalAlign: "left",
+                    fontSize: 20,
+                    fontFamily: "Helvetica"
+                },
+                theme: "dark2",
+                data: [
+                {
+                    type: "pie",
+                    indexLabelFontFamily: "Garamond",
+                    indexLabelFontSize: 20,
+                    indexLabel: "{label} {y}%",
+                    startAngle: -20,
+                    showInLegend: true,
+                    toolTipContent: "{legendText} {y}%",
+                        dataPoints: [
+                            { y: 80, legendText: "Leave Balance", label: "Leave Balance", color: "Gold " },
+                            { y: 10.39, legendText: "Sick Leave", label: "Sick Leave", color:"GreenYellow" },
+                            { y: 10.39, legendText: "Annual Leave", label: "Annual Leave" },
+                            { y: 10.39, legendText: "Casual Leave", label: "Casual Leave"},
 
-                //You can add dynamic data from the controller as shown below. Check the controller and uncomment the line which generates dataPoints.
-                //dataPoints: @Html.Raw(ViewBag.DataPoints),
-            }
-            ]
+                    ],
+
+                    //You can add dynamic data from the controller as shown below. Check the controller and uncomment the line which generates dataPoints.
+                    //dataPoints: @Html.Raw(ViewBag.DataPoints),
+                }
+                ]
+            });
+            chart.render();
         });
-        chart.render();
-    });
-    });
-   
+        });
+
+    </script>*@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Leave', 'statistics'],
+         ['Sick', 5.85],
+            ['Annual', 1.66],
+        ]);
+
+        var options = {
+            //legend: 'none',
+            pieSliceText: 'label',
+            //title: 'Leave Stats',
+            pieStartAngle: 100,
+            backgroundColor: 'transparent',
+            pieSliceBorderColor: "transparent",
+            colors: ['#2F7A8E', '#33B2C3', '#FC5C57', '#f3b49f', '#f6c7b6'],
+            'legend' : {position: 'left', alignment: 'start' , textStyle : {  color : '#FFFFFF', fontSize : 22 }}
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+    }
 </script>

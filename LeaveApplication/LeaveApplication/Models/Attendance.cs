@@ -55,6 +55,7 @@ namespace LeaveApplication.Models
                 @"IF not EXISTS(select * from  LeaveApplication  inner join statushistory
 on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID 
 where EmployeeID=(select EmployeeID from Employee where EmpNo='{1}') and '{0}' between FromDate and ToDate 
+and LeaveApplication.ApplicationType=0
 and StatusHistory.ApplicationStatusID='2'
 )
                  BEGIN
