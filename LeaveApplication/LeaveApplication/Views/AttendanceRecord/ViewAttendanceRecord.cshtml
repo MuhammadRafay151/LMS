@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Attendance Record";
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
@@ -21,8 +20,8 @@
                                     <th scope="col">Empno</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Arrival Time</th>
-                                        <th scope="col">Departure Time</th>
-                                        <th scope="col">Updated On</th>
+                                    <th scope="col">Departure Time</th>
+                                    <th scope="col">Updated On</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -31,7 +30,6 @@
                                     foreach (System.Data.DataRow i in x.Tables[0].Rows)
                                     {
                                         <tr>
-
                                             <td>@i[0].ToString()</td>
                                             <td>@i[1].ToString()</td>
                                             <td>@i[2].ToString()</td>
@@ -39,23 +37,13 @@
                                             <td>@i[4].ToString()</td>
                                             <td class="align-middle">
                                                 <div class="d-flex justify-content-end">
-
-                                                    <button class="btn btn-info-grd" data-toggle="modal" data-target="#myModal">View Detail</button>
-
+                                                    <button class="btn btn-info-grd" data-toggle="modal" data-target="#myModal" onclick="GetAttendance()">View Detail</button>
                                                 </div>
-
                                             </td>
-
-
                                         </tr>
                                         check = true;
                                     }
                                 }
-
-
-
-
-
                             </tbody>
                         </table>
                     </div>
@@ -70,11 +58,8 @@
                 <!-- Modal -->
                 <div class="modal fade" id="myModal" role="dialog">
                     <div class="modal-dialog">
-
-                        <!-- Modal content-->
                         <div class="modal-content">
                             <div class="modal-header">
-                                @* <button type="button" class="close" data-dismiss="modal">&times;</button>*@
                                 @if (ViewBag.HideCloseBtn != true)
                                 {
                                     <div class="col">
@@ -83,57 +68,39 @@
                                         </button>
                                     </div>
                                 }
-
                             </div>
                             <div class="modal-body">
                                 <div class="card">
-
                                     <div class="card-body col-12">
                                         <div class="card-title">
                                             <div class="row">
-
                                                 <div class="col">
                                                     <h4 style="font-family:g1">Attendance Details</h4>
                                                 </div>
-
-
                                             </div>
-
-
                                         </div>
                                         <div class="table-responsive">
                                             <table class="table table-hover">
                                                 <thead>
                                                     <tr>
-
                                                         <th scope="col">Arrival time</th>
                                                         <th scope="col">Departure time</th>
                                                         <th scope="col">Updated on</th>
-
-                                                        @*@foreach (System.Data.DataRow z in Model.Tables[0].Rows)
-                                                            {
-                                                                <th scope="col" class="text-center text-info">@z[0].ToString()</th>
-                                                            }*@
-
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-
                                                         @foreach (System.Data.DataRow z in Model.Tables[0].Rows)
                                                         {
-                                                            <td class="text-center">@z[2].ToString()</td>
-                                                            <td class="text-center">@z[3].ToString()</td>
-                                                            <td class="text-center">@z[4].ToString()</td>
-                                                        <tr></tr>
-
-                                                    }
-
-                                                        </tr>
+                                                            <td id="Arrival time" class="text-center">@z[2].ToString()</td>
+                                                            <td id="Departure time" class="text-center">@z[3].ToString()</td>
+                                                            <td id="Updated on" class="text-center">@z[4].ToString()</td>
+                                                            <tr></tr>
+                                                         }
+                                                    </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -141,8 +108,10 @@
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+</div>
+   

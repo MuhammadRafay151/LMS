@@ -52,5 +52,6 @@ namespace LeaveApplication.Models
             DataBase.ExecuteQuerry(Querry);
         }
 
+        
     }
 }

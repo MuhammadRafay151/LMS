@@ -9,6 +9,8 @@ namespace LeaveApplication.Controllers
 {
     public class AttendanceRecordController : Controller
     {
+        EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
+
         // GET: AttendanceRecord
         public ActionResult ViewAttendanceRecord()
         {
@@ -29,5 +31,6 @@ namespace LeaveApplication.Controllers
 
             
         }
+
     }
 }
