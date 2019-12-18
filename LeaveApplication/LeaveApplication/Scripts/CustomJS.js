@@ -92,3 +92,13 @@ function EmployeeStateChange(ToggleBtn, id) {
 
 
 }
+
+function AttendanceDetail() {
+    $.ajax({
+        type: "post",
+        url: "/AttendanceRecord/ViewAttendanceRecord",
+        success: function (html) {
+            $('#myModal').html(html);
+        }
+    })
+}

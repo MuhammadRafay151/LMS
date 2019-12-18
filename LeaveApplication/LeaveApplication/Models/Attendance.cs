@@ -68,5 +68,6 @@ select EmployeeID, '{0}', '{2}' from Employee where Employee.EmpNo='{1}'
             return Convert.ToInt32(DataBase.ExecuteScalar(Querry));
         }
 
+        
     }
 }

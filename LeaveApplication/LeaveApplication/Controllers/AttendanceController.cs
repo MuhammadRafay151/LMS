@@ -65,6 +65,18 @@ namespace LeaveApplication.Controllers
             Session.Remove("AttFile");
             return RedirectToAction("Index");
         }
+        public ActionResult Presents()
+        {
+            if (Session["Employee"] != null)
+            {
+                Employee e1 = (Employee)Session["Employee"];
+                return View(e1.GetAttendance(e1.EmployeeID));
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+        }
 
     }
 }
