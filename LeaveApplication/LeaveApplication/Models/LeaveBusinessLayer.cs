@@ -425,7 +425,7 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
             
 
                 string Querry = string.Format(@"delete from LeaveApplication where LeaveApplication.LeaveApplicationID={0} and LeaveApplication.EmployeeID={1}
-and(select MAX(a.ApplicationStatusID) from StatusHistory a where LeaveApplicationID = {0}) = 1'", ApplicationId,EmployeeId);
+and(select MAX(a.ApplicationStatusID) from StatusHistory a where LeaveApplicationID = {0}) = 1", ApplicationId,EmployeeId);
                 database.ExecuteQuerry(Querry);
           
 
