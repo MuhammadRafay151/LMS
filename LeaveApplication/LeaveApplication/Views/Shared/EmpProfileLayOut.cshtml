@@ -32,7 +32,8 @@
     </style>
 </head>
 <body class="ig h-100">
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-white ">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-white fixed-top   ">
         <div class="container-fluid">
 
             <div class="navbar-translate">
@@ -72,29 +73,10 @@
 
 
                             </div>
-                            @*<p class="dropdown-item">@LeaveApplication.Models.EmployeeBusinessLayer.Employee.EmployeeName</p>
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Separated link</a>*@
+                           
                         </div>
                     </li>
-                    @*<li class="d-lg-none nav-item dropdown ">
-                            <div class="dropdown">
-                                <a class="nav-link font-weight-bold text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)<img class="rounded ml-2" src="~/Images/account.png" style="width:30px" /> </a>
-                                <div class="dropdown-menu mt-3">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item ">User Name:  @(((LeaveApplication.Models.Employee)Session["Employee"]).UserName)</li>
-                                        <li class="list-group-item">Department:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Department)</li>
-                                        <li class="list-group-item">Designation:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Designation)</li>
-                                        @Html.ActionLink("Settings", "ResetPassword", "Profile", null, new { @class = "list-group-item" })
-                                        @Html.ActionLink("Sign Out", "LogOff", "Login", null, new { @class = "list-group-item" })
-                                    </ul>
-
-                                </div>
-                            </div>
-                        </li>*@
+                  
                     <li class="nav-item active">
 
                         @* <a class="nav-link" href="#">DashBoardss<span class="sr-only">(current)</span></a>*@

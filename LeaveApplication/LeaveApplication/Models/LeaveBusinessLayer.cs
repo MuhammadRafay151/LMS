@@ -420,14 +420,14 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
             return SH;
 
         }
-        public void CancelApplication(String ApplicationId)
+        public void CancelApplication(int ApplicationId,int EmployeeId)
         {
-            if (GetApplicationStatus(ApplicationId) == "Pending")
-            {
+            
 
-                string Querry = string.Format("Delete from LeaveApplication where LeaveApplicationID='{0}'", ApplicationId);
+                string Querry = string.Format(@"delete from LeaveApplication where LeaveApplication.LeaveApplicationID={0} and LeaveApplication.EmployeeID={1}
+and(select MAX(a.ApplicationStatusID) from StatusHistory a where LeaveApplicationID = {0}) = 1", ApplicationId,EmployeeId);
                 database.ExecuteQuerry(Querry);
-            }
+          
 
         }
         public DataSet GetFacultyAll(int EmployeeId)

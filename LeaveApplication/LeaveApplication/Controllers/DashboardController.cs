@@ -12,22 +12,27 @@ namespace LeaveApplication.Controllers
         EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
         public ActionResult Index()
         {
+            
             return ViewDashboard();
         }
         // GET: Dashboard
         public ActionResult ViewDashboard()
         {
-           
+          
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                int Empno = eb.GetEmpNo(e1.EmployeeID);
-                return View(eb.GetAbsentees(Empno));
+               
+                return View("ViewDashboard", eb.GetAbsentees(e1.EmployeeID));
             }
             else
             {
                 return RedirectToAction("Index", "LogIn");
             }
+        }
+        public ActionResult CloseAbsentNotification()
+        {
+            return ViewDashboard();
         }
     }
 }

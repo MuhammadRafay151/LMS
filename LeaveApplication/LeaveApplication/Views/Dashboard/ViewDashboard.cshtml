@@ -4,105 +4,227 @@
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
 @model System.Data.DataSet
-
-<div class="row mt-lg-5">
-    <div class="col ">
-
-
-        <div class="card ">
-            <div class="card-header card-header-info " style="background-color:#FEFCFB">
-                <h4 class="card-title text-center">Absentees</h4>
-            </div>
-            <div class="card-body" id="div1">
-                <table class="table table-hover table-striped ">
-                    <thead class="">
-                        <tr class="">
-                            <th scope="col">Empno</th>
-                            <th scope="col">Absent Date</th>
-                            <th scope="col">Message</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{ System.Data.DataSet x = Model;
-                            bool check = false;
-                            foreach (System.Data.DataRow i in x.Tables[0].Rows)
-                            {
-                                <tr>
-
-                                    <td>@i[0].ToString()</td>
-                                    <td>@i[1].ToString()</td>
-                                    <td>@i[2].ToString()</td>
-                                </tr>
-                                check = true;
-                            }
-                        }
-
-
-
-                    </tbody>
-                </table>
-            </div>
-            @{
-                if (check == false)
-                {
-                    <h1 class="text-center align-middle">Records Not Found</h1>
-                }
-                @*else
-                {
-                    <div class="card-footer justify-content-end">
-
-                        <ul id="paged" class="pagination pagination-info ">
-                            @{
-                                
-                                    <li class="page-item "><a href="/Admin/Assign_Leave_History?pageno=1" class="page-link">First</a></li>
-                                    <li class="page-item "><a id="pre" href="#" onclick="Pre('/Admin/Assign_Leave_History?pageno=')" class="page-link">Previous</a></li>
-                                     int ax = ViewBag.PageNo;
-                                    if (ViewBag.TotalPages <= 3)
-                                    {
-                                        ax = 1;
-                                    }
-                                    else if (ViewBag.TotalPages - ViewBag.PageNo == 1)
-                                    {
-                                        ax -= 1;
-                                    }
-                                    else if (ViewBag.TotalPages - ViewBag.PageNo == 0)
-                                    {
-                                        ax -= 2;
-                                    }
-                             
-                                    int count = 0;
-                                    for (int i = ax; i <= ViewBag.TotalPages; i++)
-                                    {
-                                        if (i == ViewBag.PageNo)
-                                        {
-                                            <li class="page-item active"><a class="page-link" href="/Admin/Assign_Leave_History?pageno=@i">@i</a></li>
-
-                                        }
-                                        else
-                                        {
-                                            <li class="page-item "><a class="page-link" href="/Admin/Assign_Leave_History?pageno=@i">@i</a></li>
-
-                                        }
-                                        ++count;
-                                        if (count == 3)
-                                        {
-                                            break;
-                                        }
-
-                                    }
-                                    <li class="page-item"><a id="next" href="#" onclick="Next('/Admin/Assign_Leave_History?pageno=')" class="page-link" accesskey="">Next</a></li>
-                                    <li class="page-item "><a href="/Admin/Assign_Leave_History?pageno=@ViewBag.TotalPages" class="page-link">Last</a></li>
-
-                                
-                                
-                            }
-
-                        </ul>
+<style>
+    .scroll {
+        max-height: 240px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+</style>
+<div class="card" style="margin-top:40px;background-color:rgba(0, 0, 0, 0.46)">
+    <div class="card-body ">
+        <div class="row">
+            <div class="col">
+                <div class="card" style="height:450px;width:100%;background-color:#32373a">
+                    <div class="card-body d-flex justify-content-center ">
+                        <div id="piechart"style="width: 900px;margin-right:14%;margin-top:-50px; height: 500px;"></div>
+                        @*<div id="chartContainer"></div>*@
                     </div>
+                    <p class="text-white">Note: Graph has dummy data just for testing purpose</p>
+                </div>
 
-                }*@
-            }
+            </div>
+
         </div>
+        <div class="row mt-2">
+            <div class="col-4 w-100 " style="height:500px">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h3>Absent Alert!</h3>
+                    </div>
+                    <div class="card-body scroll">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Absent Date</th>
+                                    <th scope="col">Message</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ System.Data.DataSet x = Model;
+                                    foreach (System.Data.DataRow i in x.Tables[0].Rows)
+                                    {
+                                        <tr>
 
+                                            <td>@DateTime.Parse(i[2].ToString()).ToString("dd/MM/yyyy")</td>
+                                            <td class="text-justify">@i[3].ToString()</td>
+                                            <td><button class="btn btn-info-grd">Close</button></td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 w-100 " style="height:500px">
+                <div class="card">
+                    <div class="card-header card-header-warning">
+                        <h3>Notification Alert!</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Date
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 w-100 " style="height:500px">
+                <div class="card">
+                    <div class="card-header card-header-rose">
+                        <h3>News Alert!</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Date
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    @*<div class="col-sm-12 col-lg-6  bg-info w-100"style="height:500px">
+
+        </div>*@
 </div>
+@*<div class="row vh-100 mt-lg-5">
+        <div class="col justify-content-center ">
+
+
+            <div class="card ">
+                <div class="card-header card-header-info " style="background-color:#FEFCFB">
+                    <h4 class="card-title text-center">Absentees</h4>
+                </div>
+                <div class="card-body" id="div1">
+                    <table class="table table-hover table-striped ">
+                        <thead class="">
+                            <tr class="">
+                                <th scope="col">Empno</th>
+                                <th scope="col">Absent Date</th>
+                                <th scope="col">Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ System.Data.DataSet x = Model;
+                                bool check = false;
+                                foreach (System.Data.DataRow i in x.Tables[0].Rows)
+                                {
+                                    <tr>
+
+                                        <td>@i[0].ToString()</td>
+                                        <td>@i[1].ToString()</td>
+                                        <td>@i[2].ToString()</td>
+                                    </tr>
+                                    check = true;
+                                }
+                            }
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+                @{
+                    if (check == false)
+                    {
+                        <h1 class="text-center align-middle">Records Not Found</h1>
+                    }
+
+                }
+            </div>
+
+        </div>
+    </div>*@
+
+@*<script src="~/Scripts/canvasjs.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+             $(function () {
+            var chart = new CanvasJS.Chart("chartContainer", {
+
+                title: {
+                    text: "Leave Chart"
+
+                },
+                animationEnabled: true,
+                legend: {
+                    verticalAlign: "center",
+                    horizontalAlign: "left",
+                    fontSize: 20,
+                    fontFamily: "Helvetica"
+                },
+                theme: "dark2",
+                data: [
+                {
+                    type: "pie",
+                    indexLabelFontFamily: "Garamond",
+                    indexLabelFontSize: 20,
+                    indexLabel: "{label} {y}%",
+                    startAngle: -20,
+                    showInLegend: true,
+                    toolTipContent: "{legendText} {y}%",
+                        dataPoints: [
+                            { y: 80, legendText: "Leave Balance", label: "Leave Balance", color: "Gold " },
+                            { y: 10.39, legendText: "Sick Leave", label: "Sick Leave", color:"GreenYellow" },
+                            { y: 10.39, legendText: "Annual Leave", label: "Annual Leave" },
+                            { y: 10.39, legendText: "Casual Leave", label: "Casual Leave"},
+
+                    ],
+
+                    //You can add dynamic data from the controller as shown below. Check the controller and uncomment the line which generates dataPoints.
+                    //dataPoints: @Html.Raw(ViewBag.DataPoints),
+                }
+                ]
+            });
+            chart.render();
+        });
+        });
+
+    </script>*@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Leave', 'statistics'],
+         ['Sick', 5.85],
+            ['Annual', 1.66],
+        ]);
+
+        var options = {
+            //legend: 'none',
+            pieSliceText: 'label',
+            //title: 'Leave Stats',
+            pieStartAngle: 100,
+            backgroundColor: 'transparent',
+            pieSliceBorderColor: "transparent",
+            colors: ['#2F7A8E', '#33B2C3', '#FC5C57', '#f3b49f', '#f6c7b6'],
+            'legend' : {position: 'left', alignment: 'start' , textStyle : {  color : '#FFFFFF', fontSize : 22 }}
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+    }
+</script>

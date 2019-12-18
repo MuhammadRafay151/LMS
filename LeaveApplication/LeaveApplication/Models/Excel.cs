@@ -14,7 +14,7 @@ namespace LeaveApplication.Models
         
         public List<Attendance> Read(Stream FileStream)
         {
-
+            DateTime d1;
             List<Attendance> l1 = new List<Attendance>();
 
             using (var excelWorkbook = new XLWorkbook(FileStream))
@@ -29,14 +29,24 @@ namespace LeaveApplication.Models
                         var cell = dataRow.Cell(1).Value;
                         var cell2 = dataRow.Cell(12).Value;
                         var cell3 = dataRow.Cell(4).Value;
-                        if(Convert.ToBoolean(cell2.ToString())==true)
+                        try
+                        {
+                          d1 = DateTime.Parse(cell3.ToString());
+                        }
+                       
+                        catch(FormatException)
+                        {
+                           d1= Convert.ToDateTime(cell3.ToString(), System.Globalization.CultureInfo.InvariantCulture);
+
+                        }
+                        if (Convert.ToBoolean(cell2.ToString())==true)
                         {
                             l1.Add(new Attendance()
                             {
                                 EmpNo = Convert.ToInt32(cell.ToString()),
                                 EmployeeName = dataRow.Cell(3).Value.ToString(),
                                 Abscent = Convert.ToBoolean(cell2.ToString()),
-                                Date = Convert.ToDateTime(cell3, CultureInfo.InvariantCulture)
+                                Date =d1
 
                             });
                         }
