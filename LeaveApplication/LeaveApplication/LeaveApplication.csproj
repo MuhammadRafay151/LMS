@@ -148,7 +148,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
-    <Compile Include="Controllers\AttendanceRecordController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RequestLeaveController.cs" />
@@ -653,7 +652,7 @@
     <Content Include="Views\Profile\ResetPassword.cshtml" />
     <Content Include="Views\ViewApplications\ApproveRejectModel.cshtml" />
     <Content Include="Views\Dashboard\ViewDashboard.cshtml" />
-    <Content Include="Views\AttendanceRecord\ViewAttendanceRecord.cshtml" />
+    <Content Include="Views\Attandence\Presents.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

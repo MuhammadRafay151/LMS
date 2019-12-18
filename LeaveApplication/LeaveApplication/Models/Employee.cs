@@ -61,13 +61,21 @@ namespace LeaveApplication.Models
             Employee e1 = new Employee();
             db database = new db();
             DataSet ds = database.Read(Querry);
-            if(ds.Tables[0].Rows.Count==0)
+            if (ds.Tables[0].Rows.Count == 0)
             {
                 return null;
             }
             e1.EmployeeName = ds.Tables[0].Rows[0][0].ToString();
-            e1.Email= ds.Tables[0].Rows[0][1].ToString();
+            e1.Email = ds.Tables[0].Rows[0][1].ToString();
             return e1;
+        }
+        public DataSet GetAttendance(int EmployeeID)
+        {
+            string Querry = string.Format("select EmployeeId,Date,ArrivalTime,DepartureTime,UpdatedOn from AttendanceRecord where EmployeeID='{0}'", EmployeeID);
+            db database = new db();
+            DataSet ds = database.Read(Querry);
+
+            return ds;
         }
     }
 }
