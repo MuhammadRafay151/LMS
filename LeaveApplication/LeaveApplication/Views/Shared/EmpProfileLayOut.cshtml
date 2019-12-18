@@ -4,10 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - UIT HR</title>
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link rel=" icon" href="~/Images/uit1fav.png" sizes="16x16">
     @{
         if (@ViewContext.RouteData.Values["controller"].ToString() == "ViewApplications" || @ViewContext.RouteData.Values["controller"].ToString() == "Admin")
         {
@@ -18,12 +19,22 @@
     }
 
     @Styles.Render("~/Content/css")
-   
+
     @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .ig {
+            background-image: url(../../Images/uitreckon3.jpg);
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
-<body style="background-image:url(../../Images/uitreckon3.jpg); background-size: cover; background-position: top center; background-repeat:no-repeat;">
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-white py-md-0 py-lg-1 py-1 py-sm-2 py-xl-1">
-        <div class="container">
+<body class="ig h-100">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-white ">
+        <div class="container-fluid">
+
             <div class="navbar-translate">
                 <a class="navbar-brand" href="#">Reckon Force</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,11 +47,57 @@
             </div>
 
             <div class="collapse navbar-collapse" id="navbarColor01">
+
                 <ul class="navbar-nav mr-auto">
 
+                    <li class="d-lg-none nav-item dropdown">
+
+                        <a class="nav-link font-weight-bold text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)<img class="rounded ml-2" src="~/Images/account.png" style="width:30px" /> </a>
+                        <div class="dropdown-menu scrollable-menu dropdown-menu-right mr-1">
+                            <div class=" card border-0  mt-4" style="width: 18rem;">
+                                <img src="/LogIn/ProfileImg" class="card-img-top" alt="...">
+                                <div class="card-body ">
+                                    <h5 class="card-title ">Account Information</h5>
+                                    <p class="card-text">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)</p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item ">User Name:  @(((LeaveApplication.Models.Employee)Session["Employee"]).UserName)</li>
+                                    <li class="list-group-item">Department:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Department)</li>
+                                    <li class="list-group-item">Designation:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Designation)</li>
+                                    @Html.ActionLink("Settings", "ResetPassword", "Profile", null, new { @class = "list-group-item" })
+                                    @Html.ActionLink("Sign Out", "LogOff", "Login", null, new { @class = "list-group-item" })
+                                </ul>
+
+
+
+
+                            </div>
+                            @*<p class="dropdown-item">@LeaveApplication.Models.EmployeeBusinessLayer.Employee.EmployeeName</p>
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>*@
+                        </div>
+                    </li>
+                    @*<li class="d-lg-none nav-item dropdown ">
+                            <div class="dropdown">
+                                <a class="nav-link font-weight-bold text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)<img class="rounded ml-2" src="~/Images/account.png" style="width:30px" /> </a>
+                                <div class="dropdown-menu mt-3">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item ">User Name:  @(((LeaveApplication.Models.Employee)Session["Employee"]).UserName)</li>
+                                        <li class="list-group-item">Department:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Department)</li>
+                                        <li class="list-group-item">Designation:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Designation)</li>
+                                        @Html.ActionLink("Settings", "ResetPassword", "Profile", null, new { @class = "list-group-item" })
+                                        @Html.ActionLink("Sign Out", "LogOff", "Login", null, new { @class = "list-group-item" })
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </li>*@
                     <li class="nav-item active">
 
-                       @* <a class="nav-link" href="#">DashBoardss<span class="sr-only">(current)</span></a>*@
+                        @* <a class="nav-link" href="#">DashBoardss<span class="sr-only">(current)</span></a>*@
                         @Html.ActionLink("DashBoard", "ViewDashboard", "Dashboard", null, new { @class = "nav-link" })
                     </li>
                     <li class="nav-item dropdown ">
@@ -51,6 +108,7 @@
                                 @Html.ActionLink("Request Leave", "Index", "RequestLeave", null, new { @class = "dropdown-item" })
                                 @Html.ActionLink("View Applications", "Index", "ViewApplications", null, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Leave Count", "LeaveCount", "ViewApplications", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("View Presents","Presents","Attandence",null,new {@class="dropdown-item" })
                             </div>
                         </div>
                     </li>
@@ -83,7 +141,7 @@
                                         @Html.ActionLink("Manage Department", "Department", "Admin", null, new { @class = "dropdown-item" })
                                         @Html.ActionLink("Assign Leaves", "AssignLeave", "Admin", null, new { @class = "dropdown-item" })
                                         @Html.ActionLink("Assign Leave History", "Assign_Leave_History", "Admin", new { PageNo = 1 }, new { @class = "dropdown-item" })
-                                        @Html.ActionLink("Manage Attandence", "Index", "Attandence",null, new { @class = "dropdown-item" })
+                                        @Html.ActionLink("Manage Attandence", "Index", "Attandence", null, new { @class = "dropdown-item" })
 
                                     </div>
                                 </div>
@@ -98,51 +156,52 @@
                 </ul>
 
             </div>
-        </div>
-        <div class="container-fluid">
-            <ul class="navbar-nav ml-auto d-none d-lg-block ">
+            <div class="">
+                <ul class="navbar-nav ml-auto d-none d-lg-block ">
 
-                <li class="nav-item dropdown">
+                    <li class="nav-item dropdown">
 
-                    <a class="nav-link font-weight-bold text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)<img class="rounded ml-2" src="~/Images/account.png" style="width:30px" /> </a>
-                    <div class="dropdown-menu dropdown-menu-right mr-1">
-                        <div class=" card border-0  mt-4" style="width: 18rem;">
-                            <img src="/LogIn/ProfileImg" class="card-img-top" alt="...">
-                            <div class="card-body ">
-                                <h5 class="card-title ">Account Information</h5>
-                                <p class="card-text">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)</p>
+                        <a class="nav-link font-weight-bold text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)<img class="rounded ml-2" src="~/Images/account.png" style="width:30px" /> </a>
+                        <div class="dropdown-menu scrollable-menu dropdown-menu-right mr-1">
+                            <div class=" card border-0  mt-4 " style="width: 18rem;">
+                                <img src="/LogIn/ProfileImg" class="card-img-top " alt="...">
+                                <div class="card-body ">
+                                    <h5 class="card-title ">Account Information</h5>
+                                    <p class="card-text">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)</p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item ">User Name:  @(((LeaveApplication.Models.Employee)Session["Employee"]).UserName)</li>
+                                    <li class="list-group-item">Department:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Department)</li>
+                                    <li class="list-group-item">Designation:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Designation)</li>
+                                    @Html.ActionLink("Settings", "ResetPassword", "Profile", null, new { @class = "list-group-item" })
+                                    @Html.ActionLink("Sign Out", "LogOff", "Login", null, new { @class = "list-group-item" })
+                                </ul>
+
+
+
+
                             </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item ">User Name:  @(((LeaveApplication.Models.Employee)Session["Employee"]).UserName)</li>
-                                <li class="list-group-item">Department:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Department)</li>
-                                <li class="list-group-item">Designation:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Designation)</li>
-                                @Html.ActionLink("Settings", "ResetPassword", "Profile", null, new { @class = "list-group-item" })
-                                @Html.ActionLink("Sign Out", "LogOff", "Login", null, new { @class = "list-group-item" })
-                            </ul>
-                           
-                                
-                           
-                           
+                            @*<p class="dropdown-item">@LeaveApplication.Models.EmployeeBusinessLayer.Employee.EmployeeName</p>
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>*@
                         </div>
-                        @*<p class="dropdown-item">@LeaveApplication.Models.EmployeeBusinessLayer.Employee.EmployeeName</p>
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>*@
-                    </div>
-                </li>
+                    </li>
 
-            </ul>
+                </ul>
+            </div>
         </div>
-        
+
+
 
     </nav>
     <div id="empdiv" class="container-fluid body-content">
         @RenderBody()
         <hr />
         <footer class="d-flex justify-content-end text-white">
-            <p>&copy; @DateTime.Now.Year Reckon Force</p>
+            <p>&copy; @DateTime.Now.Year Usman Institute of Technology</p>
         </footer>
     </div>
 

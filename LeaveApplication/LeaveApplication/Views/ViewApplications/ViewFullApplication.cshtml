@@ -7,8 +7,8 @@
 @* Model for Approve/ Reject*@
 @Html.Partial("ApproveRejectModel");
 @* -------------------------------- *@
-<div class="container ">
-    <div class="row justify-content-center align-content-center vh-100">
+<div class="container mt-5">
+    <div class="row justify-content-center align-content-center ">
         <div class="col text-center">
 
             <div class="card">
@@ -90,10 +90,10 @@
                                             {
                                                 <tr>
                                                     <td class="align-middle">
-                                                        <button class="btn btn-info-grd"  data-toggle="modal" data-target="#remark" onclick="Accept('@ViewBag.ApplicationId')">Accept</button>
+                                                        <button class="btn btn-info-grd" data-toggle="modal" data-target="#remark" onclick="Accept('@ViewBag.ApplicationId')">Accept</button>
                                                     </td>
                                                     <td class="align-middle">
-                                                        <button class="btn btn-info-grd"  data-toggle="modal" data-target="#remark"onclick="Reject('@ViewBag.ApplicationId')">Reject</button>
+                                                        <button class="btn btn-info-grd" data-toggle="modal" data-target="#remark" onclick="Reject('@ViewBag.ApplicationId')">Reject</button>
                                                     </td>
 
                                                 </tr>
@@ -105,6 +105,27 @@
 
                                 </tbody>
                             </table>
+                            @if(string.IsNullOrWhiteSpace(Model.ManagerRemarks))
+                            {
+                                <div class="row">
+                                    <div class="col">
+                                        <h3 class="text-center">Manager Remarks</h3>
+                                        <p class="text-justify">
+                                            T-Series presents the Full Video of Junooniyat Title Song from the film Junooniyat, with Pulkit Samrat and Yami Gautam, starring together once again after the super success of the film Sanam Re earlier this year. Junooniyat is directed by Vivek Agnihotri. Junooniyat Title Song is sung by Meet Bros Anjjan, featuring Falak Shabir. The music director is Meet Bros Anjjan themselves & lyrics are by Kumaar.
+
+                                            SONG - JUNOONIYAT
+                                            SINGER - MEET BROS ANJJAN,FEAT. FALAK SHABIR
+                                            BACK VOCAL - THOMSON ANDREWS,KESHIA BRAGANZA,GWAN DIAS,RYAN DIAS
+                                            MUSIC - MEET BROS ANJJAN
+                                            LYRICS - KUMAAR
+                                            Programmed By- John Stewart Eduri. Guitars- Pawan Rasaily. Music Assistant- Uddipan Sharma, Ambresh Shroff. Mixed And
+                                            Mastered By- P A Deepak
+                                            Song Recorded By- Gautam Chakrabortty And Uddipan Sharma @@Meet Bros Recording Studio. Production Managed By-Suraj Kumar, Ruchir Saxena
+                                            MUSIC ON T-SERIES
+                                        </p>
+                                    </div>
+                                </div>
+                            }
 
                         </div>
                     </div>
@@ -122,17 +143,17 @@
 </div>
 <script>
      function Accept(Application_Id) {
-        
+
         $('#app_id').val(Application_Id);
         $('#ar1').attr('action', '/ViewApplications/AcceptApplication');
-      
+
 
     }
     function Reject(Application_Id) {
-      
+
         $('#app_id').val(Application_Id);
         $('#ar1').attr('action', '/ViewApplications/RejectApplication');
-        
+
 
     }
     function CloseRemark() {

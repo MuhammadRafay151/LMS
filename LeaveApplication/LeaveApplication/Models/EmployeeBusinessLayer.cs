@@ -156,6 +156,10 @@ namespace LeaveApplication.Models
         {
             con = new SqlConnection();
             cmd = new SqlCommand();
+            if(string.IsNullOrWhiteSpace(e1.Password))
+            {
+                return false;
+            }
             e1.Password=MD5Hash(e1.Password);
             cmd.CommandText = string.Format("Select * from Users where UserName='{0}' and Password='{1}'", e1.UserName, e1.Password);
             con.ConnectionString = connection;
@@ -245,7 +249,7 @@ namespace LeaveApplication.Models
             e1.ImageBytes = (Byte[])d1.Tables[0].Rows[0][9];
             e1.isAdmin = bool.Parse(d1.Tables[0].Rows[0][10].ToString());
             e1.Manager = d1.Tables[0].Rows[0][11].ToString();
-            e1.Password = d1.Tables[0].Rows[0][12].ToString();
+            //e1.Password = d1.Tables[0].Rows[0][12].ToString();
             e1.Email = d1.Tables[0].Rows[0][13].ToString();
             e1.EmpNo = Convert.ToInt32(d1.Tables[0].Rows[0][14]);
             return e1;
@@ -408,5 +412,7 @@ namespace LeaveApplication.Models
             string Querry = string.Format("select EmpNo from Employee where EmployeeID='{0}'", EmpID);
             return Convert.ToInt32(database.ExecuteScalar(Querry));
         }
+
+       
     }
 }

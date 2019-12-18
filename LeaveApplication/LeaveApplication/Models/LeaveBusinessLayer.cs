@@ -221,7 +221,7 @@ order by a.ApplyDate desc", EmployeeID);
 
             string Querry = string.Format(@"select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveTypeID,
                 LeaveApplication.ApplyDate,LeaveApplication.FromDate,LeaveApplication.ToDate,LeaveApplication.TotalDays,
-LeaveApplication.Remarks,LeaveApplication.ReasonID,Attachments.AttachmentId,Attachments.FileName from 
+LeaveApplication.Remarks,LeaveApplication.ReasonID,Attachments.AttachmentId,Attachments.FileName,LeaveApplication.ApplicationType from 
 LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID=LeaveType.LeaveTypeID 
 left join Attachments on LeaveApplication.LeaveApplicationID=Attachments.LeaveApplicationId 
 where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
@@ -240,7 +240,8 @@ where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
             if (v1.TotalDays == 0.5)
             {
                 v1.FromDate = DateTimeHelper.dd_MM_yyyy_HH_mm_tt(ds.Tables[0].Rows[0][4].ToString());
-                v1.ToDate = DateTimeHelper.ToTime(ds.Tables[0].Rows[0][5].ToString());
+                v1.FromTime = DateTimeHelper.ToTime(ds.Tables[0].Rows[0][4].ToString());
+                v1.ToTime = DateTimeHelper.ToTime(ds.Tables[0].Rows[0][5].ToString());
             }
             else
             {
@@ -257,7 +258,7 @@ where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
                 v1.FileId = Encryption.Base64Encode(Convert.ToString(ds.Tables[0].Rows[0][9]));
                 v1.FileName = ds.Tables[0].Rows[0][10].ToString();
             }
-
+            v1.ApplicationType =Convert.ToBoolean(ds.Tables[0].Rows[0][11]);
 
             if (v1.ApplicationStatus == "Pending")
             {

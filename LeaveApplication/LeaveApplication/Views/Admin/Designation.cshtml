@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Designation";
-       Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
 
 
@@ -60,48 +60,50 @@
 
                         }
                     </div>
+                    <div class="table-responsive">
+                        <table id="t1" class="table table-hover  table-light">
+                            <thead>
+                                <tr class="text-center">
 
-                    <table id="t1" class="table table-hover  table-light">
-                        <thead>
-                            <tr class="text-center">
 
+                                    <th scope="col">Designations</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{LeaveApplication.Models.Designation j = new LeaveApplication.Models.Designation();
+                                    foreach (LeaveApplication.Models.Designation x in Model)
+                                    {
+                                        <tr>
+                                            <td class="text-dark align-middle text-center">@x.designation </td>
 
-                                <th scope="col">Designations</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{LeaveApplication.Models.Designation j = new LeaveApplication.Models.Designation();
-                                foreach (LeaveApplication.Models.Designation x in Model)
-                                {
-                                    <tr>
-                                        <td class="text-dark align-middle text-center">@x.designation </td>
+                                            <td>
+                                                <div class="d-flex justify-content-end">
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-info-grd" data-toggle="modal" data-target="#exampleModalCenter" onclick="ModelOnclick(this.parentNode.parentNode.parentNode.parentNode,@x.DesignationID)">Edit</button>
+                                                        <button class="btn btn-info-grd" onclick="document.getElementById('@x.DesignationID').submit()">Delete</button>
+                                                    </div>
+                                                    @using (Html.BeginForm("DeleteDesignation", "Admin", FormMethod.Post, new { id = x.DesignationID }))
+                                                    {
+                                                        <input type="text" name="DesignationID" value="@x.DesignationID" hidden />
 
-                                        <td>
-                                            <div class="d-flex justify-content-end">
-                                                <div class="btn-group">
-                                                    <button class="btn btn-info-grd" data-toggle="modal" data-target="#exampleModalCenter" onclick="ModelOnclick(this.parentNode.parentNode.parentNode.parentNode,@x.DesignationID)">Edit</button>
-                                                    <button class="btn btn-info-grd" onclick="document.getElementById('@x.DesignationID').submit()">Delete</button>
+                                                    }
                                                 </div>
-                                                @using (Html.BeginForm("DeleteDesignation", "Admin", FormMethod.Post, new { id = x.DesignationID }))
-                                                {
-                                                    <input type="text" name="DesignationID" value="@x.DesignationID" hidden />
 
-                                                }
-                                            </div>
-
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
+                                    }
                                 }
-                            }
 
 
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
                 <div class="card-footer justify-content-end">
-
+                    
                     <ul id="paged" class="pagination pagination-info ">
                         @{
                             if (ViewBag.TotalPages > 3)
@@ -165,6 +167,6 @@
 
         </div>
     </div>
-  
+
 </div>
 

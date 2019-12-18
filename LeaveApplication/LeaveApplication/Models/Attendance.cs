@@ -9,7 +9,6 @@ namespace LeaveApplication.Models
 {
     public class Attendance
     {
-        db DataBase = new db();
         public int EmpNo { get; set; }
         public String EmployeeName { get; set; }
         public bool Abscent { get; set; }
@@ -17,20 +16,33 @@ namespace LeaveApplication.Models
         public void NotifyAbsentees()
         {
             string Subject = System.Configuration.ConfigurationManager.AppSettings["SubjectAttandance"];
-            string Body = "you are absent";
+            string Body = "";
             string Querry = string.Format("select EmployeeName,Email from Employee where EmpNo='{0}'", EmpNo);
             db d1 = new db();
             DataSet ds = d1.Read(Querry);
             string Name = ds.Tables[0].Rows[0][0].ToString();
             string mail = ds.Tables[0].Rows[0][1].ToString();
-            AttendanceRecord(Body);
+            //AttendanceRecord(Body);
             //Email e1 = new Email();
             //e1.Send(mail, subject, Body);
-
         }
-
+        public bool IsLeaveApplied()
+        {
+            string Querry = string.Format("");
+            db database = new db();
+            DataSet ds = database.Read(Querry);
+            if(ds.Tables[0].Rows.Count>0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public void AttendanceRecord(string message)
         {
+            db DataBase = new db();
             string Querry = string.Format(
                 @"IF not EXISTS(select EmployeeID from  LeaveApplication  inner join statushistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID where '{0}' between FromDate and ToDate and EmployeeID='{1}' and StatusHistory.ApplicationStatusID='2')
                  BEGIN
@@ -40,6 +52,6 @@ namespace LeaveApplication.Models
             DataBase.ExecuteQuerry(Querry);
         }
 
-
+        
     }
 }

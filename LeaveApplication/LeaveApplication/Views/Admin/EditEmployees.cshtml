@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "EditEmployees";
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
@@ -24,45 +23,52 @@
                     <h2 class="card-title">EditEmployee</h2>
                 </div>
                 <div class="container">
-                    @using (Html.BeginForm("UpdateEmployee", "Admin",new {EmployeeID=Model.EmployeeID} ,FormMethod.Post, new { autocomplete = "off", enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("UpdateEmployee", "Admin", new { EmployeeID = Model.EmployeeID }, FormMethod.Post, new { autocomplete = "off", enctype = "multipart/form-data" }))
                     {
                         <div class="row">
                             <div class="col">
                                 <div class="d-flex justify-content-center">
                                     <fieldset>
-                                        
-                                        <div class="form-group">
-                                            @Html.TextBoxFor(Model => Model.UserName, new { @class = "form-control", placeholder = "User Name", required = "required" })
+
+                                        <div class="form-group bmd-form-group">
+                                            <label for="UserName" class="text-center bmd-label-floating">User Name</label>
+
+                                            @Html.TextBoxFor(Model => Model.UserName, new { @class = "form-control", required = "required" })
                                             @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                                         </div>
 
-                                        <div class="form-group">
-                                            @Html.TextBoxFor(Model => Model.EmployeeName, new { @class = "form-control", placeholder = "Employee Name", required = "required" })
+                                        <div class="form-group bmd-form-group">
+                                            <label for="EmployeeName" class="text-center bmd-label-floating">Employee Name</label>
+                                            @Html.TextBoxFor(Model => Model.EmployeeName, new { @class = "form-control", required = "required" })
                                             @Html.ValidationMessageFor(m => m.EmployeeName, "", new { @class = "text-danger" })
 
                                         </div>
-                                        <div class="form-group">
-                                            @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control", placeholder = "Email", required = "required",type="email" })
+                                        <div class="form-group bmd-form-group">
+                                            <label for="Email" class="text-center bmd-label-floating">Email Address</label>
+                                            @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control", required = "required", type = "email" })
                                             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                                         </div>
-                                        <div class="form-group">
-                                            @Html.TextBoxFor(Model => Model.Address, new { @class = "form-control", placeholder = "Address", required = "required" })
+                                        <div class="form-group bmd-form-group">
+                                            <label for="Address" class="text-center bmd-label-floating">Address</label>
+                                            @Html.TextBoxFor(Model => Model.Address, new { @class = "form-control", required = "required" })
                                             @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
 
                                         </div>
-                                        <div class="form-group">
-                                            @Html.TextBoxFor(Model => Model.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number", required = "required" })
+                                        <div class="form-group bmd-form-group">
+                                            <label for="PhoneNumber" class="text-center bmd-label-floating">Phone Number</label>
+                                            @Html.TextBoxFor(Model => Model.PhoneNumber, new { @class = "form-control", required = "required" })
                                             @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
 
                                         </div>
-                                        <div class="form-group">
-                                            @Html.TextBoxFor(Model => Model.CNIC, new { @class = "form-control", placeholder = "CNIC", required = "required" })
+                                        <div class="form-group bmd-form-group">
+                                            <label for="CNIC" class="text-center bmd-label-floating">CNIC</label>
+                                            @Html.TextBoxFor(Model => Model.CNIC, new { @class = "form-control", required = "required" })
                                             @Html.ValidationMessageFor(m => m.CNIC, "", new { @class = "text-danger" })
 
                                         </div>
 
                                         <div class="form-group">
-
+                                            <label for="DepartmentID " class="d-block"> Select Department</label>
                                             <select class="custom-select" id="@Html.IdFor(m=>m.DepartmentID)" name=@Html.NameFor(m=>m.DepartmentID) required>
                                                 <option value="" disabled selected>Select Department</option>
                                                 @{
@@ -91,7 +97,7 @@
                                         </div>
 
                                         <div class="form-group">
-
+                                            <label for="DesignationID " class="d-block">Select Designation</label>
                                             <select class="custom-select" id=@Html.IdFor(m=>m.DesignationID) name=@Html.NameFor(m=>m.DesignationID) required>
                                                 <option value="" disabled selected>Select Designation</option>
                                                 @{
@@ -119,7 +125,7 @@
 
                                         </div>
                                         <div class="form-group">
-
+                                            <label for="Manager" class="control-label d-block">Select Manager</label>
                                             <select class="custom-select" id=@Html.IdFor(m=>m.Manager) name=@Html.NameFor(m=>m.Manager)>
                                                 <option value="" disabled selected>Select Manager</option>
                                                 @{System.Data.DataSet emp = ViewBag.Employees;
@@ -144,14 +150,35 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <input class="form-control" id="password" name="password" type="password" placeholder="Password" value="@Model.Password" required />
-                                            <div class="checkbox" style="padding-top:10px">
-                                                <label>
-                                                    <input id="chk1" type="checkbox" onclick="ShowPass()"> Show Password
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    @if (Model.isAdmin == true)
+                                                    {
+                                                        @Html.TextBoxFor(m => m.isAdmin, new { @class = "form-check-input", type = "checkbox", value = "", @checked = "checked", onclick = "IsHr();" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(m => m.isAdmin, new { @class = "form-check-input", type = "checkbox", value = "", onclick = "IsHr();" })
+                                                    }
+
+
+                                                    @*<input class="form-check-input" type="checkbox" checked >*@
+                                                    Allow Hr rights
+                                                    <span class="form-check-sign">
+                                                        <span class="check"></span>
+                                                    </span>
                                                 </label>
                                             </div>
-                                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                                         </div>
+                                        @*<div class="form-group">
+                                                <input class="form-control" id="password" name="password" type="password" placeholder="Password" value="@Model.Password" required />
+                                                <div class="checkbox" style="padding-top:10px">
+                                                    <label>
+                                                        <input id="chk1" type="checkbox" onclick="ShowPass()"> Show Password
+                                                    </label>
+                                                </div>
+                                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                            </div>*@
 
 
                                     </fieldset>
@@ -161,9 +188,13 @@
                                 </div>
                             </div>
                             <div class="col ">
-                                <div class="d-flex justify-content-center justify-content-lg-start justify-content-md-start form-group">
-                                    @Html.TextBoxFor(Model => Model.EmpNo, new { @class = "form-control", placeholder = "Employee No.", required = "required" })
-                                    @Html.ValidationMessageFor(m => m.EmpNo, "", new { @class = "text-danger" })
+                                <div class="d-flex justify-content-center justify-content-lg-start justify-content-md-start ">
+                                    <div class="form-group bmd-form-group">
+                                        <label for="EmpNo" class="text-center bmd-label-floating">EmpNo</label>
+                                        @Html.TextBoxFor(Model => Model.EmpNo, new { @class = "form-control", required = "required" })
+                                        @Html.ValidationMessageFor(m => m.EmpNo, "", new { @class = "text-danger" })
+                                    </div>
+
                                 </div>
                                 <div class="card pt-5">
                                     <div class="card-header">
@@ -214,6 +245,14 @@
         $("#PhoneNumber").mask('0000-0000000');
         $("#CNIC").mask("00000-0000000-0");
     });
+    function IsHr() {
+        if ($('#isAdmin').val() == true) {
+            $('#isAdmin').val(false);
+        } else {
+            $('#isAdmin').val(true);
+        }
+
+    }
     function IsImgUploaded() {
         var img = document.getElementById("File1");
         if (img.files.length == 0) {

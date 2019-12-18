@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using System.Data;
+
 namespace LeaveApplication.Models
 {
     public class LeaveApplication
@@ -12,13 +13,21 @@ namespace LeaveApplication.Models
         public String ApplicationId { get; set; }
         public String EmployeeID { get; set; }
         public String EmployeeName { get; set; }
+  
         public String LeaveType { get; set; }
         public String LeaveTypeID { get; set; }
         public String ApplyDate { get; set; }
+       
         public string FromDate { get; set; }
+        
         public string ToDate { get; set; }
+        
+        public string FromTime { get; set; }
+       
+        public string ToTime { get; set; }
         public double TotalDays { get; set; }
         public string LeaveRemarks { get; set; }
+
         public String LeaveReason { get; set; }
         public string ApplicationStatus { get; set; }
         public int IsHalfDay { get; set; }//full day leave or half day leave
@@ -27,6 +36,7 @@ namespace LeaveApplication.Models
         public HttpPostedFileBase Attachment { get; set; }
         public string FileId { get; set; }//use when displaying leave in detail view
         public string FileName { get; set; }
+        public string ManagerRemarks { get; set; }
         public void NotifyManager(Employee Manager, Employee FacultyMember)
         {//notify manger about new leave...
             if(Manager!=null)
