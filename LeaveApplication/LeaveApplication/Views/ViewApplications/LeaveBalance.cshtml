@@ -26,8 +26,11 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        @if (ViewBag.HideCloseBtn == true)
+                        {
+                            <th scope="col" id="EmpNameHead">Employee Name</th>
+                        }
 
-                        <th scope="col" id="EmpNameHead">Employee Name</th>
                         @foreach (System.Data.DataRow x in Model.Tables[0].Rows)
                         {
                             <th scope="col" class="text-center text-info">@x[0].ToString()</th>
@@ -37,13 +40,15 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td id="EmpName"></td>
-                        @foreach (System.Data.DataRow x in Model.Tables[0].Rows)
-                        {
-                            <td class="text-center">@x[1].ToString()</td>
-                        }
+                        @if (ViewBag.HideCloseBtn == true)
+                        {<td id="EmpName"></td> }
+                            
+                            @foreach (System.Data.DataRow x in Model.Tables[0].Rows)
+                            {
+                                <td class="text-center">@x[1].ToString()</td>
+                            }
 
-                    </tr>
+                        </tr>
                 </tbody>
             </table>
         </div>

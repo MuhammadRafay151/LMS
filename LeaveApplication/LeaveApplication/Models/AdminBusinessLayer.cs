@@ -118,10 +118,10 @@ namespace LeaveApplication.Models
         /// <summary>
         /// It return count of employee's remaining leaves
         /// </summary>
-        public int GetLeaveCount(AssignLeaves al)
-        {
+        public double GetLeaveCount(AssignLeaves al)
+        {//this table has employee leave balance...
             string Querry = string.Format("select EmployeeLeaveCount.Count  from EmployeeLeaveCount where EmployeeID='{0}'and LeaveTypeID='{1}'", al.EmployeeID, al.LeaveTypeID);
-            return Convert.ToInt32(DataBase.ExecuteScalar(Querry));
+            return Convert.ToDouble(DataBase.ExecuteScalar(Querry));
         }
         public DataSet ShowAssignLeaveHistory()
         {

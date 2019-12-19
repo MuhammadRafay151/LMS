@@ -11,6 +11,6 @@ namespace LeaveApplication.Models
         public int LeaveTypeID { get; set; }
         public string DepartmentID { get; set; }
         public string AssignType { get; set; }
-        public int Count { get; set; }
+        public double Count { get; set; }
     }
 }

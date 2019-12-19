@@ -151,9 +151,10 @@ namespace LeaveApplication.Controllers
                     if (l1.IsHalfDay == 1)
                     {
 
-                        l1.FromDate = Request.Form["Date"].ToString() + " " + Request.Form["halfday_from"].ToString();
+                        string fm = l1.FromDate;
+                        l1.FromDate = l1.FromDate + " " + l1.FromTime;
 
-                        l1.ToDate = Request.Form["Date"].ToString() + " " + Request.Form["halfday_to"].ToString();
+                        l1.ToDate = fm + " " + l1.ToTime;
                         Double hrs = lb.CalculateLeaveHours(l1);
                         if (hrs <= 0)
                         {
