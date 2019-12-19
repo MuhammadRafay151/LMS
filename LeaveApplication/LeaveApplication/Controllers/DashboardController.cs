@@ -23,16 +23,24 @@ namespace LeaveApplication.Controllers
             if (Session["EmpID"] != null)
             {
                
-                return View("ViewDashboard", eb.GetAbsentees(e1.EmployeeID));
+                return View("ViewDashboard", eb.GetAbsents(e1.EmployeeID));
             }
             else
             {
                 return RedirectToAction("Index", "LogIn");
             }
         }
-        public ActionResult CloseAbsentNotification()
+       
+        public ActionResult CloseAbsentNotification(int? id)
         {
-            return ViewDashboard();
+            if (id != null && id.Value > 0)
+            {
+                Attendance a1 = new Attendance();
+                a1.CloseNotification(id.Value, Convert.ToInt32(Session["EmpID"]));
+               return Json(true,JsonRequestBehavior.AllowGet);
+            }
+            return Content("Invalid Argument");
+
         }
     }
 }

@@ -32,23 +32,23 @@ namespace LeaveApplication.Controllers
                         Session["AttFile"] = x;
                         return View("ViewAttandence", x);
                     }
-                   catch(FormatException e)
+                    catch (FormatException e)
                     {
-                        return Content(e.Message+" Required format:mm/dd/yyyy");
+                        return Content(e.Message + " Required format:mm/dd/yyyy");
                     }
                     //Get data for only absecent employees....
-                  
+
                 }
                 else
                     return RedirectToAction("Index");
 
 
             }
-            
+
             return RedirectToAction("Index", "ApplyForLeave");
 
 
-            
+
 
 
         }
@@ -59,8 +59,8 @@ namespace LeaveApplication.Controllers
             foreach (Attendance i in x)
             {
                 i.NotifyAbsentees();
-                
-             
+
+
             }
             Session.Remove("AttFile");
             return RedirectToAction("Index");
@@ -77,6 +77,8 @@ namespace LeaveApplication.Controllers
                 return RedirectToAction("Index", "LogIn");
             }
         }
+       
+
 
     }
 }

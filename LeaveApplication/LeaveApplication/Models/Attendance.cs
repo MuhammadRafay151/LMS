@@ -67,7 +67,12 @@ select EmployeeID, '{0}', '{2}' from Employee where Employee.EmpNo='{1}'
             //retun int value=1 if employee leave is not found,pending or rejected so we can send emails to that employee and retun 0 if found...
             return Convert.ToInt32(DataBase.ExecuteScalar(Querry));
         }
-
+        public void CloseNotification(int id,int EmployeeId)
+        {
+            string Querry = "update Attendance set IsClosed=1 where ID=" + id + "and EmployeeId="+EmployeeId;
+            db database= new db();
+            database.ExecuteQuerry(Querry);
+        }
         
     }
 }
