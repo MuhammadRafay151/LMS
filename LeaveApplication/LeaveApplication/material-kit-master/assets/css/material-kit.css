@@ -18090,4 +18090,33 @@ footer .pull-center {
         overflow: auto;
     }
 }
-    
+.box1 {
+    background: linear-gradient(60deg, #26c6da26, #0097a7);
+    color:white;
+}
+.box2 {
+    background: linear-gradient(60deg, #0000009e, #05516ccc);
+    color: white;
+}
+.box3 {
+    background: linear-gradient(60deg, #ec407a30, #c2185b);
+    color:white;
+}
+.box4 {
+    background: linear-gradient(60deg, #2196f380, #673ab7c4);
+    color: white;
+}
+.box5 {
+    background: linear-gradient(60deg, #07528d99, #00431ca3);
+    color: white;
+}
+.box6 {
+    background: linear-gradient(60deg, #673ab778, #ff5722d4);
+    color: white;
+}
+@media screen and (max-width:500px) {
+    .piesize {
+        width: 300px;
+        height: 300px;
+    }
+}

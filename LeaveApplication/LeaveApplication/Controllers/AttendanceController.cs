@@ -67,6 +67,7 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult Presents()
         {
+            return Content("Page under development");
             if (Session["Employee"] != null)
             {
                 Employee e1 = (Employee)Session["Employee"];

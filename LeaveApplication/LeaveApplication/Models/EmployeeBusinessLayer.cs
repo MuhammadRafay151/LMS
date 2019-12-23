@@ -405,7 +405,7 @@ namespace LeaveApplication.Models
         public DataSet GetAbsents(int EmployeeId)
         {
 
-            string Querry = string.Format("select * from Attendance where EmployeeId={0} and IsClosed=0", EmployeeId);
+            string Querry = string.Format(@"select * from Attendance where EmployeeId={0} and IsClosed=0", EmployeeId);
 
             ds = database.Read(Querry);
 

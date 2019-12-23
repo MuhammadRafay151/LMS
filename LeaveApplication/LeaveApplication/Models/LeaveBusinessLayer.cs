@@ -663,6 +663,28 @@ where StatusHistory.LeaveApplicationID={0} group by LeaveApplicationID", Applica
             else
                 return false;
         }
+        public int FacultyPendingApplications_Count(int EmployeeId)
+        {
+            string Querry = string.Format(@"
+select count(*)PendingCount from(select LeaveApplication.LeaveApplicationID,Employee.EmployeeID from Employee inner join LeaveApplication on LeaveApplication.EmployeeID=Employee.EmployeeID
+ inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID
+ where Employee.Manager={0} group by LeaveApplication.LeaveApplicationID, Employee.EmployeeID
+ having  MAX(StatusHistory.ApplicationStatusID)=1)as x",EmployeeId);
+           return Convert.ToInt32( database.ExecuteScalar(Querry));
+        }
+        public DataSet ManagersPendings()
+        {
+            string Querry = string.Format(@"select Employee.EmployeeName as Manager,count(*)PendingCount from(select LeaveApplication.LeaveApplicationID
+, Employee.Manager from Employee
+ inner join LeaveApplication on LeaveApplication.EmployeeID = Employee.EmployeeID
+ 
+  inner
+                   join StatusHistory on StatusHistory.LeaveApplicationID = LeaveApplication.LeaveApplicationID
+ where Employee.Manager is not null group by LeaveApplication.LeaveApplicationID, Employee.Manager
+ having  MAX(StatusHistory.ApplicationStatusID) = 1) as x inner join Employee on x.Manager = Employee.EmployeeID group by x.Manager,Employee.EmployeeName
+");
+            return database.Read(Querry);
+        }
 
 
     }

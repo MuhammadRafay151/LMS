@@ -9,7 +9,7 @@ namespace LeaveApplication.Validation_Classes
 {
     public class Validation
     {
-        public ModelStateDictionary ValidateFullDay_L(LeaveApplication.Models.LeaveApplication l1, ModelStateDictionary x)
+        public void ValidateFullDay_L(LeaveApplication.Models.LeaveApplication l1, ModelStateDictionary x)
         {//for leave application
             if(l1.Attachment!=null&&!IsValidFileFormat(l1))
             {
@@ -55,7 +55,7 @@ namespace LeaveApplication.Validation_Classes
             {
                 x.AddModelError("LeaveReason", "Required");
             }
-            return x;
+         
         }
         public void ValidateHalfDay_L(LeaveApplication.Models.LeaveApplication l1, ModelStateDictionary x)
         {
