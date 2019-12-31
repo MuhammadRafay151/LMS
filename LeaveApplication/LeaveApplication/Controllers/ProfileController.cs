@@ -51,7 +51,7 @@ namespace LeaveApplication.Controllers
                     ModelState.AddModelError("CurrentPassword", "Current Password is not Correct");
                     return View("ResetPassword");
                 }
-
+                TempData["Notify"] = true;
                 return RedirectToAction("ResetPassword", "Profile");
             }
             else
