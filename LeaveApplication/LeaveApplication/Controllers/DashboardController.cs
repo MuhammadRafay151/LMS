@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -18,17 +19,14 @@ namespace LeaveApplication.Controllers
         // GET: Dashboard
         public ActionResult ViewDashboard()
         {
-
+            
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
                 LeaveBusinessLayer lb = new LeaveBusinessLayer();
                 System.Data.DataSet ds = eb.GetAbsents(e1.EmployeeID);
                 ds.Tables[0].TableName = "asd";
-                if (e1.isAdmin)
-                {
-                    ds.Tables.Add(lb.ManagersPendings().Tables[0].Copy());
-                }
+                ViewBag.TotalPendingRequests = lb.GetTotalPendings(e1.EmployeeID);
 
                 if (e1.IsManager)
                 {
@@ -57,6 +55,12 @@ namespace LeaveApplication.Controllers
             }
             return Content("Invalid Argument");
 
+        }
+        public ActionResult Managers_Pendings()
+        {
+            LeaveBusinessLayer lb = new LeaveBusinessLayer();
+            Employee e1 = new Employee();
+            return Json(lb.ManagersPendings());
         }
     }
 }

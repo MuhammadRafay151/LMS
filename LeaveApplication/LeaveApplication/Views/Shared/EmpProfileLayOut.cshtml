@@ -23,15 +23,14 @@
     @Scripts.Render("~/bundles/modernizr")
     <style>
         .ig {
-            background-image: url(../../Images/uitreckon3.jpg);
-            height: 100%;
-            background-position: center;
+          
+            
             background-repeat: no-repeat;
             background-size: cover;
         }
     </style>
 </head>
-<body class="ig h-100">
+<body background="../../Images/uitreckon3.jpg"class="ig" >
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-white fixed-top   ">
         <div class="container-fluid">
@@ -179,7 +178,7 @@
 
 
     </nav>
-    <div id="empdiv" class="container-fluid body-content">
+    <div id="empdiv" class="container-fluid body-content h-100">
         @RenderBody()
         <hr />
         <footer class="d-flex justify-content-end text-white">

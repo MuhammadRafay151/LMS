@@ -105,24 +105,33 @@
 
                                 </tbody>
                             </table>
-                            @if(string.IsNullOrWhiteSpace(Model.ManagerRemarks))
+                            @if(!string.IsNullOrWhiteSpace(Model.ManagerRemarks))
                             {
                                 <div class="row">
                                     <div class="col">
-                                        <h3 class="text-center">Manager Remarks</h3>
-                                        <p class="text-justify">
-                                            T-Series presents the Full Video of Junooniyat Title Song from the film Junooniyat, with Pulkit Samrat and Yami Gautam, starring together once again after the super success of the film Sanam Re earlier this year. Junooniyat is directed by Vivek Agnihotri. Junooniyat Title Song is sung by Meet Bros Anjjan, featuring Falak Shabir. The music director is Meet Bros Anjjan themselves & lyrics are by Kumaar.
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Manager Remarks
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-justify">
+                                                        Listen to this soulful track Awari from the movie Ek Villain starring Sidharth Malhotra and Shraddha Kapoor. This film is directed by Mohit Suri.
 
-                                            SONG - JUNOONIYAT
-                                            SINGER - MEET BROS ANJJAN,FEAT. FALAK SHABIR
-                                            BACK VOCAL - THOMSON ANDREWS,KESHIA BRAGANZA,GWAN DIAS,RYAN DIAS
-                                            MUSIC - MEET BROS ANJJAN
-                                            LYRICS - KUMAAR
-                                            Programmed By- John Stewart Eduri. Guitars- Pawan Rasaily. Music Assistant- Uddipan Sharma, Ambresh Shroff. Mixed And
-                                            Mastered By- P A Deepak
-                                            Song Recorded By- Gautam Chakrabortty And Uddipan Sharma @@Meet Bros Recording Studio. Production Managed By-Suraj Kumar, Ruchir Saxena
-                                            MUSIC ON T-SERIES
-                                        </p>
+                                                        Song: AWARI
+                                                        Singer: ADNAN DHOOL, MOMINA MUSTEHSAN
+                                                        Lyrics: RABBI AHMED, ADNAN DHOOL (SOCH)
+                                                        Music: RABBI AHMED, ADNAN DHOOL (SOCH)
+                                                        Music Label: T-Series
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        @*<h3 class="text-center">Manager Remarks</h3>*@
                                     </div>
                                 </div>
                             }

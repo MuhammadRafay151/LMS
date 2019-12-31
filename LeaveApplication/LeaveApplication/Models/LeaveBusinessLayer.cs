@@ -50,9 +50,13 @@ namespace LeaveApplication.Models
             a1.ApplyDate = DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss");
             con = new SqlConnection(connection);
             con.Open();
-            string Querry = string.Format("insert into LeaveApplication (EmployeeID,LeaveTypeID,[ApplyDate],FromDate,ToDate,[TotalDays],Remarks,ReasonID,ApplicationType) values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}') SELECT SCOPE_IDENTITY() AS [SCOPE_IDENTITY]", a1.EmployeeID, a1.LeaveType, a1.ApplyDate, a1.FromDate,
-               a1.ToDate, a1.TotalDays, a1.LeaveRemarks, a1.LeaveReason, a1.ApplicationType);
+            string Querry = string.Format("insert into LeaveApplication (EmployeeID,LeaveTypeID,[ApplyDate],FromDate,ToDate,[TotalDays],Remarks,ReasonID,ApplicationType) values('{0}','{1}','{2}','{3}','{4}','{5}',@Remarks,'{6}','{7}') SELECT SCOPE_IDENTITY() AS [SCOPE_IDENTITY]", a1.EmployeeID, a1.LeaveType, a1.ApplyDate, a1.FromDate,
+               a1.ToDate, a1.TotalDays, a1.LeaveReason, a1.ApplicationType);
+            SqlParameter p1 = new SqlParameter();
+            p1.ParameterName = "Remarks";
+            p1.Value = a1.LeaveRemarks;
             cmd = new SqlCommand(Querry, con);
+            cmd.Parameters.Add(p1);
             //cmd.ExecuteNonQuery();
             reader = cmd.ExecuteReader();
             if (reader.Read())
@@ -258,7 +262,7 @@ where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
                 v1.FileId = Encryption.Base64Encode(Convert.ToString(ds.Tables[0].Rows[0][9]));
                 v1.FileName = ds.Tables[0].Rows[0][10].ToString();
             }
-            v1.ApplicationType =Convert.ToBoolean(ds.Tables[0].Rows[0][11]);
+            v1.ApplicationType = Convert.ToBoolean(ds.Tables[0].Rows[0][11]);
 
             if (v1.ApplicationStatus == "Pending")
             {
@@ -275,7 +279,7 @@ where LeaveApplication.LeaveApplicationID='{0}'", Application_Id);
 
             string Querry = string.Format(@"select LeaveApplication.LeaveApplicationID,LeaveApplication.EmployeeID,LeaveType.LeaveType,LeaveApplication.ApplyDate,
 LeaveApplication.FromDate, LeaveApplication.ToDate, LeaveApplication.TotalDays, LeaveApplication.Remarks,
-Reasons.LeaveReason, Attachments.FileId, Attachments.FileName from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID = LeaveType.LeaveTypeID
+Reasons.LeaveReason, Attachments.FileId, Attachments.FileName,LeaveApplication.ManagerRemarks from LeaveApplication inner join LeaveType on LeaveApplication.LeaveTypeID = LeaveType.LeaveTypeID
   inner join Reasons on LeaveApplication.ReasonID = Reasons.ReasonID  left join Attachments on LeaveApplication.LeaveApplicationID = Attachments.LeaveApplicationId
 where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
 
@@ -297,7 +301,7 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
                 v1.FileId = Encryption.Base64Encode(Convert.ToString(ds.Tables[0].Rows[0][9]));
                 v1.FileName = ds.Tables[0].Rows[0][10].ToString();
             }
-
+            v1.ManagerRemarks = ds.Tables[0].Rows[0][11].ToString();
 
 
             return v1;
@@ -420,14 +424,14 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
             return SH;
 
         }
-        public void CancelApplication(int ApplicationId,int EmployeeId)
+        public void CancelApplication(int ApplicationId, int EmployeeId)
         {
-            
 
-                string Querry = string.Format(@"delete from LeaveApplication where LeaveApplication.LeaveApplicationID={0} and LeaveApplication.EmployeeID={1}
-and(select MAX(a.ApplicationStatusID) from StatusHistory a where LeaveApplicationID = {0}) = 1", ApplicationId,EmployeeId);
-                database.ExecuteQuerry(Querry);
-          
+
+            string Querry = string.Format(@"delete from LeaveApplication where LeaveApplication.LeaveApplicationID={0} and LeaveApplication.EmployeeID={1}
+and(select MAX(a.ApplicationStatusID) from StatusHistory a where LeaveApplicationID = {0}) = 1", ApplicationId, EmployeeId);
+            database.ExecuteQuerry(Querry);
+
 
         }
         public DataSet GetFacultyAll(int EmployeeId)
@@ -502,7 +506,7 @@ inner join Reasons on a.ReasonID = Reasons.ReasonID  inner join ApplicationStatu
         }
         public void AcceptApplication(string ApplicationID, string ManagerRemarks)
         {
-           
+
             string Querry = string.Format(@"select LeaveApplication.EmployeeID, LeaveApplication.LeaveTypeID,LeaveApplication.ApplicationType,LeaveApplication.TotalDays,EmployeeLeaveCount.Count 
 as CurrentBalance from LeaveApplication  left join EmployeeLeaveCount on LeaveApplication.EmployeeID=EmployeeLeaveCount.EmployeeID and LeaveApplication.LeaveTypeID=
 EmployeeLeaveCount.LeaveTypeID
@@ -515,7 +519,7 @@ where LeaveApplication.LeaveApplicationID='{0}'", ApplicationID);
             {
                 e1.Count = Convert.ToDouble(ds.Tables[0].Rows[0][4]);
             }
-           
+
             LeaveApplication l1 = new LeaveApplication();
             l1.ApplicationType = Convert.ToBoolean(ds.Tables[0].Rows[0][2]);
             l1.TotalDays = Convert.ToDouble(ds.Tables[0].Rows[0][3]);
@@ -523,15 +527,15 @@ where LeaveApplication.LeaveApplicationID='{0}'", ApplicationID);
 
             if (l1.ApplicationType == false)
             {
-                
-                    e1.Count -= l1.TotalDays;
 
-              
+                e1.Count -= l1.TotalDays;
+
+
 
             }
             else if (l1.ApplicationType == true)
             {
-                 e1.Count += l1.TotalDays;
+                e1.Count += l1.TotalDays;
 
             }
             Querry = string.Format("insert into StatusHistory(LeaveApplicationID,Date,ApplicationStatusID) select '{0}','{1}',ApplicationStatus.ApplicationStatusID from ApplicationStatus where ApplicationStatus.ApplicationStatus='Approved' ", ApplicationID, DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss"));
@@ -669,10 +673,10 @@ where StatusHistory.LeaveApplicationID={0} group by LeaveApplicationID", Applica
 select count(*)PendingCount from(select LeaveApplication.LeaveApplicationID,Employee.EmployeeID from Employee inner join LeaveApplication on LeaveApplication.EmployeeID=Employee.EmployeeID
  inner join StatusHistory on StatusHistory.LeaveApplicationID=LeaveApplication.LeaveApplicationID
  where Employee.Manager={0} group by LeaveApplication.LeaveApplicationID, Employee.EmployeeID
- having  MAX(StatusHistory.ApplicationStatusID)=1)as x",EmployeeId);
-           return Convert.ToInt32( database.ExecuteScalar(Querry));
+ having  MAX(StatusHistory.ApplicationStatusID)=1)as x", EmployeeId);
+            return Convert.ToInt32(database.ExecuteScalar(Querry));
         }
-        public DataSet ManagersPendings()
+        public string[,] ManagersPendings()
         {
             string Querry = string.Format(@"select Employee.EmployeeName as Manager,count(*)PendingCount from(select LeaveApplication.LeaveApplicationID
 , Employee.Manager from Employee
@@ -683,9 +687,30 @@ select count(*)PendingCount from(select LeaveApplication.LeaveApplicationID,Empl
  where Employee.Manager is not null group by LeaveApplication.LeaveApplicationID, Employee.Manager
  having  MAX(StatusHistory.ApplicationStatusID) = 1) as x inner join Employee on x.Manager = Employee.EmployeeID group by x.Manager,Employee.EmployeeName
 ");
-            return database.Read(Querry);
+            System.Data.DataSet dset = database.Read(Querry);
+            string[,] ds = new string[dset.Tables[0].Rows.Count, dset.Tables[0].Columns.Count];
+            for (int i = 0; i < ds.GetLength(0); i++)
+            {
+                for (int j = 0; j < ds.GetLength(1); j++)
+                {
+                    ds[i, j] = dset.Tables[0].Rows[i][j].ToString();
+                }
+            }
+            return ds;
         }
-
+        /// <summary>
+        /// Return total pending applications of particular user
+        /// </summary>
+        /// <param name="Empid"></param>
+        /// <returns></returns>
+        public int GetTotalPendings(int Empid)
+        {
+            string Querry = string.Format(@"select count(*)from(select LeaveApplication.LeaveApplicationID from LeaveApplication
+inner join StatusHistory on StatusHistory.LeaveApplicationID = LeaveApplication.LeaveApplicationID
+where EmployeeID = {0} group by LeaveApplication.LeaveApplicationID
+  having MAX(StatusHistory.ApplicationStatusID) = 1)as t1",Empid);
+            return Convert.ToInt32(database.ExecuteScalar(Querry));
+        }
 
     }
 }
