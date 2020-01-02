@@ -1,19 +1,6 @@
 ﻿@*@model IEnumerable<LeaveApplication.Models.LeaveApplication>*@
 @model System.Data.DataSet
-<script>
 
-    $(document).ready(function () {
-
-        function View(row) {
-            var Application_Id = document.getElementById('t1').rows[row.rowIndex].cells[0].innerHTML;
-            console.log(Application_Id);
-            window.location.href = "/ViewApplications/DetiledView?Application_Id=" + Application_Id;
-
-        }
-
-    });
-
-/**/</script>
 <div class="container-fluid" id="a1">
     <div class="row ">
         <div class="col ">
@@ -322,5 +309,12 @@ InsertionMode = InsertionMode.Replace
     </div>
 </div>
 <script>
+    function View(row) {
+        var Application_Id = document.getElementById('t1').rows[row.rowIndex].cells[0].innerHTML;
+        console.log(Application_Id);
+        window.location.href = "/ViewApplications/DetiledView?Application_Id=" + Application_Id;
 
-</script>
+    }
+
+
+/**/</script>

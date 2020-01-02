@@ -12,7 +12,7 @@
 <div class="container-fluid">
     <div class="row vh-100 ">
         <div class="col">
-            <h1  class="text-white" style=" margin-top:3%;margin-bottom:2% ;text-align:center">Faculty Applications</h1>
+            <h1 class="text-white" style=" margin-top:3%;margin-bottom:2% ;text-align:center">Faculty Applications</h1>
             <div class="card card-nav-tabs card-plain mb-0">
                 <div class="card-header card-header-info">
                     <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
@@ -20,36 +20,91 @@
                         <div class="nav-tabs-wrapper">
                             <ul class="nav nav-tabs" data-tabs="tabs">
                                 <li class="nav-item">
-                                    @Ajax.ActionLink("All", "FacultyAll", null, new AjaxOptions
- {
-     HttpMethod = "GET",
-          UpdateTargetId = "div1",
-          InsertionMode = InsertionMode.Replace
- }, new { @class = "nav-link", data_toggle = "tab" })
+                                    @if (ViewBag.Page=="All")
+                                    {
+                                        @Ajax.ActionLink("All", "FacultyAll", null, new AjaxOptions
+{
+   HttpMethod = "GET",
+        UpdateTargetId = "div1",
+        InsertionMode = InsertionMode.Replace
+}, new { @class = "nav-link active", data_toggle = "tab" })
+                                    }
+                                    else
+                                    {
+                                        @Ajax.ActionLink("All", "FacultyAll", null, new AjaxOptions
+{
+   HttpMethod = "GET",
+        UpdateTargetId = "div1",
+        InsertionMode = InsertionMode.Replace
+}, new { @class = "nav-link ", data_toggle = "tab" })
+                                    }
+
+                                </li>
+
+
+                                <li class="nav-item">
+                                    @if (ViewBag.Page == null || ViewBag.Page == "Pending")
+                                    {
+                                        @Ajax.ActionLink("Pending", "FacultyPending", null, new AjaxOptions
+{
+  HttpMethod = "GET",
+         UpdateTargetId = "div1",
+         InsertionMode = InsertionMode.Replace
+}, new { @class = "nav-link active", data_toggle = "tab" })
+                                    }
+                                    else
+                                    {
+                                        @Ajax.ActionLink("Pending", "FacultyPending", null, new AjaxOptions
+{
+  HttpMethod = "GET",
+         UpdateTargetId = "div1",
+         InsertionMode = InsertionMode.Replace
+}, new { @class = "nav-link ", data_toggle = "tab" })
+                                    }
+
+
                                 </li>
                                 <li class="nav-item">
-                                    @Ajax.ActionLink("Pending", "FacultyPending", null, new AjaxOptions
+                                    @if (ViewBag.Page == "Approved")
+                                    {
+                                        @Ajax.ActionLink("Approved", "FacultyApproved", null, new AjaxOptions
 {
-    HttpMethod = "GET",
+   HttpMethod = "GET",
            UpdateTargetId = "div1",
            InsertionMode = InsertionMode.Replace
 }, new { @class = "nav-link active", data_toggle = "tab" })
-                                </li>
-                                <li class="nav-item">
-                                    @Ajax.ActionLink("Approved", "FacultyApproved", null, new AjaxOptions
- {
-     HttpMethod = "GET",
-             UpdateTargetId = "div1",
-             InsertionMode = InsertionMode.Replace
- }, new { @class = "nav-link", data_toggle = "tab" })
-                                </li>
-                                <li class="nav-item">
-                                    @Ajax.ActionLink("Rejected", "FacultyRejected", null, new AjaxOptions
+                                    }
+                                    else
+                                    {
+                                        @Ajax.ActionLink("Approved", "FacultyApproved", null, new AjaxOptions
 {
    HttpMethod = "GET",
            UpdateTargetId = "div1",
            InsertionMode = InsertionMode.Replace
 }, new { @class = "nav-link", data_toggle = "tab" })
+                                    }
+
+                                </li>
+                                <li class="nav-item">
+                                    @if (ViewBag.Page == "Reject")
+                                    {
+                                        @Ajax.ActionLink("Rejected", "FacultyRejected", null, new AjaxOptions
+{
+  HttpMethod = "GET",
+          UpdateTargetId = "div1",
+          InsertionMode = InsertionMode.Replace
+}, new { @class = "nav-link active", data_toggle = "tab" })
+                                    }
+                                    else
+                                    {
+                                        @Ajax.ActionLink("Rejected", "FacultyRejected", null, new AjaxOptions
+{
+  HttpMethod = "GET",
+          UpdateTargetId = "div1",
+          InsertionMode = InsertionMode.Replace
+}, new { @class = "nav-link", data_toggle = "tab" })
+                                    }
+
                                 </li>
                             </ul>
                         </div>
@@ -58,14 +113,30 @@
                 </div>
             </div>
             <div id="div1">
-                @Html.Action("FacultyPending")
+
+                @if (ViewBag.Page == "Approved")
+                {
+                    @Html.Action("FacultyApproved", new { PageNo = ViewBag.PageNo })
+                }
+                else if (ViewBag.Page == "Reject")
+                {
+                    @Html.Action("FacultyRejected", new { PageNo = ViewBag.PageNo })
+                }
+                else if (ViewBag.Page == "All")
+                {
+                    @Html.Action("FacultyAll", new { PageNo = ViewBag.PageNo })
+                }
+                else
+                {
+                    @Html.Action("FacultyPending", new { PageNo = ViewBag.PageNo })
+                }
             </div>
 
 
         </div>
     </div>
-    </div>
-    @*<ul class="nav nav-tabs" style="margin-top:3%">
+</div>
+@*<ul class="nav nav-tabs" style="margin-top:3%">
         <li class="nav-item">
             @Ajax.ActionLink("All", "FacultyAll", null, new AjaxOptions
        {
@@ -102,4 +173,3 @@
 
     </ul>*@
 
-   

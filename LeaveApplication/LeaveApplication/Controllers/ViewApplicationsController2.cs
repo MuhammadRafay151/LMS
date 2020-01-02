@@ -13,9 +13,17 @@ namespace LeaveApplication.Controllers
 
         public ActionResult FacultyApplications()
         {
+            
             if (Session["EmpID"] != null && ((Employee)Session["Employee"]).IsManager == true)
             {
+                TempData["Fac_emp"] = false;
+                if (TempData["Page_App2"] != null)
+                {
+                    ViewBag.Page = TempData["Page_App2"].ToString();
+                    ViewBag.PageNo = TempData["PageNo"].ToString();
+                    TempData.Remove("Page_App2");
 
+                }
                 return View();
             }
             else
@@ -32,11 +40,12 @@ namespace LeaveApplication.Controllers
                 System.Data.DataSet ds = lb.GetFacultyAll(((Employee)Session["Employee"]).EmployeeID);
                 PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
                 ViewBag.Manager = true;
+                TempData["Page_App"] = "All";
                 if (PageNo.HasValue && PageNo.Value > 0)
                 {
 
                     ViewBag.PageNo = PageNo.Value;
-
+                    TempData["PageNo"]=PageNo;
                     System.Data.DataSet ds1 = p1.GetPage(ds, 5, PageNo);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("All", ds1);
@@ -44,7 +53,7 @@ namespace LeaveApplication.Controllers
                 else
                 {
                     ViewBag.PageNo = 1;
-
+                    TempData["PageNo"] = 1;
                     System.Data.DataSet ds1 = p1.GetPage(ds, 5, 1);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("All", ds1);
@@ -63,14 +72,14 @@ namespace LeaveApplication.Controllers
             if (Session["EmpID"] != null && ((Employee)Session["Employee"]).IsManager)
             {
                 System.Data.DataSet ds = lb.GetFacultyPending(((Employee)Session["Employee"]).EmployeeID);
-
+                TempData["Page_App"] = "Pending";
                 PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
                 ViewBag.Manager = true;
                 if (PageNo.HasValue && PageNo.Value > 0)
                 {
 
                     ViewBag.PageNo = PageNo.Value;
-
+                    TempData["PageNo"] = PageNo;
                     System.Data.DataSet ds1 = p1.GetPage(ds, 5, PageNo);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("Pending", ds1);
@@ -78,7 +87,7 @@ namespace LeaveApplication.Controllers
                 else
                 {
                     ViewBag.PageNo = 1;
-
+                    TempData["PageNo"] = 1;
                     System.Data.DataSet ds1 = p1.GetPage(ds, 5, 1);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("Pending", ds1);
@@ -100,11 +109,12 @@ namespace LeaveApplication.Controllers
                 System.Data.DataSet ds = lb.GetFacultyApproved(((Employee)Session["Employee"]).EmployeeID);
                 PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
                 ViewBag.Manager = true;
+                TempData["Page_App"] = "Approved";
                 if (PageNo.HasValue && PageNo.Value > 0)
                 {
 
                     ViewBag.PageNo = PageNo.Value;
-
+                    TempData["PageNo"] = PageNo;
                     System.Data.DataSet ds1 = p1.GetPage(ds, 5, PageNo);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("Approved", ds1);
@@ -112,7 +122,7 @@ namespace LeaveApplication.Controllers
                 else
                 {
                     ViewBag.PageNo = 1;
-
+                    TempData["PageNo"] = 1;
                     System.Data.DataSet ds1 = p1.GetPage(ds, 5, 1);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("Approved", ds1);
@@ -133,11 +143,11 @@ namespace LeaveApplication.Controllers
                 System.Data.DataSet ds = lb.GetFacultyReject(((Employee)Session["Employee"]).EmployeeID);
                 PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
                 ViewBag.Manager = true;
+                TempData["Page_App"] = "Reject";
                 if (PageNo.HasValue && PageNo.Value > 0)
                 {
-
                     ViewBag.PageNo = PageNo.Value;
-
+                    TempData["PageNo"] = PageNo;
                     System.Data.DataSet ds1 = p1.GetPage(ds, 5, PageNo);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("Rejected", ds1);
@@ -145,7 +155,7 @@ namespace LeaveApplication.Controllers
                 else
                 {
                     ViewBag.PageNo = 1;
-
+                    TempData["PageNo"] = 1;
                     System.Data.DataSet ds1 = p1.GetPage(ds, 5, 1);
                     ViewBag.TotalPages = p1.GetTotalPages();
                     return PartialView("Rejected", ds1);
@@ -182,7 +192,7 @@ namespace LeaveApplication.Controllers
                 return RedirectToAction("Index", "LogIn");
             }
             Application_Id = LeaveApplication.Models.Encryption.Base64Decode(Application_Id);
-           
+
             try
             {
 

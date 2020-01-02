@@ -22,6 +22,14 @@ namespace LeaveApplication.Controllers
 
             if (Session["EmpID"] != null)
             {
+                TempData["Fac_emp"] = true;
+                if (TempData["Page_App"] != null)
+                {
+                    ViewBag.Page = TempData["Page_App"].ToString();
+                    ViewBag.PageNo = TempData["PageNo"].ToString();
+                    
+                }
+
                 Session["FileName"] = string.Empty;
                 return View();
             }
@@ -35,11 +43,13 @@ namespace LeaveApplication.Controllers
             System.Data.DataSet ds = lb.GetAllApplications(GetEmpID());
             PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
 
+            TempData["Page_App"] = "All";
+
             if (PageNo.HasValue && PageNo.Value > 0)
             {
 
                 ViewBag.PageNo = PageNo.Value;
-
+                TempData["PageNo"] = PageNo.Value;
                 System.Data.DataSet ds1 = p1.GetPage(ds, 5, PageNo);
                 ViewBag.TotalPages = p1.GetTotalPages();
                 return PartialView("ALL", ds1);
@@ -47,7 +57,7 @@ namespace LeaveApplication.Controllers
             else
             {
                 ViewBag.PageNo = 1;
-
+                TempData["PageNo"] = 1;
                 System.Data.DataSet ds1 = p1.GetPage(ds, 5, 1);
                 ViewBag.TotalPages = p1.GetTotalPages();
                 return PartialView("ALL", ds1);
@@ -58,12 +68,12 @@ namespace LeaveApplication.Controllers
         {
             System.Data.DataSet ds = lb.GetPendingApplications(GetEmpID());
             PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
-
+            TempData["Page_App"] = "Pending";
             if (PageNo.HasValue && PageNo.Value > 0)
             {
 
                 ViewBag.PageNo = PageNo.Value;
-
+                TempData["PageNo"] = PageNo.Value;
                 System.Data.DataSet ds1 = p1.GetPage(ds, 5, PageNo);
                 ViewBag.TotalPages = p1.GetTotalPages();
                 return PartialView("Pending", ds1);
@@ -71,7 +81,7 @@ namespace LeaveApplication.Controllers
             else
             {
                 ViewBag.PageNo = 1;
-
+                TempData["PageNo"] = 1;
                 System.Data.DataSet ds1 = p1.GetPage(ds, 5, 1);
                 ViewBag.TotalPages = p1.GetTotalPages();
                 return PartialView("Pending", ds1);
@@ -82,12 +92,12 @@ namespace LeaveApplication.Controllers
         {
             System.Data.DataSet ds = lb.GetApprovedApplications(GetEmpID());
             PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
-
+            TempData["Page_App"] = "Approved";
             if (PageNo.HasValue && PageNo.Value > 0)
             {
 
                 ViewBag.PageNo = PageNo.Value;
-
+                TempData["PageNo"] = PageNo.Value;
                 System.Data.DataSet ds1 = p1.GetPage(ds, 5, PageNo);
                 ViewBag.TotalPages = p1.GetTotalPages();
                 return PartialView("Approved", ds1);
@@ -95,7 +105,7 @@ namespace LeaveApplication.Controllers
             else
             {
                 ViewBag.PageNo = 1;
-
+                TempData["PageNo"] = 1;
                 System.Data.DataSet ds1 = p1.GetPage(ds, 5, 1);
                 ViewBag.TotalPages = p1.GetTotalPages();
                 return PartialView("Approved", ds1);
@@ -107,12 +117,12 @@ namespace LeaveApplication.Controllers
         {
             System.Data.DataSet ds = lb.GetRejectedApplications(GetEmpID());
             PagedDataSet.PagedDataSet p1 = new PagedDataSet.PagedDataSet();
-
+            TempData["Page_App"] = "Reject";
             if (PageNo.HasValue && PageNo.Value > 0)
             {
 
                 ViewBag.PageNo = PageNo.Value;
-
+                TempData["PageNo"] = PageNo.Value;
                 System.Data.DataSet ds1 = p1.GetPage(ds, 5, PageNo);
                 ViewBag.TotalPages = p1.GetTotalPages();
                 return PartialView("Rejected", ds1);
@@ -120,12 +130,29 @@ namespace LeaveApplication.Controllers
             else
             {
                 ViewBag.PageNo = 1;
-
+                TempData["PageNo"] = 1;
                 System.Data.DataSet ds1 = p1.GetPage(ds, 5, 1);
                 ViewBag.TotalPages = p1.GetTotalPages();
                 return PartialView("Rejected", ds1);
             }
 
+        }
+        public ActionResult GoBack()
+        {
+            if (Convert.ToBoolean(TempData["Fac_emp"]) == false)
+            {
+                //for faculty applications backward navigations...
+
+                if (TempData["Page_App"] != null)
+                    TempData["Page_App2"] = TempData["Page_App"].ToString();
+                return RedirectToAction("FacultyApplications");
+
+            }
+            //  for current user...
+            if (TempData["Page_App"] != null)
+                TempData.Keep("Page_App");
+            //TempData["Page_App2"] = TempData["Page_App"].ToString();
+            return RedirectToAction("Index");
         }
         public ActionResult EditDetails(string Application_Id)
         {
@@ -217,11 +244,11 @@ namespace LeaveApplication.Controllers
             {
                 return RedirectToAction("Index", "LogIn");
             }
-            
+
             try
             {
                 Application_Id = LeaveApplication.Models.Encryption.Base64Decode(Application_Id);
-                lb.CancelApplication(int.Parse(Application_Id),int.Parse(GetEmpID()));
+                lb.CancelApplication(int.Parse(Application_Id), int.Parse(GetEmpID()));
                 return RedirectToAction("Index");
             }
             catch (FormatException)

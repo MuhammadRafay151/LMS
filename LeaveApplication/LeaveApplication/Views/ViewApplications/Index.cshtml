@@ -13,43 +13,96 @@
         <div class="col">
             <h1 class=" text-white" style=" margin-top:3% ;margin-bottom:2%;text-align:center">Leave Applications</h1>
             @*material theme*@
-            <div class="card card-nav-tabs card-plain "style="margin-bottom:0%">
+            <div class="card card-nav-tabs card-plain " style="margin-bottom:0%">
                 <div class="card-header card-header-info">
                     <!-- colors: "header-primary", "header-info", "header-success", "header-warning", "header-danger" -->
                     <div class="nav-tabs-navigation">
                         <div class="nav-tabs-wrapper">
                             <ul class="nav nav-tabs" data-tabs="tabs">
                                 <li class="nav-item">
-                                    @Ajax.ActionLink("All", "ALL", null, new AjaxOptions
-              {
-                  HttpMethod = "GET",
-                       UpdateTargetId = "div1",
-                       InsertionMode = InsertionMode.Replace
-              }, new { @class = "nav-link", data_toggle = "tab" })
+                                    @if (ViewBag.Page != null && ViewBag.Page == "All")
+                                    {
+                                        @Ajax.ActionLink("All", "ALL", null, new AjaxOptions
+             {
+                 HttpMethod = "GET",
+                      UpdateTargetId = "div1",
+                      InsertionMode = InsertionMode.Replace
+             }, new { @class = "nav-link active", data_toggle = "tab" })
+                                    }
+                                    else
+                                    {
+                                        @Ajax.ActionLink("All", "ALL", null, new AjaxOptions
+                                                     {
+                                                         HttpMethod = "GET",
+                                                              UpdateTargetId = "div1",
+                                                              InsertionMode = InsertionMode.Replace
+                                                     }, new { @class = "nav-link", data_toggle = "tab" })
+                                    }
+
+
                                 </li>
                                 <li class="nav-item">
-                                    @Ajax.ActionLink("Pending", "Pending", null, new AjaxOptions
-            {
-                HttpMethod = "GET",
-                       UpdateTargetId = "div1",
-                       InsertionMode = InsertionMode.Replace
-            }, new { @class = "nav-link active", data_toggle = "tab" })
+                                    @if (ViewBag.Page == null || ViewBag.Page == "Pending")
+                                    {
+                                        @Ajax.ActionLink("Pending", "Pending", null, new AjaxOptions
+           {
+               HttpMethod = "GET",
+                      UpdateTargetId = "div1",
+                      InsertionMode = InsertionMode.Replace
+           }, new { @class = "nav-link active", data_toggle = "tab" })
+                                    }
+                                    else
+                                    {
+                                        @Ajax.ActionLink("Pending", "Pending", null, new AjaxOptions
+           {
+               HttpMethod = "GET",
+                      UpdateTargetId = "div1",
+                      InsertionMode = InsertionMode.Replace
+           }, new { @class = "nav-link", data_toggle = "tab" })
+                                    }
+
                                 </li>
                                 <li class="nav-item">
-                                    @Ajax.ActionLink("Approved", "Approved", null, new AjaxOptions
-            {
-             HttpMethod = "GET",
-                     UpdateTargetId = "div1",
-                     InsertionMode = InsertionMode.Replace
-            }, new { @class = "nav-link", data_toggle = "tab" })
+                                    @if (ViewBag.Page != null && ViewBag.Page == "Approved")
+                                    {
+                                        @Ajax.ActionLink("Approved", "Approved", null, new AjaxOptions
+           {
+            HttpMethod = "GET",
+                    UpdateTargetId = "div1",
+                    InsertionMode = InsertionMode.Replace
+           }, new { @class = "nav-link active", data_toggle = "tab" })
+                                    }
+                                    else
+                                    {
+                                        @Ajax.ActionLink("Approved", "Approved", null, new AjaxOptions
+           {
+            HttpMethod = "GET",
+                    UpdateTargetId = "div1",
+                    InsertionMode = InsertionMode.Replace
+           }, new { @class = "nav-link", data_toggle = "tab" })
+                                    }
+
                                 </li>
                                 <li class="nav-item">
-                                    @Ajax.ActionLink("Rejected", "Rejected", null, new AjaxOptions
-            {
-                HttpMethod = "GET",
-                        UpdateTargetId = "div1",
-                        InsertionMode = InsertionMode.Replace
-            }, new { @class = "nav-link", data_toggle = "tab" })
+                                    @if (ViewBag.Page != null && ViewBag.Page == "Reject")
+                                    {
+                                        @Ajax.ActionLink("Rejected", "Rejected", null, new AjaxOptions
+{
+HttpMethod = "GET",
+UpdateTargetId = "div1",
+InsertionMode = InsertionMode.Replace
+}, new { @class = "nav-link active", data_toggle = "tab" })
+                                    }
+                                    else
+                                    {
+                                        @Ajax.ActionLink("Rejected", "Rejected", null, new AjaxOptions
+{
+HttpMethod = "GET",
+UpdateTargetId = "div1",
+InsertionMode = InsertionMode.Replace
+}, new { @class = "nav-link", data_toggle = "tab" })
+                                    }
+
                                 </li>
                             </ul>
                         </div>
@@ -57,8 +110,24 @@
                 </div>
             </div>
 
-            <div id="div1"class="mt-0">
-                @Html.Action("Pending")
+            <div id="div1" class="mt-0">
+                @if (ViewBag.Page == "Approved")
+                {
+                    @Html.Action("Approved",new {PageNo=ViewBag.PageNo})
+                }
+                else if (ViewBag.Page == "Reject")
+                {
+                    @Html.Action("Rejected",new {PageNo=ViewBag.PageNo})
+                }
+                else if (ViewBag.Page == "All")
+                {
+                    @Html.Action("All",new {PageNo=ViewBag.PageNo})
+                }
+                else
+                {
+                    @Html.Action("Pending",new {PageNo=ViewBag.PageNo})
+                }
+
             </div>
         </div>
 
@@ -66,39 +135,39 @@
 </div>
 @*lumen theme code*@
 @*<ul class="nav nav-pills nav-pills-primary" style="margin-top:3%">
-    <li class="nav-item">
-        @Ajax.ActionLink("All", "ALL", null, new AjaxOptions
-   {
-       HttpMethod = "GET",
-            UpdateTargetId = "div1",
-            InsertionMode = InsertionMode.Replace
-   }, new { @class = "nav-link",data_toggle="tab" })
+        <li class="nav-item">
+            @Ajax.ActionLink("All", "ALL", null, new AjaxOptions
+       {
+           HttpMethod = "GET",
+                UpdateTargetId = "div1",
+                InsertionMode = InsertionMode.Replace
+       }, new { @class = "nav-link",data_toggle="tab" })
 
-    </li>
-    <li class="nav-item">
-        @Ajax.ActionLink("Pending", "Pending", null, new AjaxOptions
- {
-     HttpMethod = "GET",
-            UpdateTargetId = "div1",
-            InsertionMode = InsertionMode.Replace
- }, new { @class = "nav-link active",data_toggle="tab" })
-    </li>
-    <li class="nav-item">
-        @Ajax.ActionLink("Approved", "Approved", null, new AjaxOptions
-{
-    HttpMethod = "GET",
-            UpdateTargetId = "div1",
-            InsertionMode = InsertionMode.Replace
-}, new { @class = "nav-link",data_toggle="tab" })
-    </li>
-    <li class="nav-item">
-        @Ajax.ActionLink("Rejected", "Rejected", null, new AjaxOptions
-{
-    HttpMethod = "GET",
-            UpdateTargetId = "div1",
-            InsertionMode = InsertionMode.Replace
-}, new { @class = "nav-link",data_toggle="tab" })
-    </li>
+        </li>
+        <li class="nav-item">
+            @Ajax.ActionLink("Pending", "Pending", null, new AjaxOptions
+     {
+         HttpMethod = "GET",
+                UpdateTargetId = "div1",
+                InsertionMode = InsertionMode.Replace
+     }, new { @class = "nav-link active",data_toggle="tab" })
+        </li>
+        <li class="nav-item">
+            @Ajax.ActionLink("Approved", "Approved", null, new AjaxOptions
+    {
+        HttpMethod = "GET",
+                UpdateTargetId = "div1",
+                InsertionMode = InsertionMode.Replace
+    }, new { @class = "nav-link",data_toggle="tab" })
+        </li>
+        <li class="nav-item">
+            @Ajax.ActionLink("Rejected", "Rejected", null, new AjaxOptions
+    {
+        HttpMethod = "GET",
+                UpdateTargetId = "div1",
+                InsertionMode = InsertionMode.Replace
+    }, new { @class = "nav-link",data_toggle="tab" })
+        </li>
 
-</ul>*@
+    </ul>*@
 
