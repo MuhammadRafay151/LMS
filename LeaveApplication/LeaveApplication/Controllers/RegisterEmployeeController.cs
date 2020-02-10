@@ -52,6 +52,7 @@ namespace LeaveApplication.Controllers
             {
                 try
                 {
+                    
                     emp.Register(e1);
                     return RedirectToAction("Registeration");
                 }

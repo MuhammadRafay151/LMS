@@ -193,7 +193,7 @@ namespace LeaveApplication.Models
         public Employee ReadEmployee(string UserName)
         {
             //load user data on login
-            string Querry = string.Format("select Employee.EmployeeID,Employee.UserName,Employee.EmployeeName,Employee.Address,Employee.PhoneNumber,Employee.CNIC,Employee.JoiningDate,Designations.Designation,Departments.Department,Picture.Picture,Employee.IsAdmin,Employee.Email  from Employee inner join Picture on Employee.EmployeeID=Picture.EmployeeID inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join Designations on Employee.DesignationID=Designations.DesignationID where Employee.UserName='{0}'", UserName);
+            string Querry = string.Format("select Employee.EmployeeID,Employee.UserName,Employee.EmployeeName,Employee.Address,Employee.PhoneNumber,Employee.CNIC,Employee.JoiningDate,Designations.Designation,Departments.Department,Picture.Picture,Employee.IsAdmin,Employee.Email,Employee.Address,Employee.CNIC,Employee.PhoneNumber  from Employee inner join Picture on Employee.EmployeeID=Picture.EmployeeID inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join Designations on Employee.DesignationID=Designations.DesignationID where Employee.UserName='{0}'", UserName);
             DataSet d1 = database.Read(Querry);
             Employee e1 = new Employee();
             e1.EmployeeID = int.Parse(d1.Tables[0].Rows[0][0].ToString());
@@ -205,6 +205,9 @@ namespace LeaveApplication.Models
             e1.isAdmin = bool.Parse(d1.Tables[0].Rows[0][10].ToString());
             e1.IsManager = IsManager(e1.EmployeeID);
             e1.Email = d1.Tables[0].Rows[0][11].ToString();
+            e1.Address = d1.Tables[0].Rows[0][12].ToString();
+            e1.CNIC = d1.Tables[0].Rows[0][13].ToString();
+            e1.PhoneNumber = d1.Tables[0].Rows[0][14].ToString();
             return e1;
 
         }

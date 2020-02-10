@@ -1,0 +1,279 @@
+﻿@model LeaveApplication.Models.BasicInfo
+@{
+    ViewBag.Title = "Basicinfo";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+}
+
+
+<style>
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+<div class="modal fade" id="ed" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Basic Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row h-100 justify-content-center">
+                    <div class="col">
+                        @using (Html.BeginForm("Edit_Info_Submit", "Profile", FormMethod.Post, new { id = "f1" }))
+                        {<div class="d-flex justify-content-center">
+                                <div class="card pt-5" style="width:300px">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Profile Picture</h3>
+                                    </div>
+                                    <div class="d-flex card-body justify-content-center">
+                                        <img id="img1" src="/LogIn/ProfileImg" class="img-fluid" alt="" style="border:3px solid black; width:100%" />
+
+                                    </div>
+
+                                    <div class="card-footer justify-content-center">
+
+                                        <input class="form-control-file " id="@Html.IdFor(m=>m.Image)" name="@Html.NameFor(Model=>Model.Image)" type="file" placeholder="Upload Image" onchange="loadFile(event)" />
+
+                                        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class=" d-flex justify-content-center">
+
+
+                                <div class="form-group col-8 bmd-form-group">
+                                    <label for="UserName" class="text-center bmd-label-floating">Name</label>
+                                    @Html.TextBoxFor(Model => Model.Name, new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                </div>
+
+
+                            </div>
+                            
+
+                            <div class=" d-flex justify-content-center">
+
+
+                                <div class="form-group col-8 bmd-form-group">
+                                    <label for="BirthDay" id="l3">BirthDay</label>
+                                    
+                                        <div class="input-group ">
+                                            @Html.TextBoxFor(m => m.BirthDay, new { @class = "form-control datetimepicker ", required = "required", onfocusout = "DateSelect(this)" })
+
+                                            <div class="input-group-append">
+                                                <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+
+                                            </div>
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.BirthDay, "", new { @class = "text-danger" })
+                                    
+                                </div>
+
+
+                            </div>
+                            <div class=" d-flex justify-content-center">
+
+
+                                <div class="form-group col-8 bmd-form-group">
+                                    <label for="Address" class="text-center bmd-label-floating">Address</label>
+                                    @Html.TextBoxFor(Model => Model.Address, new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                                </div>
+
+
+                            </div>
+                            <div class=" d-flex justify-content-center">
+
+
+                                <div class="form-group col-8 bmd-form-group">
+                                    <label for="PhoneNumber" class="text-center bmd-label-floating">PhoneNumber</label>
+                                    @Html.TextBoxFor(Model => Model.PhoneNumber, new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                                </div>
+
+
+                            </div>
+                            <div class=" d-flex justify-content-center">
+
+
+                                <div class="form-group col-8 bmd-form-group">
+                                    <label for="Cnic" class="text-center bmd-label-floating">Cnic</label>
+                                    @Html.TextBoxFor(Model => Model.Cnic, new { @class = "form-control", required = "required" })
+                                    @Html.ValidationMessageFor(m => m.Cnic, "", new { @class = "text-danger" })
+                                </div>
+
+
+                            </div>
+
+
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info-grd" id="s1">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    LeaveApplication.Models.Employee e1 = (LeaveApplication.Models.Employee)Session["Employee"];
+}
+<div class="container mt-5">
+
+    <div style="margin-top:20%" class="row justify-content-center align-content-center">
+        <div class="col">
+            <div class="card ">
+                <div class="card-header card-header-info">
+                    <h3 class="card-title d-inline">Basic Info</h3>
+                    <div class="dropdown d-inline">
+                        <a class="dropdown-toggle" data-toggle="dropdown"></a>
+
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ed">Edit Info</a>
+
+                        </div>
+                    </div>
+                    <div class="d-inline-flex justify-content-end">
+
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex justify-content-center pt-5">
+
+                                <table class="table table-hover ">
+                                    <tbody>
+                                        <tr>
+                                            <th class="text-info" scope="row">Name</th>
+                                            <td>@Model.Name</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">Birthday</th>
+                                            <td>@Model.BirthDay</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">Email</th>
+                                            <td>@Model.Email</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">Address</th>
+                                            <td>@Model.Address</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">Phone Number</th>
+                                            <td>@Model.PhoneNumber</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">CNIC</th>
+                                            <td>@Model.Cnic</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">Department</th>
+                                            <td>@Model.Department</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">Designation</th>
+                                            <td>@Model.Designation</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-7 col-md-6 col-lg col-xl">
+
+
+                            <div class="card pt-5 col-10">
+                                <div class="card-header">
+                                    <h3 class="card-title">Profile Picture</h3>
+                                </div>
+                                <div class="d-flex card-body justify-content-center">
+                                    <img id="img1" src="/LogIn/ProfileImg" class="img-fluid" alt="" width="320" style=" border:3px solid black;" />
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+         $("#PhoneNumber").mask('0000-0000000');
+        $("#CNIC").mask("00000-0000000-0");
+        $('#s1').click(function () {
+            $('#ed').modal("hide");
+            $('#f1').submit();
+        })
+         $('.datetimepicker').datetimepicker({
+            format: 'DD/MM/YYYY',
+
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+
+            }
+
+        });
+    });
+    function IsImgUploaded() {
+        var img = document.getElementById("File1");
+        if (img.files.length == 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+
+    }
+ var loadFile = function(event) {
+	var image = document.getElementById('img1');
+	image.src = URL.createObjectURL(event.target.files[0]);
+};
+  
+</script>
+
