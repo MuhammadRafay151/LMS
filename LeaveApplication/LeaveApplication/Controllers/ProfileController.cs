@@ -7,19 +7,18 @@ using LeaveApplication.Models;
 using System.IO;
 using System.Data.SqlClient;
 
-
 namespace LeaveApplication.Controllers
 {
     public class ProfileController : Controller
     {
         // GET: Profile
-        EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
+        private EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
+
         public ActionResult ResetPassword()
         {
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-
                 return View();
             }
             else
@@ -58,32 +57,39 @@ namespace LeaveApplication.Controllers
             {
                 return RedirectToAction("Index", "LogIn");
             }
-
         }
 
         public ActionResult Basicinfo()
         {
-
             if (Session["EmpID"] == null)
             {
                 return RedirectToAction("Index", "LogIn");
             }
 
-
-
             BasicInfo b1 = new BasicInfo((LeaveApplication.Models.Employee)Session["Employee"]);
 
             return View(b1);
         }
+
         public ActionResult Edit_Info_Submit(BasicInfo b1)
         {
             if (ModelState.IsValid)
             {
-
             }
             return RedirectToAction("Basicinfo");
         }
 
-
+        public ActionResult Education()
+        {
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+        }
     }
 }
