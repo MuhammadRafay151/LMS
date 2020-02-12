@@ -551,6 +551,7 @@
     <Content Include="Views\Dashboard\ViewDashboard.cshtml" />
     <Content Include="Views\Attandence\Presents.cshtml" />
     <Content Include="Views\Profile\Basicinfo.cshtml" />
+    <Content Include="Views\Profile\AddEducation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
