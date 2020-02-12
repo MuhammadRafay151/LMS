@@ -552,6 +552,7 @@
     <Content Include="Views\Attandence\Presents.cshtml" />
     <Content Include="Views\Profile\Basicinfo.cshtml" />
     <Content Include="Views\Profile\AddEducation.cshtml" />
+    <Content Include="Views\Profile\Education.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
