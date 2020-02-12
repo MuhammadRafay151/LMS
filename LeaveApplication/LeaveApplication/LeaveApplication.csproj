@@ -549,6 +549,8 @@
     <Content Include="Views\ViewApplications\ApproveRejectModel.cshtml" />
     <Content Include="Views\Dashboard\ViewDashboard.cshtml" />
     <Content Include="Views\Attandence\Presents.cshtml" />
+    <Content Include="Views\Profile\Education.cshtml" />
+    <Content Include="Views\Profile\AddEducation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

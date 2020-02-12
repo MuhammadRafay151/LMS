@@ -61,5 +61,19 @@ namespace LeaveApplication.Controllers
 
         }
 
+        public ActionResult Education()
+        {
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null)
+            {
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+        }
+
     }
 }
