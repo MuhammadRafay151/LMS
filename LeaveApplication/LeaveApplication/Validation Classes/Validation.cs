@@ -139,13 +139,23 @@ namespace LeaveApplication.Validation_Classes
             }
 
         }
-        //public bool ValidateFullDay_R()
-        //{
+        public bool IsImageFormat(string FileName)
+        {
+            string ContentType = string.Empty;
+            List<string> MimeType = null;
 
-        //}
-        //public bool ValidateHalfDay_R()
-        //{
+            ContentType = System.Web.MimeMapping.GetMimeMapping(FileName);
+            MimeType = new List<string>() { "image/jpeg"};
+            if (MimeType.Contains(ContentType))
+            {
+                return true;
 
-        //}
+            }
+            else
+            {
+                return false;
+            }
+
+        }
     }
 }

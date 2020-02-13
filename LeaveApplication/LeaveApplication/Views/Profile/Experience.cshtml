@@ -1,0 +1,356 @@
+﻿@model LeaveApplication.Models.Experience
+@{
+    ViewBag.Title = "Experience";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+}
+<div class="modal fade " id="ad1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="#" method="post">
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center">
+                        <div class="col-8 form-group">
+                            <label>Oraganization</label>
+                            <input type="text" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-8 form-group">
+                            <label>Designation</label>
+                            <input type="text" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-8 form-group">
+                            <label>Descipline</label>
+                            <input type="text" class="form-control" required />
+                        </div>
+                    </div>
+
+                    <div class=" d-flex justify-content-center">
+
+
+                        <div class="form-group col-8 bmd-form-group">
+                            <label for="BirthDay" id="l3">From</label>
+
+                            <div class="input-group ">
+                                @Html.TextBoxFor(m => m.Fromdate, new { @class = "form-control datetimepicker ", required = "required", onfocusout = "DateSelect(this)" })
+
+                                <div class="input-group-append">
+                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Fromdate, "", new { @class = "text-danger" })
+
+                        </div>
+
+
+                    </div>
+                    <div class=" d-flex justify-content-center">
+
+
+                        <div class="form-group col-8 bmd-form-group">
+                            <label for="BirthDay" id="l3">To</label>
+
+                            <div class="input-group ">
+                                @Html.TextBoxFor(m => m.Todate, new { @class = "form-control datetimepicker ", required = "required", onfocusout = "DateSelect(this)" })
+
+                                <div class="input-group-append">
+                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Todate, "", new { @class = "text-danger" })
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-end">
+                    <button type="submit" class="btn btn-info-grd">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row  mt-5">
+        <div class="col-12">
+            <div class="card-header card-header-info ">
+                <div class="row">
+                    <div class="col">
+                        <h4>Expereince</h4>
+                    </div>
+                    <div class="col d-flex justify-content-end">
+                        <a href="#" data-toggle="modal" data-target="#ad1">Add</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row ">
+
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th class="text-info" scope="row">Organization</th>
+                                <td>Usamn Institute of technology</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Designation</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Descipline</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">From</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">To</th>
+                                <td>Uit</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th class="text-info" scope="row">Organization</th>
+                                <td>Usamn Institute of technology</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Designation</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Descipline</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">From</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">To</th>
+                                <td>Uit</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        @*<div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Organization</h4>
+                        <h4>Designation</h4>
+                        <h4>From</h4>
+                        <h4>To</h4>
+                    </div>
+                </div>
+
+            </div>*@
+    </div>
+    <div class="row ">
+
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th class="text-info" scope="row">Organization</th>
+                                <td>Usamn Institute of technology</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Designation</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Descipline</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">From</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">To</th>
+                                <td>Uit</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th class="text-info" scope="row">Organization</th>
+                                <td>Usamn Institute of technology</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Designation</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Descipline</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">From</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">To</th>
+                                <td>Uit</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        @*<div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Organization</h4>
+                        <h4>Designation</h4>
+                        <h4>From</h4>
+                        <h4>To</h4>
+                    </div>
+                </div>
+
+            </div>*@
+    </div>
+    <div class="row ">
+
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th class="text-info" scope="row">Organization</th>
+                                <td>Usamn Institute of technology</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Designation</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Descipline</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">From</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">To</th>
+                                <td>Uit</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th class="text-info" scope="row">Organization</th>
+                                <td>Usamn Institute of technology</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Designation</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Descipline</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">From</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">To</th>
+                                <td>Uit</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        @*<div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Organization</h4>
+                        <h4>Designation</h4>
+                        <h4>From</h4>
+                        <h4>To</h4>
+                    </div>
+                </div>
+
+            </div>*@
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+       
+       
+        $('.datetimepicker').datetimepicker({
+            format: 'DD/MM/YYYY',
+
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+
+            }
+
+        });
+    });
+    
+   
+
+</script>
+

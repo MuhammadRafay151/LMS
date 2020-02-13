@@ -14,6 +14,10 @@ namespace LeaveApplication.Controllers
     {
         // GET: Profile
         EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
+        public ActionResult Index()
+        {
+            return View();
+        }
         public ActionResult ResetPassword()
         {
             Employee e1 = (Employee)Session["Employee"];
@@ -78,12 +82,37 @@ namespace LeaveApplication.Controllers
         public ActionResult Edit_Info_Submit(BasicInfo b1)
         {
             if (ModelState.IsValid)
-            {
-
+            { Validation_Classes.Validation v1 = new Validation_Classes.Validation();
+                if(b1.Image!=null&&!v1.IsImageFormat(b1.Image.FileName))
+                {
+                    ModelState.AddModelError("Image", "Invalid Image Format");
+                    return View("Basicinfo", b1);
+                }
+                b1.SaveChanges(int.Parse(Session["EmpId"].ToString()));
+                Employee e2 = (Employee)Session["Employee"];
+                e2.EmployeeName = b1.Name;
+                e2.Birthday = b1.BirthDay;
+                e2.Address = b1.Address;
+                e2.CNIC = b1.Cnic;
+                e2.Email = b1.Email;
+                e2.PhoneNumber = b1.PhoneNumber;
+                if(b1.Image!=null)
+                e2.ImageBytes = b1.ImagesBytes;
             }
             return RedirectToAction("Basicinfo");
         }
-
+        public ActionResult Experience()
+        {
+            return View();
+        }
+        public ActionResult Publications()
+        {
+            return View();
+        }
+        public ActionResult Acheivements()
+        {
+            return View();
+        }
 
     }
 }

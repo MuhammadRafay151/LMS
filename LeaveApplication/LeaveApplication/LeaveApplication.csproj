@@ -170,6 +170,7 @@
     <Compile Include="Models\Email.cs" />
     <Compile Include="Models\Encryption.cs" />
     <Compile Include="Models\Excel.cs" />
+    <Compile Include="Models\Experience.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\LeaveApplication.cs" />
     <Compile Include="Models\Department.cs" />
@@ -551,6 +552,10 @@
     <Content Include="Views\Dashboard\ViewDashboard.cshtml" />
     <Content Include="Views\Attandence\Presents.cshtml" />
     <Content Include="Views\Profile\Basicinfo.cshtml" />
+    <Content Include="Views\Profile\Experience.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Profile\Publications.cshtml" />
+    <Content Include="Views\Profile\Acheivements.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

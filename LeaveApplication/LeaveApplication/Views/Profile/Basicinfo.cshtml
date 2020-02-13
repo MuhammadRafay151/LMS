@@ -16,7 +16,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Edit Basic Info</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Info</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -24,7 +24,7 @@
             <div class="modal-body">
                 <div class="row h-100 justify-content-center">
                     <div class="col">
-                        @using (Html.BeginForm("Edit_Info_Submit", "Profile", FormMethod.Post, new { id = "f1" }))
+                        @using (Html.BeginForm("Edit_Info_Submit", "Profile", FormMethod.Post, new { id = "f1", enctype = "multipart/form-data" }))
                         {<div class="d-flex justify-content-center">
                                 <div class="card pt-5" style="width:300px">
                                     <div class="card-header">
@@ -48,31 +48,30 @@
 
 
                                 <div class="form-group col-8 bmd-form-group">
-                                    <label for="UserName" class="text-center bmd-label-floating">Name</label>
+                                    <label for="UserName">Name</label>
                                     @Html.TextBoxFor(Model => Model.Name, new { @class = "form-control", required = "required" })
                                     @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                                 </div>
 
 
                             </div>
-                            
 
                             <div class=" d-flex justify-content-center">
 
 
                                 <div class="form-group col-8 bmd-form-group">
-                                    <label for="BirthDay" id="l3">BirthDay</label>
-                                    
-                                        <div class="input-group ">
-                                            @Html.TextBoxFor(m => m.BirthDay, new { @class = "form-control datetimepicker ", required = "required", onfocusout = "DateSelect(this)" })
+                                    <label for="BirthDay">Email</label>
 
-                                            <div class="input-group-append">
-                                                <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+                                    <div class="input-group ">
+                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", required = "required" })
 
-                                            </div>
+                                        <div class="input-group-append">
+                                            <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+
                                         </div>
-                                        @Html.ValidationMessageFor(m => m.BirthDay, "", new { @class = "text-danger" })
-                                    
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+
                                 </div>
 
 
@@ -81,7 +80,27 @@
 
 
                                 <div class="form-group col-8 bmd-form-group">
-                                    <label for="Address" class="text-center bmd-label-floating">Address</label>
+                                    <label for="BirthDay" id="l3">BirthDay</label>
+
+                                    <div class="input-group ">
+                                        @Html.TextBoxFor(m => m.BirthDay, new { @class = "form-control datetimepicker ", required = "required", onfocusout = "DateSelect(this)" })
+
+                                        <div class="input-group-append">
+                                            <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+
+                                        </div>
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.BirthDay, "", new { @class = "text-danger" })
+
+                                </div>
+
+
+                            </div>
+                            <div class=" d-flex justify-content-center">
+
+
+                                <div class="form-group col-8 bmd-form-group">
+                                    <label for="Address">Address</label>
                                     @Html.TextBoxFor(Model => Model.Address, new { @class = "form-control", required = "required" })
                                     @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
                                 </div>
@@ -92,7 +111,7 @@
 
 
                                 <div class="form-group col-8 bmd-form-group">
-                                    <label for="PhoneNumber" class="text-center bmd-label-floating">PhoneNumber</label>
+                                    <label for="PhoneNumber">PhoneNumber</label>
                                     @Html.TextBoxFor(Model => Model.PhoneNumber, new { @class = "form-control", required = "required" })
                                     @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
                                 </div>
@@ -103,7 +122,7 @@
 
 
                                 <div class="form-group col-8 bmd-form-group">
-                                    <label for="Cnic" class="text-center bmd-label-floating">Cnic</label>
+                                    <label for="Cnic">Cnic</label>
                                     @Html.TextBoxFor(Model => Model.Cnic, new { @class = "form-control", required = "required" })
                                     @Html.ValidationMessageFor(m => m.Cnic, "", new { @class = "text-danger" })
                                 </div>
@@ -236,13 +255,13 @@
 
 <script>
     $(document).ready(function () {
-         $("#PhoneNumber").mask('0000-0000000');
+        $("#PhoneNumber").mask('0000-0000000');
         $("#CNIC").mask("00000-0000000-0");
         $('#s1').click(function () {
             $('#ed').modal("hide");
             $('#f1').submit();
         })
-         $('.datetimepicker').datetimepicker({
+        $('.datetimepicker').datetimepicker({
             format: 'DD/MM/YYYY',
 
             icons: {
@@ -270,10 +289,14 @@
         }
 
     }
- var loadFile = function(event) {
-	var image = document.getElementById('img1');
-	image.src = URL.createObjectURL(event.target.files[0]);
-};
-  
+    var loadFile = function (event) {
+        var image = document.getElementById('img1');
+        image.src = URL.createObjectURL(event.target.files[0]);
+        //image.onload = function () {
+        //    alert(this.width + " " + this.height);
+        //}
+
+    };
+
 </script>
 

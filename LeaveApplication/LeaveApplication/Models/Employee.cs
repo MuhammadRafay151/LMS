@@ -47,7 +47,7 @@ namespace LeaveApplication.Models
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
-
+        public DateTime Birthday;
         //public bool IsEmployeeEmpty()
         //{
         //    if(string.IsNullOrWhiteSpace(EmployeeID))

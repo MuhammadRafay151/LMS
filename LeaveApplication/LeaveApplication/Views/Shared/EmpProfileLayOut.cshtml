@@ -23,14 +23,12 @@
     @Scripts.Render("~/bundles/modernizr")
     <style>
         .ig {
-          
-            
             background-repeat: no-repeat;
             background-size: cover;
         }
     </style>
 </head>
-<body background="../../Images/uitreckon3.jpg"class="ig" >
+<body background="../../Images/uitreckon3.jpg" class="ig">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-white fixed-top   ">
         <div class="container-fluid">
@@ -72,10 +70,10 @@
 
 
                             </div>
-                           
+
                         </div>
                     </li>
-                  
+
                     <li class="nav-item active">
 
                         @* <a class="nav-link" href="#">DashBoardss<span class="sr-only">(current)</span></a>*@
@@ -89,7 +87,7 @@
                                 @Html.ActionLink("Request Leave", "Index", "RequestLeave", null, new { @class = "dropdown-item" })
                                 @Html.ActionLink("View Applications", "Index", "ViewApplications", null, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Leave Count", "LeaveCount", "ViewApplications", null, new { @class = "dropdown-item" })
-                                @Html.ActionLink("View Presents","Presents","Attandence",null,new {@class="dropdown-item" })
+                                @Html.ActionLink("View Presents", "Presents", "Attandence", null, new { @class = "dropdown-item" })
                             </div>
                         </div>
                     </li>
@@ -145,7 +143,10 @@
                         <a class="nav-link font-weight-bold text-dark" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)<img class="rounded ml-2" src="~/Images/account.png" style="width:30px" /> </a>
                         <div class="dropdown-menu scrollable-menu dropdown-menu-right mr-1">
                             <div class=" card border-0  mt-4 " style="width: 18rem;">
-                                <img src="/LogIn/ProfileImg" class="card-img-top " alt="...">
+                                <img id="pfimg" src="/LogIn/ProfileImg" class="card-img-top">
+                                <div id="sp1" class="spinner-border text-primary" role="status">
+
+                                </div>
                                 <div class="card-body ">
                                     <h5 class="card-title ">Account Information</h5>
                                     <p class="card-text">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)</p>
@@ -154,8 +155,10 @@
                                     <li class="list-group-item ">User Name:  @(((LeaveApplication.Models.Employee)Session["Employee"]).UserName)</li>
                                     <li class="list-group-item">Department:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Department)</li>
                                     <li class="list-group-item">Designation:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Designation)</li>
+                                    @Html.ActionLink("Personal Info", "BasicInfo", "Profile", null, new { @class = "list-group-item" })
                                     @Html.ActionLink("Settings", "ResetPassword", "Profile", null, new { @class = "list-group-item" })
                                     @Html.ActionLink("Sign Out", "LogOff", "Login", null, new { @class = "list-group-item" })
+
                                 </ul>
 
 
@@ -190,6 +193,12 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/datetime")
     @RenderSection("scripts", required: false)
-
+    <script>
+        $(document).ready(function () {
+            $('#pfimg').on("load", function () {
+                $('#sp1').remove();//remove spinner when loaded
+            });
+        })
+    </script>
 </body>
 </html>

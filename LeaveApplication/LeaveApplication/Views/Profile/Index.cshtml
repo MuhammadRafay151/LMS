@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+}
+
+    <div class="container">
+        @*<div class="row mt-5">
+            <div class="col-12 d-flex justify-content-center">
+                <img class=" Irounded-circle" width="300" src="/LogIn/ProfileImg" />
+                <div class="row">
+                    <div class="col">
+                        <img class=" Irounded-circle" width="300" src="/LogIn/ProfileImg" />
+
+                    </div>
+                </div>
+            </div>
+
+        </div>*@
+        <div class="row mt-5">
+            <div class="col d-flex justify-content-center">
+                <img class=" Irounded-circle" width="300" src="/LogIn/ProfileImg" />
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col">
+                <h1 class="text-center text-white">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)</h1>
+            </div>
+
+        </div>
+        <hr style="background:white" />
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="/Profile/BasicInfo">
+                            <h3>Personal Info</h3>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class=" col">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="/Profile/Experience">
+                            <h3>Experience</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="#">
+                            <h3>Achievements</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class=" col">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="#">
+                            <h3>Publications</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class=" col">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="#">
+                            <h3>Education</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
