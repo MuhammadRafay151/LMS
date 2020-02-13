@@ -1,49 +1,77 @@
 ﻿@{
     ViewBag.Title = "AddEducation";
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+
+    @model LeaveApplication.Models.LeaveApplication
 }
+<div class="container mt-5 w-50">
 
-<div class="container" style="margin-top:5%">
-    <div class="row justify-content-center align-content-center">
-        <div class="card">
-            <div class="card-header card-header-info">
-                <h5 class="card-title ">Manage Education  <button class="btn btn-info-grd float-right">Add</button></h5>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
+    <div style="margin-top:20%" class="row justify-content-center align-content-center">
+        <div class="col">
+            <div class="card ">
+                <div class="card-header card-header-info">
+                    <h3 class="card-title d-inline">Add Education</h3>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            @using (Html.BeginForm("submit", "Profile", FormMethod.Post))
+                            {
+                                <div class="d-flex justify-content-center">
 
-                    <table class="table table-hover">
-                        <thead>
-                            <tr class="text-center">
-                                <th>Degree Tittle</th>
-                                <th>Field</th>
-                                <th>Institute</th>
-                                <th>Year</th>
-                                <th>Edit</th>
-                                <th>View</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="text-center">
-                                <td>BE</td>
-                                <td>Electric</td>
-                                <td>UIT</td>
-                                <td>2019</td>
-                                <td>
-                                    <button class="btn btn-info-grd">Edit</button>
-                                </td>
-                                <td>
-                                    <button class="btn btn-info-grd">View</button>
-                                </td>
-                                <td>
-                                    <button class="btn btn-info-grd">Delete</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <table class="table table-hover ">
+                                        <tbody>
+                                            <tr>
+                                                <th class="text-info" scope="row">Degree Tittle</th>
+                                                <td><input type="text" required name="DegreeTittle" class="form-control"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-info" scope="row">Field</th>
+                                                <td><input type="text" required name="field" class="form-control"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-info" scope="row">Institute</th>
+                                                <td><input type="text" required name="institute" class="form-control"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-info" scope="row">Year</th>
+                                                <td>@Html.TextBoxFor(m => m.LeaveType, new { @class = "form-control datetimepicker ", required = "required" })</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-info" scope="row">Certificate</th>
+                                                <td><button type="submit" class="btn btn-info">add</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+
+    $(document).ready(function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'DD/MM/YYYY',
+
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+
+            }
+
+        });
+    }
+</script>

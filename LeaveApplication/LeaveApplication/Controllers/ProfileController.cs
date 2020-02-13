@@ -91,5 +91,31 @@ namespace LeaveApplication.Controllers
                 return RedirectToAction("Index", "LogIn");
             }
         }
+
+        public ActionResult AddEducation()
+        {
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+        }
+
+        public ActionResult ViewEducation()
+        {
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+        }
     }
 }

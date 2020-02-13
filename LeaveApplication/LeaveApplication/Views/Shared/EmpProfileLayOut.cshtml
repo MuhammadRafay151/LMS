@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -23,14 +22,12 @@
     @Scripts.Render("~/bundles/modernizr")
     <style>
         .ig {
-          
-            
             background-repeat: no-repeat;
             background-size: cover;
         }
     </style>
 </head>
-<body background="../../Images/uitreckon3.jpg"class="ig" >
+<body background="../../Images/uitreckon3.jpg" class="ig">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-white fixed-top   ">
         <div class="container-fluid">
@@ -43,7 +40,6 @@
                     <span class="navbar-toggler-icon"></span>
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
             </div>
 
             <div class="collapse navbar-collapse" id="navbarColor01">
@@ -67,19 +63,17 @@
                                     @Html.ActionLink("Settings", "ResetPassword", "Profile", null, new { @class = "list-group-item" })
                                     @Html.ActionLink("Sign Out", "LogOff", "Login", null, new { @class = "list-group-item" })
                                 </ul>
-
-
-
-
                             </div>
-                           
                         </div>
                     </li>
-                  
+
                     <li class="nav-item active">
 
                         @* <a class="nav-link" href="#">DashBoardss<span class="sr-only">(current)</span></a>*@
                         @Html.ActionLink("DashBoard", "ViewDashboard", "Dashboard", null, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Manage Education", "Education", "Profile", null, new { @class = "nav-link" })
                     </li>
                     <li class="nav-item dropdown ">
                         <div class="dropdown">
@@ -89,7 +83,7 @@
                                 @Html.ActionLink("Request Leave", "Index", "RequestLeave", null, new { @class = "dropdown-item" })
                                 @Html.ActionLink("View Applications", "Index", "ViewApplications", null, new { @class = "dropdown-item" })
                                 @Html.ActionLink("Leave Count", "LeaveCount", "ViewApplications", null, new { @class = "dropdown-item" })
-                                @Html.ActionLink("View Presents","Presents","Attandence",null,new {@class="dropdown-item" })
+                                @Html.ActionLink("View Presents", "Presents", "Attandence", null, new { @class = "dropdown-item" })
                             </div>
                         </div>
                     </li>
@@ -123,19 +117,13 @@
                                         @Html.ActionLink("Assign Leaves", "AssignLeave", "Admin", null, new { @class = "dropdown-item" })
                                         @Html.ActionLink("Assign Leave History", "Assign_Leave_History", "Admin", new { PageNo = 1 }, new { @class = "dropdown-item" })
                                         @Html.ActionLink("Manage Attandence", "Index", "Attandence", null, new { @class = "dropdown-item" })
-
                                     </div>
                                 </div>
                             </li>
 
-
                         }
                     }
-
-
-
                 </ul>
-
             </div>
             <div class="">
                 <ul class="navbar-nav ml-auto d-none d-lg-block ">
@@ -157,10 +145,6 @@
                                     @Html.ActionLink("Settings", "ResetPassword", "Profile", null, new { @class = "list-group-item" })
                                     @Html.ActionLink("Sign Out", "LogOff", "Login", null, new { @class = "list-group-item" })
                                 </ul>
-
-
-
-
                             </div>
                             @*<p class="dropdown-item">@LeaveApplication.Models.EmployeeBusinessLayer.Employee.EmployeeName</p>
                                 <a class="dropdown-item" href="#">Action</a>
@@ -170,13 +154,9 @@
                                 <a class="dropdown-item" href="#">Separated link</a>*@
                         </div>
                     </li>
-
                 </ul>
             </div>
         </div>
-
-
-
     </nav>
     <div id="empdiv" class="container-fluid body-content h-100 w-100">
         @RenderBody()
@@ -190,6 +170,5 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/datetime")
     @RenderSection("scripts", required: false)
-
 </body>
 </html>

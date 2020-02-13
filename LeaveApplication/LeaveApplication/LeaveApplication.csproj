@@ -167,6 +167,7 @@
     <Compile Include="Models\BasicInfo.cs" />
     <Compile Include="Models\DateTimeHelper.cs" />
     <Compile Include="Models\db.cs" />
+    <Compile Include="Models\Education.cs" />
     <Compile Include="Models\Email.cs" />
     <Compile Include="Models\Encryption.cs" />
     <Compile Include="Models\Excel.cs" />
@@ -553,6 +554,7 @@
     <Content Include="Views\Profile\Basicinfo.cshtml" />
     <Content Include="Views\Profile\AddEducation.cshtml" />
     <Content Include="Views\Profile\Education.cshtml" />
+    <Content Include="Views\Profile\ViewEducation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

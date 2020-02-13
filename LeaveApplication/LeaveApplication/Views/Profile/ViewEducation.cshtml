@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "ViewEducation";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+}
+<div class="container mt-5">
+
+    <div style="margin-top:20%" class="row justify-content-center align-content-center">
+        <div class="col">
+            <div class="card ">
+                <div class="card-header card-header-info">
+                    <h3 class="card-title d-inline">View Education</h3>
+                    <div class="dropdown d-inline">
+                        <a class="dropdown-toggle" data-toggle="dropdown"></a>
+
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ed">Edit Info</a>
+                        </div>
+                    </div>
+                    <div class="d-inline-flex justify-content-end">
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex justify-content-center pt-5">
+
+                                <table class="table table-hover ">
+                                    <tbody>
+                                        <tr>
+                                            <th class="text-info" scope="row">Degree Tittle</th>
+                                            <td>BS</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">Field</th>
+                                            <td>Software</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">Institute</th>
+                                            <td>UIT</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">Year</th>
+                                            <td>2021</td>
+                                        </tr>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-7 col-md-6 col-lg col-xl">
+
+                            <div class="card pt-5 col-10">
+                                <div class="d-flex card-header justify-content-center">
+                                    <h3 class="card-title">Certificate</h3>
+                                </div>
+                                <div class="d-flex card-body justify-content-center">
+                                    <img id="img1" src="/LogIn/ProfileImg" class="img-fluid" alt="" width="320" style=" border:3px solid black;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center float-right">
+                        <button class=" btn btn-info-grd">Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
