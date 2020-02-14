@@ -62,6 +62,7 @@
                                     <li class="list-group-item ">User Name:  @(((LeaveApplication.Models.Employee)Session["Employee"]).UserName)</li>
                                     <li class="list-group-item">Department:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Department)</li>
                                     <li class="list-group-item">Designation:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Designation)</li>
+                                    @Html.ActionLink("Profile", "", "Profile", null, new { @class = "list-group-item" })
                                     @Html.ActionLink("Settings", "ResetPassword", "Profile", null, new { @class = "list-group-item" })
                                     @Html.ActionLink("Sign Out", "LogOff", "Login", null, new { @class = "list-group-item" })
                                 </ul>
@@ -155,7 +156,7 @@
                                     <li class="list-group-item ">User Name:  @(((LeaveApplication.Models.Employee)Session["Employee"]).UserName)</li>
                                     <li class="list-group-item">Department:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Department)</li>
                                     <li class="list-group-item">Designation:  @(((LeaveApplication.Models.Employee)Session["Employee"]).Designation)</li>
-                                    @Html.ActionLink("Personal Info", "BasicInfo", "Profile", null, new { @class = "list-group-item" })
+                                    @Html.ActionLink("Profile", "", "Profile", null, new { @class = "list-group-item" })
                                     @Html.ActionLink("Settings", "ResetPassword", "Profile", null, new { @class = "list-group-item" })
                                     @Html.ActionLink("Sign Out", "LogOff", "Login", null, new { @class = "list-group-item" })
 
