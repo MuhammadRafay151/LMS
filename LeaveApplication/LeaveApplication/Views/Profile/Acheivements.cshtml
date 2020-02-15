@@ -4,97 +4,95 @@
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
 @model LeaveApplication.Models.Acheivement
-    <div class="container">
-        <div class="row mt-5">
-            <div class="col-12 d-flex justify-content-center">
-                <div class="card">
-                    <div class="card-header ">
+<div class="container">
+
+    <div class="row mt-5">
+
+        <div class="col-12 d-flex justify-content-center">
+            <div class="card " >
+                <div class="card-header ">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-title" style="font-family:g1;font-size:22px">Acheivements</div>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <a id="h1" href="#"><img id="ic" width="20" src="~/Images/icons/matticons_solid_collapse-511.png" /></a>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div id="c1" class="card-body">
+                    <form action="#" method="post">
                         <div class="row">
                             <div class="col">
-                                <div class="card-title" style="font-family:g1;font-size:22px">Acheivements</div>
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.title, new { @class = "form-control col-12", required = "required", placeholder = "Title" })
+                                </div>
                             </div>
-                            <div class="col d-flex justify-content-end">
-                                <a id="h1" href="#"><img id="ic" width="20" src="~/Images/icons/matticons_solid_collapse-511.png" /></a>
+                            <div class="col">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(m => m.AcheivementDate, new { @class = "form-control col-12 datetimepicker", required = "required", placeholder = "Date" })
+                                </div>
                             </div>
                         </div>
 
-
-                    </div>
-                    <div id="c1" class="card-body">
-                        <form action="#" method="post">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(m => m.title, new { @class = "form-control col-12", required = "required", placeholder = "Title" })
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        @Html.TextBoxFor(m => m.AcheivementDate, new { @class = "form-control col-12", required = "required", placeholder = "Date" })
-                                    </div>
-                                </div>
+                        <div class="form-group d-flex justify-content-center">
+                            <div class="p-1 col-12" style="border:solid 1px #A9A9A9">
+                                @Html.TextAreaFor(m => m.Description, new { @class = "form-control col-12", required = "required", placeholder = "Description", style = "font-size:22px", cols = "20", rows = "6" })
                             </div>
-
-                            <div class="form-group d-flex justify-content-center">
-                                <div class="p-1 col-12" style="border:solid 1px #A9A9A9">
-                                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control col-12", required = "required", placeholder = "Description", style = "font-size:22px", cols = "20", rows = "6" })
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-block btn-round btn-outline-info">Add Acheivements</button>
-                        </form>
-                    </div>
+                        </div>
+                        <button type="submit" class="btn btn-block btn-round btn-outline-info">Add Acheivements</button>
+                    </form>
                 </div>
             </div>
         </div>
-        <div>
-
-        </div>
-       
-        @for (int i = 0; i < 3; i++)
-        {
-            <div class="row ">
-
-                <div class="col-6">
-                    <div class="card ">
-                        <div class="card-body">
-                            <h3 class="modal-title">Title: My Certification</h3>
-                            <p>Date: 27-08-16</p>
-                            <hr />
-                            <p>
-                                1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Controllers\LogInController.cs(9,7,9,17): warning CS0105: The using directive for 'System.Web' appeared previously in this namespace
-                                1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Controllers\AttendanceController.cs(71,13,71,15): warning CS0162: Unreachable code detected
-                                1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\LeaveApplication.cs(58,20,58,27): warning CS0219: The variable 'Content' is assigned but its value is never used
-                                1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\LeaveApplication.cs(71,20,71,27): warning CS0219: The variable 'Content' is assigned but its value is never used
-                                1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\EmployeeBusinessLayer.cs(136,20,136,26): warning CS0219: The variable 'Querry' i
-                            </p>
-
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-6">
-                    <div class="card ">
-                        <div class="card-body">
-                            <h3 class="modal-title">Title: My Certification</h3>
-                            <p>Date: 27-08-16</p>
-                            <hr />
-                            <p>
-                                1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Controllers\LogInController.cs(9,7,9,17): warning CS0105: The using directive for 'System.Web' appeared previously in this namespace
-                                1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Controllers\AttendanceController.cs(71,13,71,15): warning CS0162: Unreachable code detected
-                                1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\LeaveApplication.cs(58,20,58,27): warning CS0219: The variable 'Content' is assigned but its value is never used
-                                1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\LeaveApplication.cs(71,20,71,27): warning CS0219: The variable 'Content' is assigned but its value is never used
-                                1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\EmployeeBusinessLayer.cs(136,20,136,26): warning CS0219: The variable 'Querry' i
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-        }
     </div>
+
+
+    @for (int i = 0; i < 3; i++)
+    {
+        <div class="row ">
+
+            <div class="col-6">
+                <div class="card ">
+                    <div class="card-body">
+                        <h3 class="modal-title">Title: My Certification</h3>
+                        <p>Date: 27-08-16</p>
+                        <hr />
+                        <p>
+                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Controllers\LogInController.cs(9,7,9,17): warning CS0105: The using directive for 'System.Web' appeared previously in this namespace
+                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Controllers\AttendanceController.cs(71,13,71,15): warning CS0162: Unreachable code detected
+                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\LeaveApplication.cs(58,20,58,27): warning CS0219: The variable 'Content' is assigned but its value is never used
+                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\LeaveApplication.cs(71,20,71,27): warning CS0219: The variable 'Content' is assigned but its value is never used
+                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\EmployeeBusinessLayer.cs(136,20,136,26): warning CS0219: The variable 'Querry' i
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-6">
+                <div class="card ">
+                    <div class="card-body">
+                        <h3 class="modal-title">Title: My Certification</h3>
+                        <p>Date: 27-08-16</p>
+                        <hr />
+                        <p>
+                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Controllers\LogInController.cs(9,7,9,17): warning CS0105: The using directive for 'System.Web' appeared previously in this namespace
+                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Controllers\AttendanceController.cs(71,13,71,15): warning CS0162: Unreachable code detected
+                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\LeaveApplication.cs(58,20,58,27): warning CS0219: The variable 'Content' is assigned but its value is never used
+                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\LeaveApplication.cs(71,20,71,27): warning CS0219: The variable 'Content' is assigned but its value is never used
+                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\EmployeeBusinessLayer.cs(136,20,136,26): warning CS0219: The variable 'Querry' i
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    }
+</div>
 
 <script>
     $(document).ready(function () {
@@ -104,11 +102,12 @@
                 $('#ic').attr('src', '/Images/icons/matticons_solid_expand-512.png');
             } else {
                 $('#c1').show('fade');
-                 $('#ic').attr('src', '/Images/icons/matticons_solid_collapse-511.png');
+                $('#ic').attr('src', '/Images/icons/matticons_solid_collapse-511.png');
             }
-          
-          
+
+
         })
     });
 
 </script>
+<script src="~/Scripts/DateTimePickerHelper.js"></script>

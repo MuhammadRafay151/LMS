@@ -183,6 +183,7 @@
     <Compile Include="Models\LeaveTypes.cs" />
     <Compile Include="Models\ManagerBusinessLayer.cs" />
     <Compile Include="Models\Pagination.cs" />
+    <Compile Include="Models\Publication.cs" />
     <Compile Include="Models\StatusHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation Classes\Error.cs" />
@@ -268,6 +269,7 @@
     <Content Include="material-kit-master\examples\profile-page.html" />
     <Content Include="material-kit-master\gulpfile.js" />
     <Content Include="material-kit-master\index.html" />
+    <Content Include="material-kit-master\assets\js\plugins\jasny-bootstrap.min.js" />
     <Content Include="material-kit-master\template.html" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -275,6 +277,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\canvasjs.min.js" />
     <Content Include="Scripts\CustomJS.js" />
+    <Content Include="Scripts\DateTimePickerHelper.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -495,6 +498,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\ScrollBar.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
