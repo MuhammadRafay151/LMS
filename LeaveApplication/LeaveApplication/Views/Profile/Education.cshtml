@@ -17,6 +17,26 @@
                 {
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
+                            <label for="DegreeID" class="d-block">Select Degree</label>
+                            <select class="custom-select" id="@Html.IdFor(m=>m.DegreeID)" name="@Html.NameFor(m=>m.DegreeType)" required>
+                                <option value="" disabled selected>Select Department</option>
+                                @{System.Data.DataSet x = ViewBag.List;
+                                    foreach (System.Data.DataRow i in x.Tables[0].Rows)
+                                    {
+                                        <option value=@i[0].ToString()>
+                                            @i[1].ToString()
+                                        </option>
+
+                                    }
+
+                                }
+                            </select>
+                            @Html.ValidationMessageFor(Model => Model.DegreeID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <div class="form-group col-8 bmd-form-group">
                             <label for="DegreeTittle" class="text-center bmd-label-floating">DegreeTittle</label>
                             @Html.TextBoxFor(Model => Model.DegreeTittle, new { @class = "form-control", required = "required" })
                             @Html.ValidationMessageFor(Model => Model.DegreeTittle, "", new { @class = "text-danger" })
@@ -65,15 +85,36 @@
 
 <div class="modal fade" id="addedu">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Add Education</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
+        @using (Html.BeginForm("AddEducation", "Profile", FormMethod.Post, new { autocomplete = "off" }))
+        {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Education</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
 
-            <div class="modal-body">
-                @using (Html.BeginForm("somewhere", "inprofile", FormMethod.Post, new { autocomplete = "off" }))
-                {
+                <div class="modal-body">
+
+                    <div class="d-flex justify-content-center">
+                        <div class="form-group col-8 bmd-form-group">
+                            <label for="DegreeID" class="d-block">Degree</label>
+                            <select class="custom-select" id="@Html.IdFor(m => m.DegreeID)" name="@Html.NameFor(m => m.DegreeID)" required>
+                                <option value="" disabled selected>Select Degree</option>
+                                @{System.Data.DataSet x = ViewBag.List;
+                                    foreach (System.Data.DataRow i in x.Tables[0].Rows)
+                                    {
+                                        <option value=@i[0]>
+                                            @i[1].ToString()
+                                        </option>
+
+                                    }
+
+                                }
+                            </select>
+                            @Html.ValidationMessageFor(Model => Model.DegreeID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
                             <label for="DegreeTittle" class="text-center bmd-label-floating">DegreeTittle</label>
@@ -110,62 +151,273 @@
                             @Html.ValidationMessageFor(Model => Model.Year, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                </div>
 
-                }
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info">Save</button>
+                </div>
             </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info" data-dismiss="modal">Save</button>
-            </div>
-        </div>
+        }
     </div>
 </div>
 
-<div class="container" style="margin-top:5%">
-    <div class="row justify-content-center align-content-center">
-        <div class="card">
-            <div class="card-header card-header-info">
-                <h3 class="card-title ">Education  <button class="btn btn-info-grd float-right" data-toggle="modal" data-target="#addedu">Add</button></h3>
+<div class="container">
+    <div class="row  mt-5">
+        <div class="col-12">
+            <div class="card-header card-header-info ">
+                <div class="row">
+                    <div class="col">
+                        <h3>Education</h3>
+                    </div>
+                    <div class="col d-flex justify-content-end">
+                        <a href="#" data-toggle="modal" data-target="#addedu">Add</a>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
+        </div>
+    </div>
+    <div class="row ">
 
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
                     <table class="table table-hover">
-                        <thead>
-                            <tr class="text-center">
-                                <th>Degree Tittle</th>
-                                <th>Field</th>
-                                <th>Institute</th>
-                                <th>Year</th>
-                                <th>Edit</th>
-                                <th>View</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
                         <tbody>
-                            <tr class="text-center">
+                            <tr>
+                                <th class="text-info" scope="row">DegreeTittle</th>
                                 <td>BE</td>
-                                <td>Electric</td>
-                                <td>UIT</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Field</th>
+                                <td>Software</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Institute</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Year</th>
                                 <td>2019</td>
-                                <td>
-                                    <button class="btn btn-info-grd" data-toggle="modal" data-target="#editedu">Edit</button>
-                                </td>
-                                <td>
-                                    <button class="btn btn-info-grd" onclick="window.location.href='/Profile/ViewEducation'">View</button>
-                                </td>
-                                <td>
-                                    <button class="btn btn-info-grd">Delete</button>
-                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th class="text-info" scope="row">DegreeTittle</th>
+                                <td>BE</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Field</th>
+                                <td>Software</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Institute</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Year</th>
+                                <td>2019</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        @*<div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Organization</h4>
+                        <h4>Designation</h4>
+                        <h4>From</h4>
+                        <h4>To</h4>
+                    </div>
+                </div>
+            </div>*@
+    </div>
+    <div class="row ">
+
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th class="text-info" scope="row">DegreeTittle</th>
+                                <td>BE</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Field</th>
+                                <td>Software</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Institute</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Year</th>
+                                <td>2019</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th class="text-info" scope="row">DegreeTittle</th>
+                                <td>BE</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Field</th>
+                                <td>Software</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Institute</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Year</th>
+                                <td>2019</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        @*<div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Organization</h4>
+                        <h4>Designation</h4>
+                        <h4>From</h4>
+                        <h4>To</h4>
+                    </div>
+                </div>
+            </div>*@
+    </div>
+    <div class="row ">
+
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th class="text-info" scope="row">DegreeTittle</th>
+                                <td>BE</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Field</th>
+                                <td>Software</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Institute</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Year</th>
+                                <td>2019</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card ">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <th class="text-info" scope="row">DegreeTittle</th>
+                                <td>BE</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Field</th>
+                                <td>Software</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Institute</th>
+                                <td>Uit</td>
+                            </tr>
+                            <tr>
+                                <th class="text-info" scope="row">Year</th>
+                                <td>2019</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        @*<div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Organization</h4>
+                        <h4>Designation</h4>
+                        <h4>From</h4>
+                        <h4>To</h4>
+                    </div>
+                </div>
+            </div>*@
     </div>
 </div>
+
+@*<div class="container" style="margin-top:5%">
+        <div class="row justify-content-center align-content-center">
+            <div class="card">
+                <div class="card-header card-header-info">
+                    <h3 class="card-title ">Education  <button class="btn btn-info-grd float-right" data-toggle="modal" data-target="#addedu">Add</button></h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Degree Tittle</th>
+                                    <th>Field</th>
+                                    <th>Institute</th>
+                                    <th>Year</th>
+                                    <th>Edit</th>
+                                    <th>View</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center">
+                                    <td>BE</td>
+                                    <td>Electric</td>
+                                    <td>UIT</td>
+                                    <td>2019</td>
+                                    <td>
+                                        <button class="btn btn-info-grd" data-toggle="modal" data-target="#editedu">Edit</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-info-grd" onclick="window.location.href='/Profile/ViewEducation'">View</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-info-grd">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
 
 <script>
     $(document).ready(function () {

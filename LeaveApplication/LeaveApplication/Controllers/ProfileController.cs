@@ -14,6 +14,8 @@ namespace LeaveApplication.Controllers
         // GET: Profile
         private EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
 
+        private Education edu = new Education();
+
         public ActionResult ResetPassword()
         {
             Employee e1 = (Employee)Session["Employee"];
@@ -84,6 +86,7 @@ namespace LeaveApplication.Controllers
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
+                ViewBag.List = edu.GetDegrees();
                 return View();
             }
             else
@@ -92,12 +95,14 @@ namespace LeaveApplication.Controllers
             }
         }
 
-        public ActionResult AddEducation()
+        [HttpPost]
+        public ActionResult AddEducation(Education eu)
         {
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                return View();
+                edu.AddEducation(eu, e1.EmployeeID);
+                return RedirectToAction("Education", "Profile");
             }
             else
             {
@@ -105,12 +110,29 @@ namespace LeaveApplication.Controllers
             }
         }
 
-        public ActionResult ViewEducation()
+        [HttpPost]
+        public ActionResult DeleteEducation(Education eu)
         {
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                return View();
+                edu.AddEducation(eu, e1.EmployeeID);
+                return RedirectToAction("Education", "Profile");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult UpdateEducation(Education eu)
+        {
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null)
+            {
+                edu.AddEducation(eu, e1.EmployeeID);
+                return RedirectToAction("Education", "Profile");
             }
             else
             {
