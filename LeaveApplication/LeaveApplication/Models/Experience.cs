@@ -32,27 +32,30 @@ namespace LeaveApplication.Models
         }
         public Experience GetExperience()
         {
-            Querry = string.Format("select * from experience where Employeeid='{0}'",EmployeeId);
+            Querry = string.Format("select * from experience where Employeeid='{0}' and id='{1}'", EmployeeId,ExperienceId);
             DataSet x = database.Read(Querry);
             ExperienceId =Convert.ToInt32( x.Tables[0].Rows[0][0]);
             EmployeeId = Convert.ToInt32(x.Tables[0].Rows[0][1]);
             Organization = x.Tables[0].Rows[0][2].ToString();
             Designation = x.Tables[0].Rows[0][3].ToString();
             Descipline = x.Tables[0].Rows[0][4].ToString();
-            Fromdate = x.Tables[0].Rows[0][5].ToString();
-            Todate = x.Tables[0].Rows[0][6].ToString();
+            Fromdate = DateTime.Parse(x.Tables[0].Rows[0][5].ToString()).ToString("dd/MM/yyyy");
+            Todate = DateTime.Parse(x.Tables[0].Rows[0][6].ToString()).ToString("dd/MM/yyyy");
             return this;
         }
         public void UpdateExp()
         {
-            //Querry = "insert into Experience(Employeeid,Organization,Designation,Descipline,Fromdate,Todate)values(@empid,@org,@dsg,@des,@fd,@td)";
-            //SqlParameter s1 = new SqlParameter() { ParameterName = "empid", Value = EmployeeId };
-            //SqlParameter s2 = new SqlParameter() { ParameterName = "org", Value = Organization };
-            //SqlParameter s3 = new SqlParameter() { ParameterName = "dsg", Value = Designation };
-            //SqlParameter s4 = new SqlParameter() { ParameterName = "des", Value = Descipline };
-            //SqlParameter s5 = new SqlParameter() { ParameterName = "fd", Value = Fromdate };
-            //SqlParameter s6 = new SqlParameter() { ParameterName = "td", Value = Todate };
-            //database.ExecuteQuerry(Querry);
+            Querry =string.Format( @"update Experience set Organization=@org,Designation=@dsg
+                     ,Descipline = @des
+                     ,Fromdate = @fd
+                     ,Todate = @td where Employeeid={0} and id={1}",EmployeeId,ExperienceId);
+            List<SqlParameter> pm = new List<SqlParameter>();
+            pm.Add(new SqlParameter() { ParameterName = "org", Value = Organization });
+            pm.Add(new SqlParameter() { ParameterName = "dsg", Value = Designation });
+            pm.Add(new SqlParameter() { ParameterName = "des", Value = Descipline });
+            pm.Add(new SqlParameter() { ParameterName = "fd", Value = Fromdate });
+            pm.Add(new SqlParameter() { ParameterName = "td", Value = Todate });
+            database.ExecuteQuerry(Querry, pm);
         }
         public void Insert()
         {
