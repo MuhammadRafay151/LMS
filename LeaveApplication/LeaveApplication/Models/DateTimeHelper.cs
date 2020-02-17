@@ -27,6 +27,10 @@ namespace LeaveApplication.Models
            return DateTime.ParseExact(_DateTime, "dd/MM/yyyy h:mm tt", System.Globalization.CultureInfo.InvariantCulture).ToString();
         }
 
+        public static string yyyy_mm_dd(string _DateTime)
+        {
+            return DateTime.ParseExact(_DateTime, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture).ToString("yyyy/MM/dd");
+        }
         static public string ToDate(string _DateTime)
         { 
             return DateTime.Parse(_DateTime).ToShortDateString();

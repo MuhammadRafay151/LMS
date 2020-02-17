@@ -22,7 +22,7 @@ namespace LeaveApplication.Models
             PhoneNumber = e1.PhoneNumber;
             Department = e1.Department;
             Designation = e1.Designation;
-            BirthDay = e1.Birthday;
+            BirthDay = e1.Birthday.ToString("dd/MM/yyyy");
         }
         public BasicInfo()
         { }
@@ -31,7 +31,7 @@ namespace LeaveApplication.Models
         [Required]
         public string Address { get; set; }
         [Required]
-        public DateTime BirthDay { get; set; }
+        public string BirthDay { get; set; }
         [Required]
         public string Cnic { get; set; }
         [Required]
@@ -53,7 +53,7 @@ namespace LeaveApplication.Models
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
             sqlParameters.Add(new SqlParameter() { ParameterName = "Name", Value = Name });
             sqlParameters.Add(new SqlParameter() { ParameterName = "Address", Value = Address });
-            sqlParameters.Add(new SqlParameter() { ParameterName = "BirthDay", Value = BirthDay.ToString("yyyy/MM/dd") });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "BirthDay", Value = DateTimeHelper.yyyy_mm_dd(BirthDay) });
             sqlParameters.Add(new SqlParameter() { ParameterName = "Cnic", Value = Cnic });
             sqlParameters.Add(new SqlParameter() { ParameterName = "Email", Value = Email });
             sqlParameters.Add(new SqlParameter() { ParameterName = "PhoneNumber", Value = PhoneNumber });

@@ -149,6 +149,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\ExperienceController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RequestLeaveController.cs" />
     <Compile Include="Controllers\ViewApplicationsController2.cs" />
@@ -564,6 +565,7 @@
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\Publications.cshtml" />
     <Content Include="Views\Profile\Acheivements.cshtml" />
+    <Content Include="Views\Experience\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

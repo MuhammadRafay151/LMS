@@ -1,0 +1,275 @@
+﻿@model LeaveApplication.Models.Experience
+@{
+    ViewBag.Title = "Experience";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+}
+@* Delete model *@
+<div class="modal fade " id="d1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3>Are you sure to delete this item?</h3>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-end">
+                    <button data-dismiss="modal" class="btn btn-link">Cancel</button>
+                    <button id="dl" class="btn btn-info-grd">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* ----- *@
+<div class="modal fade " id="ad1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Experience</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="/Experience/AddExp" method="post">
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center">
+                        <div class="col-8 form-group">
+                            <label>Oraganization</label>
+                            @Html.TextBoxFor(m => m.Organization, new { @class = "form-control", required = "required" })
+                            @Html.ValidationMessageFor(m => m.Organization, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-8 form-group">
+                            <label>Designation</label>
+                            @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", required = "required" })
+                            @Html.ValidationMessageFor(m => m.Designation, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-8 form-group">
+                            <label>Descipline</label>
+                            @Html.TextBoxFor(m => m.Descipline, new { @class = "form-control", required = "required" })
+                            @Html.ValidationMessageFor(m => m.Descipline, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+
+                    <div class=" d-flex justify-content-center">
+
+
+                        <div class="form-group col-8 bmd-form-group">
+                            <label for="BirthDay" id="l3">From</label>
+
+                            <div class="input-group ">
+                                @Html.TextBoxFor(m => m.Fromdate, new { @class = "form-control datetimepicker ", required = "required" })
+
+                                <div class="input-group-append">
+                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Fromdate, "", new { @class = "text-danger" })
+
+                        </div>
+
+
+                    </div>
+                    <div class=" d-flex justify-content-center">
+
+
+                        <div class="form-group col-8 bmd-form-group">
+                            <label for="BirthDay" id="l3">To</label>
+
+                            <div class="input-group ">
+                                @Html.TextBoxFor(m => m.Todate, new { @class = "form-control datetimepicker ", required = "required" })
+
+                                <div class="input-group-append">
+                                    <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
+
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Todate, "", new { @class = "text-danger" })
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-end">
+                    <button id="bt1" type="submit" class="btn btn-info-grd">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row  ">
+        <div class="col-12">
+            <div class="card-header ">
+                <div class="row">
+                    <div class="col">
+                        <h4>Expereince</h4>
+                    </div>
+                    <div class="col d-flex justify-content-end">
+                        <a href="#" data-toggle="modal" data-target="#ad1"><img class="mt-3" src="~/Images/icons/iconfinder_add_126583.png" width="20" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @{
+        System.Data.DataSet ds = ViewBag.data;
+
+    }
+    @for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+    {
+        <div class="row ">
+
+            <div class="col">
+                <div class="card ">
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="text-info" scope="row">Organization</th>
+                                    <td>@ds.Tables[0].Rows[i][2]</td>
+                                    <td>
+
+                                        <a class="dropdown-toggle" data-toggle="dropdown"></a>
+
+                                        <div class="dropdown-menu">
+                                            <a data-id="@ds.Tables[0].Rows[i][0]" class="dropdown-item edt" href="#">Edit</a>
+                                            <a data-id="@ds.Tables[0].Rows[i][0]" class="dropdown-item dl" data-toggle="modal" data-target="#d1" href="#">Delete</a>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-info" scope="row">Designation</th>
+                                    <td>@ds.Tables[0].Rows[i][3]</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-info" scope="row">Descipline</th>
+                                    <td>@ds.Tables[0].Rows[i][4]</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-info" scope="row">From</th>
+                                    <td>@ds.Tables[0].Rows[i][5]</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-info" scope="row">To</th>
+                                    <td>@ds.Tables[0].Rows[i][6]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            @{++i;
+                if (i < ds.Tables[0].Rows.Count)
+                {
+                    <div class="col">
+                        <div class="card ">
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <th class="text-info" scope="row">Organization</th>
+                                            <td>@ds.Tables[0].Rows[i][2]</td>
+                                            <td>
+
+                                                <a class="dropdown-toggle" data-toggle="dropdown"></a>
+
+                                                <div class="dropdown-menu">
+                                                    <a data-id="@ds.Tables[0].Rows[i][0]" class="dropdown-item edt" href="#">Edit</a>
+                                                    <a data-id="@ds.Tables[0].Rows[i][0]" class="dropdown-item dl" data-toggle="modal" data-target="#d1" href="#">Delete</a>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">Designation</th>
+                                            <td>@ds.Tables[0].Rows[i][3]</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">Descipline</th>
+                                            <td>@ds.Tables[0].Rows[i][4]</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">From</th>
+                                            <td>@ds.Tables[0].Rows[i][5]</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-info" scope="row">To</th>
+                                            <td>@ds.Tables[0].Rows[i][6]</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            }
+
+
+        </div>
+
+
+    }
+
+</div>
+
+<script>
+    $(document).ready(function (btn) {
+
+        $('.edt').click(function () {
+
+            $('#bt1').html("Save Changes");
+            console.log("sds");
+            $('#ad1').modal('show');
+
+        });
+        $('.dl').click(function () {
+            var x = $(this).data("id");
+            $('#dl').data("id", x);
+            $('#dl').data("id");
+
+        });
+        $('#dl').click(function () {
+            var z = $('#dl').data("id");
+            window.location.href = "/Experience/DelExp?id=" + z;
+        })
+        $('.datetimepicker').datetimepicker({
+            format: 'DD/MM/YYYY',
+
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove',
+
+            }
+
+        });
+    });
+
+
+
+</script>
+

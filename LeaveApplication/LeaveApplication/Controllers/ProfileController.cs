@@ -72,11 +72,7 @@ namespace LeaveApplication.Controllers
             {
                 return RedirectToAction("Index", "LogIn");
             }
-
-
-
             BasicInfo b1 = new BasicInfo((LeaveApplication.Models.Employee)Session["Employee"]);
-
             return View(b1);
         }
         public ActionResult Edit_Info_Submit(BasicInfo b1)
@@ -91,7 +87,7 @@ namespace LeaveApplication.Controllers
                 b1.SaveChanges(int.Parse(Session["EmpId"].ToString()));
                 Employee e2 = (Employee)Session["Employee"];
                 e2.EmployeeName = b1.Name;
-                e2.Birthday = b1.BirthDay;
+                e2.Birthday = DateTime.ParseExact( b1.BirthDay,"dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
                 e2.Address = b1.Address;
                 e2.CNIC = b1.Cnic;
                 e2.Email = b1.Email;
@@ -113,6 +109,7 @@ namespace LeaveApplication.Controllers
         {
             return View();
         }
+     
 
     }
 }

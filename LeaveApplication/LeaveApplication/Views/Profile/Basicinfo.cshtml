@@ -83,7 +83,16 @@
                                     <label for="BirthDay" id="l3">BirthDay</label>
 
                                     <div class="input-group ">
-                                        @Html.TextBoxFor(m => m.BirthDay, new { @class = "form-control datetimepicker ", required = "required", onfocusout = "DateSelect(this)" })
+                                        @if (string.IsNullOrEmpty(Model.BirthDay))
+                                        {
+                                         <input class = "form-control datetimepicker " name="@Html.NameFor(m=>m.BirthDay)" required = "required" />
+                                            
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBoxFor(m => m.BirthDay, new { @class = "form-control datetimepicker ", required = "required" })
+                                        }
+
 
                                         <div class="input-group-append">
                                             <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
@@ -180,7 +189,15 @@
                                         </tr>
                                         <tr>
                                             <th class="text-info" scope="row">Birthday</th>
-                                            <td>@Model.BirthDay</td>
+                                            @if (string.IsNullOrEmpty(Model.BirthDay))
+                                            {
+                                                <td>Not Updated</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@Model.BirthDay</td>
+                                            }
+
                                         </tr>
                                         <tr>
                                             <th class="text-info" scope="row">Email</th>

@@ -210,7 +210,7 @@ namespace LeaveApplication.Models
             e1.PhoneNumber = d1.Tables[0].Rows[0][14].ToString();
             if (d1.Tables[0].Rows[0][15]==System.DBNull.Value)
             {
-                e1.Birthday = DateTime.Now;
+               
             }
             else
             {
