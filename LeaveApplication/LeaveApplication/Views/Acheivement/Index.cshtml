@@ -4,6 +4,26 @@
 }
 @*@model LeaveApplication.Models.Acheivement*@
 @model System.Data.DataSet
+<div class="modal fade " id="d1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3>Are you sure to delete this item?</h3>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-end">
+                    <button data-dismiss="modal" class="btn btn-link">Cancel</button>
+                    <button class="btn btn-info-grd">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
 
     <div class="row mt-5">
@@ -77,8 +97,23 @@
             <div class="col-6">
                 <div class="card ">
                     <div class="card-body">
+                        <table class="table">
+                            <tr>
 
-                        <h3 class="modal-title">Title: @i[3] </h3>
+                                <td><h3 class="modal-title">Title: @i[3] </h3></td>
+
+                                <td>
+
+                                    <a class="dropdown-toggle" data-toggle="dropdown"></a>
+
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item edt" href="#">Edit</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#d1" href="#">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
                         <p>Date: @i[4]</p>
                         <hr />
                         <p>
