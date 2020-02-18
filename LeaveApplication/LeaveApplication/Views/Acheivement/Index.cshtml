@@ -1,9 +1,9 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Acheivements";
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
-@model LeaveApplication.Models.Acheivement
+@*@model LeaveApplication.Models.Acheivement*@
+@model System.Data.DataSet
 <div class="container">
 
     <div class="row mt-5">
@@ -19,52 +19,56 @@
                             <a id="h1" href="#"><img id="ic" width="20" src="~/Images/icons/matticons_solid_collapse-511.png" /></a>
                         </div>
                     </div>
-
-
                 </div>
-                <div id="c1" class="card-body">
-                    <form action="#" method="post">
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    @Html.TextBoxFor(m => m.title, new { @class = "form-control col-12", required = "required", placeholder = "Title" })
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    @Html.TextBoxFor(m => m.AcheivementDate, new { @class = "form-control col-12 datetimepicker", required = "required", placeholder = "Date" })
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group form-file-upload form-file-multiple">
-                                    <input type="file" id="fl" multiple="" class="inputFileHidden">
-                                    <div class="input-group">
-                                        <input type="text" id="fl1" class="form-control inputFileVisible col-12" placeholder="Attach Document">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-fab btn-round btn-primary">
-                                                <i class="material-icons">attach_file</i>
-                                            </button>
-                                        </span>
+                @using (Html.BeginForm("AddAcheivement", "Acheivement", FormMethod.Post, new { id = "f1", enctype = "multipart/form-data" }))
+                {
+                    <div id="c1" class="card-body">
+                        <form action="#" method="post">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <input type="text" id="title" name="title" class="form-control col-12" placeholder="Title" required>
+                                        @*@Html.TextBoxFor(m => m.title, new { @class = "form-control col-12", required = "required", placeholder = "Title" })*@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="form-group d-flex justify-content-center">
-                            <div class="p-1 col-12" style="border:solid 1px #A9A9A9">
-                                @Html.TextAreaFor(m => m.Description, new { @class = "form-control col-12", required = "required", placeholder = "Description", style = "font-size:22px", cols = "20", rows = "6" })
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <input type="datetime" id="AcheivementDate" name="AcheivementDate" class="form-control datetimepicker col-12" placeholder="Date" required>
+                                        @*@Html.TextBoxFor(m => m.AcheivementDate, new { @class = "form-control col-12 datetimepicker", required = "required", placeholder = "Date" })*@
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group form-file-upload form-file-multiple">
+                                        @*<input class="form-control-file  inputFileHidden" id="@Html.IdFor(m=>m.File)" name="@Html.NameFor(Model=>Model.File)" type="file" placeholder="Upload Image">*@
+                                        <input type="file" id="fl" name="File" />
+                                        @*<input type="file" id="fl" name="File" multiple="" class="inputFileHidden">*@
+                                        <div class="input-group">
+                                            <input type="text" id="fl1" name="FileName" class="form-control inputFileVisible col-12" placeholder="Attach Document">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-fab btn-round btn-primary">
+                                                    <i class="material-icons">attach_file</i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <button type="submit" class="btn btn-block btn-round btn-outline-info">Add Acheivements</button>
-                    </form>
-                </div>
+
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="p-1 col-12" style="border:solid 1px #A9A9A9">
+
+                                    @Html.TextArea("Description", new { @class = "form-control col-12", required = "required", placeholder = "Description", style = "font-size:22px", cols = "20", rows = "6" })
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-block btn-round btn-outline-info">Add Acheivements</button>
+                        </form>
+                    </div>
+                }
             </div>
         </div>
     </div>
-
 
     @for (int i = 0; i < 3; i++)
     {
@@ -83,10 +87,8 @@
                             1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\LeaveApplication.cs(71,20,71,27): warning CS0219: The variable 'Content' is assigned but its value is never used
                             1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\EmployeeBusinessLayer.cs(136,20,136,26): warning CS0219: The variable 'Querry' i
                         </p>
-
                     </div>
                 </div>
-
             </div>
             <div class="col-6">
                 <div class="card ">
@@ -103,9 +105,7 @@
                         </p>
                     </div>
                 </div>
-
             </div>
-
         </div>
     }
 </div>
@@ -121,16 +121,16 @@
                 $('#ic').attr('src', '/Images/icons/matticons_solid_collapse-511.png');
             }
 
-
         })
         $('#fl1').click(function () {
             $('#fl').trigger('click');
         });
         $('#fl').change(function () {
             console.log(document.getElementById('fl').files.item(0).name);
+            console.log(document.getElementById('fl').files.item(0))
             document.getElementById('fl1').value = document.getElementById('fl').files.item(0).name;
+
         });
     });
-
 </script>
 <script src="~/Scripts/DateTimePickerHelper.js"></script>
