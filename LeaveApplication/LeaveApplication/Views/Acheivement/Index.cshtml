@@ -9,7 +9,7 @@
     <div class="row mt-5">
 
         <div class="col-12 d-flex justify-content-center">
-            <div class="card " >
+            <div class="card ">
                 <div class="card-header ">
                     <div class="row">
                         <div class="col">
@@ -30,9 +30,25 @@
                                     @Html.TextBoxFor(m => m.title, new { @class = "form-control col-12", required = "required", placeholder = "Title" })
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="row">
                             <div class="col">
                                 <div class="form-group">
                                     @Html.TextBoxFor(m => m.AcheivementDate, new { @class = "form-control col-12 datetimepicker", required = "required", placeholder = "Date" })
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group form-file-upload form-file-multiple">
+                                    <input type="file" id="fl" multiple="" class="inputFileHidden">
+                                    <div class="input-group">
+                                        <input type="text" id="fl1" class="form-control inputFileVisible col-12" placeholder="Attach Document">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-fab btn-round btn-primary">
+                                                <i class="material-icons">attach_file</i>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -107,6 +123,13 @@
 
 
         })
+        $('#fl1').click(function () {
+            $('#fl').trigger('click');
+        });
+        $('#fl').change(function () {
+            console.log(document.getElementById('fl').files.item(0).name);
+            document.getElementById('fl1').value = document.getElementById('fl').files.item(0).name;
+        });
     });
 
 </script>

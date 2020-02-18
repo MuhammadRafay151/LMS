@@ -146,6 +146,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AcheivementController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -564,7 +565,7 @@
     <Content Include="Views\Profile\Experience.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\Publications.cshtml" />
-    <Content Include="Views\Profile\Acheivements.cshtml" />
+    <Content Include="Views\Acheivement\Index.cshtml" />
     <Content Include="Views\Experience\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
