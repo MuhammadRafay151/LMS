@@ -2,23 +2,47 @@
     ViewBag.Title = "Education";
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
-@model LeaveApplication.Models.Education
+@model System.Data.DataSet
 
-<div class="modal fade" id="editedu">
+<div class="modal fade " id="deleteedu" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Edit Education</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-
             <div class="modal-body">
-                @using (Html.BeginForm("somewhere", "inprofile", FormMethod.Post))
-                {
+                <h3>Are you sure to delete this item?</h3>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-end">
+                    <button data-dismiss="modal" class="btn btn-link">Cancel</button>
+                    @using (Html.BeginForm("DeleteEducation", "Profile", FormMethod.Post))
+                    {
+                        <button id="EduID" name="EduID" type="submit" class="btn btn-info-grd">Yes</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editedu">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("UpdateEducation", "Profile", FormMethod.Post))
+        {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Education</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
                             <label for="DegreeID" class="d-block">Select Degree</label>
-                            <select class="custom-select" id="@Html.IdFor(m=>m.DegreeID)" name="@Html.NameFor(m=>m.DegreeType)" required>
+                            <select class="custom-select" id="editdegreeid" name="DegreeID" required>
                                 <option value="" disabled selected>Select Department</option>
                                 @{System.Data.DataSet x = ViewBag.List;
                                     foreach (System.Data.DataRow i in x.Tables[0].Rows)
@@ -31,31 +55,28 @@
 
                                 }
                             </select>
-                            @Html.ValidationMessageFor(Model => Model.DegreeID, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
-                            <label for="DegreeTittle" class="text-center bmd-label-floating">DegreeTittle</label>
-                            @Html.TextBoxFor(Model => Model.DegreeTittle, new { @class = "form-control", required = "required" })
-                            @Html.ValidationMessageFor(Model => Model.DegreeTittle, "", new { @class = "text-danger" })
+                            <label for="DegreeTittle" class="text-center">DegreeTittle</label>
+                            <input type="text" id="EduID1" name="EduID" class="form-control" hidden />
+                            <input type="text" id="editdegtittle" name="DegreeTittle" class="form-control " required />
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
-                            <label for="Field" class="text-center bmd-label-floating">Field</label>
-                            @Html.TextBoxFor(Model => Model.Field, new { @class = "form-control", required = "required" })
-                            @Html.ValidationMessageFor(Model => Model.Field, "", new { @class = "text-danger" })
+                            <label for="Field" class="text-center">Field</label>
+                            <input type="text" id="editfield" name="Field" class="form-control " required />
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
-                            <label for="Institute" class="text-center bmd-label-floating">Institute</label>
-                            @Html.TextBoxFor(Model => Model.Institute, new { @class = "form-control", required = "required" })
-                            @Html.ValidationMessageFor(Model => Model.Institute, "", new { @class = "text-danger" })
+                            <label for="Institute" class="text-center">Institute</label>
+                            <input type="text" id="editinstitute" name="Institute" class="form-control " required />
                         </div>
                     </div>
 
@@ -63,23 +84,21 @@
                         <div class="form-group col-8 bmd-form-group">
                             <label for="Year" class="text-center">Year</label>
                             <div class="input-group">
-                                @Html.TextBoxFor(Model => Model.Year, new { @class = "form-control datetimepicker", required = "required", onfocusout = "DateSelect(this)" })
+                                <input type="text" id="edityear" name="Year" class="form-control datetimepicker" required onfocusout="DateSelect(this)" />
                                 <div class="input-group-append">
                                     <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
                                 </div>
                             </div>
-                            @Html.ValidationMessageFor(Model => Model.Year, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                </div>
 
-                }
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info">Save</button>
+                </div>
             </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info" data-dismiss="modal">Save</button>
-            </div>
-        </div>
+        }
     </div>
 </div>
 
@@ -97,13 +116,13 @@
 
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
-                            <label for="DegreeID" class="d-block">Degree</label>
-                            <select class="custom-select" id="@Html.IdFor(m => m.DegreeID)" name="@Html.NameFor(m => m.DegreeID)" required>
-                                <option value="" disabled selected>Select Degree</option>
+                            <label for="DegreeID" class="d-block">Select Degree</label>
+                            <select class="custom-select" name="DegreeID" required>
+                                <option value="" disabled selected>Select Department</option>
                                 @{System.Data.DataSet x = ViewBag.List;
                                     foreach (System.Data.DataRow i in x.Tables[0].Rows)
                                     {
-                                        <option value=@i[0]>
+                                        <option value=@i[0].ToString()>
                                             @i[1].ToString()
                                         </option>
 
@@ -111,31 +130,27 @@
 
                                 }
                             </select>
-                            @Html.ValidationMessageFor(Model => Model.DegreeID, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
                             <label for="DegreeTittle" class="text-center bmd-label-floating">DegreeTittle</label>
-                            @Html.TextBoxFor(Model => Model.DegreeTittle, new { @class = "form-control", required = "required" })
-                            @Html.ValidationMessageFor(Model => Model.DegreeTittle, "", new { @class = "text-danger" })
+                            <input type="text" name="DegreeTittle" class="form-control " required />
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
                             <label for="Field" class="text-center bmd-label-floating">Field</label>
-                            @Html.TextBoxFor(Model => Model.Field, new { @class = "form-control", required = "required" })
-                            @Html.ValidationMessageFor(Model => Model.Field, "", new { @class = "text-danger" })
+                            <input type="text" name="Field" class="form-control " required />
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
                             <label for="Institute" class="text-center bmd-label-floating">Institute</label>
-                            @Html.TextBoxFor(Model => Model.Institute, new { @class = "form-control", required = "required" })
-                            @Html.ValidationMessageFor(Model => Model.Institute, "", new { @class = "text-danger" })
+                            <input type="text" name="Institute" class="form-control " required />
                         </div>
                     </div>
 
@@ -143,12 +158,11 @@
                         <div class="form-group col-8 bmd-form-group">
                             <label for="Year" class="text-center">Year</label>
                             <div class="input-group">
-                                @Html.TextBoxFor(Model => Model.Year, new { @class = "form-control datetimepicker", required = "required", onfocusout = "DateSelect(this)" })
+                                <input type="text" id="edityear" name="Year" class="form-control datetimepicker " onfocusout="DateSelect(this)" required />
                                 <div class="input-group-append">
                                     <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
                                 </div>
                             </div>
-                            @Html.ValidationMessageFor(Model => Model.Year, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
@@ -168,248 +182,53 @@
             <div class="card-header card-header-info ">
                 <div class="row">
                     <div class="col">
-                        <h3>Education</h3>
+                        <h4>Education</h4>
                     </div>
                     <div class="col d-flex justify-content-end">
-                        <a href="#" data-toggle="modal" data-target="#addedu">Add</a>
+                        <a href="#" data-toggle="modal" data-target="#addedu"><img class="mt-3" src="~/Images/icons/iconfinder_add_126583.png" width="20" /></a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row ">
 
-        <div class="col">
-            <div class="card ">
-                <div class="card-body">
-                    <table class="table table-hover">
-                        <tbody>
-                            <tr>
-                                <th class="text-info" scope="row">DegreeTittle</th>
-                                <td>BE</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Field</th>
-                                <td>Software</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Institute</th>
-                                <td>Uit</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Year</th>
-                                <td>2019</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card ">
-                <div class="card-body">
-                    <table class="table table-hover">
-                        <tbody>
-                            <tr>
-                                <th class="text-info" scope="row">DegreeTittle</th>
-                                <td>BE</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Field</th>
-                                <td>Software</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Institute</th>
-                                <td>Uit</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Year</th>
-                                <td>2019</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        @*<div class="col">
-                <div class="card">
+    @foreach (System.Data.DataRow i in Model.Tables[0].Rows)
+    {
+        <div class="row ">
+            <div class="col">
+                <div class="card ">
                     <div class="card-body">
-                        <h4>Organization</h4>
-                        <h4>Designation</h4>
-                        <h4>From</h4>
-                        <h4>To</h4>
-                    </div>
-                </div>
-            </div>*@
-    </div>
-    <div class="row ">
-
-        <div class="col">
-            <div class="card ">
-                <div class="card-body">
-                    <table class="table table-hover">
-                        <tbody>
-                            <tr>
-                                <th class="text-info" scope="row">DegreeTittle</th>
-                                <td>BE</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Field</th>
-                                <td>Software</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Institute</th>
-                                <td>Uit</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Year</th>
-                                <td>2019</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card ">
-                <div class="card-body">
-                    <table class="table table-hover">
-                        <tbody>
-                            <tr>
-                                <th class="text-info" scope="row">DegreeTittle</th>
-                                <td>BE</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Field</th>
-                                <td>Software</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Institute</th>
-                                <td>Uit</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Year</th>
-                                <td>2019</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        @*<div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h4>Organization</h4>
-                        <h4>Designation</h4>
-                        <h4>From</h4>
-                        <h4>To</h4>
-                    </div>
-                </div>
-            </div>*@
-    </div>
-    <div class="row ">
-
-        <div class="col">
-            <div class="card ">
-                <div class="card-body">
-                    <table class="table table-hover">
-                        <tbody>
-                            <tr>
-                                <th class="text-info" scope="row">DegreeTittle</th>
-                                <td>BE</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Field</th>
-                                <td>Software</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Institute</th>
-                                <td>Uit</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Year</th>
-                                <td>2019</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card ">
-                <div class="card-body">
-                    <table class="table table-hover">
-                        <tbody>
-                            <tr>
-                                <th class="text-info" scope="row">DegreeTittle</th>
-                                <td>BE</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Field</th>
-                                <td>Software</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Institute</th>
-                                <td>Uit</td>
-                            </tr>
-                            <tr>
-                                <th class="text-info" scope="row">Year</th>
-                                <td>2019</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        @*<div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h4>Organization</h4>
-                        <h4>Designation</h4>
-                        <h4>From</h4>
-                        <h4>To</h4>
-                    </div>
-                </div>
-            </div>*@
-    </div>
-</div>
-
-@*<div class="container" style="margin-top:5%">
-        <div class="row justify-content-center align-content-center">
-            <div class="card">
-                <div class="card-header card-header-info">
-                    <h3 class="card-title ">Education  <button class="btn btn-info-grd float-right" data-toggle="modal" data-target="#addedu">Add</button></h3>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-
                         <table class="table table-hover">
-                            <thead>
-                                <tr class="text-center">
-                                    <th>Degree Tittle</th>
-                                    <th>Field</th>
-                                    <th>Institute</th>
-                                    <th>Year</th>
-                                    <th>Edit</th>
-                                    <th>View</th>
-                                    <th>Delete</th>
-                                </tr>
-                            </thead>
                             <tbody>
-                                <tr class="text-center">
-                                    <td>BE</td>
-                                    <td>Electric</td>
-                                    <td>UIT</td>
-                                    <td>2019</td>
+                                <tr>
+                                    <th class="text-info" scope="row">Degree</th>
+                                    <td>@i[1]</td>
                                     <td>
-                                        <button class="btn btn-info-grd" data-toggle="modal" data-target="#editedu">Edit</button>
+
+                                        <a class="dropdown-toggle" data-toggle="dropdown"></a>
+
+                                        <div class="dropdown-menu">
+
+                                            <a class="edt dropdown-item" data-id="@i[0]" data-toggle="modal" data-target="#editedu">Edit</a>
+                                            <a class="del dropdown-item" data-toggle="modal" data-id="@i[0]" data-target="#deleteedu">Delete</a>
+                                        </div>
                                     </td>
-                                    <td>
-                                        <button class="btn btn-info-grd" onclick="window.location.href='/Profile/ViewEducation'">View</button>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-info-grd">Delete</button>
-                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-info" scope="row">DegreeTittle</th>
+                                    <td>@i[2]</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-info" scope="row">Field</th>
+                                    <td>@i[3]</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-info" scope="row">Institute</th>
+                                    <td>@i[4]</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-info" scope="row">Year</th>
+                                    <td>@i[5]</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -417,12 +236,13 @@
                 </div>
             </div>
         </div>
-    </div>*@
+    }
+</div>
 
 <script>
     $(document).ready(function () {
         $('.datetimepicker').datetimepicker({
-            format: 'DD/MM/YYYY',
+            format: 'YYYY',
 
             icons: {
                 time: "fa fa-clock-o",
@@ -438,5 +258,36 @@
             }
 
         });
+
+        $('.del').on("click", function () {
+            var dataid = $(this).data("id")
+
+            document.getElementById('EduID').value = dataid;
+
+        })
+
+        $('.edt').on("click", function () {
+            var dataid = $(this).data("id")
+
+            $.ajax({
+                url: "/Profile/getedu?EduID=" + dataid,
+                type: "get",
+
+                success: function (data) {
+                    var jsondata = JSON.parse(data);
+                    $('#EduID1').val(jsondata.Table[0].ID);
+                    $('#editdegreeid').val(jsondata.Table[0].ID1);
+                    $('#editdegtittle').val(jsondata.Table[0].DegreeTittle);
+                    $('#editfield').val(jsondata.Table[0].Field);
+                    $('#edityear').val(jsondata.Table[0].Year);
+                    $('#editinstitute').val(jsondata.Table[0].Institute);
+
+                    console.log(jsondata.Table[0]);
+
+                }
+
+            })
+
+        })
     });
 </script>

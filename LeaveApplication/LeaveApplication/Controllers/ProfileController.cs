@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using LeaveApplication.Models;
 using System.IO;
 using System.Data.SqlClient;
+using Newtonsoft.Json;
 
 namespace LeaveApplication.Controllers
 {
@@ -87,7 +88,9 @@ namespace LeaveApplication.Controllers
             if (Session["EmpID"] != null)
             {
                 ViewBag.List = edu.GetDegrees();
-                return View();
+                System.Data.DataSet x = edu.GetEducation(e1.EmployeeID);
+
+                return View(x);
             }
             else
             {
@@ -111,12 +114,12 @@ namespace LeaveApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteEducation(Education eu)
+        public ActionResult DeleteEducation(int EduID)
         {
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                edu.AddEducation(eu, e1.EmployeeID);
+                edu.DeleteEducation(e1.EmployeeID, EduID);
                 return RedirectToAction("Education", "Profile");
             }
             else
@@ -131,13 +134,23 @@ namespace LeaveApplication.Controllers
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                edu.AddEducation(eu, e1.EmployeeID);
+                edu.UpdateEducation(eu, e1.EmployeeID);
                 return RedirectToAction("Education", "Profile");
             }
             else
             {
                 return RedirectToAction("Index", "LogIn");
             }
+        }
+
+        public JsonResult getedu(int? EduID)
+        {
+            Employee e1 = (Employee)Session["Employee"];
+            System.Data.DataSet x = edu.GetEdu(e1.EmployeeID, Convert.ToInt32(EduID));
+            //x.Tables[0].
+            string z = JsonConvert.SerializeObject(x);
+
+            return Json(z, JsonRequestBehavior.AllowGet);
         }
     }
 }
