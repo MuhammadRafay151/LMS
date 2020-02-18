@@ -69,39 +69,20 @@
             </div>
         </div>
     </div>
-
-    @for (int i = 0; i < 3; i++)
+    @*@foreach (System.Data.DataRow i in Model.Tables[0].Rows)*@
+    @foreach (System.Data.DataRow i in Model.Tables[0].Rows)
     {
         <div class="row ">
 
             <div class="col-6">
                 <div class="card ">
                     <div class="card-body">
-                        <h3 class="modal-title">Title: My Certification</h3>
-                        <p>Date: 27-08-16</p>
+
+                        <h3 class="modal-title">Title: @i[3] </h3>
+                        <p>Date: @i[4]</p>
                         <hr />
                         <p>
-                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Controllers\LogInController.cs(9,7,9,17): warning CS0105: The using directive for 'System.Web' appeared previously in this namespace
-                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Controllers\AttendanceController.cs(71,13,71,15): warning CS0162: Unreachable code detected
-                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\LeaveApplication.cs(58,20,58,27): warning CS0219: The variable 'Content' is assigned but its value is never used
-                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\LeaveApplication.cs(71,20,71,27): warning CS0219: The variable 'Content' is assigned but its value is never used
-                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\EmployeeBusinessLayer.cs(136,20,136,26): warning CS0219: The variable 'Querry' i
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="card ">
-                    <div class="card-body">
-                        <h3 class="modal-title">Title: My Certification</h3>
-                        <p>Date: 27-08-16</p>
-                        <hr />
-                        <p>
-                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Controllers\LogInController.cs(9,7,9,17): warning CS0105: The using directive for 'System.Web' appeared previously in this namespace
-                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Controllers\AttendanceController.cs(71,13,71,15): warning CS0162: Unreachable code detected
-                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\LeaveApplication.cs(58,20,58,27): warning CS0219: The variable 'Content' is assigned but its value is never used
-                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\LeaveApplication.cs(71,20,71,27): warning CS0219: The variable 'Content' is assigned but its value is never used
-                            1>C:\Users\HP\Source\Repos\MuhammadRafay151\LMS\LeaveApplication\LeaveApplication\Models\EmployeeBusinessLayer.cs(136,20,136,26): warning CS0219: The variable 'Querry' i
+                            @i[5]
                         </p>
                     </div>
                 </div>

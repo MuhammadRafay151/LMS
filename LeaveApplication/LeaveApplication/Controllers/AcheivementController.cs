@@ -14,9 +14,11 @@ namespace LeaveApplication.Controllers
         // GET: Acheivement
         public ActionResult Index()
         {
+            Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                return View();
+                System.Data.DataSet x = ac.GetAcheivement(e1.EmployeeID);
+                return View(x);
             }
             else
             {
