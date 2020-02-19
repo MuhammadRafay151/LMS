@@ -40,13 +40,26 @@ namespace LeaveApplication.Controllers
             }
         }
 
-        public ActionResult DeleteAcheivement(Acheivement ach)
+        public ActionResult DeleteAcheivement(int AcheivementId)
         {
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                ac.DeleteAcheivement(ach, e1.EmployeeID);
+                ac.DeleteAcheivement(AcheivementId, e1.EmployeeID);
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+        }
+
+        public ActionResult DownloadFile(int FileID)
+        {
+            if (Session["EmpID"] != null)
+            {
+                System.Data.DataSet ds = ac.DownloadFile(FileID, Convert.ToInt32(Session["EmpID"]));
+                return File((Byte[])ds.Tables[0].Rows[0][0], System.Web.MimeMapping.GetMimeMapping(ds.Tables[0].Rows[0][1].ToString()), ds.Tables[0].Rows[0][1].ToString());
             }
             else
             {

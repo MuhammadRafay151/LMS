@@ -70,10 +70,23 @@ namespace LeaveApplication.Models
             database.ExecuteQuerry(Querry, sqlParameters);
         }
 
-        public void DeleteAcheivement(Acheivement ach, int EmployeeID)
+        public void DeleteAcheivement(int AcheivementId, int EmployeeID)
         {
-            Querry = string.Format("");
-            database.ExecuteQuerry(Querry);
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementId", Value = AcheivementId });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "EmployeeID", Value = EmployeeID });
+            Querry = string.Format(@"DECLARE @fileid AS INT
+            set @fileid =(select FileId from AcheivementAttachments inner join Acheivement on Acheivement.id=AcheivementAttachments.AcheivementId where AcheivementId=@AcheivementId and EmployeeID=@EmployeeID)
+            delete Acheivement where id=@AcheivementId and EmployeeID=@EmployeeID
+            delete Files where FileId=@fileid
+            ");
+            database.ExecuteQuerry(Querry, sqlParameters);
+        }
+
+        public DataSet DownloadFile(int FileId, int EmployeeID)
+        {
+            string Querry = string.Format("select Files.Content,FileName from Acheivement inner join AcheivementAttachments on Acheivement.id=AcheivementAttachments.AcheivementId inner join Files on Files.FileId=AcheivementAttachments.FileId where EmployeeID={0} and Files.FileId={1}", EmployeeID, FileId);
+            return database.Read(Querry);
         }
     }
 }

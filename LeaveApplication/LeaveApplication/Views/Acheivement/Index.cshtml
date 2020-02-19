@@ -18,12 +18,8 @@
             <div class="modal-footer">
                 <div class="d-flex justify-content-end">
                     <button data-dismiss="modal" class="btn btn-link">Cancel</button>
-                    @using (Html.BeginForm("DeleteAcheivement", "Acheivement", FormMethod.Post))
-                    {
-                        <input id="AcheivementAttachmentsID" name="AcheivementAttachmentsID" class="form-control" hidden>
-                        <input id="FileId " name="FileId" class="form-control" hidden>
-                        <button id="AcheivementId" name="AcheivementId" type="button" class="btn btn-info-grd">Yes</button>
-                    }
+
+                    <button id="dl" type="submit" class="btn btn-info-grd">Yes</button>
                 </div>
             </div>
         </div>
@@ -94,7 +90,7 @@
             </div>
         </div>
     </div>
-    @*@foreach (System.Data.DataRow i in Model.Tables[0].Rows)*@
+
     @foreach (System.Data.DataRow i in Model.Tables[0].Rows)
     {
         <div class="row ">
@@ -113,7 +109,7 @@
 
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item edt" href="#">Edit</a>
-                                        <a class="dropdown-item" data-toggle="modal" data-target="#d1" href="#">Delete</a>
+                                        <a data-id="@i[0]" class="dropdown-item dl" data-toggle="modal" data-target="#d1" href="#">Delete</a>
                                     </div>
                                 </td>
                             </tr>
@@ -124,6 +120,8 @@
                         <p>
                             @i[5]
                         </p>
+                        <div scope="row" class="text-info" id="at1">Attachment</div>
+                        <div class="align-middle  text-justify"><a href="/Acheivement/DownLoadFile?FileID=@i[1]">@i[6]</a></div>
                     </div>
                 </div>
             </div>
@@ -152,11 +150,16 @@
             document.getElementById('fl1').value = document.getElementById('fl').files.item(0).name;
 
         });
-        $('#AcheivementId').click(function () {
-            console.log(document.getElementById('d1'));
-            document.getElementById('fl1').value = document.getElementById('d1');
+        $('.dl').click(function () {
+            var x = $(this).data("id");
+            $('#dl').data("id", x);
 
         });
+        $('#dl').click(function () {
+            var z = $('#dl').data("id");
+            window.location.href = "/Acheivement/DeleteAcheivement?AcheivementId=" + z;
+        })
+
     });
 </script>
 <script src="~/Scripts/DateTimePickerHelper.js"></script>
