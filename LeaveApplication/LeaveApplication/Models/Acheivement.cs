@@ -70,9 +70,9 @@ namespace LeaveApplication.Models
             database.ExecuteQuerry(Querry, sqlParameters);
         }
 
-        public void DeleteAcheivement()
+        public void DeleteAcheivement(Acheivement ach, int EmployeeID)
         {
-            Querry = "";
+            Querry = string.Format("");
             database.ExecuteQuerry(Querry);
         }
     }

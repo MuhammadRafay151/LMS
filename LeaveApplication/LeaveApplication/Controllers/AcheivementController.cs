@@ -39,5 +39,19 @@ namespace LeaveApplication.Controllers
                 return RedirectToAction("Index", "LogIn");
             }
         }
+
+        public ActionResult DeleteAcheivement(Acheivement ach)
+        {
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null)
+            {
+                ac.DeleteAcheivement(ach, e1.EmployeeID);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+        }
     }
 }

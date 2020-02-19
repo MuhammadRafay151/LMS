@@ -18,7 +18,12 @@
             <div class="modal-footer">
                 <div class="d-flex justify-content-end">
                     <button data-dismiss="modal" class="btn btn-link">Cancel</button>
-                    <button class="btn btn-info-grd">Yes</button>
+                    @using (Html.BeginForm("DeleteAcheivement", "Acheivement", FormMethod.Post))
+                    {
+                        <input id="AcheivementAttachmentsID" name="AcheivementAttachmentsID" class="form-control" hidden>
+                        <input id="FileId " name="FileId" class="form-control" hidden>
+                        <button id="AcheivementId" name="AcheivementId" type="button" class="btn btn-info-grd">Yes</button>
+                    }
                 </div>
             </div>
         </div>
@@ -145,6 +150,11 @@
             console.log(document.getElementById('fl').files.item(0).name);
             console.log(document.getElementById('fl').files.item(0))
             document.getElementById('fl1').value = document.getElementById('fl').files.item(0).name;
+
+        });
+        $('#AcheivementId').click(function () {
+            console.log(document.getElementById('d1'));
+            document.getElementById('fl1').value = document.getElementById('d1');
 
         });
     });
