@@ -254,7 +254,9 @@
                 type: "GET",
                 url: "/Acheivement/GetAcheivement?AcheivementID=" + id,
                 success: function (data) {
-                    console.log(data.table[0]);
+                    var jsondata = JSON.parse(data);
+                    console.log(jsondata);
+                    $('').val = jsondata.[0]
                 }
 
             })

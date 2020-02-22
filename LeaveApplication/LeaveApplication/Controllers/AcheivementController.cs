@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LeaveApplication.Models;
+using Newtonsoft.Json;
 
 namespace LeaveApplication.Controllers
 {
@@ -83,8 +84,8 @@ namespace LeaveApplication.Controllers
         public JsonResult GetAcheivement(int AcheivementID)
         {
             System.Data.DataSet x = ac.GetAcheivement((int)Session["EmpID"], AcheivementID);
-            string z = Json.
-            return Json(, JsonRequestBehavior.AllowGet);
+            string z = JsonConvert.SerializeObject(x);
+            return Json(z, JsonRequestBehavior.AllowGet);
         }
     }
 }
