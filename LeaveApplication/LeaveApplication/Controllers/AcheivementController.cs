@@ -82,7 +82,9 @@ namespace LeaveApplication.Controllers
 
         public JsonResult GetAcheivement(int AcheivementID)
         {
-            return Json(ac.GetAcheivement((int)Session["EmpID"], AcheivementID).Tables[0], JsonRequestBehavior.AllowGet);
+            System.Data.DataSet x = ac.GetAcheivement((int)Session["EmpID"], AcheivementID);
+            string z = Json.
+            return Json(, JsonRequestBehavior.AllowGet);
         }
     }
 }
