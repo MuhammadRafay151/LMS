@@ -39,6 +39,12 @@ namespace LeaveApplication.Models
             return database.Read(Querry);
         }
 
+        public DataSet GetAcheivement(int EmployeeID, int AcheivementID)
+        {
+            Querry = string.Format("select Acheivement.id as 'AcheivementID',AcheivementAttachments.FileId as 'FileID',AcheivementAttachments.id as 'AcheivementAttachID' ,Title,Date,Description,FileName,Content from Acheivement inner join AcheivementAttachments on Acheivement.id=AcheivementId inner join Files on Files.FileId=AcheivementAttachments.FileId where EmployeeID={0} and Acheivement.id={1}", EmployeeID, AcheivementID);
+            return database.Read(Querry);
+        }
+
         public void UpdateAcheivement()
         {
             Querry = "";

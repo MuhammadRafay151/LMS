@@ -40,6 +40,19 @@ namespace LeaveApplication.Controllers
             }
         }
 
+        public ActionResult UpdateAcheivement(int AcheivementID)
+        {
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+        }
+
         public ActionResult DeleteAcheivement(int AcheivementId)
         {
             Employee e1 = (Employee)Session["Employee"];
@@ -65,6 +78,11 @@ namespace LeaveApplication.Controllers
             {
                 return RedirectToAction("Index", "LogIn");
             }
+        }
+
+        public JsonResult GetAcheivement(int AcheivementID)
+        {
+            return Json(ac.GetAcheivement((int)Session["EmpID"], AcheivementID).Tables[0], JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -25,6 +25,66 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="editach">
+    <div class="modal-dialog">
+        @using (Html.BeginForm("UpdateEducation", "Profile", FormMethod.Post))
+        {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Education</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="text" id="updatetittle" name="title" class="form-control col-12" placeholder="Title" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="datetime" id="Updateachdate" name="AcheivementDate" class="form-control datetimepicker col-12" placeholder="Date" required>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group form-file-upload form-file-multiple">
+
+                                <input type="file" id="ufl" name="File" />
+
+                                <div class="input-group">
+                                    <input type="text" id="updatefilename" name="FileName" class="form-control inputFileVisible col-12" placeholder="Attach Document">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-fab btn-round btn-primary">
+                                            <i class="material-icons">attach_file</i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <div class="p-1 col-12" style="border:solid 1px #A9A9A9">
+
+                            @Html.TextArea("Description", new { @class = "form-control col-12", required = "required", placeholder = "Description", style = "font-size:22px", cols = "20", rows = "6" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info">Save</button>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
 <div class="container">
 
     <div class="row mt-5">
@@ -108,7 +168,7 @@
                                     <a class="dropdown-toggle" data-toggle="dropdown"></a>
 
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item edt" href="#">Edit</a>
+                                        <a class="dropdown-item edt" data-id="@i[0]" data-toggle="modal" data-target="#editach" href="#">Edit</a>
                                         <a data-id="@i[0]" class="dropdown-item dl" data-toggle="modal" data-target="#d1" href="#">Delete</a>
                                     </div>
                                 </td>
@@ -159,6 +219,46 @@
             var z = $('#dl').data("id");
             window.location.href = "/Acheivement/DeleteAcheivement?AcheivementId=" + z;
         })
+
+        //$('.edt').click(function () {
+        //    var x = $(this).data("id");
+        //    $('#f1').attr('action', "/Experience/UpdateExp?id=" + x);
+        //    $('#bt1').html("Save Changes");
+        //    $('#ad1').modal('show');
+        //    var id = $(this).data("id");
+        //    $.ajax({
+        //        type: "get",
+        //        url: "/Experience/GetExp?id=" + id,
+        //        success: function (data) {
+
+        //            console.log(data);
+        //            $('#Organization').val(data.Organization);
+        //            $('#Designation').val(data.Designation);
+        //            $('#Descipline').val(data.Descipline);
+        //            $('#Fromdate').val(data.Fromdate);
+        //            $('#Todate').val(data.Todate);
+
+        //        }, error: function () {
+        //            alert("Encountering some error please try again later.");
+        //        }
+
+        //    })
+
+        //});
+
+        $('.edt').click(function () {
+
+            var id = $(this).data("id");
+
+            $.ajax({
+                type: "GET",
+                url: "/Acheivement/GetAcheivement?AcheivementID=" + id,
+                success: function (data) {
+                    console.log(data.table[0]);
+                }
+
+            })
+        });
 
     });
 </script>
