@@ -45,9 +45,35 @@ namespace LeaveApplication.Models
             return database.Read(Querry);
         }
 
-        public void UpdateAcheivement()
+        public void UpdateAcheivement(Acheivement ach, int EmployeeID)
         {
-            Querry = "";
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementId", Value = ach.AcheivementId });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "title", Value = ach.title });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementDate", Value = ach.AcheivementDate });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "Description", Value = ach.Description });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "EmployeeID", Value = EmployeeID });
+            if (ach.File == null)
+            {
+                Querry = string.Format(@"UPDATE Acheivement SET Title = @title, Date = @AcheivementDate,Description = @Description WHERE EmployeeID=@EmployeeID and id=@AcheivementId");
+            }
+            else
+            {
+                Querry = string.Format(@"Declare @FID int ,@AchAttchID int
+                select @FID= Files.FileId,@AchAttchID=AcheivementAttachments.id from Acheivement inner join AcheivementAttachments on Acheivement.id=AcheivementAttachments.AcheivementId inner join Files on Files.FileId=AcheivementAttachments.FileId where Acheivement.id=@AcheivementId and EmployeeID=@EmployeeID;
+                UPDATE Acheivement SET Title = @title, Date = @AcheivementDate,Description = @Description WHERE EmployeeID=@EmployeeID and id=@AcheivementId;
+                update AcheivementAttachments set FileName=@FileName where id=@AchAttchID;
+                update Files set Content=@content where FileId=@FID;
+                ");
+
+                sqlParameters.Add(new SqlParameter() { ParameterName = "FileName", Value = ach.FileName });
+                Stream s1 = ach.File.InputStream;
+                BinaryReader b1 = new BinaryReader(s1);
+                FileBytes = b1.ReadBytes((int)s1.Length);
+                sqlParameters.Add(new SqlParameter() { ParameterName = "content", Value = FileBytes });
+            }
+
+            database.ExecuteQuerry(Querry, sqlParameters);
         }
 
         public void InsertAcheivement(int EmployeeID, Acheivement ach)

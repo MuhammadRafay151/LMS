@@ -27,7 +27,7 @@
 </div>
 <div class="modal fade" id="editach">
     <div class="modal-dialog">
-        @using (Html.BeginForm("UpdateEducation", "Profile", FormMethod.Post))
+        @using (Html.BeginForm("UpdateAcheivement", "Acheivement", FormMethod.Post, new { id = "uf1", enctype = "multipart/form-data" }))
         {
             <div class="modal-content">
                 <div class="modal-header">
@@ -40,26 +40,32 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <input type="text" id="updatetittle" name="title" class="form-control col-12" placeholder="Title" required>
+                                <label>Title</label>
+                                <input type="text" id="updatetittle" name="title" class="form-control col-12" required>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col">
+
                             <div class="form-group">
-                                <input type="datetime" id="Updateachdate" name="AcheivementDate" class="form-control datetimepicker col-12" placeholder="Date" required>
+                                <label>Date</label>
+                                <input type="datetime" id="Updateachdate" name="AcheivementDate" class="form-control datetimepicker col-12" required>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group form-file-upload form-file-multiple">
-
+                                <label>Attachement</label>
                                 <input type="file" id="ufl" name="File" />
-
+                                <input type="text" id="achid" name="AcheivementId" hidden />
                                 <div class="input-group">
-                                    <input type="text" id="updatefilename" name="FileName" class="form-control inputFileVisible col-12" placeholder="Attach Document">
+                                    <input type="text" id="updatefilename" name="FileName" class="form-control inputFileVisible col-12" placeholder="Select FIle">
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-fab btn-round btn-primary">
+                                            <i class="material-icons">attach_file</i>
+                                        </button>
+                                        <button type="button" id="fID" data-id="" class="lf btn btn-fab btn-round btn-primary" data-toggle="tooltip" data-placement="top" title="Download File">
                                             <i class="material-icons">attach_file</i>
                                         </button>
                                     </span>
@@ -70,8 +76,8 @@
 
                     <div class="d-flex justify-content-center">
                         <div class="p-1 col-12" style="border:solid 1px #A9A9A9">
-
-                            @Html.TextArea("Description", new { @class = "form-control col-12", required = "required", placeholder = "Description", style = "font-size:22px", cols = "20", rows = "6" })
+                            <label>Description</label>
+                            @Html.TextArea("Description", new { @class = "form-control col-12", id = "updateDes", required = "required", style = "font-size:22px", cols = "20", rows = "6" })
                         </div>
                     </div>
                 </div>
@@ -175,7 +181,7 @@
                             </tr>
                         </table>
 
-                        <p>Date: @i[4]</p>
+                        <p>Date: @DateTime.Parse(i[4].ToString()).ToString("dd/MM/yyyy")</p>
                         <hr />
                         <p>
                             @i[5]
@@ -204,9 +210,17 @@
         $('#fl1').click(function () {
             $('#fl').trigger('click');
         });
+
+        $('#updatefilename').click(function () {
+            $('#ufl').trigger('click');
+        });
+        $('#ufl').change(function () {
+
+            document.getElementById('updatefilename').value = document.getElementById('ufl').files.item(0).name;
+
+        });
         $('#fl').change(function () {
-            console.log(document.getElementById('fl').files.item(0).name);
-            console.log(document.getElementById('fl').files.item(0))
+
             document.getElementById('fl1').value = document.getElementById('fl').files.item(0).name;
 
         });
@@ -218,6 +232,10 @@
         $('#dl').click(function () {
             var z = $('#dl').data("id");
             window.location.href = "/Acheivement/DeleteAcheivement?AcheivementId=" + z;
+        })
+        $('.lf').click(function () {
+            var z = $('#fID').data("id");
+            window.location.href = "/Acheivement/DownLoadFile?FileID=" + z;
         })
 
         //$('.edt').click(function () {
@@ -256,7 +274,18 @@
                 success: function (data) {
                     var jsondata = JSON.parse(data);
                     console.log(jsondata);
-                    $('').val = jsondata.[0]
+                    $('#updatetittle').val(jsondata.Table[0].Title);
+                    var Date = moment(jsondata.Table[0].Date).format('DD-MM-YYYY');
+                    $('#Updateachdate').val(Date);
+                    $('#updatefilename').val(jsondata.Table[0].FileName);
+                    $('#updateDes').val(jsondata.Table[0].Description);
+                    $('#fileid').val(jsondata.Table[0].FileID);
+                    $('#achid').val(jsondata.Table[0].AcheivementID);
+                    var fid = jsondata.Table[0].FileID;
+                    console.log(jsondata.Table[0].FileID);
+                    $('#fID').data("id", fid);
+                    console.log($('#fID').data("id"));
+
                 }
 
             })

@@ -41,11 +41,12 @@ namespace LeaveApplication.Controllers
             }
         }
 
-        public ActionResult UpdateAcheivement(int AcheivementID)
+        public ActionResult UpdateAcheivement(Acheivement ach)
         {
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
+                ac.UpdateAcheivement(ach, (int)Session["EmpID"]);
                 return RedirectToAction("Index");
             }
             else
