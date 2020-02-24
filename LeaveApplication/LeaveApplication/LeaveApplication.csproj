@@ -554,7 +554,6 @@
     <Content Include="Views\Dashboard\ViewDashboard.cshtml" />
     <Content Include="Views\Attandence\Presents.cshtml" />
     <Content Include="Views\Profile\Basicinfo.cshtml" />
-    <Content Include="Views\Profile\Education.cshtml" />
     <Content Include="Views\Education\Education.cshtml" />
   </ItemGroup>
   <ItemGroup>
