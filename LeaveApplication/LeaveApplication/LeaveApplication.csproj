@@ -149,6 +149,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\EducationController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RequestLeaveController.cs" />
     <Compile Include="Controllers\ViewApplicationsController2.cs" />
@@ -553,12 +554,11 @@
     <Content Include="Views\Dashboard\ViewDashboard.cshtml" />
     <Content Include="Views\Attandence\Presents.cshtml" />
     <Content Include="Views\Profile\Basicinfo.cshtml" />
-    <Content Include="Views\Profile\AddEducation.cshtml" />
     <Content Include="Views\Profile\Education.cshtml" />
-    <Content Include="Views\Profile\ViewEducation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Education\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
