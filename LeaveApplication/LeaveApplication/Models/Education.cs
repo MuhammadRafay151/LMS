@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 using System.Globalization;
+using System.Data.SqlClient;
 
 namespace LeaveApplication.Models
 {
@@ -45,19 +46,38 @@ namespace LeaveApplication.Models
 
         public void AddEducation(Education edu, int EmployeeID)
         {
-            string Querry = string.Format("insert into Education(EmployeeId,DegreeId,DegreeTittle,Field,Institute,Year) values({0},{1},'{2}','{3}','{4}','{5}')", EmployeeID, edu.DegreeID, edu.DegreeTittle, edu.Field, edu.Institute, DateTime.ParseExact(edu.Year, "yyyy", CultureInfo.InvariantCulture).ToString());
-            database.ExecuteQuerry(Querry);
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "EmployeeID", Value = EmployeeID });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "DegreeID", Value = edu.DegreeID });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "DegreeTittle", Value = edu.DegreeTittle });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "Field", Value = edu.Field });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "Institute", Value = edu.Institute });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "Year", Value = DateTime.ParseExact(edu.Year, "yyyy", CultureInfo.InvariantCulture).ToString() });
+
+            string Querry = string.Format("insert into Education(EmployeeId,DegreeId,DegreeTittle,Field,Institute,Year) values(@EmployeeID,@DegreeID,@DegreeTittle,@Field,@Institute,@Year)");
+            database.ExecuteQuerry(Querry, sqlParameters);
         }
 
         public void UpdateEducation(Education edu, int EmployeeID)
         {
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "EmployeeID", Value = EmployeeID });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "DegreeID", Value = edu.DegreeID });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "DegreeTittle", Value = edu.DegreeTittle });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "Field", Value = edu.Field });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "Institute", Value = edu.Institute });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "Year", Value = DateTime.ParseExact(edu.Year, "yyyy", CultureInfo.InvariantCulture).ToString() });
+
             string Querry = string.Format("UPDATE Education SET DegreeId = {1}, DegreeTittle = '{2}',Field = '{3}',Institute ='{4}' ,Year = '{5}' WHERE EmployeeId={0} and id={6}", EmployeeID, edu.DegreeID, edu.DegreeTittle, edu.Field, edu.Institute, DateTime.ParseExact(edu.Year, "yyyy", CultureInfo.InvariantCulture).ToString(), edu.EduID);
             database.ExecuteQuerry(Querry);
         }
 
         public void DeleteEducation(int EmployeeID, int eduid)
         {
-            string Querry = string.Format("Delete from education where id={0} and EmployeeID={1}", eduid, EmployeeID);
+            List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "EmployeeID", Value = EmployeeID });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "eduid", Value = eduid });
+            string Querry = string.Format("Delete from education where id=@eduid and EmployeeID=@EmployeeID");
             database.ExecuteQuerry(Querry);
         }
     }
