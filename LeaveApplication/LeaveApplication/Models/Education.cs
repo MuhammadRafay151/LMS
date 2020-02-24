@@ -61,6 +61,7 @@ namespace LeaveApplication.Models
         public void UpdateEducation(Education edu, int EmployeeID)
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
+            sqlParameters.Add(new SqlParameter() { ParameterName = "EduID", Value = edu.EduID });
             sqlParameters.Add(new SqlParameter() { ParameterName = "EmployeeID", Value = EmployeeID });
             sqlParameters.Add(new SqlParameter() { ParameterName = "DegreeID", Value = edu.DegreeID });
             sqlParameters.Add(new SqlParameter() { ParameterName = "DegreeTittle", Value = edu.DegreeTittle });
@@ -68,8 +69,8 @@ namespace LeaveApplication.Models
             sqlParameters.Add(new SqlParameter() { ParameterName = "Institute", Value = edu.Institute });
             sqlParameters.Add(new SqlParameter() { ParameterName = "Year", Value = DateTime.ParseExact(edu.Year, "yyyy", CultureInfo.InvariantCulture).ToString() });
 
-            string Querry = string.Format("UPDATE Education SET DegreeId = {1}, DegreeTittle = '{2}',Field = '{3}',Institute ='{4}' ,Year = '{5}' WHERE EmployeeId={0} and id={6}", EmployeeID, edu.DegreeID, edu.DegreeTittle, edu.Field, edu.Institute, DateTime.ParseExact(edu.Year, "yyyy", CultureInfo.InvariantCulture).ToString(), edu.EduID);
-            database.ExecuteQuerry(Querry);
+            string Querry = string.Format("UPDATE Education SET DegreeId = @DegreeID, DegreeTittle = @DegreeTittle,Field = @Field,Institute =@Institute ,Year = @Year WHERE EmployeeId=@EmployeeID and id=@EduID");
+            database.ExecuteQuerry(Querry, sqlParameters);
         }
 
         public void DeleteEducation(int EmployeeID, int eduid)
@@ -78,7 +79,7 @@ namespace LeaveApplication.Models
             sqlParameters.Add(new SqlParameter() { ParameterName = "EmployeeID", Value = EmployeeID });
             sqlParameters.Add(new SqlParameter() { ParameterName = "eduid", Value = eduid });
             string Querry = string.Format("Delete from education where id=@eduid and EmployeeID=@EmployeeID");
-            database.ExecuteQuerry(Querry);
+            database.ExecuteQuerry(Querry, sqlParameters);
         }
     }
 }
