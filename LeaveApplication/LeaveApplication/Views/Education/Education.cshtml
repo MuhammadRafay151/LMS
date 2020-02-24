@@ -18,10 +18,8 @@
             <div class="modal-footer">
                 <div class="d-flex justify-content-end">
                     <button data-dismiss="modal" class="btn btn-link">Cancel</button>
-                    @using (Html.BeginForm("DeleteEducation", "Education", FormMethod.Post))
-                    {
-                        <button id="EduID" name="EduID" type="submit" class="btn btn-info-grd">Yes</button>
-                    }
+
+                    <button id="dl" type="submit" class="btn btn-info-grd">Yes</button>
                 </div>
             </div>
         </div>
@@ -258,6 +256,11 @@
             }
 
         });
+
+        $('#dl').click(function () {
+            var z = $('#dl').data("id");
+            window.location.href = "/Education/DeleteEducation?EduID=" + z;
+        })
 
         $('.del').on("click", function () {
             var dataid = $(this).data("id")
