@@ -15,7 +15,7 @@ namespace LeaveApplication.Controllers
 
         private Education edu = new Education();
 
-        public ActionResult Education()
+        public ActionResult Index()
         {
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
@@ -38,7 +38,7 @@ namespace LeaveApplication.Controllers
             if (Session["EmpID"] != null)
             {
                 edu.AddEducation(eu, e1.EmployeeID);
-                return RedirectToAction("Education", "Profile");
+                return RedirectToAction("Index");
             }
             else
             {
@@ -46,14 +46,13 @@ namespace LeaveApplication.Controllers
             }
         }
 
-        [HttpPost]
         public ActionResult DeleteEducation(int EduID)
         {
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
                 edu.DeleteEducation(e1.EmployeeID, EduID);
-                return RedirectToAction("Education", "Profile");
+                return RedirectToAction("Index");
             }
             else
             {
@@ -68,7 +67,7 @@ namespace LeaveApplication.Controllers
             if (Session["EmpID"] != null)
             {
                 edu.UpdateEducation(eu, e1.EmployeeID);
-                return RedirectToAction("Education", "Profile");
+                return RedirectToAction("Index");
             }
             else
             {
