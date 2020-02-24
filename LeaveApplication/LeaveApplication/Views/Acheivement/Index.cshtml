@@ -2,7 +2,7 @@
     ViewBag.Title = "Acheivements";
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
-@*@model LeaveApplication.Models.Acheivement*@
+
 @model System.Data.DataSet
 <div class="modal fade " id="d1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -100,7 +100,7 @@
                 <div class="card-header ">
                     <div class="row">
                         <div class="col">
-                            <div class="card-title" style="font-family:g1;font-size:22px">Acheivements</div>
+                            <div class="card-title" style="font-family:g1;font-size:22px">Achievements</div>
                         </div>
                         <div class="col d-flex justify-content-end">
                             <a id="h1" href="#"><img id="ic" width="20" src="~/Images/icons/matticons_solid_collapse-511.png" /></a>
@@ -115,7 +115,6 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <input type="text" id="title" name="title" class="form-control col-12" placeholder="Title" required>
-                                        @*@Html.TextBoxFor(m => m.title, new { @class = "form-control col-12", required = "required", placeholder = "Title" })*@
                                     </div>
                                 </div>
                             </div>
@@ -123,14 +122,13 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <input type="datetime" id="AcheivementDate" name="AcheivementDate" class="form-control datetimepicker col-12" placeholder="Date" required>
-                                        @*@Html.TextBoxFor(m => m.AcheivementDate, new { @class = "form-control col-12 datetimepicker", required = "required", placeholder = "Date" })*@
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group form-file-upload form-file-multiple">
-                                        @*<input class="form-control-file  inputFileHidden" id="@Html.IdFor(m=>m.File)" name="@Html.NameFor(Model=>Model.File)" type="file" placeholder="Upload Image">*@
+
                                         <input type="file" id="fl" name="File" />
-                                        @*<input type="file" id="fl" name="File" multiple="" class="inputFileHidden">*@
+
                                         <div class="input-group">
                                             <input type="text" id="fl1" name="FileName" class="form-control inputFileVisible col-12" placeholder="Attach Document">
                                             <span class="input-group-btn">
@@ -237,32 +235,6 @@
             var z = $('#fID').data("id");
             window.location.href = "/Acheivement/DownLoadFile?FileID=" + z;
         })
-
-        //$('.edt').click(function () {
-        //    var x = $(this).data("id");
-        //    $('#f1').attr('action', "/Experience/UpdateExp?id=" + x);
-        //    $('#bt1').html("Save Changes");
-        //    $('#ad1').modal('show');
-        //    var id = $(this).data("id");
-        //    $.ajax({
-        //        type: "get",
-        //        url: "/Experience/GetExp?id=" + id,
-        //        success: function (data) {
-
-        //            console.log(data);
-        //            $('#Organization').val(data.Organization);
-        //            $('#Designation').val(data.Designation);
-        //            $('#Descipline').val(data.Descipline);
-        //            $('#Fromdate').val(data.Fromdate);
-        //            $('#Todate').val(data.Todate);
-
-        //        }, error: function () {
-        //            alert("Encountering some error please try again later.");
-        //        }
-
-        //    })
-
-        //});
 
         $('.edt').click(function () {
 
