@@ -151,6 +151,7 @@
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\ExperienceController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\PublicationController.cs" />
     <Compile Include="Controllers\RequestLeaveController.cs" />
     <Compile Include="Controllers\ViewApplicationsController2.cs" />
     <Compile Include="Controllers\ApplyForLeaveController.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HelperClasses\SqlParm.cs" />
     <Compile Include="Models\Acheivement.cs" />
     <Compile Include="Models\AdminBusinessLayer.cs" />
     <Compile Include="Models\AssignLeaves.cs" />
@@ -561,9 +563,8 @@
     <Content Include="Views\Dashboard\ViewDashboard.cshtml" />
     <Content Include="Views\Attandence\Presents.cshtml" />
     <Content Include="Views\Profile\Basicinfo.cshtml" />
-    <Content Include="Views\Profile\Experience.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
-    <Content Include="Views\Profile\Publications.cshtml" />
+    <Content Include="Views\Publication\Index.cshtml" />
     <Content Include="Views\Profile\Acheivements.cshtml" />
     <Content Include="Views\Experience\Index.cshtml" />
   </ItemGroup>
