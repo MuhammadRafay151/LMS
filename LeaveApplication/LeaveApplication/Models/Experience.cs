@@ -39,7 +39,7 @@ namespace LeaveApplication.Models
 
         public DataSet GetExperiencesReport()
         {
-            Querry = string.Format("select EmployeeName,JoiningDate,Department,Designations.Designation,Organization,Descipline,Experience.Designation,DATEDIFF(YEAR,Fromdate,Todate) as 'years' from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join Designations on Employee.DesignationID=Designations.DesignationID inner join Experience on Employee.EmployeeID=Experience.Employeeid");
+            Querry = string.Format("select EmployeeName,Department,Designations.Designation,JoiningDate,Sum(DATEDIFF(YEAR,Fromdate,Todate)) as 'years' from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join Designations on Employee.DesignationID=Designations.DesignationID inner join Experience on Employee.EmployeeID=Experience.Employeeid group by EmployeeName,Department,Designations.Designation,JoiningDate");
             return database.Read(Querry);
         }
 

@@ -12,28 +12,22 @@
                     <thead>
                         <tr>
                             <th class="align-middle  text-center" scope="col">Employee</th>
-                            <th class="align-middle  text-center" scope="col">Joining</th>
                             <th class="align-middle  text-center" scope="col">Department</th>
                             <th class="align-middle  text-center" scope="col">Designation</th>
-                            <th class="align-middle  text-center" scope="col">Organization</th>
-                            <th class="align-middle  text-center" scope="col">Decipline</th>
-                            <th class="align-middle  text-center" scope="col">Designation</th>
+                            <th class="align-middle  text-center" scope="col">Joining</th>
                             <th class="align-middle  text-center" scope="col">Years of Experience</th>
                         </tr>
                     </thead>
                     <tbody>
+
                         @foreach (System.Data.DataRow i in Model.Tables[0].Rows)
                         {
                             <tr>
-
                                 <td class="align-middle  text-center">@i[0]</td>
-                                <td class="align-middle  text-center">@DateTime.Parse(i[1].ToString()).ToString("dd/MM/yyyy")</td>
+                                <td class="align-middle  text-center">@i[1]</td>
                                 <td class="align-middle  text-center">@i[2]</td>
-                                <td class="align-middle  text-center">@i[3]</td>
+                                <td class="align-middle  text-center">@DateTime.Parse(i[3].ToString()).ToString("dd/MM/yyyy")</td>
                                 <td class="align-middle  text-center">@i[4]</td>
-                                <td class="align-middle  text-center">@i[5]</td>
-                                <td class="align-middle  text-center">@i[6]</td>
-                                <td class="align-middle  text-center">@i[7]</td>
                             </tr>
                         }
                     </tbody>
