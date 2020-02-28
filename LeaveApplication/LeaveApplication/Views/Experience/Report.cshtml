@@ -12,8 +12,8 @@
                     System.Data.DataSet ds = ViewBag.Department;
 
                 }
-                <label for="DepartmentID " class="d-block"> Select Department</label>
-                <select class="custom-select" id="DepartmentID" name=DepartmentID required>
+                <label for="DepartmentID " class="d-block d-print-none "> Select Department</label>
+                <select class="custom-select d-print-none " id="DepartmentID" name=DepartmentID required>
                     <option value="" disabled selected>Select Department</option>
                     @{
                         foreach (System.Data.DataRow x in ds.Tables[0].Rows)
@@ -79,15 +79,10 @@
                             '<td class="align-middle  text-center">' + b.EmployeeName + '</td>' +
                             '<td class="align-middle  text-center">' + b.Department + '</td>' +
                             '<td class="align-middle  text-center">' + b.Designation + '</td>' +
-                            '<td class="align-middle  text-center">' + b.JoiningDate + '</td>' +
+                            '<td class="align-middle  text-center">' + moment(b.JoiningDate).format('DD/MM/YYYY') + '</td>' +
                             '<td class="align-middle  text-center">' + + b.years + '</td>' +
                             '</tr>'
                         );
-                        //table.append("<tr><td>" + b.EmployeeName + "</td>" +
-                        //    "<td>" + b.Department + "</td>" +
-                        //    "<td>" + b.Designation + "</td>" +
-                        //    "<td>" + b.JoiningDate + "</td>" +
-                        //    "<td>" + b.years + "</td></tr>");
 
                     });
 
