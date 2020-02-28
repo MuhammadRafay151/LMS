@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LeaveApplication.Models;
+using Newtonsoft.Json;
 
 namespace LeaveApplication.Controllers
 {
@@ -110,8 +111,8 @@ namespace LeaveApplication.Controllers
         {
             Experience exp = new Experience();
             System.Data.DataSet x = exp.GetDepExperiencesReport(DepID);
-
-            return Json(exp.GetExperience(), JsonRequestBehavior.AllowGet);
+            string z = JsonConvert.SerializeObject(x);
+            return Json(z, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetExp(int id)

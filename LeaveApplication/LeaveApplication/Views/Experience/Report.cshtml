@@ -67,8 +67,29 @@
                 type: "get",
                 url: "/Experience/GetDepExp?DepID=" + DepID,
                 success: function (data) {
+                    jsondata = JSON.parse(data);
+                    console.log(jsondata);
+                    console.log(jsondata.Table[0]);
+                    var table = $(".table tbody");
+                    table.empty();
+                    $.each(jsondata.Table, function (a, b) {
+                        console.log(b);
+                        table.append(
+                            "<tr>" +
+                            '<td class="align-middle  text-center">' + b.EmployeeName + '</td>' +
+                            '<td class="align-middle  text-center">' + b.Department + '</td>' +
+                            '<td class="align-middle  text-center">' + b.Designation + '</td>' +
+                            '<td class="align-middle  text-center">' + b.JoiningDate + '</td>' +
+                            '<td class="align-middle  text-center">' + + b.years + '</td>' +
+                            '</tr>'
+                        );
+                        //table.append("<tr><td>" + b.EmployeeName + "</td>" +
+                        //    "<td>" + b.Department + "</td>" +
+                        //    "<td>" + b.Designation + "</td>" +
+                        //    "<td>" + b.JoiningDate + "</td>" +
+                        //    "<td>" + b.years + "</td></tr>");
 
-                    console.log(data);
+                    });
 
                 }, error: function () {
                     alert("Encountering some error please try again later.");
