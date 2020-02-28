@@ -93,6 +93,8 @@ namespace LeaveApplication.Controllers
             Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
+                EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
+                ViewBag.Department = eb.GetDepartmentsDS();
                 Experience exp = new Experience();
                 System.Data.DataSet x = exp.GetExperiencesReport();
 
@@ -102,6 +104,14 @@ namespace LeaveApplication.Controllers
             {
                 return RedirectToAction("Index", "LogIn");
             }
+        }
+
+        public JsonResult GetDepExp(int DepID)
+        {
+            Experience exp = new Experience();
+            System.Data.DataSet x = exp.GetDepExperiencesReport(DepID);
+
+            return Json(exp.GetExperience(), JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult GetExp(int id)

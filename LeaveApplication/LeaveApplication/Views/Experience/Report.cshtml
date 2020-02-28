@@ -7,6 +7,26 @@
 
     <div class="card h-100">
         <div class="card-body ">
+            <div class="form-group">
+                @{
+                    System.Data.DataSet ds = ViewBag.Department;
+
+                }
+                <label for="DepartmentID " class="d-block"> Select Department</label>
+                <select class="custom-select" id="DepartmentID" name=DepartmentID required>
+                    <option value="" disabled selected>Select Department</option>
+                    @{
+                        foreach (System.Data.DataRow x in ds.Tables[0].Rows)
+                        {
+
+                            <option value="@x[0]">
+                                @x[1]
+                            </option>
+
+                        }
+                    }
+                </select>
+            </div>
             <div class="table-responsive">
                 <table class="table table-hover table-light ">
                     <thead>
@@ -37,3 +57,26 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+
+        $('#DepartmentID').change(function () {
+            var DepID = $("#DepartmentID option:selected").val();
+            console.log(DepID);
+            $.ajax({
+                type: "get",
+                url: "/Experience/GetDepExp?DepID=" + DepID,
+                success: function (data) {
+
+                    console.log(data);
+
+                }, error: function () {
+                    alert("Encountering some error please try again later.");
+                }
+
+            })
+
+        });
+
+    });
+</script>

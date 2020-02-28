@@ -43,6 +43,12 @@ namespace LeaveApplication.Models
             return database.Read(Querry);
         }
 
+        public DataSet GetDepExperiencesReport(int DepID)
+        {
+            Querry = string.Format("select EmployeeName,Department,Designations.Designation,JoiningDate,Sum(DATEDIFF(YEAR,Fromdate,Todate)) as 'years' from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join Designations on Employee.DesignationID=Designations.DesignationID inner join Experience on Employee.EmployeeID=Experience.Employeeid where Departments.DepartmentID={0} group by EmployeeName,Department,Designations.Designation,JoiningDate", DepID);
+            return database.Read(Querry);
+        }
+
         public Experience GetExperience()
         {
             Querry = string.Format("select * from experience where Employeeid='{0}' and id='{1}'", EmployeeId, ExperienceId);
