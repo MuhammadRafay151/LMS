@@ -10,7 +10,7 @@ namespace LeaveApplication.Models
 {
     public class Publication
     {
-        public string Querry { get; private set; }
+        string Querry;
         db database = new db();
         public int EmployeeId { get; set; }
         public int PublishedId { get; set; }
@@ -25,16 +25,46 @@ namespace LeaveApplication.Models
         public List<string> Author { get; set; }
 
 
-        public DataSet GetPublication()
+        public DataSet GetPublications()
         {
             Querry = @"select x.Title,x.PublishDate,x.Description,x.Authors,y.FileName,y.Fileid,x.id from Publications as x inner join PublicationAttachment as y on
 x.id=y.PublicationId where x.Employeeid=" + EmployeeId;
             DataSet d1 = database.Read(Querry);
             return d1;
         }
+        public DataSet GetPublication()
+        {
+            Querry = string.Format(@"select x.Title,x.PublishDate,x.Description,x.Authors,y.FileName,y.Fileid,x.id from Publications as x inner join PublicationAttachment as y on
+x.id=y.PublicationId where x.Employeeid={0} and x.id={1}", EmployeeId, PublishedId);
+            return database.Read(Querry);
+        }
         public void UpdatePublication()
         {
             Querry = "";
+            HelperClasses.SqlParm s1 = new HelperClasses.SqlParm();
+            s1.Add("Title", Title);
+            s1.Add("pd", PublishedDate);
+            s1.Add("desc", Description);
+            s1.Add("Author", MakeAuthorsString());
+            s1.Add("pid", PublishedId);
+            s1.Add("eid", EmployeeId);
+            if (File == null)
+            {
+                Querry = "update Publications set Authors=@Author,Description=@desc,PublishDate=@pd,Title=@Title where id=@pid and Employeeid=@eid";
+            }
+            else
+            {
+                s1.Add("file", File);
+                Querry = @"update Publications set Authors=@Author,Description=@desc,PublishDate=@pd,Title=@Title where id=@pid and Employeeid=@eid
+if exists(
+select * from Publications x inner join PublicationAttachment y on
+x.id=y.id where x.Employeeid=2 and y.PublicationId=2 and y.Fileid=1
+)
+begin
+  update Files set Content='' where FileId=12  
+  end";
+            }
+            database.ExecuteQuerry(Querry, s1.GetParmList());
         }
         public void InsertPublication()
         {
@@ -98,12 +128,12 @@ end
             return Authors.Split(',').ToList<string>();
 
         }
-        public File GetFile(int Fileid, int EmployeeId,int PublicationId)
+        public File GetFile(int Fileid, int EmployeeId, int PublicationId)
         {
             Querry = string.Format(@" select PublicationAttachment.FileName,Files.Content from PublicationAttachment 
    inner join Publications on PublicationAttachment.PublicationId=Publications.id
   inner join
-  Files on PublicationAttachment.Fileid=Files.FileId where Files.FileId={0} and Publications.Employeeid={1} and Publications.id={2}", Fileid,EmployeeId,PublicationId);
+  Files on PublicationAttachment.Fileid=Files.FileId where Files.FileId={0} and Publications.Employeeid={1} and Publications.id={2}", Fileid, EmployeeId, PublicationId);
             DataSet d1 = database.Read(Querry);
             File f1 = new File();
             f1.FileName = d1.Tables[0].Rows[0][0].ToString();

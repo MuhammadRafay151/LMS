@@ -3,26 +3,114 @@
     ViewBag.Title = "Publications";
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
-    <div class="modal fade " id="d1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h3>Are you sure to delete this item?</h3>
-                </div>
-                <div class="modal-footer">
-                    <div class="d-flex justify-content-end">
-                        <button data-dismiss="modal" class="btn btn-link">Cancel</button>
-                        <button id="dl" class="btn btn-info-grd">Yes</button>
+<div class="modal fade" id="d2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Publication</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/Publication/UpdatePub" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group d-flex justify-content-center">
+                                @Html.TextBoxFor(m => m.Title, new { @class = "form-control col-12", required = "required", placeholder = "Title", id = "e1" })
+                                @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+
                     </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group d-flex justify-content-center">
+                                @Html.TextBoxFor(m => m.PublishedDate, new { @class = "form-control col-12 datetimepicker", required = "required", placeholder = "Publish Date", id = "e2" })
+                                @Html.ValidationMessageFor(m => m.PublishedDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+
+                            <div class="form-group form-file-upload form-file-multiple">
+
+                                @Html.TextBoxFor(m => m.File, new { id = "e3", @class = "inputFileHidden", type = "file" })
+                                <div class="input-group">
+
+                                    @Html.TextBox("fname", null, new { @class = "form-control col-12", required = "required", placeholder = "Attach Document", id = "e31" })
+
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-fab btn-round btn-primary">
+                                            <i class="material-icons">attach_file</i>
+                                        </button>
+                                    </span>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.File, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group d-flex justify-content-center">
+                                <div class="p-1 col-12" style="border:solid 1px #A9A9A9">
+                                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control col-12", required = "required", placeholder = "Description", id = "e4", style = "font-size:22px", cols = "20", rows = "6" })
+                                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row justify-content-center">
+                        <i class="material-icons">person</i>
+                    </div>
+                    <div class="row">
+                        <div class="col d-flex justify-content-center">
+
+                            <div class="btn-group">
+                                <button id="Remove2" data-toggle="tooltip" data-placement="top" title="Remove Author" type="button" class="btn btn-round btn-info btn-sm"> <i class="material-icons">remove</i> </button>
+                                <button id="Add2" data-toggle="tooltip" data-placement="top" title="Add Author" type="button" class="btn btn-round btn-info btn-sm"> <i class="material-icons">add</i> </button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="form2">
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button id="sb1" class="btn btn-round btn-block btn-outline-info">Add Publications</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info-grd">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade " id="d1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3>Are you sure to delete this item?</h3>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-end">
+                    <button data-dismiss="modal" class="btn btn-link">Cancel</button>
+                    <button id="dl" class="btn btn-info-grd">Yes</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 <div class="container-fluid">
     <div class="row mt-5">
         <div class="col-12 d-flex justify-content-center">
@@ -36,7 +124,6 @@
 
                         </div>
                         <div class="col d-flex justify-content-end">
-                            <a id="Add" href="#"><img class="mr-2" data-toggle="tooltip" data-placement="top" title="Add Author" src="~/Images/icons/iconfinder_add_126583.png" width="20" /></a>
                             <a id="h1" href="#"><img id="ic" width="20" src="~/Images/icons/matticons_solid_collapse-511.png" /></a>
                         </div>
                     </div>
@@ -59,13 +146,13 @@
 
                                     </div>
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-lg-6">
                                             <div class="form-group d-flex justify-content-center">
                                                 @Html.TextBoxFor(m => m.PublishedDate, new { @class = "form-control col-12 datetimepicker", required = "required", placeholder = "Publish Date" })
                                                 @Html.ValidationMessageFor(m => m.PublishedDate, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-lg-6">
 
                                             <div class="form-group form-file-upload form-file-multiple">
 
@@ -92,6 +179,19 @@
                                                     @Html.TextAreaFor(m => m.Description, new { @class = "form-control col-12", required = "required", placeholder = "Description", style = "font-size:22px", cols = "20", rows = "6" })
                                                     @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                                                 </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <i class="material-icons">person</i>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col d-flex justify-content-center">
+
+                                            <div class="btn-group">
+                                                <button id="Remove" data-toggle="tooltip" data-placement="top" title="Remove Author" type="button" class="btn btn-round btn-info btn-sm"> <i class="material-icons">remove</i> </button>
+                                                <button id="Add" data-toggle="tooltip" data-placement="top" title="Add Author" type="button" class="btn btn-round btn-info btn-sm"> <i class="material-icons">add</i> </button>
                                             </div>
                                         </div>
 
@@ -127,11 +227,13 @@
 
 
 </div>
+
+@* Render data in container below *@
 <div class="container mt-5">
-   
+
     @{
         System.Data.DataSet ds = ViewBag.data;
-        LeaveApplication.Models.Publication p1=new LeaveApplication.Models.Publication();
+        LeaveApplication.Models.Publication p1 = new LeaveApplication.Models.Publication();
 
     }
     @for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
@@ -141,26 +243,26 @@
             <div class="col">
                 <div class="card ">
                     <div class="card-body">
-                       <div class="row">
-                           <div class="col-6">
-                               <h1 class="card-title">@ds.Tables[0].Rows[i][0]</h1>
-                               <small class="card-title">Publish Date: @DateTime.Parse(ds.Tables[0].Rows[i][1].ToString()).ToString("dd/MM/yyyy")</small>
-                           </div>
-                           <div class="col ">
+                        <div class="row">
+                            <div class="col-6">
+                                <h1 class="card-title">@ds.Tables[0].Rows[i][0]</h1>
+                                <small class="card-title">Publish Date: @DateTime.Parse(ds.Tables[0].Rows[i][1].ToString()).ToString("dd/MM/yyyy")</small>
+                            </div>
+                            <div class="col ">
 
-                               <div class="d-flex justify-content-end">
-                                   <a class="dropdown-toggle" data-toggle="dropdown"></a>
+                                <div class="d-flex justify-content-end">
+                                    <a class="dropdown-toggle" data-toggle="dropdown"></a>
 
-                                   <div class="dropdown-menu dropdown-menu-right ">
-                                       <a data-id="@ds.Tables[0].Rows[i][6]" class="dropdown-item edt" href="#">Edit</a>
-                                       <a data-id="@ds.Tables[0].Rows[i][6]" class="dropdown-item dl" data-toggle="modal" data-target="#d1" href="#">Delete</a>
-                                   </div>
-                               </div>
-                           </div>
-                       </div>
+                                    <div class="dropdown-menu dropdown-menu-right ">
+                                        <a data-id="@ds.Tables[0].Rows[i][6]" class="dropdown-item edt">Edit</a>
+                                        <a data-id="@ds.Tables[0].Rows[i][6]" class="dropdown-item dl" data-toggle="modal" data-target="#d1" href="#">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <table class="table table-hover">
                             <tbody>
-                              
+
                                 <tr>
                                     <th class="text-info" scope="row">Description</th>
                                     <td>@ds.Tables[0].Rows[i][2]</td>
@@ -180,7 +282,7 @@
                                     <td><a href="/Publication/DownloadFile/?FileId=@ds.Tables[0].Rows[i][5]&PubId=@ds.Tables[0].Rows[i][6]">@ds.Tables[0].Rows[i][4].ToString()</a></td>
                                     <td></td>
                                 </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -198,7 +300,9 @@
 </div>
 <script>
     var i = 1;
+    var editauthor_counter = 0;
     $(document).ready(function () {
+        $('#c1').hide();
         $('#h1').click(function () {
             if ($('#c1').is(':visible')) {
                 $('#c1').hide('fade');
@@ -214,12 +318,36 @@
             $('#fl').trigger('click');
         });
         $('#fl').change(function () {
-            console.log(document.getElementById('fl').files.item(0).name);
             document.getElementById('fl1').value = document.getElementById('fl').files.item(0).name;
+        });
+        $('#e31').click(function () {
+            $('#e3').trigger('click');
+        });
+        $('#e3').change(function () {
+
+            document.getElementById('e31').value = document.getElementById('e3').files.item(0).name;
         });
         $('#Add').click(function () {
             $('#form').append(`<div class="row"><div class="col-12"><div class="form-group d-flex justify-content-center"><input name="Author[${i}]" required class="form-control col-12" placeholder="Author" /></div></div></div>`);
             ++i;
+
+        })
+        $('#Remove').click(function () {
+            if (i > 1) {
+                $('#form').children().last().remove();
+                --i;
+            }
+        })
+        $('#Add2').click(function () {
+            $('#form2').append(`<div class="row"><div class="col-12"><div class="form-group d-flex justify-content-center"><input name="Author[${editauthor_counter}]" required class="form-control col-12" placeholder="Author" /></div></div></div>`);
+            ++editauthor_counter;
+
+        })
+        $('#Remove2').click(function () {
+            if (editauthor_counter > 1) {
+                $('#form2').children().last().remove();
+                --editauthor_counter;
+            }
         })
         $('.datetimepicker').datetimepicker({
             format: 'DD/MM/YYYY',
@@ -238,23 +366,32 @@
             }
 
         });
-          $('.edt').click(function () {
+        $('.edt').click(function () {
+            // total authors ka counter update kerna hy editauthor_co per...
             var x = $(this).data("id");
-            $('#f1').attr('action', "/Experience/UpdateExp?id=" + x);
-            $('#bt1').html("Save Changes");
-            $('#ad1').modal('show');
-            var id = $(this).data("id");
+            console.log(x);
+            //$('#f1').attr('action', "/Experience/Update?id=" + x);
+
+            $('#d2').modal('show');
             $.ajax({
                 type: "get",
-                url: "/Experience/GetExp?id=" + id,
+                url: "/Publication/GetPublication?id=" + x,
                 success: function (data) {
-
-                    console.log(data);
-                    $('#Organization').val(data.Organization);
-                    $('#Designation').val(data.Designation);
-                    $('#Descipline').val(data.Descipline);
-                    $('#Fromdate').val(data.Fromdate);
-                    $('#Todate').val(data.Todate);
+                    data = JSON.parse(data);
+                    console.log(data.Table[0]);
+                    $('#e1').val(data.Table[0].Title);
+                    $('#e2').val(moment(data.Table[0].PublishDate).format('DD/MM/YYYY'));
+                    $('#e31').val(data.Table[0].FileName);
+                    $('#e4').val(data.Table[0].Description);
+                    var temp = data.Table[0].Authors.split(',');
+                    $('#form2').children().remove();
+                    for (var i = 0; i < temp.length; i++) {
+                        $('#form2').append(`<div class="row"><div class="col-12"><div class="form-group d-flex justify-content-center"><input name="Author[${editauthor_counter}]" required class="form-control col-12" value="${temp[i]}" placeholder="Author" /></div></div></div>`);
+                        ++editauthor_counter;
+                    }
+                    //$('#Descipline').val(data.Descipline);
+                    //$('#Fromdate').val(data.Fromdate);
+                    //$('#Todate').val(data.Todate);
 
                 }, error: function () {
                     alert("Encountering some error please try again later.");
@@ -263,7 +400,6 @@
             })
 
         });
-       
         $('.dl').click(function () {
             var x = $(this).data("id");
             $('#dl').data("id", x);
@@ -272,7 +408,7 @@
         $('#dl').click(function () {
             var z = $('#dl').data("id");
             window.location.href = "/Publication/DeltePub?id=" + z;
-           
+
         })
     });
 
