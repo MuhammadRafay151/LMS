@@ -11,17 +11,14 @@ namespace LeaveApplication.Controllers
     public class EducationController : Controller
     {
         // GET: Education
-        private EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
-
-        private Education edu = new Education();
 
         public ActionResult Index()
         {
-            Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
+                Education edu = new Education() { EmployeeID = Convert.ToInt32(Session["EmpId"]) };
                 ViewBag.List = edu.GetDegrees();
-                System.Data.DataSet x = edu.GetEducation(e1.EmployeeID);
+                System.Data.DataSet x = edu.GetEducation();
 
                 return View(x);
             }
@@ -32,12 +29,12 @@ namespace LeaveApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddEducation(Education eu)
+        public ActionResult AddEducation(Education edu)
         {
-            Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                edu.AddEducation(eu, e1.EmployeeID);
+                edu.EmployeeID = Convert.ToInt32(Session["EmpId"]);
+                edu.AddEducation();
                 return RedirectToAction("Index");
             }
             else
@@ -48,10 +45,10 @@ namespace LeaveApplication.Controllers
 
         public ActionResult DeleteEducation(int EduID)
         {
-            Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                edu.DeleteEducation(e1.EmployeeID, EduID);
+                Education edu = new Education() { EmployeeID = Convert.ToInt32(Session["EmpId"]), EduID = EduID };
+                edu.DeleteEducation();
                 return RedirectToAction("Index");
             }
             else
@@ -61,12 +58,12 @@ namespace LeaveApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateEducation(Education eu)
+        public ActionResult UpdateEducation(Education edu)
         {
-            Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                edu.UpdateEducation(eu, e1.EmployeeID);
+                edu.EmployeeID = Convert.ToInt32(Session["EmpId"]);
+                edu.UpdateEducation();
                 return RedirectToAction("Index");
             }
             else
@@ -75,11 +72,10 @@ namespace LeaveApplication.Controllers
             }
         }
 
-        public JsonResult getedu(int? EduID)
+        public JsonResult getedu(int EduID)
         {
-            Employee e1 = (Employee)Session["Employee"];
-            System.Data.DataSet x = edu.GetEdu(e1.EmployeeID, Convert.ToInt32(EduID));
-            //x.Tables[0].
+            Education edu = new Education() { EmployeeID = Convert.ToInt32(Session["EmpId"]), EduID = EduID };
+            System.Data.DataSet x = edu.GetEdu();
             string z = JsonConvert.SerializeObject(x);
 
             return Json(z, JsonRequestBehavior.AllowGet);
