@@ -43,7 +43,7 @@ x.id=y.PublicationId where x.Employeeid={0} and x.id={1}", EmployeeId, Published
             Querry = "";
             HelperClasses.SqlParm s1 = new HelperClasses.SqlParm();
             s1.Add("Title", Title);
-            s1.Add("pd", PublishedDate);
+            s1.Add("pd", DateTimeHelper.yyyy_mm_dd(PublishedDate));
             s1.Add("desc", Description);
             s1.Add("Author", MakeAuthorsString());
             s1.Add("pid", PublishedId);
@@ -54,15 +54,21 @@ x.id=y.PublicationId where x.Employeeid={0} and x.id={1}", EmployeeId, Published
             }
             else
             {
-                s1.Add("file", File);
+                LeaveBusinessLayer lb = new LeaveBusinessLayer();
+                FileBytes = lb.GetFileBytes(File);
+                s1.Add("file", FileBytes);
+                s1.Add("fn", File.FileName);
                 Querry = @"update Publications set Authors=@Author,Description=@desc,PublishDate=@pd,Title=@Title where id=@pid and Employeeid=@eid
-if exists(
-select * from Publications x inner join PublicationAttachment y on
-x.id=y.id where x.Employeeid=2 and y.PublicationId=2 and y.Fileid=1
-)
+declare @fileid as int
+select @fileid=Fileid from PublicationAttachment inner join Publications 
+on
+Publications.id=PublicationAttachment.PublicationId
+where PublicationId=@pid and Employeeid=@eid
+if(@fileid is not null)
 begin
-  update Files set Content='' where FileId=12  
-  end";
+update Files set Content=@file where FileId=@fileid
+update PublicationAttachment set FileName=@fn where Fileid=@fileid and PublicationId=@pid
+end";
             }
             database.ExecuteQuerry(Querry, s1.GetParmList());
         }
@@ -139,6 +145,50 @@ end
             f1.FileName = d1.Tables[0].Rows[0][0].ToString();
             f1.Content = (Byte[])d1.Tables[0].Rows[0][1];
             return f1;
+        }
+        public File GetFile(int Fileid,  int PublicationId)
+        {
+            Querry = string.Format(@" select PublicationAttachment.FileName,Files.Content from PublicationAttachment 
+  inner join
+  Files on PublicationAttachment.Fileid=Files.FileId where Files.FileId={0}  and PublicationAttachment.PublicationId={1}", Fileid,  PublicationId);
+            DataSet d1 = database.Read(Querry);
+            File f1 = new File();
+            f1.FileName = d1.Tables[0].Rows[0][0].ToString();
+            f1.Content = (Byte[])d1.Tables[0].Rows[0][1];
+            return f1;
+        }
+        public DataSet GenrateReport(int deptid)
+        {
+            Querry = "";
+            if(deptid==0)
+            {
+                Querry = @"select Employee.EmployeeName,Publications.Title,Publications.PublishDate,Publications.Authors
+,PublicationAttachment.FileName,PublicationAttachment.Fileid,Publications.id from Employee inner join Publications 
+on
+Employee.EmployeeID=Publications.Employeeid
+inner join PublicationAttachment on Publications.id=PublicationAttachment.PublicationId
+order by Employee.EmployeeID";
+            }else
+            {
+                Querry = string.Format(@"select Employee.EmployeeName,Publications.Title,Publications.PublishDate,Publications.Authors
+,PublicationAttachment.FileName,PublicationAttachment.Fileid,Publications.id from Employee inner join Publications 
+on
+Employee.EmployeeID=Publications.Employeeid
+inner join PublicationAttachment on Publications.id=PublicationAttachment.PublicationId
+where DepartmentID={0} order by Employee.EmployeeID", deptid);
+            }
+            //switch (filterid)
+            //{
+            //    case 1:
+                   
+            //        break;
+            //    case 2:
+            //        Querry = "";
+            //        break;
+            //}
+
+            
+            return database.Read(Querry);
         }
 
     }

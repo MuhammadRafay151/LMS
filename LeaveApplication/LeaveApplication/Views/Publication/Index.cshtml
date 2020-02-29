@@ -13,7 +13,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/Publication/UpdatePub" method="post" enctype="multipart/form-data">
+                <form id="f1" action="" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group d-flex justify-content-center">
@@ -80,14 +80,12 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <button id="sb1" class="btn btn-round btn-block btn-outline-info">Add Publications</button>
+                            <button id="sb1" class="btn btn-round btn-block btn-outline-info">Update Publications</button>
                         </div>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info-grd">Save changes</button>
-            </div>
+           
         </div>
     </div>
 </div>
@@ -370,9 +368,9 @@
             // total authors ka counter update kerna hy editauthor_co per...
             var x = $(this).data("id");
             console.log(x);
-            //$('#f1').attr('action', "/Experience/Update?id=" + x);
+            $('#f1').attr('action', "/Publication/UpdatePub?PublishedId=" + x);
 
-            $('#d2').modal('show');
+          
             $.ajax({
                 type: "get",
                 url: "/Publication/GetPublication?id=" + x,
@@ -389,10 +387,7 @@
                         $('#form2').append(`<div class="row"><div class="col-12"><div class="form-group d-flex justify-content-center"><input name="Author[${editauthor_counter}]" required class="form-control col-12" value="${temp[i]}" placeholder="Author" /></div></div></div>`);
                         ++editauthor_counter;
                     }
-                    //$('#Descipline').val(data.Descipline);
-                    //$('#Fromdate').val(data.Fromdate);
-                    //$('#Todate').val(data.Todate);
-
+                      $('#d2').modal('show');
                 }, error: function () {
                     alert("Encountering some error please try again later.");
                 }

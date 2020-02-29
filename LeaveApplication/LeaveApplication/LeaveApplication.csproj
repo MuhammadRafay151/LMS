@@ -567,6 +567,7 @@
     <Content Include="Views\Publication\Index.cshtml" />
     <Content Include="Views\Profile\Acheivements.cshtml" />
     <Content Include="Views\Experience\Index.cshtml" />
+    <Content Include="Views\Publication\Report.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -50,7 +50,8 @@ namespace LeaveApplication.Controllers
             if (ModelState.IsValid)
             {
                 //save 
-                return Content(publication.PublishedId.ToString());
+                publication.EmployeeId = Convert.ToInt32(Session["EmpId"]);
+                publication.UpdatePublication();
             }
             else
             {
@@ -71,6 +72,35 @@ namespace LeaveApplication.Controllers
                 return Json("Some thing going wrong please try again later", JsonRequestBehavior.AllowGet);
            
 
+        }
+
+    //Reporting
+        public ActionResult Report()
+        {
+            EmployeeBusinessLayer emp = new EmployeeBusinessLayer();
+            ViewBag.List2 = emp.GetDepartments();
+            Publication p1 = new Publication();
+            return View(p1.GenrateReport(0));//0 means all dep
+        }
+        public JsonResult DepartmentReport(int? id)
+        {
+            Publication p1 = new Publication();
+            string data=string.Empty;
+            if(id.HasValue)
+            {
+                data = JsonConvert.SerializeObject(p1.GenrateReport(id.Value));
+            }
+            else
+            {
+                data = JsonConvert.SerializeObject(p1.GenrateReport(0));
+            }
+            return Json(data,JsonRequestBehavior.AllowGet);
+        }
+        public FileResult DownloadPub(int FileId, int PubId)
+        {
+            Publication p1 = new Publication();
+            File f1 = p1.GetFile(FileId, PubId);
+            return File(f1.Content, System.Web.MimeMapping.GetMimeMapping(f1.FileName), f1.FileName);
         }
     }
   
