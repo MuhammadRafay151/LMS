@@ -10,15 +10,13 @@ namespace LeaveApplication.Controllers
 {
     public class AcheivementController : Controller
     {
-        private Acheivement ac = new Acheivement();
-
         // GET: Acheivement
         public ActionResult Index()
         {
-            Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                System.Data.DataSet x = ac.GetAcheivement(e1.EmployeeID);
+                Acheivement ac = new Acheivement() { EmployeeID = Convert.ToInt32(Session["EmpId"]) };
+                System.Data.DataSet x = ac.GetAcheivement();
                 return View(x);
             }
             else
@@ -29,10 +27,11 @@ namespace LeaveApplication.Controllers
 
         public ActionResult AddAcheivement(Acheivement ach)
         {
-            Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                ac.InsertAcheivement(e1.EmployeeID, ach);
+                ach.EmployeeID = Convert.ToInt32(Session["EmpId"]);
+                ach.InsertAcheivement();
+
                 return RedirectToAction("Index");
             }
             else
@@ -43,10 +42,10 @@ namespace LeaveApplication.Controllers
 
         public ActionResult UpdateAcheivement(Acheivement ach)
         {
-            Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                ac.UpdateAcheivement(ach, (int)Session["EmpID"]);
+                ach.EmployeeID = Convert.ToInt32(Session["EmpId"]);
+                ach.UpdateAcheivement();
                 return RedirectToAction("Index");
             }
             else
@@ -57,10 +56,10 @@ namespace LeaveApplication.Controllers
 
         public ActionResult DeleteAcheivement(int AcheivementId)
         {
-            Employee e1 = (Employee)Session["Employee"];
             if (Session["EmpID"] != null)
             {
-                ac.DeleteAcheivement(AcheivementId, e1.EmployeeID);
+                Acheivement ac = new Acheivement() { EmployeeID = Convert.ToInt32(Session["EmpId"]), AcheivementId = AcheivementId };
+                ac.DeleteAcheivement();
                 return RedirectToAction("Index");
             }
             else
@@ -73,7 +72,8 @@ namespace LeaveApplication.Controllers
         {
             if (Session["EmpID"] != null)
             {
-                System.Data.DataSet ds = ac.DownloadFile(FileID, Convert.ToInt32(Session["EmpID"]));
+                Acheivement ac = new Acheivement() { EmployeeID = Convert.ToInt32(Session["EmpId"]), FileId = FileID };
+                System.Data.DataSet ds = ac.DownloadFile();
                 return File((Byte[])ds.Tables[0].Rows[0][0], System.Web.MimeMapping.GetMimeMapping(ds.Tables[0].Rows[0][1].ToString()), ds.Tables[0].Rows[0][1].ToString());
             }
             else
@@ -84,7 +84,8 @@ namespace LeaveApplication.Controllers
 
         public JsonResult GetAcheivement(int AcheivementID)
         {
-            System.Data.DataSet x = ac.GetAcheivement((int)Session["EmpID"], AcheivementID);
+            Acheivement ac = new Acheivement() { EmployeeID = Convert.ToInt32(Session["EmpId"]), AcheivementId = AcheivementID };
+            System.Data.DataSet x = ac.GetJsonAcheivement();
             string z = JsonConvert.SerializeObject(x);
             return Json(z, JsonRequestBehavior.AllowGet);
         }

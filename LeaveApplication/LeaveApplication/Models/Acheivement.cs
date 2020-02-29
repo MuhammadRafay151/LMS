@@ -13,6 +13,7 @@ namespace LeaveApplication.Models
     {
         public int AcheivementId { get; set; }
         public int AcheivementAttachmentsID { get; set; }
+        public int EmployeeID { get; set; }
         public int FileId { get; set; }
 
         [Required]
@@ -33,27 +34,27 @@ namespace LeaveApplication.Models
         private db database = new db();
         private string Querry;
 
-        public DataSet GetAcheivement(int EmployeeID)
+        public DataSet GetAcheivement()
         {
             Querry = string.Format("select Acheivement.id as 'AcheivementID',AcheivementAttachments.FileId as 'FileID',AcheivementAttachments.id as 'AcheivementAttachID' ,Title,Date,Description,FileName,Content from Acheivement inner join AcheivementAttachments on Acheivement.id=AcheivementId inner join Files on Files.FileId=AcheivementAttachments.FileId where EmployeeID={0}", EmployeeID);
             return database.Read(Querry);
         }
 
-        public DataSet GetAcheivement(int EmployeeID, int AcheivementID)
+        public DataSet GetJsonAcheivement()
         {
-            Querry = string.Format("select Acheivement.id as 'AcheivementID',AcheivementAttachments.FileId as 'FileID',AcheivementAttachments.id as 'AcheivementAttachID' ,Title,Date,Description,FileName,Content from Acheivement inner join AcheivementAttachments on Acheivement.id=AcheivementId inner join Files on Files.FileId=AcheivementAttachments.FileId where EmployeeID={0} and Acheivement.id={1}", EmployeeID, AcheivementID);
+            Querry = string.Format("select Acheivement.id as 'AcheivementID',AcheivementAttachments.FileId as 'FileID',AcheivementAttachments.id as 'AcheivementAttachID' ,Title,Date,Description,FileName,Content from Acheivement inner join AcheivementAttachments on Acheivement.id=AcheivementId inner join Files on Files.FileId=AcheivementAttachments.FileId where EmployeeID={0} and Acheivement.id={1}", EmployeeID, AcheivementId);
             return database.Read(Querry);
         }
 
-        public void UpdateAcheivement(Acheivement ach, int EmployeeID)
+        public void UpdateAcheivement()
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
-            sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementId", Value = ach.AcheivementId });
-            sqlParameters.Add(new SqlParameter() { ParameterName = "title", Value = ach.title });
-            sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementDate", Value = DateTimeHelper.yyyy_mm_dd(ach.AcheivementDate) });
-            sqlParameters.Add(new SqlParameter() { ParameterName = "Description", Value = ach.Description });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementId", Value = AcheivementId });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "title", Value = title });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementDate", Value = DateTimeHelper.yyyy_mm_dd(AcheivementDate) });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "Description", Value = Description });
             sqlParameters.Add(new SqlParameter() { ParameterName = "EmployeeID", Value = EmployeeID });
-            if (ach.File == null)
+            if (File == null)
             {
                 Querry = string.Format(@"UPDATE Acheivement SET Title = @title, Date = @AcheivementDate,Description = @Description WHERE EmployeeID=@EmployeeID and id=@AcheivementId");
             }
@@ -66,8 +67,8 @@ namespace LeaveApplication.Models
                 update Files set Content=@content where FileId=@FID;
                 ");
 
-                sqlParameters.Add(new SqlParameter() { ParameterName = "FileName", Value = ach.FileName });
-                Stream s1 = ach.File.InputStream;
+                sqlParameters.Add(new SqlParameter() { ParameterName = "FileName", Value = FileName });
+                Stream s1 = File.InputStream;
                 BinaryReader b1 = new BinaryReader(s1);
                 FileBytes = b1.ReadBytes((int)s1.Length);
                 sqlParameters.Add(new SqlParameter() { ParameterName = "content", Value = FileBytes });
@@ -76,12 +77,12 @@ namespace LeaveApplication.Models
             database.ExecuteQuerry(Querry, sqlParameters);
         }
 
-        public void InsertAcheivement(int EmployeeID, Acheivement ach)
+        public void InsertAcheivement()
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
-            sqlParameters.Add(new SqlParameter() { ParameterName = "title", Value = ach.title });
-            sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementDate", Value = DateTimeHelper.yyyy_mm_dd(ach.AcheivementDate) });
-            sqlParameters.Add(new SqlParameter() { ParameterName = "Description", Value = ach.Description });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "title", Value = title });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementDate", Value = DateTimeHelper.yyyy_mm_dd(AcheivementDate) });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "Description", Value = Description });
             sqlParameters.Add(new SqlParameter() { ParameterName = "EmployeeID", Value = EmployeeID });
 
             Querry = string.Format(@"DECLARE @achid AS INT, @fileid int
@@ -93,8 +94,8 @@ namespace LeaveApplication.Models
 
             Insert into AcheivementAttachments(FileId,AcheivementId,FileName) values(@fileid,@achid,@FileName);
             ");
-            sqlParameters.Add(new SqlParameter() { ParameterName = "FileName", Value = ach.FileName });
-            Stream s1 = ach.File.InputStream;
+            sqlParameters.Add(new SqlParameter() { ParameterName = "FileName", Value = FileName });
+            Stream s1 = File.InputStream;
             BinaryReader b1 = new BinaryReader(s1);
             FileBytes = b1.ReadBytes((int)s1.Length);
             sqlParameters.Add(new SqlParameter() { ParameterName = "content", Value = FileBytes });
@@ -102,7 +103,7 @@ namespace LeaveApplication.Models
             database.ExecuteQuerry(Querry, sqlParameters);
         }
 
-        public void DeleteAcheivement(int AcheivementId, int EmployeeID)
+        public void DeleteAcheivement()
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
             sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementId", Value = AcheivementId });
@@ -115,7 +116,7 @@ namespace LeaveApplication.Models
             database.ExecuteQuerry(Querry, sqlParameters);
         }
 
-        public DataSet DownloadFile(int FileId, int EmployeeID)
+        public DataSet DownloadFile()
         {
             string Querry = string.Format("select Files.Content,FileName from Acheivement inner join AcheivementAttachments on Acheivement.id=AcheivementAttachments.AcheivementId inner join Files on Files.FileId=AcheivementAttachments.FileId where EmployeeID={0} and Files.FileId={1}", EmployeeID, FileId);
             return database.Read(Querry);

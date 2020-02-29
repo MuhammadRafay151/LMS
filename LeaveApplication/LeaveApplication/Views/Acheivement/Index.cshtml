@@ -58,15 +58,11 @@
                             <div class="form-group form-file-upload form-file-multiple">
                                 <label>Attachement</label>
                                 <input type="file" id="ufl" name="File" />
-                                @*<input type="text" id="achid" name="AcheivementId" hidden />*@
                                 <div class="input-group">
                                     <input type="text" id="updatefilename" name="FileName" class="form-control inputFileVisible col-12" placeholder="Select FIle">
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-fab btn-round btn-primary">
-                                            <i class="material-icons">attach_file</i>
-                                        </button>
                                         <button type="button" id="fID" data-id="" class="lf btn btn-fab btn-round btn-primary" data-toggle="tooltip" data-placement="top" title="Download File">
-                                            <i class="material-icons">attach_file</i>
+                                            <i class="material-icons">cloud_download</i>
                                         </button>
                                     </span>
                                 </div>
@@ -245,18 +241,15 @@
                 url: "/Acheivement/GetAcheivement?AcheivementID=" + id,
                 success: function (data) {
                     var jsondata = JSON.parse(data);
-                    console.log(jsondata);
                     $('#updatetittle').val(jsondata.Table[0].Title);
-                    var Date = moment(jsondata.Table[0].Date).format('DD-MM-YYYY');
+                    var Date = moment(jsondata.Table[0].Date).format('DD/MM/YYYY');
                     $('#Updateachdate').val(Date);
                     $('#updatefilename').val(jsondata.Table[0].FileName);
                     $('#updateDes').val(jsondata.Table[0].Description);
                     $('#fileid').val(jsondata.Table[0].FileID);
                     $('#achid').val(jsondata.Table[0].AcheivementID);
                     var fid = jsondata.Table[0].FileID;
-                    console.log(jsondata.Table[0].FileID);
                     $('#fID').data("id", fid);
-                    console.log($('#fID').data("id"));
 
                 }
 
