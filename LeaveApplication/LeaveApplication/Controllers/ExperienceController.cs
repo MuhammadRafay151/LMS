@@ -92,7 +92,7 @@ namespace LeaveApplication.Controllers
         public ActionResult Report()
         {
             Employee e1 = (Employee)Session["Employee"];
-            if (Session["EmpID"] != null)
+            if (Session["EmpID"] != null && e1.isAdmin == true)
             {
                 EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
                 ViewBag.Department = eb.GetDepartmentsDS();
