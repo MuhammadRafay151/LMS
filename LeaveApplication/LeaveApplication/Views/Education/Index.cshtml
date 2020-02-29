@@ -263,9 +263,8 @@
         })
 
         $('.del').on("click", function () {
-            var dataid = $(this).data("id")
-
-            document.getElementById('EduID').value = dataid;
+            var x = $(this).data("id");
+            $('#dl').data("id", x);
 
         })
 
