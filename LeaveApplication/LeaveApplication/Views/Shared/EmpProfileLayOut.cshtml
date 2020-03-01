@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -34,14 +33,13 @@
         <div class="container-fluid">
 
             <div class="navbar-translate">
-                <a class="navbar-brand" href="#">Reckon Force</a>
+                <a class="navbar-brand d-print-none" href="#">Reckon Force</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="navbar-toggler-icon"></span>
                     <span class="navbar-toggler-icon"></span>
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
             </div>
 
             <div class="collapse navbar-collapse" id="navbarColor01">
@@ -66,12 +64,7 @@
                                     @Html.ActionLink("Settings", "ResetPassword", "Profile", null, new { @class = "list-group-item" })
                                     @Html.ActionLink("Sign Out", "LogOff", "Login", null, new { @class = "list-group-item" })
                                 </ul>
-
-
-
-
                             </div>
-
                         </div>
                     </li>
 
@@ -122,19 +115,13 @@
                                         @Html.ActionLink("Assign Leaves", "AssignLeave", "Admin", null, new { @class = "dropdown-item" })
                                         @Html.ActionLink("Assign Leave History", "Assign_Leave_History", "Admin", new { PageNo = 1 }, new { @class = "dropdown-item" })
                                         @Html.ActionLink("Manage Attandence", "Index", "Attandence", null, new { @class = "dropdown-item" })
-
                                     </div>
                                 </div>
                             </li>
 
-
                         }
                     }
-
-
-
                 </ul>
-
             </div>
             <div class="">
                 <ul class="navbar-nav ml-auto d-none d-lg-block ">
@@ -146,8 +133,7 @@
                             <div class=" card border-0  mt-4 " style="width: 18rem;">
                                 <img id="pfimg" src="/LogIn/ProfileImg" class="card-img-top">
                                 @*<div id="sp1" class="spinner-border text-primary" role="status">
-
-                                </div>*@
+                                    </div>*@
                                 <div class="card-body ">
                                     <h5 class="card-title ">Account Information</h5>
                                     <p class="card-text">@(((LeaveApplication.Models.Employee)Session["Employee"]).EmployeeName)</p>
@@ -159,12 +145,7 @@
                                     @Html.ActionLink("Profile", "", "Profile", null, new { @class = "list-group-item" })
                                     @Html.ActionLink("Settings", "ResetPassword", "Profile", null, new { @class = "list-group-item" })
                                     @Html.ActionLink("Sign Out", "LogOff", "Login", null, new { @class = "list-group-item" })
-
                                 </ul>
-
-
-
-
                             </div>
                             @*<p class="dropdown-item">@LeaveApplication.Models.EmployeeBusinessLayer.Employee.EmployeeName</p>
                                 <a class="dropdown-item" href="#">Action</a>
@@ -174,13 +155,9 @@
                                 <a class="dropdown-item" href="#">Separated link</a>*@
                         </div>
                     </li>
-
                 </ul>
             </div>
         </div>
-
-
-
     </nav>
     <div id="empdiv" class="container-fluid body-content h-100 w-100">
         @RenderBody()
@@ -201,6 +178,5 @@
             });
         })
     </script>
-    
 </body>
 </html>

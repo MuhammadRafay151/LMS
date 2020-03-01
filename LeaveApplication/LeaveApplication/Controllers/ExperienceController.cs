@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LeaveApplication.Models;
+using Newtonsoft.Json;
+
 namespace LeaveApplication.Controllers
 {
     public class ExperienceController : Controller
@@ -15,9 +17,9 @@ namespace LeaveApplication.Controllers
             ViewBag.data = exp.GetExperiences();
             return View();
         }
+
         public ActionResult AddExp(Experience exp)
         {
-
             try
             {
                 exp.Fromdate = DateTimeHelper.yyyy_mm_dd(exp.Fromdate);
@@ -41,11 +43,11 @@ namespace LeaveApplication.Controllers
             }
             else
             {
-
                 return View("Index", exp);
             }
             return RedirectToAction("Index");
         }
+
         public ActionResult UpdateExp(Experience exp, int? id)
         {
             try
@@ -72,21 +74,55 @@ namespace LeaveApplication.Controllers
                     exp.ExperienceId = id.Value;
                     exp.UpdateExp();
                 }
-
             }
             else
             {
-
                 return View("Index", exp);
             }
             return RedirectToAction("Index");
         }
+
         public ActionResult DelExp(int id)
         {
             Experience exp = new Experience() { ExperienceId = id, EmployeeId = Convert.ToInt32(Session["EmpId"]) };
             exp.DeleteExp();
             return RedirectToAction("Index");
         }
+
+        public ActionResult Report()
+        {
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
+            {
+                EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
+                ViewBag.Department = eb.GetDepartmentsDS();
+                Experience exp = new Experience();
+                System.Data.DataSet x = exp.GetExperiencesReport();
+
+                return View(x);
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
+        }
+
+        public JsonResult GetDepExp(int DepID)
+        {
+            Experience exp = new Experience();
+            System.Data.DataSet x = exp.GetDepExperiencesReport(DepID);
+            string z = JsonConvert.SerializeObject(x);
+            return Json(z, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetAllExp()
+        {
+            Experience exp = new Experience();
+            System.Data.DataSet x = exp.GetExperiencesReport();
+            string z = JsonConvert.SerializeObject(x);
+            return Json(z, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetExp(int id)
         {
             Experience exp = new Experience() { ExperienceId = id, EmployeeId = Convert.ToInt32(Session["EmpId"]) };

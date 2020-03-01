@@ -1,0 +1,108 @@
+﻿@{
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+}
+
+@model System.Data.DataSet
+<div class="container-fluid mt-5">
+
+    <div class="card h-100">
+        <div class="card-body ">
+            <div class="form-group">
+                @{
+                    System.Data.DataSet ds = ViewBag.Department;
+
+                }
+                <label for="DepartmentID " class="d-block d-print-none "> Select Department</label>
+                <select class="custom-select d-print-none " id="DepartmentID" name=DepartmentID required>
+                    <option value="" disabled selected>Select Department</option>
+
+                    <option value="ALL">
+                        All Departments
+                    </option>
+                    @{
+                        foreach (System.Data.DataRow x in ds.Tables[0].Rows)
+                        {
+
+                            <option value="@x[0]">
+                                @x[1]
+                            </option>
+
+                        }
+                    }
+                </select>
+                <button type="button" class="btn btn-info d-print-none float-right" data-toggle="tooltip" data-placement="top" title="Print Report" onclick="window.print()">
+                    <i class="material-icons">print</i>
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-light ">
+                    <thead>
+                        <tr>
+                            <th class="align-middle  text-center" scope="col">Employee</th>
+                            <th class="align-middle  text-center" scope="col">Department</th>
+                            <th class="align-middle  text-center" scope="col">Designation</th>
+                            <th class="align-middle  text-center" scope="col">Joining</th>
+                            <th class="align-middle  text-center" scope="col">Years of Experience</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (System.Data.DataRow i in Model.Tables[0].Rows)
+                        {
+                            <tr>
+                                <td class="align-middle  text-center">@i[0]</td>
+                                <td class="align-middle  text-center">@i[1]</td>
+                                <td class="align-middle  text-center">@i[2]</td>
+                                <td class="align-middle  text-center">@DateTime.Parse(i[3].ToString()).ToString("dd/MM/yyyy")</td>
+                                <td class="align-middle  text-center">@i[4]</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $('#DepartmentID').change(function () {
+            var DepID = $("#DepartmentID option:selected").val();
+            var URL;
+            if (DepID == "ALL") {
+                URL = "/Experience/GetAllExp";
+            }
+            else {
+                URL = "/Experience/GetDepExp?DepID=" + DepID;
+            }
+            $.ajax({
+                type: "get",
+                url: URL,
+                success: function (data) {
+                    jsondata = JSON.parse(data);
+                    var table = $(".table tbody");
+                    table.empty();
+                    $.each(jsondata.Table, function (a, b) {
+                        table.append(
+                            "<tr>" +
+                            '<td class="align-middle  text-center">' + b.EmployeeName + '</td>' +
+                            '<td class="align-middle  text-center">' + b.Department + '</td>' +
+                            '<td class="align-middle  text-center">' + b.Designation + '</td>' +
+                            '<td class="align-middle  text-center">' + moment(b.JoiningDate).format('DD/MM/YYYY') + '</td>' +
+                            '<td class="align-middle  text-center">' + + b.years + '</td>' +
+                            '</tr>'
+                        );
+
+                    });
+
+                }, error: function () {
+                    alert("Encountering some error please try again later.");
+                }
+
+            })
+
+        });
+
+    });
+</script>

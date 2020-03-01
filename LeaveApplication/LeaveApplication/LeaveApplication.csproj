@@ -569,6 +569,7 @@
     <Content Include="Views\Profile\Publications.cshtml" />
     <Content Include="Views\Acheivement\Index.cshtml" />
     <Content Include="Views\Experience\Index.cshtml" />
+    <Content Include="Views\Experience\Report.cshtml" />
     <Content Include="Views\Education\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
