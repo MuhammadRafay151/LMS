@@ -15,6 +15,10 @@
                 <label for="DepartmentID " class="d-block d-print-none "> Select Department</label>
                 <select class="custom-select d-print-none " id="DepartmentID" name=DepartmentID required>
                     <option value="" disabled selected>Select Department</option>
+
+                    <option value="ALL">
+                        All Departments
+                    </option>
                     @{
                         foreach (System.Data.DataRow x in ds.Tables[0].Rows)
                         {
@@ -66,9 +70,16 @@
         $('#DepartmentID').change(function () {
             var DepID = $("#DepartmentID option:selected").val();
             console.log(DepID);
+            var URL;
+            if (DepID == "ALL") {
+                URL = "/Experience/GetAllExp";
+            }
+            else {
+                URL = "/Experience/GetDepExp?DepID=" + DepID;
+            }
             $.ajax({
                 type: "get",
-                url: "/Experience/GetDepExp?DepID=" + DepID,
+                url: URL,
                 success: function (data) {
                     jsondata = JSON.parse(data);
                     console.log(jsondata);

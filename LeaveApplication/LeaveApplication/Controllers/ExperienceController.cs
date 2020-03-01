@@ -115,6 +115,14 @@ namespace LeaveApplication.Controllers
             return Json(z, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetAllExp()
+        {
+            Experience exp = new Experience();
+            System.Data.DataSet x = exp.GetExperiencesReport();
+            string z = JsonConvert.SerializeObject(x);
+            return Json(z, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult GetExp(int id)
         {
             Experience exp = new Experience() { ExperienceId = id, EmployeeId = Convert.ToInt32(Session["EmpId"]) };
