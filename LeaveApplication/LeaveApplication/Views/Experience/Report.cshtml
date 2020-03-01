@@ -69,7 +69,6 @@
 
         $('#DepartmentID').change(function () {
             var DepID = $("#DepartmentID option:selected").val();
-            console.log(DepID);
             var URL;
             if (DepID == "ALL") {
                 URL = "/Experience/GetAllExp";
@@ -82,12 +81,9 @@
                 url: URL,
                 success: function (data) {
                     jsondata = JSON.parse(data);
-                    console.log(jsondata);
-                    console.log(jsondata.Table[0]);
                     var table = $(".table tbody");
                     table.empty();
                     $.each(jsondata.Table, function (a, b) {
-                        console.log(b);
                         table.append(
                             "<tr>" +
                             '<td class="align-middle  text-center">' + b.EmployeeName + '</td>' +
