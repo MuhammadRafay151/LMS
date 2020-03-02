@@ -146,50 +146,75 @@ end
             f1.Content = (Byte[])d1.Tables[0].Rows[0][1];
             return f1;
         }
-        public File GetFile(int Fileid,  int PublicationId)
+        public File GetFile(int Fileid, int PublicationId)
         {
             Querry = string.Format(@" select PublicationAttachment.FileName,Files.Content from PublicationAttachment 
   inner join
-  Files on PublicationAttachment.Fileid=Files.FileId where Files.FileId={0}  and PublicationAttachment.PublicationId={1}", Fileid,  PublicationId);
+  Files on PublicationAttachment.Fileid=Files.FileId where Files.FileId={0}  and PublicationAttachment.PublicationId={1}", Fileid, PublicationId);
             DataSet d1 = database.Read(Querry);
             File f1 = new File();
             f1.FileName = d1.Tables[0].Rows[0][0].ToString();
             f1.Content = (Byte[])d1.Tables[0].Rows[0][1];
             return f1;
         }
+        //Reporting
         public DataSet GenrateReport(int deptid)
         {
             Querry = "";
-            if(deptid==0)
+            if (deptid == 0)
             {
-                Querry = @"select Employee.EmployeeName,Publications.Title,Publications.PublishDate,Publications.Authors
-,PublicationAttachment.FileName,PublicationAttachment.Fileid,Publications.id from Employee inner join Publications 
+                Querry = @"select Employee.EmployeeName,Departments.Department,Publications.Title,Publications.PublishDate,Publications.Authors
+,PublicationAttachment.FileName,PublicationAttachment.Fileid,Publications.id from Employee 
+inner join Departments on Employee.DepartmentID=Departments.DepartmentID
+inner join Publications 
 on
 Employee.EmployeeID=Publications.Employeeid
 inner join PublicationAttachment on Publications.id=PublicationAttachment.PublicationId
 order by Employee.EmployeeID";
-            }else
+            }
+            else
             {
-                Querry = string.Format(@"select Employee.EmployeeName,Publications.Title,Publications.PublishDate,Publications.Authors
-,PublicationAttachment.FileName,PublicationAttachment.Fileid,Publications.id from Employee inner join Publications 
+                Querry = string.Format(@"select Employee.EmployeeName,Departments.Department,Publications.Title,Publications.PublishDate,Publications.Authors
+,PublicationAttachment.FileName,PublicationAttachment.Fileid,Publications.id from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID
+inner join Publications 
 on
 Employee.EmployeeID=Publications.Employeeid
 inner join PublicationAttachment on Publications.id=PublicationAttachment.PublicationId
-where DepartmentID={0} order by Employee.EmployeeID", deptid);
+where Employee.DepartmentID={0} order by Employee.EmployeeID", deptid);
             }
             //switch (filterid)
             //{
             //    case 1:
-                   
+
             //        break;
             //    case 2:
             //        Querry = "";
             //        break;
             //}
 
-            
+
             return database.Read(Querry);
         }
+        public DataSet GenrateReport_emp(int empid)
+        {
+            if (empid == 0)
+            {
+               return GenrateReport(0);
+            }
+            else
+            {
+                Querry = string.Format(@"select Employee.EmployeeName,Departments.Department,Publications.Title,Publications.PublishDate,Publications.Authors
+,PublicationAttachment.FileName,PublicationAttachment.Fileid,Publications.id from Employee 
+inner join Departments on Employee.DepartmentID=Departments.DepartmentID
+inner join Publications 
+on
+Employee.EmployeeID=Publications.Employeeid
+inner join PublicationAttachment on Publications.id=PublicationAttachment.PublicationId where Employee.EmployeeID={0}", empid);
+            }
+
+            return database.Read(Querry);
+        }
+
 
     }
 }

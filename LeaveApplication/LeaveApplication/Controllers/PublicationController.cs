@@ -78,23 +78,41 @@ namespace LeaveApplication.Controllers
         public ActionResult Report()
         {
             EmployeeBusinessLayer emp = new EmployeeBusinessLayer();
+            ViewBag.Employees = emp.GetEmployees();
             ViewBag.List2 = emp.GetDepartments();
             Publication p1 = new Publication();
             return View(p1.GenrateReport(0));//0 means all dep
         }
-        public JsonResult DepartmentReport(int? id)
+        //filters
+        public JsonResult DepartmentReport(int? depid)
         {
             Publication p1 = new Publication();
             string data=string.Empty;
-            if(id.HasValue)
+            if(depid.HasValue)
             {
-                data = JsonConvert.SerializeObject(p1.GenrateReport(id.Value));
+                data = JsonConvert.SerializeObject(p1.GenrateReport(depid.Value));
             }
             else
             {
                 data = JsonConvert.SerializeObject(p1.GenrateReport(0));
             }
             return Json(data,JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult EmployeeReport(int? empid)
+        {
+            
+            string data = string.Empty;
+            Publication p1 = new Publication();
+            if (empid.HasValue)
+            {
+                
+                data = JsonConvert.SerializeObject(p1.GenrateReport_emp(empid.Value));
+            }
+            else
+            {
+                data = JsonConvert.SerializeObject(p1.GenrateReport_emp(0));
+            }
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
         public FileResult DownloadPub(int FileId, int PubId)
         {

@@ -8,13 +8,32 @@
     <div class="row">
         <div class="col">
             <div class="card">
-                <div class="card-body">
-                    <table class="table table-hover table-striped ">
+                <div id="c1" class="card-body">
+
+                    <table id="t1" class="table table-hover table-striped ">
                         <thead>
                             <tr>
                                 <th scope="col">
                                     Employee Name
-                                    <select class="custom-select">
+                                    <select id="emp" class="custom-select">
+                                        <option value=""  selected>All Employee</option>
+                                        @{System.Data.DataSet emp = ViewBag.Employees;
+                                            foreach (System.Data.DataRow i in emp.Tables[0].Rows)
+                                            {
+
+                                                <option value="@i[0].ToString()">
+                                                    @i[1].ToString()
+                                                </option>
+
+
+                                            }
+                                        }
+
+
+                                    </select>
+                                </th>
+                                <th scope="col">
+                                    Department  <select id="dep" class="d-print-none dep custom-select">
                                         <option value="" selected>All</option>
                                         @{
                                             foreach (LeaveApplication.Models.Department x in ViewBag.List2)
@@ -35,7 +54,7 @@
                                 <th scope="col">Title</th>
                                 <th scope="col">Publish Date</th>
                                 <th scope="col">Authors</th>
-                                <th scope="col">Attachment</th>
+                                <th scope="col">Attachment   <a id="pr" href="#" class="text-dark d-print-none"><i class="material-icons">print</i></a></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,13 +65,15 @@
                                     <td scope="col">@x[1]</td>
                                     <td scope="col">@x[2]</td>
                                     <td scope="col">@x[3]</td>
-                                    <td scope="col"><a href="/Publication/DownloadPub?FileId=@x[5]&PubId=@x[6]">@x[4]</a></td>
+                                    <td scope="col">@x[4]</td>
+                                    <td scope="col"><a href="/Publication/DownloadPub?FileId=@x[6]&PubId=@x[7]">@x[5]</a></td>
 
                                 </tr>
                             }
 
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div>
@@ -60,5 +81,62 @@
 </div>
 
 <script>
-  
+    $(document).ready(function () {
+        $("#dep").change(function () {
+            var x = this.value;
+            var table = document.getElementById('t1');
+            RemoveRows(table);
+            $.ajax({
+                url: "/Publication/DepartmentReport?depid=" + x,
+                success: function (data) {
+                    data = JSON.parse(data);
+                    console.log(data);
+                    InsertRows(table, data);
+
+                }
+            });
+        })
+         $("#emp").change(function () {
+            var x = this.value;
+            var table = document.getElementById('t1');
+            RemoveRows(table);
+            $.ajax({
+                url: "/Publication/EmployeeReport?empid=" + x,
+                success: function (data) {
+                    data = JSON.parse(data);
+                    console.log(data);
+                    InsertRows(table, data);
+
+                }
+            });
+        })
+        $("#pr").click(function () {
+            window.print();
+
+        })
+
+    });
+    function RemoveRows(table) {
+        while (table.rows.length != 1) {
+            table.deleteRow(1);
+        }
+    }
+    function InsertRows(table, data) {
+        console.log(data.Table.length);
+        for (var i = 0; i < data.Table.length; i++) {
+            var row = table.insertRow(i + 1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+              var cell6 = row.insertCell();
+            cell1.innerHTML = data.Table[i].EmployeeName;
+            cell2.innerHTML = data.Table[i].Department;
+            cell3.innerHTML = data.Table[i].Title;
+            cell4.innerHTML = data.Table[i].PublishDate;
+            cell5.innerHTML = data.Table[i].Authors;
+            cell6.innerHTML = `<a href='/Publication/DownloadPub?FileId=${data.Table[i].Fileid}&PubId=${data.Table[i].id}'>${data.Table[i].FileName}</a>`
+        }
+    }
 </script>
