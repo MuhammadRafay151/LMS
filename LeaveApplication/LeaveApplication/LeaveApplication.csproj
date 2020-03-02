@@ -571,7 +571,6 @@
     <Content Include="Views\Acheivement\Index.cshtml" />
     <Content Include="Views\Experience\Index.cshtml" />
     <Content Include="Views\Publication\Report.cshtml" />
-    <Content Include="Views\Publication\Table.cshtml" />
     <Content Include="Views\Experience\Report.cshtml" />
     <Content Include="Views\Education\Index.cshtml" />
   </ItemGroup>
