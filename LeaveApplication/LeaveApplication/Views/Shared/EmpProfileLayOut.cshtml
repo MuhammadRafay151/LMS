@@ -118,6 +118,15 @@
                                     </div>
                                 </div>
                             </li>
+                            <li class="nav-item dropdown ">
+                                <div class="dropdown  ">
+                                    <a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Reports</a>
+                                    <div class="dropdown-menu mt-3 ">
+                                        @Html.ActionLink("Experience Report", "Report", "Experience", null, new { @class = "dropdown-item " })
+                                        @Html.ActionLink("Publications Report", "Report", "Publication", null, new { @class = "dropdown-item " })
+                                    </div>
+                                </div>
+                            </li>
 
                         }
                     }
