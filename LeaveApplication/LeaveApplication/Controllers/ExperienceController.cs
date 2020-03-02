@@ -13,80 +13,108 @@ namespace LeaveApplication.Controllers
         // GET: Experience
         public ActionResult Index()
         {
-            Experience exp = new Experience() { EmployeeId = Convert.ToInt32(Session["EmpId"]) };
-            ViewBag.data = exp.GetExperiences();
-            return View();
+            if (Session["EmpID"] != null)
+            {
+                Experience exp = new Experience() { EmployeeId = Convert.ToInt32(Session["EmpId"]) };
+                ViewBag.data = exp.GetExperiences();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
         }
 
         public ActionResult AddExp(Experience exp)
         {
-            try
+            if (Session["EmpID"] != null)
             {
-                exp.Fromdate = DateTimeHelper.yyyy_mm_dd(exp.Fromdate);
-            }
-            catch (FormatException)
-            {
-                ModelState.AddModelError("Fromdate", "Invalid Format");
-            }
-            try
-            {
-                exp.Todate = DateTimeHelper.yyyy_mm_dd(exp.Todate);
-            }
-            catch (FormatException)
-            {
-                ModelState.AddModelError("Todate", "Invalid Format");
-            }
-            if (ModelState.IsValid)
-            {
-                exp.EmployeeId = Convert.ToInt32(Session["EmpId"]);
-                exp.Insert();
+                try
+                {
+                    exp.Fromdate = DateTimeHelper.yyyy_mm_dd(exp.Fromdate);
+                }
+                catch (FormatException)
+                {
+                    ModelState.AddModelError("Fromdate", "Invalid Format");
+                }
+                try
+                {
+                    exp.Todate = DateTimeHelper.yyyy_mm_dd(exp.Todate);
+                }
+                catch (FormatException)
+                {
+                    ModelState.AddModelError("Todate", "Invalid Format");
+                }
+                if (ModelState.IsValid)
+                {
+                    exp.EmployeeId = Convert.ToInt32(Session["EmpId"]);
+                    exp.Insert();
+                }
+                else
+                {
+                    return View("Index", exp);
+                }
+                return RedirectToAction("Index");
             }
             else
             {
-                return View("Index", exp);
+                return RedirectToAction("Index", "LogIn");
             }
-            return RedirectToAction("Index");
         }
 
         public ActionResult UpdateExp(Experience exp, int? id)
         {
-            try
+            if (Session["EmpID"] != null)
             {
-                exp.Fromdate = DateTimeHelper.yyyy_mm_dd(exp.Fromdate);
-            }
-            catch (FormatException)
-            {
-                ModelState.AddModelError("Fromdate", "Invalid Format");
-            }
-            try
-            {
-                exp.Todate = DateTimeHelper.yyyy_mm_dd(exp.Todate);
-            }
-            catch (FormatException)
-            {
-                ModelState.AddModelError("Todate", "Invalid Format");
-            }
-            if (ModelState.IsValid)
-            {
-                if (id.HasValue)
+                try
                 {
-                    exp.EmployeeId = Convert.ToInt32(Session["EmpId"]);
-                    exp.ExperienceId = id.Value;
-                    exp.UpdateExp();
+                    exp.Fromdate = DateTimeHelper.yyyy_mm_dd(exp.Fromdate);
                 }
+                catch (FormatException)
+                {
+                    ModelState.AddModelError("Fromdate", "Invalid Format");
+                }
+                try
+                {
+                    exp.Todate = DateTimeHelper.yyyy_mm_dd(exp.Todate);
+                }
+                catch (FormatException)
+                {
+                    ModelState.AddModelError("Todate", "Invalid Format");
+                }
+                if (ModelState.IsValid)
+                {
+                    if (id.HasValue)
+                    {
+                        exp.EmployeeId = Convert.ToInt32(Session["EmpId"]);
+                        exp.ExperienceId = id.Value;
+                        exp.UpdateExp();
+                    }
+                }
+                else
+                {
+                    return View("Index", exp);
+                }
+                return RedirectToAction("Index");
             }
             else
             {
-                return View("Index", exp);
+                return RedirectToAction("Index", "LogIn");
             }
-            return RedirectToAction("Index");
         }
 
         public ActionResult DelExp(int id)
         {
-            Experience exp = new Experience() { ExperienceId = id, EmployeeId = Convert.ToInt32(Session["EmpId"]) };
-            exp.DeleteExp();
-            return RedirectToAction("Index");
+            if (Session["EmpID"] != null)
+            {
+                Experience exp = new Experience() { ExperienceId = id, EmployeeId = Convert.ToInt32(Session["EmpId"]) };
+                exp.DeleteExp();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogIn");
+            }
         }
 
         public ActionResult Report()
