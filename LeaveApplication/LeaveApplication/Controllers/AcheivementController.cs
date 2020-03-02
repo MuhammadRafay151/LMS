@@ -29,8 +29,23 @@ namespace LeaveApplication.Controllers
         {
             if (Session["EmpID"] != null)
             {
-                ach.EmployeeID = Convert.ToInt32(Session["EmpId"]);
-                ach.InsertAcheivement();
+                try
+                {
+                    ach.AcheivementDate = DateTimeHelper.yyyy_mm_dd(ach.AcheivementDate);
+                }
+                catch (FormatException)
+                {
+                    ModelState.AddModelError("AcheivementDate", "Invalid Format");
+                }
+                if (ModelState.IsValid)
+                {
+                    ach.EmployeeID = Convert.ToInt32(Session["EmpId"]);
+                    ach.InsertAcheivement();
+                }
+                else
+                {
+                    return View("Index", ach);
+                }
 
                 return RedirectToAction("Index");
             }
@@ -44,8 +59,23 @@ namespace LeaveApplication.Controllers
         {
             if (Session["EmpID"] != null)
             {
-                ach.EmployeeID = Convert.ToInt32(Session["EmpId"]);
-                ach.UpdateAcheivement();
+                try
+                {
+                    ach.AcheivementDate = DateTimeHelper.yyyy_mm_dd(ach.AcheivementDate);
+                }
+                catch (FormatException)
+                {
+                    ModelState.AddModelError("AcheivementDate", "Invalid Format");
+                }
+                if (ModelState.IsValid)
+                {
+                    ach.EmployeeID = Convert.ToInt32(Session["EmpId"]);
+                    ach.UpdateAcheivement();
+                }
+                else
+                {
+                    return View("Index", ach);
+                }
                 return RedirectToAction("Index");
             }
             else

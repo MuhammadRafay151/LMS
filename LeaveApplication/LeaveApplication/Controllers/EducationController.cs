@@ -33,8 +33,15 @@ namespace LeaveApplication.Controllers
         {
             if (Session["EmpID"] != null)
             {
-                edu.EmployeeID = Convert.ToInt32(Session["EmpId"]);
-                edu.AddEducation();
+                if (ModelState.IsValid)
+                {
+                    edu.EmployeeID = Convert.ToInt32(Session["EmpId"]);
+                    edu.AddEducation();
+                }
+                else
+                {
+                    return View("Index", edu);
+                }
                 return RedirectToAction("Index");
             }
             else
@@ -62,8 +69,15 @@ namespace LeaveApplication.Controllers
         {
             if (Session["EmpID"] != null)
             {
-                edu.EmployeeID = Convert.ToInt32(Session["EmpId"]);
-                edu.UpdateEducation();
+                if (ModelState.IsValid)
+                {
+                    edu.EmployeeID = Convert.ToInt32(Session["EmpId"]);
+                    edu.UpdateEducation();
+                }
+                else
+                {
+                    return View("Index", edu);
+                }
                 return RedirectToAction("Index");
             }
             else

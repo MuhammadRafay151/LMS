@@ -5,6 +5,7 @@ using System.Web;
 using System.Data;
 using System.Globalization;
 using System.Data.SqlClient;
+using System.ComponentModel.DataAnnotations;
 
 namespace LeaveApplication.Models
 {
@@ -16,10 +17,20 @@ namespace LeaveApplication.Models
         public int EmployeeID { get; set; }
         public int EduID { get; set; }
         public int DegreeID { get; set; }
+
+        [Required]
         public int DegreeType { get; set; }
+
+        [Required]
         public string DegreeTittle { get; set; }
+
+        [Required]
         public string Field { get; set; }
+
+        [Required]
         public string Institute { get; set; }
+
+        [Required]
         public string Year { get; set; }
 
         public DataSet GetDegrees()

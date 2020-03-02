@@ -59,8 +59,8 @@
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
                             <label for="DegreeTittle" class="ml-3">DegreeTittle</label>
-                            <input type="text" id="EduID1" name="EduID" class="form-control" hidden />
                             <input type="text" id="editdegtittle" name="DegreeTittle" class="form-control " required />
+                            @Html.ValidationMessage("DegreeTittle", "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -68,6 +68,7 @@
                         <div class="form-group col-8 bmd-form-group">
                             <label for="Field" class="ml-3">Field</label>
                             <input type="text" id="editfield" name="Field" class="form-control " required />
+                            @Html.ValidationMessage("Field", "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -75,6 +76,7 @@
                         <div class="form-group col-8 bmd-form-group">
                             <label for="Institute" class="ml-3">Institute</label>
                             <input type="text" id="editinstitute" name="Institute" class="form-control " required />
+                            @Html.ValidationMessage("Institute", "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -83,6 +85,7 @@
                             <label for="Year" class="ml-3">Year</label>
                             <div class="input-group">
                                 <input type="text" id="edityear" name="Year" class="form-control datetimepicker" required onfocusout="DateSelect(this)" />
+                                @Html.ValidationMessage("Year", "", new { @class = "text-danger" })
                                 <div class="input-group-append">
                                     <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
                                 </div>
@@ -93,7 +96,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-info">Save</button>
+                    <button type="submit" id="EduID1" name="EduID" class="btn btn-info">Save</button>
                 </div>
             </div>
         }
@@ -135,6 +138,7 @@
                         <div class="form-group col-8 bmd-form-group">
                             <label for="DegreeTittle" class="text-center bmd-label-floating">DegreeTittle</label>
                             <input type="text" name="DegreeTittle" class="form-control " required />
+                            @Html.ValidationMessage("DegreeTittle", "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -142,6 +146,7 @@
                         <div class="form-group col-8 bmd-form-group">
                             <label for="Field" class="text-center bmd-label-floating">Field</label>
                             <input type="text" name="Field" class="form-control " required />
+                            @Html.ValidationMessage("Field", "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -149,6 +154,7 @@
                         <div class="form-group col-8 bmd-form-group">
                             <label for="Institute" class="text-center bmd-label-floating">Institute</label>
                             <input type="text" name="Institute" class="form-control " required />
+                            @Html.ValidationMessage("Institute", "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -157,6 +163,7 @@
                             <label for="Year" class="ml-3">Year</label>
                             <div class="input-group">
                                 <input type="text" id="edityear" name="Year" class="form-control datetimepicker " onfocusout="DateSelect(this)" required />
+                                @Html.ValidationMessage("Year", "", new { @class = "text-danger" })
                                 <div class="input-group-append">
                                     <span style="margin-left:-20px"><img id="i1" src="~/Images/calendar-clipart-w4.png" width="25" /></span>
                                 </div>
