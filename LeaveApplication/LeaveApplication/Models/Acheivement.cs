@@ -25,7 +25,7 @@ namespace LeaveApplication.Models
         [Required]
         public string AcheivementDate { get; set; }
 
-        [Required]
+        //[Required]
         public HttpPostedFileBase File { get; set; }
 
         public string FileName { get; set; }
@@ -51,7 +51,7 @@ namespace LeaveApplication.Models
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
             sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementId", Value = AcheivementId });
             sqlParameters.Add(new SqlParameter() { ParameterName = "title", Value = title });
-            sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementDate", Value = DateTimeHelper.yyyy_mm_dd(AcheivementDate) });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementDate", Value = AcheivementDate });
             sqlParameters.Add(new SqlParameter() { ParameterName = "Description", Value = Description });
             sqlParameters.Add(new SqlParameter() { ParameterName = "EmployeeID", Value = EmployeeID });
             if (File == null)
@@ -81,7 +81,7 @@ namespace LeaveApplication.Models
         {
             List<SqlParameter> sqlParameters = new List<SqlParameter>();
             sqlParameters.Add(new SqlParameter() { ParameterName = "title", Value = title });
-            sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementDate", Value = DateTimeHelper.yyyy_mm_dd(AcheivementDate) });
+            sqlParameters.Add(new SqlParameter() { ParameterName = "AcheivementDate", Value = AcheivementDate });
             sqlParameters.Add(new SqlParameter() { ParameterName = "Description", Value = Description });
             sqlParameters.Add(new SqlParameter() { ParameterName = "EmployeeID", Value = EmployeeID });
 

@@ -38,10 +38,7 @@ namespace LeaveApplication.Controllers
                     edu.EmployeeID = Convert.ToInt32(Session["EmpId"]);
                     edu.AddEducation();
                 }
-                else
-                {
-                    return View("Index", edu);
-                }
+
                 return RedirectToAction("Index");
             }
             else
@@ -74,10 +71,7 @@ namespace LeaveApplication.Controllers
                     edu.EmployeeID = Convert.ToInt32(Session["EmpId"]);
                     edu.UpdateEducation();
                 }
-                else
-                {
-                    return View("Index", edu);
-                }
+
                 return RedirectToAction("Index");
             }
             else
