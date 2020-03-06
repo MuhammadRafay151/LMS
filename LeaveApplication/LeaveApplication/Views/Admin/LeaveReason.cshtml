@@ -1,9 +1,9 @@
-﻿
+﻿@model LeaveApplication.Models.LeaveReason
 @{
-                /**/
+    /**/
 
-                ViewBag.Title = "LeaveReason";
-                Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
+    ViewBag.Title = "LeaveReason";
+    Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
 
 <!-- Modal for edit form-->
@@ -48,7 +48,8 @@
                     <div class="card">
                         @using (Html.BeginForm("AddLeaveReason", "Admin", FormMethod.Post))
                         {<div class="form-group d-flex  justify-content-center ">
-                                <input type="text" name="LeaveReason" class="form-control " placeholder="Leave Reason" required />
+                                @Html.TextBoxFor(m => m._LeaveReason, new { @class = "form-control", placeholder = "Leave Reason", required = "required" })
+
                                 <input id="Submit1" class="btn btn-info-grd  ml-2" type="submit" value="Add Leave Reason" />
 
                             </div>
@@ -70,7 +71,7 @@
                             <tbody>
                                 @{
                                     //IEnumerable<LeaveApplication.Models.LeaveTypes> d1 = ViewBag.leaves_t;
-                                    foreach (System.Data.DataRow i in Model.Tables[0].Rows)
+                                    foreach (System.Data.DataRow i in ViewBag.data.Tables[0].Rows)
                                     {
                                         <tr class="text-center ">
                                             <td class="text-dark align-middle">@i[1].ToString()</td>
@@ -83,7 +84,7 @@
                                                     </div>
                                                     @using (Html.BeginForm("DeleteLeaveReason", "Admin", FormMethod.Post, new { id = i[0].ToString() }))
                                                     {
-                                                        <input type="text" name="LeaveReasonID" value="@i[0].ToString()" hidden />
+                                                        <input type="text" name="id" value="@i[0].ToString()" hidden />
 
                                                     }
                                                 </div>

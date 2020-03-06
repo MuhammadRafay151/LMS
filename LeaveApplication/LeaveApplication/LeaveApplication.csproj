@@ -152,6 +152,7 @@
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\ExperienceController.cs" />
     <Compile Include="Controllers\EducationController.cs" />
+    <Compile Include="Models\LeaveReason.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\PublicationController.cs" />
     <Compile Include="Controllers\RequestLeaveController.cs" />
