@@ -16,7 +16,7 @@
                                 <th scope="col">
                                     Employee Name
                                     <select id="emp" class="custom-select">
-                                        <option value=""  selected>All Employee</option>
+                                        <option value="" disabled selected>All Employee</option>
                                         @{System.Data.DataSet emp = ViewBag.Employees;
                                             foreach (System.Data.DataRow i in emp.Tables[0].Rows)
                                             {
@@ -84,19 +84,19 @@
     $(document).ready(function () {
         $("#dep").change(function () {
             var x = this.value;
+            ShowEmployees(x);
             var table = document.getElementById('t1');
             RemoveRows(table);
             $.ajax({
                 url: "/Publication/DepartmentReport?depid=" + x,
                 success: function (data) {
                     data = JSON.parse(data);
-                    console.log(data);
                     InsertRows(table, data);
 
                 }
             });
         })
-         $("#emp").change(function () {
+        $("#emp").change(function () {
             var x = this.value;
             var table = document.getElementById('t1');
             RemoveRows(table);
@@ -104,7 +104,6 @@
                 url: "/Publication/EmployeeReport?empid=" + x,
                 success: function (data) {
                     data = JSON.parse(data);
-                    console.log(data);
                     InsertRows(table, data);
 
                 }
@@ -116,13 +115,44 @@
         })
 
     });
+    function ShowEmployees(Depid) {
+        $('#emp').empty();
+         $('#emp').append(`<option disabled selected value="">All Employees</option>`)
+        if (Depid == "") {
+            $.ajax({
+            method: "GET",
+            url: "/Admin/GetAllEmployees",
+            success: function (data) {
+                data = JSON.parse(data);
+                for (var i = 0; i < data.Table.length; i++) {
+                    $('#emp').append(`<option value="${data.Table[i].EmployeeID}">${data.Table[i].EmployeeName}</option>`)
+
+                }
+
+            }
+        });
+        }
+        else {
+            $.ajax({
+            method: "POST",
+            url: "/Admin/GetEmployees?DepartmentId=" + Depid,
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $('#emp').append(`<option value="${data[i].EmployeeID}">${data[i].EmployeeName}</option>`)
+
+                }
+
+            }
+        });
+        }
+        
+    }
     function RemoveRows(table) {
         while (table.rows.length != 1) {
             table.deleteRow(1);
         }
     }
     function InsertRows(table, data) {
-        console.log(data.Table.length);
         for (var i = 0; i < data.Table.length; i++) {
             var row = table.insertRow(i + 1);
             var cell1 = row.insertCell(0);
@@ -130,7 +160,7 @@
             var cell3 = row.insertCell(2);
             var cell4 = row.insertCell(3);
             var cell5 = row.insertCell(4);
-              var cell6 = row.insertCell();
+            var cell6 = row.insertCell();
             cell1.innerHTML = data.Table[i].EmployeeName;
             cell2.innerHTML = data.Table[i].Department;
             cell3.innerHTML = data.Table[i].Title;

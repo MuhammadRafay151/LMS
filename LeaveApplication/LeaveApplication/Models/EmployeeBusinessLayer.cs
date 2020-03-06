@@ -276,8 +276,6 @@ namespace LeaveApplication.Models
             string temp = string.Format("data:image/jpg;base64,{0}", Convert.ToBase64String(Image));
             return temp;
         }
-
-
         public DataSet GetEmployees()
         {
 

@@ -12,27 +12,8 @@
                     System.Data.DataSet ds = ViewBag.Department;
 
                 }
-                <label for="DepartmentID " class="d-block d-print-none "> Select Department</label>
-                <select class="custom-select d-print-none " id="DepartmentID" name=DepartmentID required>
-                    <option value="" disabled selected>Select Department</option>
-
-                    <option value="ALL">
-                        All Departments
-                    </option>
-                    @{
-                        foreach (System.Data.DataRow x in ds.Tables[0].Rows)
-                        {
-
-                            <option value="@x[0]">
-                                @x[1]
-                            </option>
-
-                        }
-                    }
-                </select>
-                <button type="button" class="btn btn-info d-print-none float-right" data-toggle="tooltip" data-placement="top" title="Print Report" onclick="window.print()">
-                    <i class="material-icons">print</i>
-                </button>
+               
+                
             </div>
 
             <div class="table-responsive">
@@ -40,10 +21,30 @@
                     <thead>
                         <tr>
                             <th class="align-middle  text-center" scope="col">Employee</th>
-                            <th class="align-middle  text-center" scope="col">Department</th>
+                            <th class="align-middle  text-center" scope="col">
+                                Department
+                                <select class="custom-select d-print-none " id="DepartmentID" name=DepartmentID required>
+                                    <option value="" disabled selected>Select Department</option>
+
+                                    <option value="ALL">
+                                        All Departments
+                                    </option>
+                                    @{
+                                        foreach (System.Data.DataRow x in ds.Tables[0].Rows)
+                                        {
+
+                                            <option value="@x[0]">
+                                                @x[1]
+                                            </option>
+
+                                        }
+                                    }
+                                </select>
+                            </th>
                             <th class="align-middle  text-center" scope="col">Designation</th>
                             <th class="align-middle  text-center" scope="col">Joining</th>
-                            <th class="align-middle  text-center" scope="col">Years of Experience</th>
+                            <th class="align-middle  text-center" scope="col">
+                            Years of Experience <a id="pr" href="#" class="text-dark d-print-none" onclick="window.print()"><i class="material-icons">print</i></a></th>
                         </tr>
                     </thead>
                     <tbody>

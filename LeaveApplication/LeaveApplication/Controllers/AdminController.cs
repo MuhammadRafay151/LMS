@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using LeaveApplication.Models;
 using System.IO;
 using System.Data.SqlClient;
-
+using Newtonsoft.Json;
 
 namespace LeaveApplication.Controllers
 {
@@ -387,6 +387,20 @@ namespace LeaveApplication.Controllers
             else
             {
                 return Json(null);
+            }
+
+        }
+        public JsonResult GetAllEmployees()
+        {
+            Employee e1 = (Employee)Session["Employee"];
+            if (Session["EmpID"] != null && e1.isAdmin == true)
+            {
+                string data = JsonConvert.SerializeObject(eb.GetEmployees());
+                return Json(data,JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
             }
 
         }
