@@ -152,6 +152,7 @@
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\ExperienceController.cs" />
     <Compile Include="Controllers\EducationController.cs" />
+    <Compile Include="Models\LeaveReason.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\PublicationController.cs" />
     <Compile Include="Controllers\RequestLeaveController.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="Models\BasicInfo.cs" />
     <Compile Include="Models\DateTimeHelper.cs" />
     <Compile Include="Models\db.cs" />
+    <Compile Include="Models\Degrees.cs" />
     <Compile Include="Models\Education.cs" />
     <Compile Include="Models\Email.cs" />
     <Compile Include="Models\Encryption.cs" />
@@ -573,6 +575,7 @@
     <Content Include="Views\Publication\Report.cshtml" />
     <Content Include="Views\Experience\Report.cshtml" />
     <Content Include="Views\Education\Index.cshtml" />
+    <Content Include="Views\Admin\Degrees.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

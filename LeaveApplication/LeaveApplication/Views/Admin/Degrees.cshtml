@@ -1,11 +1,30 @@
-﻿@model LeaveApplication.Models.LeaveReason
-@{
-    /**/
-
+﻿@{
     ViewBag.Title = "LeaveReason";
     Layout = "~/Views/Shared/EmpProfileLayOut.cshtml";
 }
+@model LeaveApplication.Models.Degrees
 
+<div class="modal fade " id="d1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3>Are you sure to delete this item?</h3>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-end">
+                    <button data-dismiss="modal" class="btn btn-link">Cancel</button>
+
+                    <button id="dl" type="submit" class="btn btn-info-grd">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal for edit form-->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -16,20 +35,20 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            @using (Html.BeginForm("UpdateLeaveReason", "Admin", FormMethod.Post))
+            @using (Html.BeginForm("UpdateDegree", "Admin", FormMethod.Post))
             {
                 <div class="modal-body">
                     <div class="form-group d-flex justify-content-center my-auto">
-                        <input id="id" name="id" type="text" hidden />
-                        <input id="edittxt" name="edittxt" type="text" class="form-control" value="Change me....." />
+
+                        @Html.TextBoxFor(m => m.Degree, new { @class = "form-control", id = "edittxt", required = "required", value = "Change me....." })
+                        @Html.ValidationMessageFor(m => m.Degree, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-info-grd">Save changes</button>
+                    <button type="submit" id="id" name="DegreeID" class="btn btn-info-grd">Save changes</button>
                 </div>
             }
-
         </div>
     </div>
 </div>
@@ -42,20 +61,16 @@
             <div class="card">
                 <div class="card-header card-header-info">
                     <h5 class="card-title">Enter Leave Reasons</h5>
-
                 </div>
                 <div class=" card-body">
                     <div class="card">
-                        @using (Html.BeginForm("AddLeaveReason", "Admin", FormMethod.Post))
+                        @using (Html.BeginForm("AddDegree", "Admin", FormMethod.Post))
                         {<div class="form-group d-flex  justify-content-center ">
-                                @Html.TextBoxFor(m => m._LeaveReason, new { @class = "form-control", placeholder = "Leave Reason", required = "required" })
 
-                                <input id="Submit1" class="btn btn-info-grd  ml-2" type="submit" value="Add Leave Reason" />
-
+                                @Html.TextBoxFor(m => m.Degree, new { @class = "form-control", placeholder = "Degree", required = "required" })
+                                @Html.ValidationMessageFor(m => m.Degree, "", new { @class = "text-danger" })
+                                <input id="Submit1" class="btn btn-info-grd  ml-2" type="submit" value="Add Degree" />
                             </div>
-
-
-
 
                         }
                     </div>
@@ -65,52 +80,46 @@
                                 <tr class="text-center">
                                     <th scope="col">Leave Reason</th>
                                     <th class="text-right" scope="col">Action</th>
-
                                 </tr>
                             </thead>
                             <tbody>
+
                                 @{
-                                    //IEnumerable<LeaveApplication.Models.LeaveTypes> d1 = ViewBag.leaves_t;
-                                    foreach (System.Data.DataRow i in ViewBag.data.Tables[0].Rows)
+                                    System.Data.DataSet ds = ViewBag.Degrees;
+                                    foreach (System.Data.DataRow i in ds.Tables[0].Rows)
                                     {
                                         <tr class="text-center ">
-                                            <td class="text-dark align-middle">@i[1].ToString()</td>
+                                            <td class="text-dark align-middle">@i[1]</td>
 
                                             <td class="align-middle">
                                                 <div class="d-flex justify-content-end">
                                                     <div class="btn-group">
                                                         <button class="btn btn-info-grd" data-toggle="modal" data-target="#exampleModalCenter" onclick="ModelOnclick(this.parentNode.parentNode.parentNode.parentNode,@i[0].ToString())">Edit</button>
-                                                        <button class="btn btn-info-grd" onclick="document.getElementById('@i[0].ToString()').submit()">Delete</button>
+                                                        <button data-id="@i[0]" class="dl btn btn-info-grd" data-toggle="modal" data-target="#d1">Delete</button>
                                                     </div>
-                                                    @using (Html.BeginForm("DeleteLeaveReason", "Admin", FormMethod.Post, new { id = i[0].ToString() }))
-                                                    {
-                                                        <input type="text" name="id" value="@i[0].ToString()" hidden />
-
-                                                    }
                                                 </div>
-
                                             </td>
                                         </tr>
                                     }
                                 }
-
-
-
                             </tbody>
                         </table>
                     </div>
-
                 </div>
-
             </div>
         </div>
     </div>
-
-
-
 </div>
+<script>
+    $(document).ready(function () {
+        $('.dl').click(function () {
+            var x = $(this).data("id");
+            $('#dl').data("id", x);
 
-
-
-
-
+        });
+        $('#dl').click(function () {
+            var id = $('#dl').data("id");
+            window.location.href = "/Admin/DeleteDegree?DegreeID=" + id;
+        })
+    });
+</script>
