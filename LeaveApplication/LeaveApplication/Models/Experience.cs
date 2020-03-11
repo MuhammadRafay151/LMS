@@ -14,12 +14,15 @@ namespace LeaveApplication.Models
         public int EmployeeId { get; set; }
 
         [Required]
+        [RegularExpression("[a-zA-Z][a-zA-Z ]+")]
         public string Organization { get; set; }
 
         [Required]
+        [RegularExpression("[a-zA-Z][a-zA-Z ]+")]
         public string Designation { get; set; }
 
         [Required]
+        [RegularExpression("[a-zA-Z][a-zA-Z ]+")]
         public string Descipline { get; set; }
 
         [Required]

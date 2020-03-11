@@ -39,7 +39,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-8 form-group">
                             <label>Oraganization</label>
-                            @Html.TextBoxFor(m => m.Organization, new { @class = "form-control", required = "required" })
+                            @Html.TextBoxFor(m => m.Organization, new { @class = "form-control", required = "required",pattern="[a-zA-Z][a-zA-Z ]+", title="Invalid Input" })
                             @Html.ValidationMessageFor(m => m.Organization, "", new { @class = "text-danger" })
 
                         </div>
@@ -47,7 +47,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-8 form-group">
                             <label>Designation</label>
-                            @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", required = "required" })
+                            @Html.TextBoxFor(m => m.Designation, new { @class = "form-control", required = "required",pattern="[a-zA-Z][a-zA-Z ]+", title="Invalid Input"  })
                             @Html.ValidationMessageFor(m => m.Designation, "", new { @class = "text-danger" })
 
                         </div>
@@ -55,7 +55,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="col-8 form-group">
                             <label>Descipline</label>
-                            @Html.TextBoxFor(m => m.Descipline, new { @class = "form-control", required = "required" })
+                            @Html.TextBoxFor(m => m.Descipline, new { @class = "form-control", required = "required",pattern="[a-zA-Z][a-zA-Z ]+", title="Invalid Input"  })
                             @Html.ValidationMessageFor(m => m.Descipline, "", new { @class = "text-danger" })
 
                         </div>
@@ -141,7 +141,7 @@
                                 <tr>
                                     <th class="text-info" scope="row">Organization</th>
                                     <td>@ds.Tables[0].Rows[i][2]</td>
-                                    <td class="d-flex justify-content-end" >
+                                    <td class="d-flex justify-content-end">
 
                                         <a class="dropdown-toggle" data-toggle="dropdown"></a>
 
@@ -178,7 +178,7 @@
                 </div>
 
             </div>
-           
+
 
 
         </div>
@@ -187,16 +187,33 @@
     }
 
 </div>
+@if (ViewBag.OpenModel != null && Model.ExperienceId != 0)
+{
+    <script>
+        $(document).ready(function () {
+            $('#ad1').modal('show');
+       $('#f1').attr('action', "/Experience/UpdateExp?id=@Model.ExperienceId");
+        })
+    </script>
+}
+else if (ViewBag.OpenModel != null)
+{
+    <script>
+        $(document).ready(function () {
+            $('#ad1').modal('show');
 
+        })
+    </script>
+}
 <script>
     $(document).ready(function (btn) {
-
         $('.edt').click(function () {
-              var x = $(this).data("id");
-            $('#f1').attr('action', "/Experience/UpdateExp?id="+x);
+            $(".text-danger").hide();
+            var x = $(this).data("id");
+            $('#f1').attr('action', "/Experience/UpdateExp?id=" + x);
             $('#bt1').html("Save Changes");
             $('#ad1').modal('show');
-             var id = $(this).data("id");
+            var id = $(this).data("id");
             $.ajax({
                 type: "get",
                 url: "/Experience/GetExp?id=" + id,
@@ -207,8 +224,8 @@
                     $('#Designation').val(data.Designation);
                     $('#Descipline').val(data.Descipline);
                     $('#Fromdate').val(data.Fromdate);
-                     $('#Todate').val(data.Todate);
-                  
+                    $('#Todate').val(data.Todate);
+
                 }, error: function () {
                     alert("Encountering some error please try again later.");
                 }
@@ -218,8 +235,14 @@
         });
         $('#ad2').click(function () {
             $('#f1').attr('action', "/Experience/AddExp");
+            $(".text-danger").html("");
+            $('#Organization').val("");
+            $('#Designation').val("");
+            $('#Descipline').val("");
+            $('#Fromdate').val("");
+            $('#Todate').val("");
             $('#bt1').html("Add Experience");
-            $("#f1").trigger("reset");
+
         });
         $('.dl').click(function () {
             var x = $(this).data("id");

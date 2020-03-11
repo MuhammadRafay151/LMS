@@ -41,17 +41,26 @@
                     <li class="nav-item">
                         @Html.ActionLink("Log In", "Index", "Login", null, new { @class = "nav-link font" })
                     </li>
+                    <li class="nav-item ">
+                        @Html.ActionLink("About", "About", "Home", null, new { @class = "nav-link font" })
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
 
-    <div class="container body-content h-100">
+    <div class="container body-content">
         @RenderBody()
         @*<hr />*@
-        <footer class="justify-content-end">
-            <p class="text-white">&copy; @DateTime.Now.Year Usman Institute of Technology</p>
+        <footer>
+            <div class="col d-flex justify-content-start">
+                <p class="text-white">Version 1.0</p>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <p class="text-white">&copy; @DateTime.Now.Year Usman Institute of Technology</p>
+            </div>
+
         </footer>
     </div>
 
