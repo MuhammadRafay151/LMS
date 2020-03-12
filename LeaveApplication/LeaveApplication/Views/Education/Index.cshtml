@@ -59,7 +59,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
                             <label for="DegreeTittle" class="ml-3">DegreeTittle</label>
-                            <input type="text" id="editdegtittle" name="DegreeTittle" class="form-control " required />
+                            <input type="text" id="editdegtittle" name="DegreeTittle" class="form-control " required pattern="[a-zA-Z][a-zA-Z ]+" title="Invalid Input" />
                             @Html.ValidationMessage("DegreeTittle", "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
                             <label for="Field" class="ml-3">Field</label>
-                            <input type="text" id="editfield" name="Field" class="form-control " required />
+                            <input type="text" id="editfield" name="Field" class="form-control " required required pattern="[a-zA-Z][a-zA-Z ]+" title="Invalid Input" />
                             @Html.ValidationMessage("Field", "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
                             <label for="Institute" class="ml-3">Institute</label>
-                            <input type="text" id="editinstitute" name="Institute" class="form-control " required />
+                            <input type="text" id="editinstitute" name="Institute" class="form-control " required required pattern="[a-zA-Z][a-zA-Z ]+" title="Invalid Input" />
                             @Html.ValidationMessage("Institute", "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -137,7 +137,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
                             <label for="DegreeTittle" class="text-center bmd-label-floating">DegreeTittle</label>
-                            <input type="text" name="DegreeTittle" class="form-control " required />
+                            <input type="text" name="DegreeTittle" class="form-control " required pattern="[a-zA-Z][a-zA-Z ]+" title="Invalid Input" />
                             @Html.ValidationMessage("DegreeTittle", "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
                             <label for="Field" class="text-center bmd-label-floating">Field</label>
-                            <input type="text" name="Field" class="form-control " required />
+                            <input type="text" name="Field" class="form-control " required pattern="[a-zA-Z][a-zA-Z ]+" title="Invalid Input" />
                             @Html.ValidationMessage("Field", "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -153,7 +153,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="form-group col-8 bmd-form-group">
                             <label for="Institute" class="text-center bmd-label-floating">Institute</label>
-                            <input type="text" name="Institute" class="form-control " required />
+                            <input type="text" name="Institute" class="form-control " required pattern="[a-zA-Z][a-zA-Z ]+" title="Invalid Input" />
                             @Html.ValidationMessage("Institute", "", new { @class = "text-danger" })
                         </div>
                     </div>
