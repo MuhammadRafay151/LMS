@@ -42,13 +42,13 @@ namespace LeaveApplication.Models
 
         public DataSet GetExperiencesReport()
         {
-            Querry = string.Format("select EmployeeName,Department,Designations.Designation,JoiningDate,Sum(Cast(DATEDIFF(MONTH,Fromdate,Todate)/12.00 as DECIMAL(10, 1))) as 'years' from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join Designations on Employee.DesignationID=Designations.DesignationID inner join Experience on Employee.EmployeeID=Experience.Employeeid group by EmployeeName,Department,Designations.Designation,JoiningDate");
+            Querry = string.Format("select EmployeeName,Department,Designations.Designation,JoiningDate,Sum(Cast(DATEDIFF(Day,Fromdate,Todate)/365.0 as DECIMAL(10, 2))) as 'years' from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join Designations on Employee.DesignationID=Designations.DesignationID inner join Experience on Employee.EmployeeID=Experience.Employeeid group by EmployeeName,Department,Designations.Designation,JoiningDate");
             return database.Read(Querry);
         }
 
         public DataSet GetDepExperiencesReport(int DepID)
         {
-            Querry = string.Format("select EmployeeName,Department,Designations.Designation,JoiningDate,Sum(Cast(DATEDIFF(MONTH,Fromdate,Todate)/12.00 as DECIMAL(10, 1))) as 'years' from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join Designations on Employee.DesignationID=Designations.DesignationID inner join Experience on Employee.EmployeeID=Experience.Employeeid where Departments.DepartmentID={0} group by EmployeeName,Department,Designations.Designation,JoiningDate", DepID);
+            Querry = string.Format("select EmployeeName,Department,Designations.Designation,JoiningDate,Sum(Cast(DATEDIFF(Day,Fromdate,Todate)/365.0 as DECIMAL(10, 2))) as 'years' from Employee inner join Departments on Employee.DepartmentID=Departments.DepartmentID inner join Designations on Employee.DesignationID=Designations.DesignationID inner join Experience on Employee.EmployeeID=Experience.Employeeid where Departments.DepartmentID={0} group by EmployeeName,Department,Designations.Designation,JoiningDate", DepID);
             return database.Read(Querry);
         }
 
