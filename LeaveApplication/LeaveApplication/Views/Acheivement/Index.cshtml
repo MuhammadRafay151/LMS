@@ -41,7 +41,7 @@
                         <div class="col">
                             <div class="form-group">
                                 <label>Title</label>
-                                <input type="text" id="updatetittle" name="title" class="form-control col-12" required>
+                                <input type="text" id="updatetittle" name="title" class="form-control col-12" required,pattern="[a-zA-Z][a-zA-Z ]+" , title="Invalid Input">
                                 @Html.ValidationMessage("title", "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="p-1 col-12" style="border:solid 1px #A9A9A9">
                             <label>Description</label>
-                            @Html.TextArea("Description", new { @class = "form-control col-12", id = "updateDes", required = "required", style = "font-size:22px", cols = "20", rows = "6" })
+                            @Html.TextArea("Description", new { @class = "form-control col-12", id = "updateDes", required = "required", style = "font-size:22px", cols = "20", rows = "6", pattern = "[a-zA-Z][a-zA-Z ]+", title = "Invalid Input" })
                             @Html.ValidationMessage("Description", "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <input type="text" id="title" name="title" class="form-control col-12" placeholder="Title" required>
+                                        <input type="text" id="title" name="title" class="form-control col-12" placeholder="Title" required pattern="[a-zA-Z][a-zA-Z ]+" , title="Invalid Input">
                                         @Html.ValidationMessage("title", "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -145,7 +145,7 @@
                             <div class="form-group d-flex justify-content-center">
                                 <div class="p-1 col-12" style="border:solid 1px #A9A9A9">
 
-                                    @Html.TextArea("Description", new { @class = "form-control col-12", required = "required", placeholder = "Description", style = "font-size:22px", cols = "20", rows = "6" })
+                                    @Html.TextArea("Description", new { @class = "form-control col-12", required = "required", placeholder = "Description", style = "font-size:22px", cols = "20", rows = "6", pattern = "[a-zA-Z][a-zA-Z ]+", title = "Invalid Input" })
                                     @Html.ValidationMessage("Description", "", new { @class = "text-danger" })
                                 </div>
                             </div>

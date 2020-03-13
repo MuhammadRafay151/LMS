@@ -12,7 +12,7 @@ namespace LeaveApplication.Validation_Classes
     {
         public void ValidateFullDay_L(LeaveApplication.Models.LeaveApplication l1, ModelStateDictionary x)
         {//for leave application
-            if(l1.Attachment!=null&&!IsValidFileFormat(l1.Attachment.FileName))
+            if (l1.Attachment != null && !IsValidFileFormat(l1.Attachment.FileName))
             {
                 x.AddModelError("Attachment", "Invalid Format");
             }
@@ -29,7 +29,6 @@ namespace LeaveApplication.Validation_Classes
                 try
                 {
                     DateTime.ParseExact(l1.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-
                 }
                 catch (FormatException)
                 {
@@ -45,7 +44,6 @@ namespace LeaveApplication.Validation_Classes
                 try
                 {
                     DateTime.ParseExact(l1.ToDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-
                 }
                 catch (FormatException)
                 {
@@ -56,8 +54,8 @@ namespace LeaveApplication.Validation_Classes
             {
                 x.AddModelError("LeaveReason", "Required");
             }
-         
         }
+
         public void ValidateHalfDay_L(LeaveApplication.Models.LeaveApplication l1, ModelStateDictionary x)
         {
             if (l1.Attachment != null && !IsValidFileFormat(l1.Attachment.FileName))
@@ -77,7 +75,6 @@ namespace LeaveApplication.Validation_Classes
                 try
                 {
                     DateTime.ParseExact(l1.FromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-
                 }
                 catch (FormatException)
                 {
@@ -119,8 +116,8 @@ namespace LeaveApplication.Validation_Classes
             {
                 x.AddModelError("LeaveReason", "Required");
             }
-
         }
+
         public bool IsValidFileFormat(string FileName)
         {//for attachment on leave application form
             string ContentType = string.Empty;
@@ -132,35 +129,33 @@ namespace LeaveApplication.Validation_Classes
             if (MimeType.Contains(ContentType))
             {
                 return true;
-               
             }
             else
             {
                 return false;
             }
-
         }
+
         public bool IsImageFormat(string FileName)
         {
             string ContentType = string.Empty;
             List<string> MimeType = null;
 
             ContentType = System.Web.MimeMapping.GetMimeMapping(FileName);
-            MimeType = new List<string>() { "image/jpeg"};
+            MimeType = new List<string>() { "image/jpeg" };
             if (MimeType.Contains(ContentType))
             {
                 return true;
-
             }
             else
             {
                 return false;
             }
-
         }
-        public bool IsNegativeDifference(string From,string To)
+
+        public bool IsNegativeDifference(string From, string To)
         {
-            if((DateTime.Parse(To)-DateTime.Parse(From)).Days<0)
+            if ((DateTime.Parse(To) - DateTime.Parse(From)).Days < 0)
             {
                 return true;
             }
@@ -177,7 +172,7 @@ namespace LeaveApplication.Validation_Classes
                 exp.Fromdate = DateTimeHelper.yyyy_mm_dd(exp.Fromdate);
                 if (DateTime.Parse(exp.Fromdate) > DateTime.Now.Date)
                 {
-                   ModelState.AddModelError("Fromdate", "Invalid date");
+                    ModelState.AddModelError("Fromdate", "Invalid date");
                 }
             }
             catch (FormatException)
