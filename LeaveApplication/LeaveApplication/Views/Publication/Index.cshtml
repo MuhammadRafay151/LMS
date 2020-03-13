@@ -76,7 +76,7 @@
 
                     </div>
                     <div id="form2">
-                       
+
                     </div>
                     <div class="row">
                         <div class="col">
@@ -85,7 +85,7 @@
                     </div>
                 </form>
             </div>
-           
+
         </div>
     </div>
 </div>
@@ -129,13 +129,15 @@
 
                 </div>
                 <div class="container">
-                    <div id="c1" class="card-body">
+                    <div id="c1" class="card-body" >
                         <div class="card ">
                             <div class="card-body">
+                                @*@Html.ValidationSummary(false, "", new { @class = "text-danger" })*@
                                 <form action="/Publication/AddPub" method="post" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-12">
-                                            <div class="form-group d-flex justify-content-center">
+                                            <div class="form-group ">
+
                                                 @Html.TextBoxFor(m => m.Title, new { @class = "form-control col-12", required = "required", placeholder = "Title" })
                                                 @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
 
@@ -145,7 +147,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-6">
-                                            <div class="form-group d-flex justify-content-center">
+                                            <div class="form-group">
                                                 @Html.TextBoxFor(m => m.PublishedDate, new { @class = "form-control col-12 datetimepicker", required = "required", placeholder = "Publish Date" })
                                                 @Html.ValidationMessageFor(m => m.PublishedDate, "", new { @class = "text-danger" })
                                             </div>
@@ -197,10 +199,23 @@
                                     <div id="form">
                                         <div class="row">
                                             <div class="col-12">
-                                                <div class="form-group d-flex justify-content-center">
-                                                    @Html.TextBoxFor(m => m.Author[0], new { @class = "form-control col-12", required = "required", placeholder = "Author" })
-                                                    @Html.ValidationMessageFor(m => m.Author[0], "", new { @class = "text-danger" })
+                                                <div class="form-group ">
+                                                    @if (Model != null)
+                                                    {
+                                                        for (int i = 0; i < Model.Author.Count; i++)
+                                                        {
+                                                            @Html.TextBoxFor(m => m.Author[i], new { @class = "form-control col-12", required = "required", placeholder = "Author" })
+                                                            @Html.ValidationMessageFor(m => m.Author[i], "", new { @class = "text-danger" })
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(m => m.Author[0], new { @class = "form-control col-12", required = "required", placeholder = "Author" })
+                                                        @Html.ValidationMessageFor(m => m.Author[0], "", new { @class = "text-danger" })
+                                                    }
+
                                                 </div>
+
                                             </div>
 
                                         </div>
@@ -296,11 +311,12 @@
     }
 
 </div>
+
 <script>
     var i = 1;
     var editauthor_counter = 0;
     $(document).ready(function () {
-        $('#c1').hide();
+       
         $('#h1').click(function () {
             if ($('#c1').is(':visible')) {
                 $('#c1').hide('fade');
@@ -370,7 +386,7 @@
             console.log(x);
             $('#f1').attr('action', "/Publication/UpdatePub?PublishedId=" + x);
 
-          
+
             $.ajax({
                 type: "get",
                 url: "/Publication/GetPublication?id=" + x,
@@ -387,7 +403,7 @@
                         $('#form2').append(`<div class="row"><div class="col-12"><div class="form-group d-flex justify-content-center"><input name="Author[${editauthor_counter}]" required class="form-control col-12" value="${temp[i]}" placeholder="Author" /></div></div></div>`);
                         ++editauthor_counter;
                     }
-                      $('#d2').modal('show');
+                    $('#d2').modal('show');
                 }, error: function () {
                     alert("Encountering some error please try again later.");
                 }
@@ -408,5 +424,15 @@
     });
 
 </script>
+@if (ViewBag.Openform != null)
+{
+    <script>
+        $(document).ready(function () {
+            console.log("dsf");
+        $('#c1').show('fade');
+        });
+
+    </script>
+}
 <script src="~/Scripts/DateTimePickerHelper.js"></script>
 

@@ -19,6 +19,8 @@ namespace LeaveApplication.Controllers
         }
         public ActionResult AddPub(Publication publication)
         {
+            Validation_Classes.Validation v1 = new Validation_Classes.Validation();
+            v1.ValidatePublication(publication,ModelState);
             if (ModelState.IsValid)
             {
                 publication.EmployeeId = Convert.ToInt32(Session["EmpId"]);
@@ -26,7 +28,10 @@ namespace LeaveApplication.Controllers
             }
             else
             {
-                return View("Index");
+                publication.EmployeeId = int.Parse(Session["EmpId"].ToString());
+                ViewBag.data = publication.GetPublications();
+                ViewBag.Openform = true;
+                return View("Index",publication);
             }
             return RedirectToAction("Index");
 

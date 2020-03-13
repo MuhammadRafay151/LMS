@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LeaveApplication.Models;
+using System.Text.RegularExpressions;
 namespace LeaveApplication.Validation_Classes
 {
     public class Validation
@@ -198,6 +199,30 @@ namespace LeaveApplication.Validation_Classes
             if (IsNegativeDifference(exp.Fromdate, exp.Todate))
             {
                 ModelState.AddModelError("Todate", "Todate cannot be older than fromdate");
+            }
+        }
+        public void ValidatePublication(Publication Pub,ModelStateDictionary ModelState)
+        {
+            Regex r1 = new Regex("[a-zA-Z][a-zA-Z ]+");
+            Pub.PublishedDate = DateTimeHelper.yyyy_mm_dd(Pub.PublishedDate);
+            for (int i=0;i<Pub.Author.Count;i++)
+            {
+                if (string.IsNullOrWhiteSpace(Pub.Author[i]))
+                {
+                    ModelState.AddModelError(string.Format("Author[{0}]", i), "Required");
+                }
+                else if(!r1.IsMatch(Pub.Author[i]))
+                {
+                    ModelState.AddModelError(string.Format("Author[{0}]", i), "Invalid Input");
+                }
+            }
+            if(!IsValidFileFormat(Pub.File.FileName))
+            {
+                ModelState.AddModelError("File", "Invalid File");
+            }
+            if (DateTime.Parse(Pub.PublishedDate) > DateTimeHelper.GetDate())
+            {
+                ModelState.AddModelError("PublishedDate", "Invalid Time");
             }
         }
     }
