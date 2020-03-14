@@ -191,6 +191,7 @@
     <Compile Include="Models\LeaveTypes.cs" />
     <Compile Include="Models\ManagerBusinessLayer.cs" />
     <Compile Include="Models\Pagination.cs" />
+    <Compile Include="Models\ProfilePicture.cs" />
     <Compile Include="Models\Publication.cs" />
     <Compile Include="Models\StatusHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -206,6 +207,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap1.css" />
     <Content Include="Content\bootstraplumen.css" />
+    <Content Include="Content\croppie.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -289,6 +291,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\canvasjs.min.js" />
+    <Content Include="Scripts\croppie.js" />
+    <Content Include="Scripts\croppie.min.js" />
     <Content Include="Scripts\CustomJS.js" />
     <Content Include="Scripts\DateTimePickerHelper.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
@@ -581,6 +585,7 @@
     <Content Include="Views\Experience\Report.cshtml" />
     <Content Include="Views\Education\Index.cshtml" />
     <Content Include="Views\Admin\Degrees.cshtml" />
+    <Content Include="Views\Profile\UploadImage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

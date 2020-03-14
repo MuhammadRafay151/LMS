@@ -81,6 +81,20 @@ namespace LeaveApplication.Controllers
             return View(b1);
         }
 
+        public ActionResult UploadImage(HttpPostedFileBase img)
+        {if(Request.HttpMethod=="POST")
+            {
+                if(img!=null)
+                {
+                    EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
+                    LeaveBusinessLayer lb = new LeaveBusinessLayer();
+                    ((LeaveApplication.Models.Employee)Session["Employee"]).ImageBytes= lb.GetFileBytes(img);
+                    return Content("sd");
+                }
+            }
+            return View();
+        }
+
         public ActionResult Edit_Info_Submit(BasicInfo b1)
         {
             if (Session["EmpID"] != null)
@@ -103,6 +117,13 @@ namespace LeaveApplication.Controllers
                     e2.PhoneNumber = b1.PhoneNumber;
                     if (b1.Image != null)
                         e2.ImageBytes = b1.ImagesBytes;
+                }
+                else
+                {
+                    b1 = null;
+                    ViewBag.OpenModel = true;
+                    b1 =new BasicInfo ((LeaveApplication.Models.Employee)Session["Employee"]);
+                    return View("Basicinfo", b1);
                 }
                 return RedirectToAction("Basicinfo");
             }

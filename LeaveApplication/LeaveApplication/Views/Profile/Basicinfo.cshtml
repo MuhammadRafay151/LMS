@@ -269,11 +269,18 @@
 </div>
 
 
-
+@if(ViewBag.OpenModel!=null)
+{
+    <script>
+    $(document).ready(function () {
+        $('#ed').modal('show');;
+    })
+    </script>
+}
 <script>
     $(document).ready(function () {
         $("#PhoneNumber").mask('0000-0000000');
-        $("#CNIC").mask("00000-0000000-0");
+        $("#Cnic").mask("00000-0000000-0");
         $('#s1').click(function () {
             $('#ed').modal("hide");
             $('#f1').submit();

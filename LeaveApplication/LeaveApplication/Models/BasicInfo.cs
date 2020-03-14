@@ -27,19 +27,23 @@ namespace LeaveApplication.Models
         public BasicInfo()
         { }
         [Required]
+        [RegularExpression("[a-zA-Z][a-zA-Z ]+")]
         public string Name { get; set; }
         [Required]
         public string Address { get; set; }
         [Required]
         public string BirthDay { get; set; }
         [Required]
+        [RegularExpression("^[0-9+]{5}-[0-9+]{7}-[0-9]{1}$",ErrorMessage ="Invalid CNIC")]
         public string Cnic { get; set; }
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
         [Required]
+        [RegularExpression(@"^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$",ErrorMessage ="Required format(####-#######)")]
         public string PhoneNumber { get; set; }
         public HttpPostedFileBase Image { get; set; }
-
+        
         public string Department { get; set; }
 
         public string Designation { get; set; }
