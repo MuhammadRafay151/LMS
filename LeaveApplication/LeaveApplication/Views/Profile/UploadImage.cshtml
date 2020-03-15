@@ -17,9 +17,18 @@
                         </div>
                     </div>
 
+                    <div class="row ">
+                        <div class="col d-flex justify-content-center">
+                            <h3 id="er" style="display:none" class="text-danger">Invalid Image</h3>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="card-footer">
+
+
+
+
                     <button id="fl1" class="btn btn-round btn-block btn-outline-info">Select Image</button>
                     <button id="sbt" class="btn btn-round btn-block btn-outline-info" style="display:none">Submit</button>
                 </div>
@@ -31,6 +40,7 @@
     </div>
 
 </div>
+<script src="~/Scripts/FileValidation.js"></script>
 <script>
 
     var basic = $('#img').croppie({
@@ -50,41 +60,56 @@
     });
     function Load() {
         var imageUrl = URL.createObjectURL(event.target.files[0]);
-        console.log(imageUrl);
+
         basic.croppie('bind', {
             url: imageUrl,
 
         });
-        $('#sbt').show('fade');
+        var file = document.getElementById('fl');
+        if (IsValidImage(file)) {
+            $('#sbt').show('fade');
+        }
+        else {
+            $('#er').show();
+        }
     }
     //on button click
     $('#sbt').click(function () {
-        basic.croppie('result', 'blob').then(function (blob) {
-            // html is div (overflow hidden)
-            // with img positioned inside.
+        var file = document.getElementById('fl');
+        if (IsValidImage(file)) {
+            basic.croppie('result', 'blob').then(function (blob) {
+                // html is div (overflow hidden)
+                // with img positioned inside.
 
-            //to render cropped blob
-            var imageUrl = URL.createObjectURL(blob);
-            $('#d').attr('src', imageUrl);
-            var fd = new FormData();
-            fd.append('fname', 'test.txt');
-            fd.append('img', blob);
+                //to render cropped blob
+                var imageUrl = URL.createObjectURL(blob);
+                $('#d').attr('src', imageUrl);
+                var fd = new FormData();
+                fd.append('fname', file.files[0].name);
+                fd.append('img', blob);
+                $.ajax({
+                    method: "POST",
+                    url: "/Profile/UploadImage",
+                    data: fd,
+                    processData: false,
+                    contentType: false,
+                    success: function (result) {
+                        $('#ld').hide('fade', function () {
+                            window.location.href = "/Profile/";
+                        });
 
-            $.ajax({
-                method: "POST",
-                url: "/Profile/UploadImage",
-                data: fd,
-                processData: false,
-                contentType: false,
-                success: function (result) {
-                    $('#ld').hide('fade', function () {
-                        window.location.href = "/Profile/";
-                    });
 
-
-                }
+                    },
+                    error: function (error) {
+                        alert(error.statusText);
+                        window.location.href = "/Profile/UploadImage";
+                    }
+                });
             });
-        });
+        } else {
+            $('#er').show();
+        }
+
     })
 
 
@@ -94,12 +119,20 @@
             $('#fl1').hide('fade');
             $('#sbt').hide('fade');
             $('.card-footer').append(` <button id="ld" class="btn btn-block  btn-info-grd" type="button" disabled>
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                UpLoading...
-            </button>`);
+<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+UpLoading...
+</button>`);
         });
         $('#fl1').click(function () {
             $('#fl').trigger('click');
         });
     });
 </script>
+@if (ViewBag.Error != null)
+{
+   <script>
+    $(document).ready(function () {
+        alert("Invalid Image");
+    })
+   </script>
+}

@@ -211,10 +211,11 @@ namespace LeaveApplication.Validation_Classes
                     ModelState.AddModelError(string.Format("Author[{0}]", i), "Invalid Input");
                 }
             }
-            if(!IsValidFileFormat(Pub.File.FileName))
+            if(Pub.File!=null&&!IsValidFileFormat(Pub.File.FileName))
             {
-                ModelState.AddModelError("File", "Invalid File");
+                ModelState.AddModelError("File", "Allowed formats(pdf,docx,jpeg,png)");
             }
+          
             if (DateTime.Parse(Pub.PublishedDate) > DateTimeHelper.GetDate())
             {
                 ModelState.AddModelError("PublishedDate", "Invalid Time");

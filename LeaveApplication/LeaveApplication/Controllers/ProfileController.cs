@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using LeaveApplication.Models;
 using System.IO;
 using System.Data.SqlClient;
+using LeaveApplication.Validation_Classes;
+using System.Net;
 
 namespace LeaveApplication.Controllers
 {
@@ -13,62 +15,43 @@ namespace LeaveApplication.Controllers
     {
         // GET: Profile
         private EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
-
+        [SessionLive]
         public ActionResult Index()
         {
-            if (Session["EmpID"] != null)
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Index", "LogIn");
-            }
+            return View();
         }
-
+        [SessionLive]
         public ActionResult ResetPassword()
         {
-            Employee e1 = (Employee)Session["Employee"];
-            if (Session["EmpID"] != null)
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Index", "LogIn");
-            }
+            return View();
         }
 
         [HttpPost]
         public ActionResult ChangePassword(string CurrentPassword, string NewPassword, string ComfirmPassword)
         {
             Employee e1 = (Employee)Session["Employee"];
-            if (Session["EmpID"] != null)
+
+            if (eb.UserPassword(e1.UserName) == eb.MD5Hash(CurrentPassword))
             {
-                if (eb.UserPassword(e1.UserName) == eb.MD5Hash(CurrentPassword))
+                if (NewPassword == ComfirmPassword)
                 {
-                    if (NewPassword == ComfirmPassword)
-                    {
-                        eb.ResetPassword(NewPassword, e1.UserName);
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("ComfirmPassword", "Confirm Password not matched");
-                        return View("ResetPassword");
-                    }
+                    eb.ResetPassword(NewPassword, e1.UserName);
                 }
                 else
                 {
-                    ModelState.AddModelError("CurrentPassword", "Current Password is not Correct");
+                    ModelState.AddModelError("ComfirmPassword", "Confirm Password not matched");
                     return View("ResetPassword");
                 }
-                TempData["Notify"] = true;
-                return RedirectToAction("ResetPassword", "Profile");
             }
             else
             {
-                return RedirectToAction("Index", "LogIn");
+                ModelState.AddModelError("CurrentPassword", "Current Password is not Correct");
+                return View("ResetPassword");
             }
+            TempData["Notify"] = true;
+            return RedirectToAction("ResetPassword", "Profile");
+
+
         }
 
         public ActionResult Basicinfo()
@@ -80,21 +63,34 @@ namespace LeaveApplication.Controllers
             BasicInfo b1 = new BasicInfo((LeaveApplication.Models.Employee)Session["Employee"]);
             return View(b1);
         }
+        [SessionLive]
+        public ActionResult UploadImage(string fname, HttpPostedFileBase img)
+        {
 
-        public ActionResult UploadImage(HttpPostedFileBase img)
-        {if(Request.HttpMethod=="POST")
+            if (Request.HttpMethod == "POST")
             {
-                if(img!=null)
+                Validation_Classes.Validation v1 = new Validation();
+                if (img != null)
                 {
-                    EmployeeBusinessLayer eb = new EmployeeBusinessLayer();
-                    LeaveBusinessLayer lb = new LeaveBusinessLayer();
-                    ((LeaveApplication.Models.Employee)Session["Employee"]).ImageBytes= lb.GetFileBytes(img);
-                    return Content("sd");
+                    if (v1.IsImageFormat(fname))
+                    {
+                        LeaveBusinessLayer lb = new LeaveBusinessLayer();
+                        Employee e1 = (LeaveApplication.Models.Employee)Session["Employee"];
+                        e1.ImageBytes = lb.GetFileBytes(img);
+                        ProfilePicture p1 = new ProfilePicture() { Image = e1.ImageBytes };
+                        p1.Update(int.Parse(Session["EmpId"].ToString()));
+                        return Content("Successfully Uploaded");
+                    }
+                    else
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.InternalServerError,"Invalid image format");
+                    }
+                 
                 }
             }
             return View();
         }
-
+        [SessionLive]
         public ActionResult Edit_Info_Submit(BasicInfo b1)
         {
             if (Session["EmpID"] != null)
@@ -102,11 +98,6 @@ namespace LeaveApplication.Controllers
                 if (ModelState.IsValid)
                 {
                     Validation_Classes.Validation v1 = new Validation_Classes.Validation();
-                    if (b1.Image != null && !v1.IsImageFormat(b1.Image.FileName))
-                    {
-                        ModelState.AddModelError("Image", "Invalid Image Format");
-                        return View("Basicinfo", b1);
-                    }
                     b1.SaveChanges(int.Parse(Session["EmpId"].ToString()));
                     Employee e2 = (Employee)Session["Employee"];
                     e2.EmployeeName = b1.Name;
@@ -115,14 +106,12 @@ namespace LeaveApplication.Controllers
                     e2.CNIC = b1.Cnic;
                     e2.Email = b1.Email;
                     e2.PhoneNumber = b1.PhoneNumber;
-                    if (b1.Image != null)
-                        e2.ImageBytes = b1.ImagesBytes;
                 }
                 else
                 {
                     b1 = null;
                     ViewBag.OpenModel = true;
-                    b1 =new BasicInfo ((LeaveApplication.Models.Employee)Session["Employee"]);
+                    b1 = new BasicInfo((LeaveApplication.Models.Employee)Session["Employee"]);
                     return View("Basicinfo", b1);
                 }
                 return RedirectToAction("Basicinfo");
@@ -132,20 +121,21 @@ namespace LeaveApplication.Controllers
                 return RedirectToAction("Index", "LogIn");
             }
         }
-
+        [SessionLive]
         public ActionResult Experience()
         {
             return View();
         }
-
+        [SessionLive]
         public ActionResult Publications()
         {
             return View();
         }
-
+        [SessionLive]
         public ActionResult Acheivements()
         {
             return View();
         }
     }
+
 }

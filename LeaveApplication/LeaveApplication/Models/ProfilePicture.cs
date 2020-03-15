@@ -8,9 +8,10 @@ namespace LeaveApplication.Models
 {
     public class ProfilePicture
     {
-       public HttpPostedFileBase Image { get; set; }
+       
+        public byte[] Image;
         db database = new db();
-        public void Update(string EmpId)
+        public void Update(int EmpId)
         {
             string querry = "update Picture set Picture=@img where EmployeeID=@emp";
             HelperClasses.SqlParm sq = new HelperClasses.SqlParm();

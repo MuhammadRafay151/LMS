@@ -47,7 +47,7 @@ x.id=y.PublicationId where x.Employeeid={0} and x.id={1}", EmployeeId, Published
             Querry = "";
             HelperClasses.SqlParm s1 = new HelperClasses.SqlParm();
             s1.Add("Title", Title);
-            s1.Add("pd", DateTimeHelper.yyyy_mm_dd(PublishedDate));
+            s1.Add("pd",PublishedDate);
             s1.Add("desc", Description);
             s1.Add("Author", MakeAuthorsString());
             s1.Add("pid", PublishedId);
