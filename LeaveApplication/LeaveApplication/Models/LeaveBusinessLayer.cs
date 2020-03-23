@@ -34,6 +34,11 @@ namespace LeaveApplication.Models
         }
         public void SaveApplication(LeaveApplication a1)
         {
+            string Querry;
+            con = new SqlConnection(connection);
+            con.Open();
+            cmd = new SqlCommand();
+            cmd.Connection = con;
             if (a1.IsHalfDay == 0)
             {
                 a1.TotalDays = CalculateTotalLeaveDays(a1);
@@ -48,15 +53,22 @@ namespace LeaveApplication.Models
             }
 
             a1.ApplyDate = DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss");
-            con = new SqlConnection(connection);
-            con.Open();
-            string Querry = string.Format("insert into LeaveApplication (EmployeeID,LeaveTypeID,[ApplyDate],FromDate,ToDate,[TotalDays],Remarks,ReasonID,ApplicationType) values('{0}','{1}','{2}','{3}','{4}','{5}',@Remarks,'{6}','{7}') SELECT SCOPE_IDENTITY() AS [SCOPE_IDENTITY]", a1.EmployeeID, a1.LeaveType, a1.ApplyDate, a1.FromDate,
+
+
+            if (string.IsNullOrWhiteSpace(a1.LeaveRemarks))
+            {
+                Querry = string.Format("insert into LeaveApplication (EmployeeID,LeaveTypeID,[ApplyDate],FromDate,ToDate,[TotalDays],ReasonID,ApplicationType) values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}') SELECT SCOPE_IDENTITY() AS [SCOPE_IDENTITY]", a1.EmployeeID, a1.LeaveType, a1.ApplyDate, a1.FromDate,
+                a1.ToDate, a1.TotalDays, a1.LeaveReason, a1.ApplicationType);
+
+            }
+            else
+            {
+                Querry = string.Format("insert into LeaveApplication (EmployeeID,LeaveTypeID,[ApplyDate],FromDate,ToDate,[TotalDays],Remarks,ReasonID,ApplicationType) values('{0}','{1}','{2}','{3}','{4}','{5}',@Remarks,'{6}','{7}') SELECT SCOPE_IDENTITY() AS [SCOPE_IDENTITY]", a1.EmployeeID, a1.LeaveType, a1.ApplyDate, a1.FromDate,
                a1.ToDate, a1.TotalDays, a1.LeaveReason, a1.ApplicationType);
-            SqlParameter p1 = new SqlParameter();
-            p1.ParameterName = "Remarks";
-            p1.Value = a1.LeaveRemarks;
-            cmd = new SqlCommand(Querry, con);
-            cmd.Parameters.Add(p1);
+                cmd.Parameters.Add(new SqlParameter() { ParameterName = "Remarks", Value = a1.LeaveRemarks });
+            }
+            cmd.CommandText = Querry;
+
             //cmd.ExecuteNonQuery();
             reader = cmd.ExecuteReader();
             if (reader.Read())
@@ -708,7 +720,7 @@ select count(*)PendingCount from(select LeaveApplication.LeaveApplicationID,Empl
             string Querry = string.Format(@"select count(*)from(select LeaveApplication.LeaveApplicationID from LeaveApplication
 inner join StatusHistory on StatusHistory.LeaveApplicationID = LeaveApplication.LeaveApplicationID
 where EmployeeID = {0} group by LeaveApplication.LeaveApplicationID
-  having MAX(StatusHistory.ApplicationStatusID) = 1)as t1",Empid);
+  having MAX(StatusHistory.ApplicationStatusID) = 1)as t1", Empid);
             return Convert.ToInt32(database.ExecuteScalar(Querry));
         }
 

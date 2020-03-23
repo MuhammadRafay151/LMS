@@ -52,10 +52,14 @@
                                         <th scope="row" class="text-info">Application Status</th>
                                         <td class="align-middle  ">@Model.ApplicationStatus</td>
                                     </tr>
-                                    <tr>
-                                        <th scope="row" class="text-info">Leave Remarks</th>
-                                        <td class="align-middle  text-justify">@Model.LeaveRemarks</td>
-                                    </tr>
+                                    @if (!string.IsNullOrWhiteSpace(@Model.LeaveRemarks))
+                                    {
+                                        <tr>
+                                            <th scope="row" class="text-info">Leave Remarks</th>
+                                            <td class="align-middle text-center  text-justify">@Model.LeaveRemarks</td>
+                                        </tr>
+                                    }
+
                                     @if (!string.IsNullOrWhiteSpace(@Model.FileName))
                                     {
                                         <tr>
