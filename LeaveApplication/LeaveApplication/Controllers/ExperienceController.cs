@@ -29,22 +29,8 @@ namespace LeaveApplication.Controllers
         {
             if (Session["EmpID"] != null)
             {
-                try
-                {
-                    exp.Fromdate = DateTimeHelper.yyyy_mm_dd(exp.Fromdate);
-                }
-                catch (FormatException)
-                {
-                    ModelState.AddModelError("Fromdate", "Invalid Format");
-                }
-                try
-                {
-                    exp.Todate = DateTimeHelper.yyyy_mm_dd(exp.Todate);
-                }
-                catch (FormatException)
-                {
-                    ModelState.AddModelError("Todate", "Invalid Format");
-                }
+                Validation_Classes.Validation v1 = new Validation_Classes.Validation();
+                v1.ValidateExp(exp, ModelState);
                 if (ModelState.IsValid)
                 {
                     exp.EmployeeId = Convert.ToInt32(Session["EmpId"]);
@@ -52,6 +38,9 @@ namespace LeaveApplication.Controllers
                 }
                 else
                 {
+                    exp.EmployeeId = Convert.ToInt32(Session["EmpId"]);
+                    ViewBag.data = exp.GetExperiences();
+                    ViewBag.OpenModel = true;
                     return View("Index", exp);
                 }
                 return RedirectToAction("Index");
@@ -66,22 +55,8 @@ namespace LeaveApplication.Controllers
         {
             if (Session["EmpID"] != null)
             {
-                try
-                {
-                    exp.Fromdate = DateTimeHelper.yyyy_mm_dd(exp.Fromdate);
-                }
-                catch (FormatException)
-                {
-                    ModelState.AddModelError("Fromdate", "Invalid Format");
-                }
-                try
-                {
-                    exp.Todate = DateTimeHelper.yyyy_mm_dd(exp.Todate);
-                }
-                catch (FormatException)
-                {
-                    ModelState.AddModelError("Todate", "Invalid Format");
-                }
+                Validation_Classes.Validation v1 = new Validation_Classes.Validation();
+                v1.ValidateExp(exp, ModelState);
                 if (ModelState.IsValid)
                 {
                     if (id.HasValue)
@@ -93,7 +68,15 @@ namespace LeaveApplication.Controllers
                 }
                 else
                 {
-                    return View("Index", exp);
+                    if (id.HasValue)
+                    {
+                        exp.ExperienceId = id.Value;
+                        exp.EmployeeId = Convert.ToInt32(Session["EmpId"]);
+                        ViewBag.data = exp.GetExperiences();
+                        ViewBag.OpenModel = true;
+                        return View("Index", exp);
+                    }
+
                 }
                 return RedirectToAction("Index");
             }

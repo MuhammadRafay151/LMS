@@ -17,15 +17,16 @@ namespace LeaveApplication.Models
         public int FileId { get; set; }
 
         [Required]
+        [RegularExpression("[a-zA-Z][a-zA-Z ]+")]
         public string title { get; set; }
 
         [Required]
+        [RegularExpression("[a-zA-Z][a-zA-Z ]+")]
         public string Description { get; set; }
 
         [Required]
         public string AcheivementDate { get; set; }
 
-        //[Required]
         public HttpPostedFileBase File { get; set; }
 
         public string FileName { get; set; }

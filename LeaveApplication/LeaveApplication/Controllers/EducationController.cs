@@ -38,6 +38,13 @@ namespace LeaveApplication.Controllers
                     edu.EmployeeID = Convert.ToInt32(Session["EmpId"]);
                     edu.AddEducation();
                 }
+                else
+                {
+                    edu.EmployeeID = Convert.ToInt32(Session["EmpId"]);
+                    ViewBag.List = edu.GetDegrees();
+                    System.Data.DataSet x = edu.GetEducation();
+                    return View("Index", x);
+                }
 
                 return RedirectToAction("Index");
             }
@@ -70,6 +77,13 @@ namespace LeaveApplication.Controllers
                 {
                     edu.EmployeeID = Convert.ToInt32(Session["EmpId"]);
                     edu.UpdateEducation();
+                }
+                else
+                {
+                    edu.EmployeeID = Convert.ToInt32(Session["EmpId"]);
+                    ViewBag.List = edu.GetDegrees();
+                    System.Data.DataSet x = edu.GetEducation();
+                    return View("Index", x);
                 }
 
                 return RedirectToAction("Index");

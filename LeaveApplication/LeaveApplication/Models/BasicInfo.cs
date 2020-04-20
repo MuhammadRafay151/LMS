@@ -27,16 +27,20 @@ namespace LeaveApplication.Models
         public BasicInfo()
         { }
         [Required]
+        [RegularExpression("[a-zA-Z][a-zA-Z ]+")]
         public string Name { get; set; }
         [Required]
         public string Address { get; set; }
         [Required]
         public string BirthDay { get; set; }
         [Required]
+        [RegularExpression("^[0-9+]{5}-[0-9+]{7}-[0-9]{1}$", ErrorMessage = "Invalid CNIC")]
         public string Cnic { get; set; }
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
         [Required]
+        [RegularExpression(@"^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$", ErrorMessage = "Required format(####-#######)")]
         public string PhoneNumber { get; set; }
         public HttpPostedFileBase Image { get; set; }
 
@@ -57,23 +61,9 @@ namespace LeaveApplication.Models
             sqlParameters.Add(new SqlParameter() { ParameterName = "Cnic", Value = Cnic });
             sqlParameters.Add(new SqlParameter() { ParameterName = "Email", Value = Email });
             sqlParameters.Add(new SqlParameter() { ParameterName = "PhoneNumber", Value = PhoneNumber });
-            if (Image != null)
-            {
-                Querry =string.Format( @"
-                update employee set EmployeeName = @Name, Address = @Address, PhoneNumber = @PhoneNumber, CNIC = @Cnic, Email =@Email, dob=@BirthDay where EmployeeID ={0};
-                update Picture set Picture = @Image where EmployeeID={0}",EmployeeId);
-                Stream s1 = this.Image.InputStream;
-                BinaryReader b1 = new BinaryReader(s1);
-                ImagesBytes = b1.ReadBytes((int)s1.Length);
-                sqlParameters.Add(new SqlParameter() { ParameterName = "Image", Value = ImagesBytes });
-            }
-            else
-            {
-                Querry = @"
+            Querry = @"
                 update employee set EmployeeName = @Name, Address = @Address, PhoneNumber = @PhoneNumber, CNIC = @Cnic, Email =@Email, dob=@BirthDay
                 where EmployeeID =" + EmployeeId;
-            }
-
             db.ExecuteQuerry(Querry, sqlParameters);
         }
     }

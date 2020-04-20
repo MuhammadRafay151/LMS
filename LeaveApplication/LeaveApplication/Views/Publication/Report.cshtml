@@ -122,7 +122,7 @@
             $.ajax({
             method: "GET",
             url: "/Admin/GetAllEmployees",
-            success: function (data) {
+                success: function (data) {
                 data = JSON.parse(data);
                 for (var i = 0; i < data.Table.length; i++) {
                     $('#emp').append(`<option value="${data.Table[i].EmployeeID}">${data.Table[i].EmployeeName}</option>`)
@@ -138,7 +138,7 @@
             url: "/Admin/GetEmployees?DepartmentId=" + Depid,
             success: function (data) {
                 for (var i = 0; i < data.length; i++) {
-                    $('#emp').append(`<option value="${data[i].EmployeeID}">${data[i].EmployeeName}</option>`)
+                    $('#emp').append(`<option value="${data[i].EmployeeID}">${data[i].EmployeeName}</option>`);
 
                 }
 

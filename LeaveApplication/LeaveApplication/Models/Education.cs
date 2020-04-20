@@ -19,15 +19,19 @@ namespace LeaveApplication.Models
         public int DegreeID { get; set; }
 
         [Required]
+        [RegularExpression("[a-zA-Z][a-zA-Z ]+")]
         public int DegreeType { get; set; }
 
         [Required]
+        [RegularExpression("[a-zA-Z][a-zA-Z ]+")]
         public string DegreeTittle { get; set; }
 
         [Required]
+        [RegularExpression("[a-zA-Z][a-zA-Z ]+")]
         public string Field { get; set; }
 
         [Required]
+        [RegularExpression("[a-zA-Z][a-zA-Z ]+")]
         public string Institute { get; set; }
 
         [Required]

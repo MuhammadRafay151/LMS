@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.ComponentModel.DataAnnotations;
 
 namespace LeaveApplication.Models
 {
@@ -17,11 +18,14 @@ namespace LeaveApplication.Models
         public int FileId { get; set; }
         public int PublicationAtcchmentId { get; set; }
         public Byte[] FileBytes { get; set; }
+        [Required]
         public string Title { get; set; }
+        [Required]
         public string PublishedDate { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
         public HttpPostedFileBase File { get; set; }
-
         public List<string> Author { get; set; }
 
 
@@ -43,7 +47,7 @@ x.id=y.PublicationId where x.Employeeid={0} and x.id={1}", EmployeeId, Published
             Querry = "";
             HelperClasses.SqlParm s1 = new HelperClasses.SqlParm();
             s1.Add("Title", Title);
-            s1.Add("pd", DateTimeHelper.yyyy_mm_dd(PublishedDate));
+            s1.Add("pd",PublishedDate);
             s1.Add("desc", Description);
             s1.Add("Author", MakeAuthorsString());
             s1.Add("pid", PublishedId);
@@ -88,7 +92,7 @@ Insert into PublicationAttachment(FileId,PublicationId,FileName) values(@fileid,
             HelperClasses.SqlParm sq = new HelperClasses.SqlParm();
             sq.Add("Employeeid", EmployeeId);
             sq.Add("Title", Title);
-            sq.Add("PublishDate", DateTimeHelper.yyyy_mm_dd(PublishedDate));
+            sq.Add("PublishDate", PublishedDate);
             sq.Add("Description", Description);
             sq.Add("Authors", MakeAuthorsString());
             sq.Add("Content", FileBytes);
@@ -214,6 +218,7 @@ inner join PublicationAttachment on Publications.id=PublicationAttachment.Public
 
             return database.Read(Querry);
         }
+        
 
 
     }

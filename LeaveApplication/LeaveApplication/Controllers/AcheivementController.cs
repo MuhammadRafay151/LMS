@@ -43,6 +43,12 @@ namespace LeaveApplication.Controllers
                     ach.EmployeeID = Convert.ToInt32(Session["EmpId"]);
                     ach.InsertAcheivement();
                 }
+                else
+                {
+                    ach.EmployeeID = Convert.ToInt32(Session["EmpId"]);
+                    ViewBag.data = ach.GetAcheivement();
+                    return View("Index", ach);
+                }
 
                 return RedirectToAction("Index");
             }
@@ -68,6 +74,12 @@ namespace LeaveApplication.Controllers
                 {
                     ach.EmployeeID = Convert.ToInt32(Session["EmpId"]);
                     ach.UpdateAcheivement();
+                }
+                else
+                {
+                    ach.EmployeeID = Convert.ToInt32(Session["EmpId"]);
+                    ViewBag.data = ach.GetAcheivement();
+                    return View("Index", ach);
                 }
 
                 return RedirectToAction("Index");
