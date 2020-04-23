@@ -18,9 +18,9 @@ namespace LeaveApplication.Models
         public int EduID { get; set; }
         public int DegreeID { get; set; }
 
-        [Required]
-        [RegularExpression("[a-zA-Z][a-zA-Z ]+")]
-        public int DegreeType { get; set; }
+        //[Required]
+        //[RegularExpression("[a-zA-Z][a-zA-Z ]+")]
+        //public int DegreeType { get; set; }
 
         [Required]
         [RegularExpression("[a-zA-Z][a-zA-Z ]+")]

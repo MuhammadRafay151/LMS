@@ -34,7 +34,7 @@ namespace LeaveApplication.Controllers
                     }
                     catch (FormatException e)
                     {
-                        return Content(e.Message + " Required format:mm/dd/yyyy");
+                        return Content(e.Message + " Required format: mm/dd/yyyy");
                     }
                     //Get data for only absecent employees....
 

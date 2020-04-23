@@ -24,7 +24,7 @@ namespace LeaveApplication.Models
             {
                 string Name = ds.Tables[0].Rows[0][0].ToString();
                 string mail = ds.Tables[0].Rows[0][1].ToString();
-                Body = string.Format("Dear {0} you are absent at {1} kindly for more information check your dashboard Thankyou.", Name, Date);
+                Body = string.Format("Dear {0} you are absent at {1} kindly for more information check your dashboard Thankyou.", Name, Date.ToString("dd/MM/yyyy"));
                 if (AttendanceRecord(Body) > 0)
                 {
                     Email e1 = new Email();

@@ -119,7 +119,7 @@
                         <div class="form-group col-8 bmd-form-group">
                             <label for="DegreeID" class="d-block">Select Degree</label>
                             <select class="custom-select" name="DegreeID" required>
-                                <option value="" disabled selected>Select Department</option>
+                                <option value="" disabled selected>Select Degree</option>
                                 @{System.Data.DataSet x = ViewBag.List;
                                     foreach (System.Data.DataRow i in x.Tables[0].Rows)
                                     {
@@ -206,7 +206,7 @@
                         <table class="table table-hover">
                             <tbody>
                                 <tr>
-                                    <th class="text-info" scope="row">Degree</th>
+                                    <th class="text-info w-25" scope="row">Degree</th>
                                     <td>@i[1]</td>
                                     <td class="d-flex justify-content-end">
 
@@ -220,22 +220,22 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-info" scope="row">DegreeTittle</th>
+                                    <th class="text-info w-25" scope="row">DegreeTittle</th>
                                     <td>@i[2]</td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <th class="text-info" scope="row">Field</th>
+                                    <th class="text-info w-25" scope="row">Field</th>
                                     <td>@i[3]</td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <th class="text-info" scope="row">Institute</th>
+                                    <th class="text-info w-25" scope="row">Institute</th>
                                     <td>@i[4]</td>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <th class="text-info" scope="row">Year</th>
+                                    <th class="text-info w-25" scope="row">Year</th>
                                     <td>@i[5]</td>
                                     <td></td>
                                 </tr>

@@ -120,6 +120,7 @@ namespace LeaveApplication.Validation_Classes
 
         public bool IsValidFileFormat(string FileName)
         {//for attachment on leave application form
+            //.jpeg .pdf .docx .png allowed...
             string ContentType = string.Empty;
             List<string> MimeType = null;
 

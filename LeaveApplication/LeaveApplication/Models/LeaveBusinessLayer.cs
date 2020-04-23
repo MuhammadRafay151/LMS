@@ -302,9 +302,19 @@ where LeaveApplication.LeaveApplicationID = '{0}'", Application_Id);
             v1.EmployeeID = ds.Tables[0].Rows[0][1].ToString();
             v1.LeaveType = ds.Tables[0].Rows[0][2].ToString();
             v1.ApplyDate = DateTime.Parse(ds.Tables[0].Rows[0][3].ToString()).ToString();
-            v1.FromDate = DateTime.Parse(ds.Tables[0].Rows[0][4].ToString()).ToString("dd/MM/yyyy h:mm tt");
-            v1.ToDate = DateTime.Parse(ds.Tables[0].Rows[0][5].ToString()).ToString("dd/MM/yyyy h:mm tt");
             v1.TotalDays = double.Parse(ds.Tables[0].Rows[0][6].ToString());
+            if (v1.TotalDays == 0.5)
+            {
+                v1.FromDate = DateTime.Parse(ds.Tables[0].Rows[0][4].ToString()).ToString("dd/MM/yyyy h:mm tt");
+                v1.ToDate = DateTime.Parse(ds.Tables[0].Rows[0][5].ToString()).ToString("dd/MM/yyyy h:mm tt");
+            }
+            else
+            {
+                v1.FromDate = DateTime.Parse(ds.Tables[0].Rows[0][4].ToString()).ToString("dd/MM/yyyy");
+                v1.ToDate = DateTime.Parse(ds.Tables[0].Rows[0][5].ToString()).ToString("dd/MM/yyyy");
+            }
+           
+          
             v1.LeaveRemarks = ds.Tables[0].Rows[0][7].ToString();
             v1.LeaveReason = ds.Tables[0].Rows[0][8].ToString();
             v1.ApplicationStatus = GetApplicationStatus(v1.ApplicationId);

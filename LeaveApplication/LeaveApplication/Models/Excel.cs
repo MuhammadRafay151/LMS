@@ -29,16 +29,7 @@ namespace LeaveApplication.Models
                         var cell = dataRow.Cell(1).Value;
                         var cell2 = dataRow.Cell(12).Value;
                         var cell3 = dataRow.Cell(4).Value;
-                        try
-                        {
-                          d1 = DateTime.Parse(cell3.ToString());
-                        }
-                       
-                        catch(FormatException)
-                        {
-                           d1= Convert.ToDateTime(cell3.ToString(), System.Globalization.CultureInfo.InvariantCulture);
-
-                        }
+                        d1 = DateTime.Parse(cell3.ToString(), System.Globalization.CultureInfo.InvariantCulture);
                         if (Convert.ToBoolean(cell2.ToString())==true)
                         {
                             l1.Add(new Attendance()
